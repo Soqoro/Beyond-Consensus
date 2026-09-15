@@ -13,7 +13,8 @@ configs/cluster.local.json
 configs/*.local.json
 data/
 dataset/
-models/
+# Downloaded weights at the repository root; keep the Python models package.
+/models/
 cache/
 outputs/
 snapshots/
