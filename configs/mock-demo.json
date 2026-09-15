@@ -1,0 +1,8 @@
+{
+  "name": "cpu-mock-demonstration",
+  "task_count": 1,
+  "policies": ["ordinary", "jit", "replication", "recovery"],
+  "attacks": ["clean", "withholding"],
+  "seeds": [0],
+  "model": {"backend": "mock"}
+}

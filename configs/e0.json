@@ -1,0 +1,9 @@
+{
+  "name": "e0-clean-competence",
+  "task_count": 4,
+  "policies": ["single", "ordinary"],
+  "attacks": ["clean"],
+  "seeds": [0],
+  "shards": 4,
+  "model": {"backend": "mock"}
+}

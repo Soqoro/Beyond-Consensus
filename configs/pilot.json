@@ -1,0 +1,10 @@
+{
+  "name": "four-task-gpu-engineering-pilot",
+  "task_count": 4,
+  "task_kind": "workflow_fixture",
+  "policies": ["ordinary", "jit", "replication", "recovery"],
+  "attacks": ["clean", "withholding"],
+  "seeds": [0],
+  "shards": 4,
+  "model": {"backend": "transformers", "checkpoint": "Qwen/Qwen3.5-4B"}
+}

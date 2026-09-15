@@ -1,0 +1,5 @@
+{
+  "partition": null,
+  "documentation_snapshot": "NA100q/NA10040q list node01 80 GB and node13 40 GB; PA100q/PA10080q include 40 GB machines and node04 80 GB",
+  "configuration": "Choose a site-confirmed accessible A100 partition and optional constraint. Verify actual GPU VRAM inside the allocation."
+}

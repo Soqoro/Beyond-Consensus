@@ -1,0 +1,229 @@
+"""CPU-safe command line. Expensive dependencies load only in explicit commands."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import replace
+from pathlib import Path
+from typing import Any
+
+from .config import load_config, from_dict
+from .util import BCError, atomic_json, digest, plain, read_json
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(prog="bc", description="Beyond Consensus E0/E1 development foundation")
+    sub = p.add_subparsers(dest="command", required=True)
+    demo = sub.add_parser("demo", help="Run a labelled CPU mock demonstration")
+    demo.add_argument("--output", type=Path, default=Path("outputs/mock-demo"))
+    demo.add_argument("--config", type=Path, default=ROOT / "configs/mock-demo.json")
+    make = sub.add_parser("manifest", help="Freeze a planned grid; runs no episodes")
+    make.add_argument("--config", type=Path, required=True)
+    make.add_argument("--output", type=Path, required=True)
+    make.add_argument("--model-lock", type=Path)
+    run = sub.add_parser("run", help="Run/resume complete episodes from a pinned manifest")
+    run.add_argument("--manifest", type=Path, required=True)
+    run.add_argument("--output", type=Path, required=True)
+    run.add_argument("--shard", type=int)
+    run.add_argument("--model-lock", type=Path)
+    run.add_argument("--retry-failures", action="store_true")
+    for name in ("aggregate", "status"):
+        item = sub.add_parser(name, help="Report all planned episode statuses")
+        item.add_argument("--output", type=Path, required=True)
+        if name == "status":
+            item.add_argument("--jobs", nargs="*", default=[])
+            item.add_argument("--dry-run", action="store_true")
+    freeze = sub.add_parser("freeze-primary", help="Execute and freeze one common primary trace for Protocol B")
+    freeze.add_argument("--config", type=Path, required=True)
+    freeze.add_argument("--output", type=Path, required=True)
+    diagnostic = sub.add_parser("diagnostic-manifest", help="Create Protocol B policy comparisons from a frozen primary")
+    diagnostic.add_argument("--fixed-state", type=Path, required=True)
+    diagnostic.add_argument("--output", type=Path, required=True)
+    stage = sub.add_parser("stage-model", help="Explicit model staging; may download large model weights")
+    stage.add_argument("--config", type=Path, required=True)
+    stage.add_argument("--root", type=Path, required=True)
+    stage.add_argument("--dry-run", action="store_true")
+    data = sub.add_parser("stage-data", help="Explicit official dataset staging, never executes scripts")
+    data.add_argument("--root", type=Path, required=True)
+    data.add_argument("--revision")
+    data.add_argument("--dry-run", action="store_true")
+    coop = sub.add_parser("cooper-import", help="Validate actual upstream pairs and construct a versioned data manifest")
+    for name in ("root", "subset", "output"):
+        coop.add_argument("--"+name, type=Path, required=True)
+    coop.add_argument("--upstream-commit", required=True)
+    coop.add_argument("--dataset-revision", required=True)
+    doctor = sub.add_parser("doctor", help="Lightweight login/sandbox capabilities; no model loading")
+    doctor.add_argument("--dry-run", action="store_true")
+    doctor.add_argument("--cluster", type=Path)
+    submit = sub.add_parser("submit", help="Guarded Slurm submission; explicit user action only")
+    submit.add_argument("--cluster", type=Path, required=True)
+    submit.add_argument("--manifest", type=Path, required=True)
+    submit.add_argument("--model-lock", type=Path, required=True)
+    submit.add_argument("--concurrency", type=int, default=1)
+    submit.add_argument("--mode", choices=("run", "preflight"), default="run")
+    submit.add_argument("--dry-run", action="store_true")
+    submit.add_argument("--serialize", action="store_true")
+    retry = sub.add_parser("resubmit", help="Resubmit only missing/retryable shards from an unchanged snapshot")
+    retry.add_argument("--snapshot", type=Path, required=True)
+    retry.add_argument("--concurrency", type=int, default=1)
+    retry.add_argument("--dry-run", action="store_true")
+    batch = sub.add_parser("batch", help=argparse.SUPPRESS)
+    batch.add_argument("--snapshot", type=Path, required=True)
+    batch.add_argument("--output", type=Path, required=True)
+    batch.add_argument("--mode", choices=("run", "preflight"), required=True)
+    batch.add_argument("--retry", action="store_true")
+    preflight = sub.add_parser("gpu-preflight", help="One-device smoke test; requires an allocation and staged model")
+    preflight.add_argument("--manifest", type=Path, required=True)
+    preflight.add_argument("--model-lock", type=Path, required=True)
+    preflight.add_argument("--output", type=Path, required=True)
+    export = sub.add_parser("export", help="Create a small sanitized browser-download bundle")
+    export.add_argument("--output", type=Path, required=True)
+    export.add_argument("--bundle", type=Path, required=True)
+    export.add_argument("--dry-run", action="store_true")
+    calibration = sub.add_parser("calibrate", help="Measure cold/index/prepared operations on development fixture groups")
+    calibration.add_argument("--config", type=Path, required=True)
+    calibration.add_argument("--output", type=Path, required=True)
+    calibration.add_argument("--model-lock", type=Path)
+    return p
+
+
+def dispatch(args: argparse.Namespace) -> Any:
+    from .experiments.manifest import build_manifest, validate_manifest
+    if args.command == "manifest":
+        config = load_config(args.config)
+        if args.model_lock:
+            from .models.staging import resolve_model_config
+            config = replace(config, model=resolve_model_config(config.model, args.model_lock))
+        if config.model.backend == "transformers" and not config.model.revision:
+            raise BCError("Real manifests require --model-lock from explicit staging")
+        manifest = build_manifest(config, ROOT)
+        atomic_json(args.output, manifest)
+        return {"planned_episodes": manifest["planned_episodes"], "manifest": str(args.output),
+                "experiment_id": manifest["experiment_id"], "executed": 0}
+    if args.command in ("run", "demo"):
+        from .experiments.runner import run_manifest
+        from .evaluation.aggregate import aggregate
+        if args.command == "demo":
+            config = load_config(args.config)
+            if config.model.backend != "mock" or config.task_kind != "workflow_fixture":
+                raise BCError("demo only accepts the mock backend and labelled workflow fixtures")
+            manifest = build_manifest(config, ROOT)
+            rows = run_manifest(manifest, args.output, ROOT)
+        else:
+            manifest = read_json(args.manifest)
+            rows = run_manifest(manifest, args.output, ROOT, shard=args.shard,
+                                model_lock=args.model_lock, retry_failures=args.retry_failures)
+        summary = aggregate(manifest, args.output)
+        summary["command_failed"] = any(r["status"] not in ("completed", "budget_exhausted") for r in rows)
+        return summary
+    if args.command in ("aggregate", "status"):
+        from .evaluation.aggregate import aggregate
+        from .experiments.cluster import command, failed_shard_ids
+        manifest = read_json(args.output / "manifest.json")
+        result = aggregate(manifest, args.output)
+        result["missing_or_retryable_shards"] = failed_shard_ids(manifest, args.output)
+        if args.command == "status" and args.jobs:
+            if any(not j.isdecimal() for j in args.jobs):
+                raise BCError("Use specified numeric project job IDs")
+            commands = [["squeue", "--jobs", ",".join(args.jobs)],
+                        ["sacct", "--jobs", ",".join(args.jobs), "--format=JobID,State,ExitCode,Elapsed,AllocTRES"]]
+            result["scheduler"] = commands if args.dry_run else [command(c) for c in commands]
+        return result
+    if args.command == "freeze-primary":
+        from .models.mock import MockBackend
+        from .runtime.episode import EpisodeEngine
+        from .runtime.persistence import EpisodeJournal
+        from .experiments.manifest import episode_from, task_from
+        config = load_config(args.config)
+        if (config.model.backend != "mock" or config.task_count != 1 or len(config.policies) != 1
+                or len(config.attacks) != 1 or len(config.seeds) != 1 or config.protocol != "A"):
+            raise BCError("Initial fixed-state capture supports one mock task/policy/attack/seed in Protocol A")
+        manifest = build_manifest(config, ROOT)
+        row = episode_from(manifest["episodes"][0])
+        journal = EpisodeJournal(args.output.parent / "primary-trace", row.episode_id)
+        engine = EpisodeEngine(task_from(manifest["tasks"][0]), row, config, MockBackend(), journal, journal.begin(digest(row)))
+        frozen = engine.freeze_primary()
+        frozen["origin_config"] = plain(config)
+        atomic_json(args.output, frozen)
+        return {"fixed_state": str(args.output), "hash": digest(frozen), "final_evaluation": "not run"}
+    if args.command == "diagnostic-manifest":
+        frozen = read_json(args.fixed_state)
+        config = from_dict({**frozen["origin_config"], "protocol": "B",
+            "fixed_state_file": str(args.fixed_state.resolve()), "policies": ["ordinary", "jit", "replication", "recovery"]})
+        manifest = build_manifest(config, ROOT)
+        atomic_json(args.output, manifest)
+        return {"manifest": str(args.output), "planned": manifest["planned_episodes"], "protocol": "B"}
+    if args.command == "stage-model":
+        from .models.staging import stage_model
+        return stage_model(load_config(args.config).model, args.root, dry_run=args.dry_run)
+    if args.command == "stage-data":
+        from .tasks.cooperbench import stage_dataset
+        return stage_dataset(args.root, args.revision, dry_run=args.dry_run)
+    if args.command == "cooper-import":
+        from .tasks.cooperbench import import_dataset
+        data = import_dataset(args.root, args.subset, args.upstream_commit, args.dataset_revision)
+        atomic_json(args.output, data)
+        return {"task_pairs": len(data["tasks"]), "manifest": str(args.output), "execution": "blocked_pending_sandbox"}
+    if args.command == "doctor":
+        from .experiments.cluster import doctor, load_cluster
+        return doctor(load_cluster(args.cluster) if args.cluster else None) if not args.dry_run else {
+            "operations": ["scheduler/module/storage capability inspection"], "model_loaded": False}
+    if args.command == "submit":
+        from .experiments.cluster import submit, load_cluster
+        return submit(ROOT, load_cluster(args.cluster), read_json(args.manifest), read_json(args.model_lock),
+                      args.concurrency, mode=args.mode, dry_run=args.dry_run, serialize=args.serialize)
+    if args.command == "resubmit":
+        from .experiments.cluster import submit, load_cluster, failed_shard_ids
+        config = load_cluster(args.snapshot / "resolved/cluster.json")
+        manifest = read_json(args.snapshot / "resolved/manifest.json")
+        shards = failed_shard_ids(manifest, Path(config.output_root) / manifest["experiment_id"])
+        if not shards:
+            return {"submitted": False, "reason": "No missing or eligible failed shards"}
+        return submit(ROOT, config, manifest, read_json(args.snapshot / "resolved/model-lock.json"), args.concurrency,
+                      dry_run=args.dry_run, existing_snapshot=args.snapshot, failed_shards=shards)
+    if args.command == "batch":
+        from .experiments.cluster import batch
+        return batch(args.snapshot, args.output, args.mode, args.retry)
+    if args.command == "gpu-preflight":
+        from .models.transformers_backend import preflight
+        config = validate_manifest(read_json(args.manifest))
+        result = preflight(config.model, args.model_lock)
+        atomic_json(args.output, result)
+        return result
+    if args.command == "export":
+        from .experiments.export import export_bundle
+        return export_bundle(args.output, args.bundle, dry_run=args.dry_run)
+    if args.command == "calibrate":
+        from .planning.calibration import calibrate
+        from .experiments.manifest import load_tasks
+        from .models.mock import MockBackend
+        config = load_config(args.config)
+        if config.model.backend == "mock":
+            backend = MockBackend()
+        else:
+            from .models.staging import resolve_model_config
+            from .models.transformers_backend import TransformersBackend
+            if not args.model_lock:
+                raise BCError("Real calibration requires a staged model lock and a GPU allocation")
+            config = replace(config, model=resolve_model_config(config.model, args.model_lock))
+            backend = TransformersBackend(config.model, args.model_lock)
+        result = calibrate(config, backend, load_tasks(config))
+        atomic_json(args.output, result["calibration"])
+        atomic_json(args.output.with_suffix(".measurements.json"), result["measurements"])
+        return {"calibration_id": result["calibration"]["id"], "samples": len(result["measurements"]),
+                "output": str(args.output), "confirmatory": False}
+    raise BCError("Unknown command")
+
+
+def main(argv: list[str] | None = None) -> int:
+    try:
+        result = dispatch(parser().parse_args(argv))
+        print(json.dumps(plain(result), indent=2, sort_keys=True, allow_nan=False))
+        return 1 if isinstance(result, dict) and result.get("command_failed") else 0
+    except (BCError, OSError, ValueError, KeyError, TypeError) as exc:
+        print(f"bc: {exc}", file=sys.stderr)
+        return 2

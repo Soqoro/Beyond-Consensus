@@ -1,0 +1,13 @@
+{
+  "name": "e1-planned-20-task-development-grid",
+  "task_count": 20,
+  "task_kind": "cooperbench",
+  "data_manifest": null,
+  "policies": ["ordinary", "jit", "replication", "recovery"],
+  "attacks": ["clean", "withholding"],
+  "seeds": [0, 1],
+  "shards": 20,
+  "model": {"backend": "transformers", "checkpoint": "Qwen/Qwen3.5-9B"},
+  "budget": {"total": 100000, "reserve_fraction": 0.25},
+  "confirmatory": false
+}

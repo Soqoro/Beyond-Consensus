@@ -1,0 +1,5 @@
+{
+  "partition": "NH100q",
+  "documentation_snapshot": "node07, H100 80 GB SXM5; not a current availability/access assertion",
+  "configuration": "Copy partition into cluster.local.json; discover time, host RAM, modules and account limits. No node pinning."
+}

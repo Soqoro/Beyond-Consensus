@@ -1,0 +1,5 @@
+{
+  "partition": "PH100q",
+  "documentation_snapshot": "node06, H100 80 GB PCIe; not a current availability/access assertion",
+  "configuration": "Copy partition into cluster.local.json; discover time, host RAM, modules and account limits. No node pinning."
+}

@@ -1,0 +1,8 @@
+{
+  "name": "common-primary-protocol-b-capture",
+  "task_count": 1,
+  "policies": ["jit"],
+  "attacks": ["withholding"],
+  "seeds": [0],
+  "model": {"backend": "mock"}
+}

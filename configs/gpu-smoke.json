@@ -1,0 +1,23 @@
+{
+  "name": "one-task-gpu-engineering-smoke",
+  "task_count": 1,
+  "task_kind": "workflow_fixture",
+  "policies": ["single"],
+  "attacks": ["clean"],
+  "seeds": [0],
+  "shards": 1,
+  "model": {
+    "backend": "transformers",
+    "checkpoint": "Qwen/Qwen3.5-4B",
+    "revision": null,
+    "tokenizer_revision": null,
+    "dtype": "bfloat16",
+    "context_limit": 8192,
+    "max_new_tokens": 768,
+    "thinking": false,
+    "do_sample": false,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20
+  }
+}
