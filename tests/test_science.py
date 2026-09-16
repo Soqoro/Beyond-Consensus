@@ -137,13 +137,52 @@ class WorkerInvariantTests(unittest.TestCase):
     def test_malformed_retry_is_bounded_and_charged(self):
         class BadModel(MockBackend):
             def generate(self, *args, **kwargs):
-                return Generation("not JSON", 2)
-        loop = self.setup_loop(BadModel())
-        outcome = loop.run(fixtures()[0], "u0", "w0", "primary", 0)
-        self.assertEqual(outcome.status, "malformed")
-        calls = [e for e in self.ledger.entries if e["kind"] == "model"]
-        self.assertEqual(len(calls), self.config.malformed_retries+1)
-        self.assertEqual(sum(e["output_tokens"] for e in calls), 6)
+                return Generation(raw, 2)
+        for raw in ("not JSON",
+                    "{steps:[{op:mul,value:1},{op:add,value:0},{op:min,value:0},{op:max,value:0}]}",
+                    '{"steps":[{"op":"add","value":0}]}'):
+            with self.subTest(raw=raw):
+                loop = self.setup_loop(BadModel())
+                outcome = loop.run(fixtures()[0], "u0", "w0", "primary", 0)
+                self.assertEqual(outcome.status, "malformed")
+                self.assertFalse(self.store.artifacts)
+                calls = [e for e in self.ledger.entries if e["kind"] == "model"]
+                self.assertEqual(len(calls), self.config.malformed_retries+1)
+                self.assertEqual(sum(e["output_tokens"] for e in calls), 6)
+
+    def test_every_prompt_action_example_is_accepted_by_tools(self):
+        loop = self.setup_loop()
+        task = fixtures()[0]
+        loop.run(task, "u0", "w0", "primary", 0)
+        prompt = self.store.contexts["w0"].messages[0]["content"]
+        examples = [json.loads(line) for line in prompt.splitlines() if line.startswith("{")]
+        self.assertEqual({a["tool"] for a in examples},
+                         {"read_source", "read_artifact", "test", "message", "submit"})
+        self.assertEqual(sum(a["tool"] == "submit" for a in examples), 2)
+        for action in examples:
+            with self.subTest(action=action):
+                loop = self.setup_loop()
+                allowed = ()
+                if action["tool"] == "read_artifact":
+                    artifact = self.store.submit("w1", "u0", {"steps": [{"op": "add", "value": 0}]})
+                    action = {**action, "version": artifact.id}
+                    allowed = (artifact.id,)
+                operation = "prepare" if "contract" in action.get("content", {}) else "implement"
+                loop._tool(task, "u0", "w0", action, "primary", operation, allowed)
+
+    def test_retained_context_assignments_name_their_own_source(self):
+        loop = self.setup_loop()
+        task = fixtures()[0]
+        for unit in task.required_outputs:
+            outcome = loop.run(task, unit, "w0", "primary", 0, fresh_context=False)
+            self.assertEqual(outcome.status, "submitted")
+        messages = self.store.contexts["w0"].messages
+        assignments = [json.loads(m["content"]) for m in messages
+                       if m["role"] == "user" and m["content"].startswith('{"assignment":')]
+        self.assertEqual([a["assignment"] for a in assignments], list(task.required_outputs))
+        for assignment in assignments:
+            self.assertEqual(assignment["first_action"],
+                             {"tool": "read_source", "name": assignment["assignment"]})
 
     def test_backend_failures_are_charged_not_attack_success(self):
         class Down(MockBackend):

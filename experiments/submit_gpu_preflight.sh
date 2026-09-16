@@ -5,7 +5,7 @@ if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
   exit 0
 fi
 for arg in "$@"; do
-  if [[ "$arg" == --mode* || "$arg" == --concurrency* ]]; then
+  if [[ "$arg" == --mode || "$arg" == --mode=* || "$arg" == --concurrency || "$arg" == --concurrency=* ]]; then
     echo "Preflight uses one GPU; mode/concurrency overrides are not accepted" >&2
     exit 2
   fi

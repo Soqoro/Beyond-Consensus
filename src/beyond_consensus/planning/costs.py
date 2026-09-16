@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from ..agents.prompts import WORKER_INSTRUCTIONS
 from ..config import RunConfig
 from ..models.base import Backend
 from ..schemas import TaskInstance
@@ -26,7 +27,8 @@ class CostEstimates:
 def compatibility(config: RunConfig) -> str:
     return digest({"model": config.model, "budget_rules": {
         name: getattr(config.budget, name) for name in ("input_weight", "output_weight", "tool_charge")},
-        "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind})
+        "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind,
+        "worker_instructions": WORKER_INSTRUCTIONS})
 
 
 def estimates(config: RunConfig, backend: Backend, task: TaskInstance) -> CostEstimates:
@@ -38,7 +40,7 @@ def estimates(config: RunConfig, backend: Backend, task: TaskInstance) -> CostEs
         if data["origin"] != expected_origin or data["sample_count"] < 1:
             raise BCError("Real calibration must contain measured development operations")
         if data["compatibility"] != compatibility(config):
-            raise BCError("Calibration model/budget/monitor/split mismatch; create a new run")
+            raise BCError("Calibration model/budget/monitor/split/prompt mismatch; create a new run")
         if task.group in data["groups"]:
             raise BCError("Calibration and evaluation base-feature pools overlap")
         return CostEstimates(**data["costs"], status="development-calibrated", calibration_id=data["id"])

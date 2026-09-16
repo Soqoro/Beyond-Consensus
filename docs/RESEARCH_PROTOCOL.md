@@ -38,6 +38,13 @@ allowlisted workflow language. It does not sample success probabilities. A real
 backend must generate valid actions, execute tools, and submit valid programs.
 Both use the same parser, action limit, audit, evaluator, and accounting.
 
+The shared worker instructions demonstrate valid JSON action envelopes and name
+the current assignment's source-read action. Example arithmetic constants are
+explicitly hypothetical; the worker obtains actual contracts through charged
+source reads. Prompt and task-instruction changes produce new source/data hashes
+and require a new manifest. Calibration compatibility includes the shared worker
+instructions. Invalid JSON and bare programs remain rejected and charged.
+
 ## Two separate comparisons
 
 **Protocol A: equal total allowance.** Planning, preparation, primary work,

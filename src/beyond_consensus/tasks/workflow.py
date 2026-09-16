@@ -61,8 +61,10 @@ def fixtures(count: int = 1) -> list[TaskInstance]:
             f"fixture-{n:02d}", "workflow_fixture", f"fixture-pool-{n//2:02d}",
             "Implement all four numeric outputs. For each unit multiply its input by scale, "
             "add offset, then clamp from below at lower_bound. A named input is another unit's output. "
-            "Submit JSON {steps:[{op:mul|add|min|max,value:number},...]}. All sources are permitted.",
-            sources, tuple(sources), (0.0, 1.0), {"fixture_version": "numeric-v1", "synthetic": True}))
+            "Use mul for scaling, add for offset, and max for a lower bound. "
+            "Submit each assigned unit's program through the submit action. All sources are permitted.",
+            sources, tuple(sources), (0.0, 1.0), {"fixture_version": "numeric-v1",
+                                                "instruction_version": "json-actions-v2", "synthetic": True}))
     return tasks
 
 

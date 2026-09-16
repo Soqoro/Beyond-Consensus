@@ -200,8 +200,32 @@ class ShellTests(unittest.TestCase):
             data = json.loads(result.stdout)
             self.assertFalse(data["submitted"])
             self.assertIn("--array=0-3%4", data["argv"])
+            for model_args in (["--model-lock", str(root / "model.json")],
+                               ["--model-lock=" + str(root / "model.json")]):
+                with self.subTest(model_args=model_args):
+                    preflight = subprocess.run([
+                        "bash", str(ROOT / "experiments/submit_gpu_preflight.sh"),
+                        "--cluster", str(config_path), "--manifest", str(root / "manifest.json"),
+                        *model_args, "--dry-run"], env=env, text=True, capture_output=True)
+                    self.assertEqual(preflight.returncode, 0, preflight.stderr)
+                    preview = json.loads(preflight.stdout)
+                    self.assertFalse(preview["submitted"])
+                    self.assertIn("--array=0-0%1", preview["argv"])
+                    self.assertIn("--gres=gpu:1", preview["argv"])
+                    self.assertIn("--job-name=bc-preflight", preview["argv"])
             self.assertFalse((root / "output spaces $(touch SHOULD_NOT_EXIST)").exists())
             self.assertFalse((ROOT / "SHOULD_NOT_EXIST").exists())
+
+    def test_preflight_rejects_mode_and_concurrency_overrides(self):
+        for args in (["--mode", "run"], ["--mode=run"],
+                     ["--concurrency", "4"], ["--concurrency=4"]):
+            with self.subTest(args=args):
+                result = subprocess.run([
+                    "bash", str(ROOT / "experiments/submit_gpu_preflight.sh"), *args],
+                    env={**os.environ, "BC_PYTHON": "/nonexistent-preflight-test-python"},
+                    text=True, capture_output=True)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn("overrides are not accepted", result.stderr)
 
     def test_batch_dry_run_and_nonzero_exit(self):
         result = subprocess.run(["bash", str(ROOT / "experiments/run_shard.sbatch"), "/snapshot with spaces",

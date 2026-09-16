@@ -51,10 +51,13 @@ numeric fixtures. Real GPU fixed-state capture, restored-context reconstruction
 routes, oracle localization, adaptive attacks, dependency-poisoning sweeps,
 cross-family/Gemma validation, grouped confidence intervals, and E2–E5 are deferred.
 
-The real Transformers backend and cluster scripts were not run on a GPU or a
-live scheduler. Dependency support was checked against official release code;
-fit, throughput, dtype behavior and task competence remain GPU-preflight/pilot
-questions. No checkpoint weights or full datasets were downloaded.
+Initial implementation validation used CPU and scheduler mocks only. Subsequent
+user-provided cluster logs report a successful Qwen3.5-4B preflight on an A100
+40 GB, followed by a completed but unsuccessful single-task fixture episode.
+The visible worker trace repeats invalid JSON copied from the original prompt;
+the shared prompt and task instructions have now been corrected locally. GPU
+validation of that correction and the four-task pilot remain pending. See
+[VALIDATION.md](VALIDATION.md) for the reported hardware, revision and limitations.
 
 ## Conflicts and scientific choices
 

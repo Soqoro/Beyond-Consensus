@@ -145,6 +145,9 @@ class CalibrationAndExportTests(unittest.TestCase):
                 estimates(configured, MockBackend(), fixtures()[0])
             self.assertEqual(estimates(configured, MockBackend(), fixtures(3)[2]).calibration_id,
                              measured["calibration"]["id"])
+            with patch("beyond_consensus.planning.costs.WORKER_INSTRUCTIONS", "changed protocol"):
+                with self.assertRaisesRegex(BCError, "prompt mismatch"):
+                    estimates(configured, MockBackend(), fixtures(3)[2])
 
     def test_sanitized_allowlist_export_excludes_raw_state_and_credentials(self):
         with tempfile.TemporaryDirectory() as temp:
