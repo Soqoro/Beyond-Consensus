@@ -1,5 +1,65 @@
 # Implementation status and handoff
 
+## Current checkpoint: restricted SQLite/SILO migration (2026-09-16)
+
+The latest attached implementation request supersedes CooperBench as the required
+backend. We remain on Slurm; PBS and external-hosting paths are not active plans.
+The required scope is executable data workflows. The prior uncommitted progress
+and delegation evidence below is retained as history.
+
+- Implemented: restricted SELECT/view trees and fixed CPU executor; SQLite
+  fixture episodes through existing policies/accounting/provenance; pinned nested
+  view bindings and common charged replay of surviving query templates.
+- Implemented: local native staging/inspection, exact-record review scaffolds,
+  reference and negative controls, common-state pair validation, and v2 manifests.
+- Implemented: Prefix Sum/Pipeline Hash SILO adaptation with four workers,
+  explicit protected/no-copy access, public-input/scorer parity checks and all
+  original output obligations. Communication changes are labelled explicitly.
+- Preserved: numeric diagnostics, original model/dependency settings, A/B budget
+  separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
+- Locally validated: 110 tests (109 passed, one opt-in legacy sandbox skip), nine
+  shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
+  failure paths. These are engineering checks, not model/benchmark results.
+- Blocked externally: native benchmark validation needs actual databases,
+  author-supplied nonempty solutions/tests and reviewed restricted translations.
+  No actual native tasks or pairs have been validated. The crypto pair remains
+  a candidate. No SQLite/SILO model/Slurm run has been executed.
+- Deferred: new semantic sabotage until clean/withholding gates pass, remaining
+  SILO families, E2–E5, adaptive attacks and grouped inferential statistics.
+
+See [MIGRATION_SQLITE_SILO.md](MIGRATION_SQLITE_SILO.md) for M0–M4, precise subset
+limitations, source pins, scorer differences and exact next commands. Local
+test outcomes are recorded in [VALIDATION.md](VALIDATION.md).
+
+## Historical checkpoint: delegation blocker and prior progress
+
+The user's preceding request was to document the results and delegation problem.
+Alternative hosting and migration work is deferred; no PBS, local-PC, Colab,
+remote-sandbox or rented-GPU deployment has been validated or selected for execution.
+
+- **Working:** Qwen3.5-4B GPU preflight, corrected single-task fixture smoke (1/1),
+  and two 32-episode fixture pilots (32/32 each), all reported by the user.
+- **Scientific interpretation:** no advance-preparation work or demonstrated
+  recovery-policy advantage in those pilots. Repeated clean controls are not
+  independent tasks. These are fixture results, not CooperBench results.
+- **Partial containment evidence:** the basic Alpine probe passed on Jupyter and
+  node13, but did not qualify the full coding sandbox.
+- **Direct delegation blocked:** `sandbox-inspect` found no usable delegated
+  cgroup v2 parent on Jupyter or inside Slurm job `1076414` on node13.
+- **Inherited limits insufficient in the observed allocation:** job `1076418`
+  requested 2 GiB but had `memory.max=max` and `memory.swap.max=max` at every
+  readable ancestor. Its job cgroups lacked `pids.max`; higher groups were
+  unlimited. CPU confinement to logical CPUs `24,152` was present.
+- **Still pending:** a qualified repository sandbox, actual task image/source
+  controls, and the first real clean CooperBench E0 episode. Four-policy coding
+  execution remains unimplemented.
+
+Writable delegation is required by the legacy repository adapter, not by the research
+question itself. An alternative must establish equivalent tested resource and
+isolation boundaries; none has been implemented. The existing fail-closed checks
+remain in effect. See the [delegation evidence](VALIDATION.md#user-reported-delegation-and-inherited-resource-probes)
+and [handoff](../handoff.md) for the exact observations and deferred options.
+
 ## Plan and bounded milestones
 
 1. **A — CPU foundation:** schemas, accounting, provenance, bounded model/tool
@@ -37,7 +97,7 @@
   integrated coding E0 worker/evaluator. CPU tests inject sandbox responses;
   actual cgroup/container qualification and a real coding episode remain pending.
 
-## Boundaries and deferred work
+## Legacy coding boundaries and deferred work
 
 **C is complete for typed fixtures and manifest integration, not for real coding
 experiments.** The exact external prerequisite is an approved, tested cluster
@@ -82,8 +142,12 @@ validate real repository isolation or CooperBench execution. See
   the scientific specification; its AAI facts are recorded as a documentation
   snapshot, not current scheduler information. No unavailable manuscript constraint
   is claimed to have been checked.
-- The requested Slurm/browser workflow supersedes any older PBS, node-specific or
-  remote-shell workflow. None was present in the initial repository.
+- The initial implementation followed the requested Slurm/browser workflow.
+  The user later considered PBS H200 migration, then local/remote alternatives,
+  then requested documentation first. The latest attached request now explicitly
+  selects restricted SQLite/SILO data workflows on the original Slurm system.
+  Historical PBS/hosting discussion is superseded; delegation stays a legacy
+  repository-execution issue.
 - The model card's mutable development installation example is replaced by an
   inspected release pin, with GPU validation explicitly pending.
 - CooperBench's upstream namespace/commit observations differed across cached web

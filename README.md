@@ -6,6 +6,12 @@ The question is whether recovery-aware delegation improves complete-task success
 under contributor compromise at the **same total execution budget**. Preparation
 has no built-in success advantage or cost discount.
 
+The required evaluation path is now **restricted SQLite data artifacts** adapted
+from LiveSQLBench-Base-Lite-SQLite and an explicitly labelled **SILO recoverable
+contributor adaptation**. Numeric workflows remain controlled diagnostics.
+CooperBench is an optional legacy adapter. This is data-workflow research,
+not repository-level coding evidence.
+
 ## Run locally
 
 Python 3.12+; no CUDA, model downloads, APIs, Slurm or Docker required:
@@ -15,12 +21,18 @@ python -m unittest discover -s tests -v
 python scripts/check_shell.py
 python scripts/bc.py --help
 python scripts/bc.py demo --output outputs/mock-demo
+python scripts/bc.py data-capabilities
+python scripts/bc.py demo --config configs/sqlite-demo.json --output outputs/sqlite-demo
 ```
 
 Optionally install the `bc` entrypoint with `python -m pip install -e .`.
 The mock demonstration executes bounded numeric workflows with real action parsing,
 tools, budgets, attacks, provenance, recovery and final evaluation. Its results
 are labelled **mock_demo** and are not coding-benchmark research evidence.
+The SQLite demo is labelled **mock_sqlite_fixture_development**. Its fixed CPU
+executor requires supported Python/SQLite defensive settings and stdlib process
+limits (tested locally on Linux); missing capabilities produce an explicit block.
+Neither data adapter requires containers, cgroup delegation, root, or services.
 
 ## What works
 
@@ -30,12 +42,23 @@ are labelled **mock_demo** and are not coding-benchmark research evidence.
 - A finite allocation solver, measured calibration, and full planned-grid reporting.
 - Lazy Qwen/Transformers inference, explicit staging, and guarded Slurm scripts
   using immutable code snapshots and a shared four-GPU limit across wrapped campaigns.
-- A versioned CooperBench loader with hashes, pair IDs and grouped splits.
+- A bounded JSON SELECT/view API, version-pinned provenance, and charged replay.
+- Native SQLite staging/prerequisite inspection and reviewed reference/pair
+  validation commands. Public empty gold/test fields block scored readiness.
+- Prefix Sum and Pipeline Hash data/scorer adapters, four-worker generation,
+  explicit protected-shard/no-copy regimes, and complete-segment scoring.
 
-**Real CooperBench execution is blocked:** an approved sandbox and its coding
-worker/evaluator integration are still required. GPU inference and live Slurm
-submission have not been tested here. `configs/e1.json` is a **320-episode plan**,
-not completed coverage. The four-task GPU pilot uses labelled workflow fixtures.
+**Real SQLite benchmark validation remains pending:** databases, author-provided
+solutions/tests, and reviewed translations to the restricted evaluator are
+required. `crypto_M_2` + `crypto_8` is an unvalidated candidate. No SQLite/SILO GPU
+experiment has run. Previous user-reported Slurm numeric runs are recorded in
+VALIDATION. `configs/e1.json` plans 320 episodes only after 20 approved development
+pairs exist; it never manufactures missing pairs. The default GPU smoke/pilot
+configs now select labelled SQLite fixtures; `numeric-*.json` preserve prior configs.
+
+Legacy CooperBench still fails closed without its approved sandbox. The observed
+Slurm delegation limitation is preserved in the historical documentation and
+does not block the new restricted data-tool path.
 
 ## Guides
 
@@ -44,6 +67,7 @@ not completed coverage. The four-task GPU pilot uses labelled workflow fixtures.
 - [Models, upstream data and sandbox boundary](docs/MODELS_AND_DATA.md)
 - [Implemented and deferred features](docs/STATUS.md)
 - [Local validation record](docs/VALIDATION.md)
+- [SQLite/SILO migration, interfaces, limits and prerequisites](docs/MIGRATION_SQLITE_SILO.md)
 
 No jobs are submitted by installation or tests. The user stages large artifacts,
 commits/pushes changes and authorizes experiments explicitly.

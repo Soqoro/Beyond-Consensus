@@ -7,6 +7,14 @@ The new `apptainer-cgroup-v1` adapter has CPU regression coverage only in this
 workspace. It has **not** passed qualification on the cluster. A successful old
 Alpine probe is not an approval for this adapter or a benchmark image.
 
+Subsequent user-reported inspections found no suitable delegation on Jupyter or
+inside Slurm job `1076414` on node13. A separate inherited-limit probe, job
+`1076418`, found CPU cpuset confinement but no hard cgroup memory/swap cap or
+finite cgroup process-count limit. The current adapter remains blocked there.
+See the [recorded evidence](VALIDATION.md#user-reported-delegation-and-inherited-resource-probes).
+The qualification sequence below remains a conditional runbook; repeating it
+without a changed execution environment does not resolve this blocker.
+
 This implementation enables an opt-in **single clean integrated coding E0** once
 its sandbox and task environment pass their gates. Four logical identities remain
 in the context store; E0 uses `w0` with one frozen model. The fixture policies,

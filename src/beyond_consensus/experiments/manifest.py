@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -43,18 +44,43 @@ def validate_splits(assignments: dict[str, list[TaskInstance]]) -> None:
     seen = {}
     for split, tasks in assignments.items():
         for task in tasks:
-            if task.group in seen and seen[task.group] != split:
-                raise BCError(f"Base-feature-pool leakage: {task.group}")
-            seen[task.group] = split
+            keys = ["group:"+task.group]
+            keys += ["source:"+s for s in task.metadata.get("source_ids", [])]
+            keys += ["requirement:"+s for s in task.metadata.get("requirement_hashes", [])]
+            if task.metadata.get("base_hash"):
+                keys.append("base:"+task.metadata["base_hash"])
+            for key in keys:
+                if key in seen and seen[key] != split:
+                    raise BCError(f"Base-feature-pool/shared-source leakage: {key}")
+                seen[key] = split
+    documents = []
+    for split, tasks in assignments.items():
+        for task in tasks:
+            if task.kind in ("sqlite_native", "sqlite_pair"):
+                for source in task.sources.values():
+                    words = set(re.findall(r"[a-z0-9]+", source["requirement"].lower()))
+                    for other_split, other in documents:
+                        if split != other_split and min(len(words), len(other)) >= 8 and len(words & other)/len(words | other) >= .9:
+                            raise BCError("Near-duplicate requirement across database splits; review and group shared sources")
+                    documents.append((split, words))
 
 
 def load_tasks(config: RunConfig) -> list[TaskInstance]:
     if config.task_kind == "workflow_fixture":
         return fixtures(config.task_count)
+    if config.task_kind == "sqlite_fixture":
+        from ..tasks.sqlite_tasks import fixtures as sqlite_fixtures
+        return sqlite_fixtures(config.task_count)
     if not config.data_manifest:
-        raise BCError("CooperBench requires a validated, staged data_manifest; fixtures are never substituted")
-    from ..tasks.cooperbench import validate_manifest
-    tasks = validate_manifest(Path(config.data_manifest))
+        raise BCError(f"{config.task_kind} requires a validated staged data_manifest; fixtures are never substituted")
+    if config.task_kind == "cooperbench":
+        from ..tasks.cooperbench import validate_manifest
+        tasks = validate_manifest(Path(config.data_manifest))
+    else:
+        from ..tasks.data_manifest import validate_data
+        tasks = validate_data(Path(config.data_manifest))
+        if any(t.kind != config.task_kind for t in tasks):
+            raise BCError("Configured environment differs from staged tasks")
     tasks = [task for task in tasks if grouped_split(task.group) == config.data_split]
     if len(tasks) < config.task_count:
         raise BCError(f"Planned {config.task_count} tasks, but only {len(tasks)} were staged")
@@ -65,6 +91,27 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
     tasks = load_tasks(config) if tasks is None else tasks
     if len(tasks) != config.task_count or len({t.id for t in tasks}) != len(tasks):
         raise BCError("Task count/uniqueness does not match the planned configuration")
+    if any(t.kind != config.task_kind for t in tasks):
+        raise BCError("Manifest task environment mismatch")
+    from ..runtime.data_domain import DATA_KINDS
+    data_mode = config.task_kind in DATA_KINDS
+    if data_mode:
+        from ..tasks.data_manifest import regime
+        if len({digest(regime(t)) for t in tasks}) != 1:
+            raise BCError("Cannot mix task/scorer/access regimes in one manifest")
+        if config.task_kind in ("sqlite_native", "sqlite_pair") and any(
+                t.metadata.get("readiness") != "reference_validated" or not t.metadata.get("validation_hash") for t in tasks):
+            raise BCError("Scored native/pair manifests require completed reference validation")
+        if config.task_kind != "silo":
+            from copy import deepcopy
+            from ..runtime.sqlite_executor import capabilities
+            tasks = deepcopy(tasks)
+            runtime = capabilities()
+            for task in tasks:
+                validated = task.metadata.get("validated_sqlite_runtime")
+                if validated and validated != runtime:
+                    raise BCError("SQLite validation runtime changed; rerun native/pair validation in this environment")
+                task.metadata["executor_runtime"] = runtime
     if config.coding_environment:
         from ..runtime.coding_episode import require_coding_e0, validate_coding_task
         environment = require_coding_e0(config)
@@ -86,7 +133,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
         episodes.append(EpisodeManifest(identifier, experiment, source, config_hash, data_hash, model_hash,
             task.id, task.group, policy, AttackSpec(attack, selection_seed=attack_seed), seed, eval_seed,
             config.protocol, config.mode, i % config.shards, fixed_hash))
-    return plain({"schema": "bc-manifest-v1", "experiment_id": experiment, "config": config,
+    return plain({"schema": "bc-manifest-v2" if data_mode else "bc-manifest-v1",
+                  **({"data_regime": regime(tasks[0])} if data_mode else {}),
+                  "experiment_id": experiment, "config": config,
                   "source_revision": source, "config_hash": config_hash, "data_hash": data_hash,
                   "model_hash": model_hash, "fixed_state_hash": fixed_hash,
                   "calibration_hash": calibration_hash, "tasks": tasks, "episodes": episodes,
@@ -94,9 +143,15 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
 
 
 def validate_manifest(data: dict[str, Any]) -> RunConfig:
-    if data.get("schema") != "bc-manifest-v1":
+    if data.get("schema") not in ("bc-manifest-v1", "bc-manifest-v2"):
         raise BCError("Unknown experiment manifest schema")
     config = from_dict(data["config"])
+    if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo") and data["schema"] != "bc-manifest-v2":
+        raise BCError("Restricted data workflows require a v2 manifest")
+    if data["schema"] == "bc-manifest-v2":
+        from ..tasks.data_manifest import regime
+        if not data["tasks"] or any(regime(task_from(t)) != data["data_regime"] for t in data["tasks"]):
+            raise BCError("Versioned data regime mismatch")
     # Hash the serialized configuration so older immutable fixture reports remain
     # readable when optional fields are added to RunConfig. New runs still hash
     # the fully resolved dataclass; source checks prevent resuming old code here.

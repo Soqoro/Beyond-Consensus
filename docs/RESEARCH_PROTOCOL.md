@@ -4,10 +4,12 @@
 
 Does recovery-aware delegation improve complete-task success after contributor
 compromise at the **same total execution budget**? The answer may be no.
-The first implementation supports executable numeric workflow fixtures, a real
-text-only model adapter, and a read-only CooperBench manifest adapter. A later
-opt-in clean coding E0 extension is described below; its cluster validation is pending.
-Fixtures are engineering data and cannot establish coding-benchmark findings.
+The required path now supports restricted SQLite data artifacts and a labelled
+recoverable-contributor SILO adaptation, retaining executable numeric diagnostics
+and the existing real text-only model adapter. Native/paired SQLite validation
+requires supplied databases and reviewed evaluation material. CooperBench remains
+an optional legacy coding E0 extension with a separate sandbox gate. Fixtures
+are engineering data and cannot establish benchmark or coding findings.
 
 Four identities (`w0`–`w3`) share one frozen backend instance in each episode.
 They have isolated contexts and the same permitted source/specification tools.
@@ -19,7 +21,7 @@ it is not an additional uncharged LLM agent.
 
 | Policy | Before the alarm | After the alarm |
 | --- | --- | --- |
-| Ordinary | Four complementary contract assignments, common public audit | Invalidate observed dependencies, keep unrelated versions, try a fresh next eligible identity per affected unit in dependency order, and check integration. This is the explicit default fallback. |
+| Ordinary | Complementary contract assignments, common public audit | Invalidate observed dependencies, keep unrelated versions, try a fresh next eligible identity per affected unit in dependency order, and check integration. This is the explicit default fallback. |
 | JIT | Common decomposition, no advance preparation | Run the full route planner, including source indexing/outline preparation, prepared reconstruction, and cold reconstruction. |
 | Replication | Enumerate duplicate subsets under the primary allowance; minimize worst exposed reconstruction work, then primary cost | Independent duplicate candidates pass through the common audit; missing work uses the common route planner. |
 | Recovery | Enumerate permitted boundaries and preparation subsets, including none; minimize worst predicted total cost over single-identity compromise scenarios | Invalidate descendants and use eligible prepared or cold routes through the common planner. |
@@ -38,6 +40,16 @@ The mock backend deterministically compiles visible arithmetic contracts into th
 allowlisted workflow language. It does not sample success probabilities. A real
 backend must generate valid actions, execute tools, and submit valid programs.
 Both use the same parser, action limit, audit, evaluator, and accounting.
+
+For data workflows, the same runtime uses restricted task hooks. SQLite supports
+source-independent reports/views, exact version bindings and optional surviving
+query-template replay. SILO retains inherent predecessor dependencies; protected
+backup/recovery inputs and its changed sequential P2P scheduling are explicitly
+labelled. All original segment obligations remain required after reassignment.
+Read [MIGRATION_SQLITE_SILO.md](MIGRATION_SQLITE_SILO.md) for the access, scorer,
+public-monitor, native-compatibility and execution-limit definitions. No policy
+receives reference-selected candidates, computed replacement answers or hidden
+test feedback. Preparation may be useless and more expensive than cold repair.
 
 The shared worker instructions demonstrate valid JSON action envelopes and name
 the current assignment's source-read action. Example arithmetic constants are
@@ -169,7 +181,7 @@ the report. Grouped inferential statistics and confidence intervals are deferred
 
 ## Planned studies
 
-### Opt-in clean coding E0 extension
+### Optional legacy clean coding E0 extension
 
 `coding-structure-v1` labels a single clean identity implementing both features
 in one integrated repository. The remaining three identities exist in the
@@ -204,12 +216,14 @@ No live coding result or recovery advantage is claimed from CPU tests.
 ### Coverage
 
 - E0: clean competence, JSON/tool compatibility, accounting and resume.
-- One-task GPU smoke: Qwen3.5-4B on the numeric fixture language.
+- One-task GPU smoke: Qwen3.5-4B on a labelled SQLite fixture; prior numeric
+  configurations and results remain separate.
 - Four-task engineering pilot: 32 planned episodes, four policies, clean versus
   withholding, one seed. This remains synthetic engineering coverage.
-- E1: **20 development CooperBench pairs × 4 policies × 2 conditions × 2 seeds
-  = 320 planned final episodes.** The configuration is provided; this coverage
-  has not been executed, and real repository execution is blocked.
-- Next bounded condition: artifact sabotage. Adaptive search, dependency poisoning
+- E1: **20 approved development SQLite pairs × 4 policies × 2 conditions × 2 seeds
+  = 320 planned final episodes.** SILO has its own count-gated E1 config. This
+  coverage has not been executed; missing approved tasks block planning.
+- Next bounded condition after clean/withholding gates: semantic artifact sabotage.
+  Adaptive search, dependency poisoning
   sweeps, general workflow attacks, cross-family replication, Gemma validation,
   and E2–E5 remain extensions.

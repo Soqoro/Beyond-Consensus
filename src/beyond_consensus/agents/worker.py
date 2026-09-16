@@ -27,22 +27,24 @@ class WorkerOutcome:
 class WorkerLoop:
     def __init__(self, backend: Backend, config: RunConfig, ledger: BudgetLedger,
                  store: ProvenanceStore, attacker: AttackController,
-                 boundary: Callable[[str], None] = lambda _: None) -> None:
+                 boundary: Callable[[str], None] = lambda _: None, domain=None) -> None:
         self.backend, self.config, self.ledger = backend, config, ledger
         self.store, self.attacker, self.boundary = store, attacker, boundary
+        self.domain = domain
 
     def run(self, task: TaskInstance, unit: str, identity: str, stage: str, seed: int,
             *, operation: str = "implement", allowed_artifacts: tuple[str, ...] = (),
             floor: float = 0, fresh_context: bool = True) -> WorkerOutcome:
-        if task.kind != "workflow_fixture":
+        if task.kind != "workflow_fixture" and self.domain is None:
             raise BCError("Worker tools require the typed workflow adapter; repository execution is blocked")
         if fresh_context:
             self.store.reset(identity)
         ctx = self.store.contexts[identity]
-        initial = [{"role": "system", "content": WORKER_INSTRUCTIONS + "\nTask: " + task.specification},
+        initial = [{"role": "system", "content": (self.domain.instructions if self.domain else WORKER_INSTRUCTIONS) + "\nTask: " + task.specification},
             {"role": "user", "content": canonical({"assignment": unit, "operation": operation,
                 "permitted_sources": list(task.sources), "available_artifacts": list(allowed_artifacts),
-                "first_action": {"tool": "read_source", "name": unit}})}]
+                "first_action": {"tool": "read_source", "name": unit},
+                **(self.domain.initial(identity, operation, allowed_artifacts) if self.domain else {})})}]
         if not any(message["role"] == "system" for message in ctx.messages):
             ctx.messages.insert(0, initial[0])
         ctx.messages.extend(initial[1:])
@@ -93,10 +95,13 @@ class WorkerLoop:
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
             except (ValueError, TypeError, KeyError, BCError) as exc:
-                if isinstance(exc, BudgetExceeded):
+                from ..runtime.data_domain import TaskUnavailable
+                if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
-                self._observe(identity, {"error": str(exc)})
+                self._observe(identity, {"error": str(exc) if not self.domain else "Action rejected by the restricted tool contract"})
+                if self.domain:
+                    self.store.events.append({"type": "prohibited_or_malformed_action", "identity": identity, "stage": stage})
                 self.boundary("malformed_action")
                 if malformed > self.config.malformed_retries:
                     return WorkerOutcome("malformed", None, turn + 1)
@@ -117,6 +122,8 @@ class WorkerLoop:
         if not isinstance(action, dict):
             raise BCError("Action must be a JSON object")
         tool = action.get("tool")
+        if self.domain and tool not in ("read_source", "message", "submit"):
+            return self.domain.handle(self, unit, identity, action, stage, operation, allowed_artifacts, floor)
         if tool == "read_source":
             strict_keys(action, {"tool", "name"}, {"tool", "name"})
             name = action["name"]
@@ -152,6 +159,8 @@ class WorkerLoop:
                 if not isinstance(content["outline"], str) or len(canonical(content)) > 8192:
                     raise BCError("Preparation must be a bounded outline/contract object")
             else:
+                if self.domain:
+                    raise BCError("Use the domain-specific required-artifact submission tool")
                 validate_program(content)
             content = self.attacker.artifact(identity, content, operation)
             return self.store.submit(identity, unit, content,

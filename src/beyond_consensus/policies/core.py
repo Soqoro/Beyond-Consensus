@@ -15,7 +15,7 @@ from ..util import digest
 
 def common_units(task: TaskInstance, boundary: str = "isolated_contract") -> tuple[RecoveryUnit, ...]:
     return tuple(RecoveryUnit(u, f"Implement the permitted contract for {u}", WORKERS[i % 4],
-                              dependencies(task, u) if boundary == "context_linked" else (),
+                              dependencies(task, u) if boundary == "context_linked" or task.kind == "silo" else (),
                               (u,), boundary) for i, u in enumerate(ordered_units(task)))
 
 

@@ -1,7 +1,9 @@
 {
-  "name": "four-task-sqlite-fixture-gpu-pilot",
+  "name": "sqlite-native-pilot",
+  "task_kind": "sqlite_native",
   "task_count": 4,
-  "task_kind": "sqlite_fixture",
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
   "policies": [
     "ordinary",
     "jit",
@@ -20,6 +22,5 @@
     "backend": "transformers",
     "checkpoint": "Qwen/Qwen3.5-4B"
   },
-  "monitor_id": "data-structure-v1",
-  "max_actions": 12
+  "data_manifest": null
 }

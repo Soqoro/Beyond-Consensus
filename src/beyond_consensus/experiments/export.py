@@ -37,12 +37,22 @@ def export_bundle(output: Path, target: Path, *, dry_run: bool = False) -> dict[
     summary = aggregate(manifest, output)
     public_manifest = {k: v for k, v in manifest.items() if k != "tasks"}
     public_manifest["tasks"] = [{"id": t["id"], "group": t["group"], "kind": t["kind"]} for t in manifest["tasks"]]
+    data_mode = manifest.get("schema") == "bc-manifest-v2"
+    if data_mode:
+        public_manifest["config"] = {k: v for k, v in public_manifest["config"].items()
+            if k not in ("data_manifest", "calibration_file", "fixed_state_file", "coding_environment", "coding_validation")}
     results, failures = [], []
     for row in manifest["episodes"]:
         path = output / "episodes" / row["episode_id"] / "result.json"
         if path.exists():
             result = read_json(path)
-            results.append({key: result[key] for key in ("episode_id", "attempt_id", "status", "success", "error", "metrics", "limitations")})
+            public_result = {key: result[key] for key in ("episode_id", "attempt_id", "status", "success", "error", "metrics", "limitations")}
+            if data_mode:
+                if public_result["error"]:
+                    public_result["error"] = "Details retained in the private journal"
+                public_result["costs"] = {k: result["costs"][k] for k in (
+                    "cap", "spent", "remaining", "stages", "historical_work", "work_unit", "uncertain_work")}
+            results.append(public_result)
         events = output / "episodes" / row["episode_id"] / "events.jsonl"
         if events.exists():
             with events.open(encoding="utf-8") as stream:
@@ -52,8 +62,8 @@ def export_bundle(output: Path, target: Path, *, dry_run: bool = False) -> dict[
                     except ValueError:
                         continue  # A crash may leave one incomplete final event.
                     if event.get("type") == "failure":
-                        failures.append({"episode_id": row["episode_id"], "error": event.get("error"),
-                                         "traceback": event.get("traceback")})
+                        failures.append({"episode_id": row["episode_id"], "error": "Details retained in the private journal" if data_mode else event.get("error"),
+                                         "traceback": None if data_mode else event.get("traceback")})
     files = {"summary.json": summary, "manifest.json": public_manifest, "results.json": results,
              "failures.json": failures[-100:]}
     if dry_run:

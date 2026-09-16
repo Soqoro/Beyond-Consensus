@@ -14,7 +14,7 @@ from ..schemas import EpisodeResult
 from ..util import BCError, atomic_json, digest, directory_lock, read_json
 from .manifest import episode_from, source_revision, task_from, validate_manifest
 
-TERMINAL = {"completed", "budget_exhausted", "blocked_sandbox", "ineligible"}
+TERMINAL = {"completed", "budget_exhausted", "blocked_sandbox", "ineligible", "scoring_unavailable", "blocked_capability", "blocked_prerequisite", "execution_limit"}
 RETRYABLE = {"interrupted", "infrastructure_failed"}
 
 
@@ -22,6 +22,8 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
     config = validate_manifest(manifest)
+    if config.model.backend == "mock" and config.task_kind in ("sqlite_native", "sqlite_pair") and backend is None:
+        raise BCError("Mock compilation is only a labelled fixture/SILO test worker; native tasks require the model adapter")
     if source_revision(root) != manifest["source_revision"]:
         raise BCError("Source changed since manifest creation; create a new manifest/run")
     if config.calibration_file and digest(read_json(config.calibration_file)) != manifest["calibration_hash"]:

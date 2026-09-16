@@ -1,7 +1,9 @@
 {
-  "name": "four-task-sqlite-fixture-gpu-pilot",
-  "task_count": 4,
-  "task_kind": "sqlite_fixture",
+  "name": "two-pair-clean-withholding-validation-pilot",
+  "task_kind": "sqlite_pair",
+  "task_count": 2,
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
   "policies": [
     "ordinary",
     "jit",
@@ -15,11 +17,10 @@
   "seeds": [
     0
   ],
-  "shards": 4,
+  "shards": 2,
   "model": {
     "backend": "transformers",
     "checkpoint": "Qwen/Qwen3.5-4B"
   },
-  "monitor_id": "data-structure-v1",
-  "max_actions": 12
+  "data_manifest": null
 }

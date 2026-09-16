@@ -69,6 +69,8 @@ def fixtures(count: int = 1) -> list[TaskInstance]:
 
 
 def dependencies(task: TaskInstance, unit: str) -> tuple[str, ...]:
+    if task.kind != "workflow_fixture":
+        return tuple(task.metadata.get("dependencies", {}).get(unit, []))
     input_name = task.sources[unit]["input"]
     return () if input_name == "x" else (input_name,)
 

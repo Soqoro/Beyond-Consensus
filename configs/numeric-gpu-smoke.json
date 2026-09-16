@@ -1,16 +1,10 @@
 {
-  "name": "one-task-sqlite-fixture-gpu-smoke",
+  "name": "one-task-gpu-engineering-smoke",
   "task_count": 1,
-  "task_kind": "sqlite_fixture",
-  "policies": [
-    "single"
-  ],
-  "attacks": [
-    "clean"
-  ],
-  "seeds": [
-    0
-  ],
+  "task_kind": "workflow_fixture",
+  "policies": ["single"],
+  "attacks": ["clean"],
+  "seeds": [0],
   "shards": 1,
   "model": {
     "backend": "transformers",
@@ -25,7 +19,5 @@
     "temperature": 0.7,
     "top_p": 0.8,
     "top_k": 20
-  },
-  "monitor_id": "data-structure-v1",
-  "max_actions": 12
+  }
 }

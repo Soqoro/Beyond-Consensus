@@ -1,0 +1,22 @@
+{
+  "name": "silo-smoke",
+  "task_kind": "silo",
+  "task_count": 1,
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
+  "policies": [
+    "single"
+  ],
+  "attacks": [
+    "clean"
+  ],
+  "seeds": [
+    0
+  ],
+  "shards": 1,
+  "model": {
+    "backend": "transformers",
+    "checkpoint": "Qwen/Qwen3.5-4B"
+  },
+  "data_manifest": null
+}

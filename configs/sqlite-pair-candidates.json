@@ -1,0 +1,10 @@
+[
+  {
+    "source_ids": [
+      "crypto_M_2",
+      "crypto_8"
+    ],
+    "status": "unvalidated_candidate",
+    "rationale": "Candidate shared effective-leverage work. Both original requirements must remain independently meaningful; reference setup, joint state and scoring still need validation."
+  }
+]

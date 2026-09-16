@@ -1,7 +1,9 @@
 {
-  "name": "four-task-sqlite-fixture-gpu-pilot",
-  "task_count": 4,
+  "name": "sqlite-fixture-cpu-demo",
   "task_kind": "sqlite_fixture",
+  "task_count": 1,
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
   "policies": [
     "ordinary",
     "jit",
@@ -15,11 +17,9 @@
   "seeds": [
     0
   ],
-  "shards": 4,
+  "shards": 1,
   "model": {
-    "backend": "transformers",
+    "backend": "mock",
     "checkpoint": "Qwen/Qwen3.5-4B"
-  },
-  "monitor_id": "data-structure-v1",
-  "max_actions": 12
+  }
 }

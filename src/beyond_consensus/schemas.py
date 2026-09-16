@@ -9,6 +9,9 @@ from .util import BCError, digest, positive
 
 PolicyName = Literal["single", "ordinary", "jit", "replication", "recovery"]
 Protocol = Literal["A", "B"]
+ResultStatus = Literal["completed", "budget_exhausted", "blocked_sandbox", "ineligible",
+    "interrupted", "infrastructure_failed", "scoring_unavailable", "blocked_prerequisite",
+    "blocked_capability", "execution_limit"]
 WORKERS = ("w0", "w1", "w2", "w3")
 
 
@@ -25,7 +28,7 @@ class WorkerIdentity:
 @dataclass(frozen=True)
 class TaskInstance:
     id: str
-    kind: Literal["workflow_fixture", "cooperbench"]
+    kind: Literal["workflow_fixture", "cooperbench", "sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"]
     group: str
     specification: str
     sources: dict[str, Any]
@@ -38,7 +41,7 @@ class TaskInstance:
             raise BCError("Task needs an ID, split group, and required outputs")
         if len(set(self.required_outputs)) != len(self.required_outputs):
             raise BCError("Duplicate task outputs")
-        if self.kind not in ("workflow_fixture", "cooperbench"):
+        if self.kind not in ("workflow_fixture", "cooperbench", "sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
             raise BCError("Unknown task adapter")
 
     @property
@@ -164,7 +167,7 @@ class EpisodeResult:
     experiment_id: str
     protocol: Protocol
     mode: str
-    status: str
+    status: ResultStatus
     success: bool | None
     task_id: str
     group: str

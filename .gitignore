@@ -25,4 +25,15 @@ bundles/
 *.pth
 *.tar.gz
 *.zip
+*.sqlite
+*.sqlite3
+*.db
+*-wal
+*-shm
+*-journal
+*.sif
+*.rpm
+*.deb
+*.private.json
+*.private.jsonl
 .DS_Store

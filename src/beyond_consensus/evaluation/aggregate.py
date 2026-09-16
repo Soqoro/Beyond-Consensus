@@ -24,6 +24,8 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
             raise BCError("Cannot pool equal-remainder/equal-total, mock/real, or different provenance")
         if row["provenance"]["manifest_hash"] != digest(expected):
             raise BCError("Result identity/provenance differs from planned episode")
+        if manifest["schema"] == "bc-manifest-v2" and row["status"] != "infrastructure_failed" and row["provenance"].get("data_regime") != manifest["data_regime"]:
+            raise BCError("Cannot pool different scorer/environment/access regimes")
         rows[expected["episode_id"]] = row
         statuses[row["status"]] += 1
     groups = {}
@@ -63,6 +65,8 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
                     "successes": sum(r["group"] == group and r["success"] is True for r in valid)}
                     for group in sorted({e["group"] for e in planned})}}
     return {"experiment_id": manifest["experiment_id"], "mode": config.mode, "protocol": config.protocol,
+            **({"schema": "bc-summary-v2", "data_regime": manifest["data_regime"],
+                "independent_source_groups": len({t["group"] for t in manifest["tasks"]})} if manifest["schema"] == "bc-manifest-v2" else {}),
             "interpretation": "equal_total_budget" if config.protocol == "A" else "equal_remaining_diagnostic_not_total_efficiency",
             "planned": len(manifest["episodes"]), "statuses": dict(statuses), "groups": groups,
             "confirmatory": False, "uncertainty": "No episode-independent CIs: group-level inference is deferred"}

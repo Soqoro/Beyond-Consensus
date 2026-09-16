@@ -1,13 +1,49 @@
-# Beyond Consensus: handoff to a PBS H200 system
+# Beyond Consensus: SQLite/SILO migration and progress handoff
 
-Updated: 2026-09-16. This is a handoff and migration plan, not an implemented PBS backend.
+Updated: 2026-09-16. The **latest attached migration request supersedes the
+historical deployment discussion below**. Continue on the current Slurm cluster
+with restricted SQLite/SILO data workflows. No PBS, cloud, rental or remote
+sandbox is an active option in this task. CooperBench is optional legacy.
 
-## Decision and immediate objective
+Start with [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md),
+[STATUS.md](docs/STATUS.md) and [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md).
+The new path reuses the model, workers, budgets, provenance and scheduler, and
+does not require cgroup delegation. Real database/material validation and
+user-triggered Slurm model runs remain pending. Prior results and delegation
+probes are preserved below as history, not current execution instructions.
 
-The user wants to move to a **PBS system with an H200 GPU** and determine whether
-real CooperBench execution can work there. CooperBench remains the intended
-benchmark. Numeric workflow experiments are useful development checks but do not
-fulfil that benchmark requirement.
+## Current implementation and next step
+
+- M0 works locally: bounded SQLite fixture tools, joint scoring, provenance,
+  common charged replay and four-policy clean/withholding behavior.
+- M1/M2 code paths exist: native staging/review/reference checks and compatible
+  same-state pairs. Actual validation is blocked by missing databases and
+  author-supplied evaluation materials. No real pair has been approved.
+- M3 works locally: explicitly adapted four-worker Prefix Sum and Pipeline Hash,
+  original-shard access rules, all-output scoring and public-data parity tests.
+- M4 configs and guarded submission paths exist. Real-model smoke/pilot,
+  sufficient approved development instances and measured calibration are pending.
+- Validation: **110 tests, 109 passed, one legacy sandbox integration skip**;
+  **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
+  [the current validation record](docs/VALIDATION.md#sqlitesilo-migration-validation-2026-09-16)
+  for exact commands and the limits of this evidence.
+
+First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
+After the user reviews, commits and pushes the changes, use the existing browser
+terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). Start with
+the labelled SQLite fixture GPU preflight/smoke using the existing model lock;
+stage and review real data separately before native/pair runs. No jobs, large
+downloads, messages or pushes were performed during this migration.
+
+## Historical decision and immediate objective (superseded)
+
+The user previously proposed a **PBS system with an H200 GPU**, then considered
+the current Slurm system with an external sandbox, a personal RTX 5080 PC, Colab
+Pro+ and an external GPU rental. The instruction at that checkpoint was:
+**document the delegation problem and progress first**. No alternative was
+selected for execution or validated. CooperBench was then the intended benchmark;
+numeric workflow checks did not fulfil that requirement. The current migration
+supersedes that required backend while retaining these observations.
 
 Trying the new system is reasonable. The deciding prerequisite is its execution
 environment: container isolation, enforced resource limits and reliable process
@@ -15,38 +51,43 @@ cleanup. The GPU model and scheduler name alone establish none of those properti
 No PBS queue, account, resource syntax, driver, storage path or sandbox capability
 has been supplied or validated yet.
 
-**First milestone:** inspect a small PBS compute allocation and establish whether
+**Milestone at that checkpoint:** record the completed fixture results, the failed direct
+delegation checks, and the insufficient inherited limits. The detailed evidence
+is now in [VALIDATION.md](docs/VALIDATION.md#user-reported-delegation-and-inherited-resource-probes).
+
+**If PBS migration is resumed:** inspect a small PBS compute allocation and establish whether
 the existing sandbox can be qualified. Then port the scheduler integration and
 run one GPU preflight, one fixture smoke, and one clean CooperBench E0 task.
 Do not jump directly to the four-policy study.
 
-### Instructions for the next session
+### Historical follow-up instructions (superseded)
 
 1. Read this file, [AGENTS.md](AGENTS.md), [RESEARCH_PROTOCOL.md](docs/RESEARCH_PROTOCOL.md),
    [STATUS.md](docs/STATUS.md), and [CODING_SANDBOX.md](docs/CODING_SANDBOX.md).
-2. Obtain the new site's PBS version, an actual example submission script, accessible
-   queues, account requirements, storage locations and container policy.
-3. Test resource/isolation capabilities on a compute node before moving large
-   artifacts or implementing a speculative sandbox workaround.
+2. Continue from the latest user direction; do not assume a migration or rental
+   was carried out. If PBS is chosen, obtain its version, a working submission
+   script, accessible queues, account requirements, storage and container policy.
+3. Test resource/isolation capabilities in the selected execution environment
+   before moving large artifacts or implementing a speculative workaround.
 4. Preserve prior experiments and their interpretation. Report missing capabilities
    explicitly; do not turn a failed qualification into an approval.
 
-## User workflow and authorization
+## Historical user workflow and authorization
 
 - The user runs commands in the cluster's browser terminal and pastes the output.
   The local coding agent has no established remote cluster access.
-- Prefer batch submission on the new system. On the old site the user explicitly
-  preferred `sbatch` over `srun`; use the site's supported PBS batch workflow next.
-- This request authorizes writing the handoff and expresses the migration intent.
-  It is not a request to submit a campaign, download large artifacts or push Git.
-- The user's latest PBS direction supersedes the older Slurm-only workflow wording
-  in AGENTS.md and STATUS.md. Preserve the underlying allocation, accounting,
-  isolation and submission safeguards when adding PBS support.
+- The user explicitly preferred `sbatch` over `srun` on Slurm. If a PBS migration
+  resumes, use that site's supported batch workflow.
+- The request at that checkpoint was documentation work. It did not request migration,
+  submission, large downloads, a cloud purchase or a Git push.
+- The earlier PBS direction would supersede Slurm-specific workflow wording if
+  that migration resumes. Preserve allocation, accounting, isolation and submission
+  safeguards for any future backend. No alternative backend has been implemented.
 - Retain one active campaign, at most four GPUs, one allocated GPU per shard,
   and no batch self-submission. Start with concurrency one. Reconcile any old-site
   jobs before starting a new campaign; do not infer global inactivity from old logs.
 
-## What is implemented and what has actually run
+## Historical implementation and executions before migration
 
 | Component | Current state |
 | --- | --- |
@@ -93,7 +134,7 @@ ddbf0217caa8fd82a3a4eea8dc7d6d5ddffe1194d4a6795f2b7227d56f492ab8
 
 See [VALIDATION.md](docs/VALIDATION.md) for costs, limitations and earlier checks.
 
-## Why the previous cluster was blocked
+## Why repository execution is blocked on the observed Slurm allocation
 
 Old compute target: `NA10040q`, `node13`, kernel `6.8.0-51-generic`.
 
@@ -108,7 +149,7 @@ and `cgroup.kill`. It creates a bounded child for each tool invocation and verif
 all descendants are gone before cleanup. Its private tmpfs work area is also
 bounded by the cgroup's memory limit.
 
-Recent evidence not yet incorporated into the older validation document:
+Evidence now recorded in [VALIDATION.md](docs/VALIDATION.md#user-reported-delegation-and-inherited-resource-probes):
 
 | Probe | Observation |
 | --- | --- |
@@ -178,7 +219,10 @@ Local source at handoff preparation: `5aa6e537e7e642782d0a9baffad666df3be9f215`
 (before adding this file). Verify the destination checkout's commit; do not assume
 the user has pushed or pulled the handoff or any later changes.
 
-## PBS migration sequence
+## Deferred PBS migration sequence
+
+This is a conditional plan. The latest documentation request does not activate
+these steps or establish that the codebase has moved to PBS.
 
 ### A. Discover the site before writing resource requests
 

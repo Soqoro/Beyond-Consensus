@@ -1,7 +1,7 @@
 {
-  "name": "e1-approved-sqlite-pairs-development-plan",
+  "name": "e1-approved-silo-development-plan",
   "task_count": 20,
-  "task_kind": "sqlite_pair",
+  "task_kind": "silo",
   "data_manifest": null,
   "policies": [
     "ordinary",

@@ -100,7 +100,7 @@ class RunConfig:
                 raise BCError(f"{name} must be a positive integer")
         if type(self.malformed_retries) is not int or self.malformed_retries < 0:
             raise BCError("malformed_retries must be a nonnegative integer")
-        if self.task_kind not in ("workflow_fixture", "cooperbench") or self.protocol not in ("A", "B"):
+        if self.task_kind not in ("workflow_fixture", "cooperbench", "sqlite_fixture", "sqlite_native", "sqlite_pair", "silo") or self.protocol not in ("A", "B"):
             raise BCError("Unknown task kind or protocol")
         if self.task_kind == "workflow_fixture" and self.task_count > 20:
             raise BCError("Only 20 labelled development fixtures are provided")
@@ -108,6 +108,8 @@ class RunConfig:
             raise BCError("Invalid policy list")
         if not self.attacks or set(self.attacks) - {"clean", "withholding", "artifact_sabotage"}:
             raise BCError("Invalid attack list")
+        if self.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo") and "artifact_sabotage" in self.attacks:
+            raise BCError("New-environment sabotage is gated on validated clean/withholding pilots; numeric sabotage remains a diagnostic")
         if "single" in self.policies and self.attacks != ("clean",):
             raise BCError("E0 single-agent baseline has clean exposure only; use a separate config")
         if not self.seeds or any(type(s) is not int or s < 0 for s in self.seeds):
@@ -130,6 +132,8 @@ class RunConfig:
         allowed_monitors = {"public-cases-v1"}
         if self.task_kind == "cooperbench":
             allowed_monitors.add("coding-structure-v1")
+        if self.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
+            allowed_monitors = {"data-structure-v1"}
         if self.monitor_id not in allowed_monitors or self.split_id != "group-hash-v1":
             raise BCError("Unsupported monitor/split version")
         if self.data_split not in ("development", "validation", "test"):
@@ -137,6 +141,8 @@ class RunConfig:
 
     @property
     def mode(self) -> str:
+        if self.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
+            return ("mock_" if self.model.backend == "mock" else "gpu_") + self.task_kind + "_development"
         return "mock_demo" if self.model.backend == "mock" else (
             "gpu_fixture_development" if self.task_kind == "workflow_fixture" else "real_development")
 

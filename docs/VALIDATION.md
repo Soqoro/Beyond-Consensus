@@ -1,5 +1,95 @@
 # Local validation record
 
+## SQLite/SILO migration validation (2026-09-16)
+
+Current local environment: Linux, Python **3.12.7**, SQLite **3.45.3**.
+The new tests and commands use the standard library. No model, GPU allocation,
+database archive, container runtime, delegated cgroup or hosted API was used.
+Earlier validation and user-reported cluster results below remain historical
+evidence for their original numeric/coding configurations.
+
+### Automated checks
+
+| Exact command | Outcome |
+| --- | --- |
+| `python -m unittest discover -s tests -v` | **110 tests: 109 passed, 1 skipped**, 34.880 seconds on the final full pass |
+| `python scripts/check_shell.py` | All **9** shell/Slurm files passed LF, usage, dry-run, strict handling and `bash -n` checks |
+| `python -m compileall -q src tests scripts` | Passed |
+| `git diff --check` | Passed |
+| `python -I -S scripts/bc.py --help` | Passed with site packages disabled |
+| `python -I -S scripts/bc.py data-capabilities` | Authorizer, defensive mode, trusted-schema disabling, extension disabling, table inventory and process limits available |
+
+The sole skip is unchanged legacy integration coverage:
+`test_repository.RealSandboxTests.test_actual_isolation_and_cleanup`, reason
+**“Real container/cgroup qualification requires explicit BC_SANDBOX_TEST_PROFILE”**.
+No new SQLite/SILO test was skipped in this Linux environment. That skip does
+not gate the restricted data path or establish repository isolation.
+
+The added behavior tests cover recursive SELECT-tree rejection, the independent
+SQLite authorizer, immutable source copies, progress/CPU/deadline/output limits,
+executor cleanup, bounded previews with full stored results, and sanitized
+errors. They also cover same-bundle pair completion and negative controls,
+setup/cleanup conflicts, version-bound nested views and messages, selective
+invalidation, surviving-template replay, charged preparation/cold repair and
+reserve checks, and checkpoint/resume. Native-format integration tests use
+explicitly synthetic reviewed records and databases; they are not benchmark
+validation. Public SILO data/scorer parity, four-worker generation, protected
+versus no-copy visibility, every required segment, split leakage and access-bound
+calibration have behavior coverage. Existing compromise, budget A/B, numeric,
+policy and scheduler tests remain in the full suite.
+
+### Executed CPU CLI acceptance
+
+The acceptance directory was `/tmp/bc-migration-cli-qfp864l6`; manifests, logs,
+private review scaffolds and raw outputs were kept outside Git. The following
+commands were run against the implementation, not a remote cluster:
+
+```bash
+python scripts/bc.py demo --config configs/sqlite-demo.json --output /tmp/bc-migration-cli-qfp864l6/sqlite-demo
+python scripts/bc.py demo --config configs/sqlite-demo.json --output /tmp/bc-migration-cli-qfp864l6/sqlite-demo
+python scripts/bc.py calibrate --config configs/sqlite-demo.json --output /tmp/bc-migration-cli-qfp864l6/calibration.json
+python scripts/bc.py silo-generate --family II-11 --seeds 0 1 2 3 4 5 6 7 --output /tmp/bc-migration-cli-qfp864l6/silo.json
+python scripts/bc.py silo-validate --input /tmp/bc-migration-cli-qfp864l6/silo.json
+python scripts/bc.py demo --config /tmp/bc-migration-cli-qfp864l6/silo-demo-config.json --output /tmp/bc-migration-cli-qfp864l6/silo-demo
+python scripts/bc.py export --output /tmp/bc-migration-cli-qfp864l6/sqlite-demo --bundle /tmp/bc-migration-cli-qfp864l6/sqlite-demo.tar.gz
+```
+
+- SQLite fixture demo: **8 completed mock episodes**; repeat invocation resumed
+  the same eight planned episodes. Calibration recorded **12** operation samples.
+- SILO: **8** generated Prefix Sum instances passed manifest validation. A local
+  mock config selected one instance, four policies and clean/withholding,
+  producing **8 completed mock episodes**. Both supported families are exercised
+  in the unit suite.
+- Sanitized SQLite fixture export completed. No private evaluator records,
+  contexts or database files were included.
+- Staging and inspecting the exact pinned **270 public metadata records**, with
+  no databases or author materials, reported `scored_ready: false`. The review
+  scaffold for `crypto_M_2` and `crypto_8` contained two **unapproved** entries.
+- `sqlite-validate --count 10` exited **1** with `scoring_unavailable` and zero
+  validated tasks. The crypto pair check exited **1** and retained its blocked
+  report with zero validated pairs. Neither result was reported as zero accuracy.
+
+These counts demonstrate software execution and prerequisite handling. Mock
+model costs and generated fixture outcomes are not measured model competence,
+LiveSQLBench scores, native SILO leaderboard results or evidence for a defense.
+
+### Remaining acceptance gates
+
+No actual LiveSQLBench database, author solution/test material, ten native-task
+validation, or two-pair reference validation was available. No SQLite/SILO GPU
+preflight, actual-model episode, pilot or E1 campaign was submitted. Compute-node
+Python/SQLite resource capabilities and clean model competence still need the
+user-triggered Slurm checks in [LOCAL_TO_SLURM.md](LOCAL_TO_SLURM.md).
+
+The new executor enforces a restricted API and bounded trusted child process;
+these tests do not establish an OS sandbox against native-engine exploits.
+Source pins, scorer differences, SILO scheduling/access changes, licensing
+discrepancies and staging prerequisites are recorded in
+[MIGRATION_SQLITE_SILO.md](MIGRATION_SQLITE_SILO.md). Semantic sabotage and scaling
+remain gated on clean/withholding validity.
+
+## Initial implementation validation (2026-09-15)
+
 Environment: Linux, Python **3.12.7**, standard-library acceptance suite.
 No torch/CUDA installation was present or needed. Validation performed during
 implementation on 2026-09-15.
@@ -149,6 +239,161 @@ Git history. They do not qualify other compute nodes or a future benchmark image
 This basic probe did not approve a repository adapter. The opt-in coding E0
 implementation described below still requires its own full qualification.
 
+## User-reported delegation and inherited resource probes
+
+Recorded on 2026-09-16 from the user's terminal output. The agent did not connect
+to the cluster, submit these jobs or independently inspect their runtime state.
+These are infrastructure observations, not benchmark episodes or model failures.
+
+### Direct delegation inspection
+
+The user ran:
+
+```bash
+python scripts/bc.py sandbox-inspect \
+  --runtime-root "$BC_PRIVATE_APPTAINER" \
+  --image "$BC_STORAGE/containers/alpine-3.24.1.sif"
+```
+
+The command returned `delegated_cgroup_available=false` and
+`repository_execution=false` in both environments:
+
+| Environment | Reported `/proc/self/cgroup` membership |
+| --- | --- |
+| Jupyter | `0::/system.slice/cm-jupyterhub.service` |
+| node13, Slurm job `1076414` | `0::/system.slice/slurmstepd.scope/job_1076414/step_batch/user/task_0` |
+
+The compute diagnostic was submitted through `sbatch` to `NA10040q`, pinned to
+node13, with one node/task/CPU, `--mem=2G`, `--time=00:05:00` and `--gres=none`.
+It loaded no model. The error in both inspections was:
+
+```text
+No delegated cgroup v2 parent with memory,pids,cpu enabled; site delegation is required. Basic namespace probes do not establish this capability
+```
+
+Both reports identified:
+
+- Image SHA-256:
+  `dcb0a94e5170dba72c2c72fac6c44fad198878994178ce27a86ed8c479f9b8cc`.
+- Runtime SHA-256:
+  `c5e236aecf83b69285371b77444f5da036787b3314c463c6f0b648d4fb69648e`.
+- Root mount controllers: `cpuset cpu io memory hugetlb pids rdma misc`.
+
+Root controller availability is not evidence of delegation to this user/job.
+The current adapter requires a writable suitable ancestor, creates a child per
+invocation, sets memory/swap/process/CPU limits, and uses `cgroup.kill` for complete
+descendant cleanup. The inspector failed before full execution qualification;
+these reports do not independently test every other sandbox property.
+
+### Scheduler configuration
+
+The user supplied the output of
+`scontrol show config | grep -E 'ProctrackType|TaskPlugin|JobAcctGatherType'`:
+
+```text
+JobAcctGatherType       = jobacct_gather/linux
+ProctrackType           = proctrack/cgroup
+TaskPlugin             = task/cgroup
+TaskPluginParam         = (null type)
+```
+
+Accounting, process tracking and resource enforcement are separate plugin roles.
+The presence of `task/cgroup` alone does not establish particular enabled limits.
+Changing the accounting plugin alone would not establish the missing limits.
+
+### Inherited limits: Slurm job 1076418
+
+The follow-up CPU-only batch job used the same resource request and read the
+current cgroup and its ancestors without modifying any settings. It reported
+node13, `requested_cpus="1"`, `requested_memory_mb="2048"`, affinity `[24,152]`,
+and RLIMIT_NPROC soft/hard `[514932,4126939]`.
+
+Membership:
+
+```text
+0::/system.slice/slurmstepd.scope/job_1076418/step_batch/user/task_0
+```
+
+The following is a condensed transcription of the returned JSON, not a new probe.
+Paths are relative to `/sys/fs/cgroup`:
+
+| Cgroup path | `memory.max` | `memory.swap.max` | `pids.max` | `cpu.max` | `cpuset.cpus.effective` |
+| --- | --- | --- | --- | --- | --- |
+| `/system.slice/slurmstepd.scope/job_1076418/step_batch/user/task_0` | `max` | `max` | File absent | `max 100000` | `24,152` |
+| `/system.slice/slurmstepd.scope/job_1076418/step_batch/user` | `max` | `max` | File absent | `max 100000` | `24,152` |
+| `/system.slice/slurmstepd.scope/job_1076418/step_batch` | `max` | `max` | File absent | `max 100000` | `24,152` |
+| `/system.slice/slurmstepd.scope/job_1076418` | `max` | `max` | File absent | `max 100000` | `24,152` |
+| `/system.slice/slurmstepd.scope` | `max` | `max` | `max` | `max 100000` | `0-255` |
+| `/system.slice` | `max` | `max` | `max` | `max 100000` | `0-255` |
+| `/` | File absent | File absent | File absent | File absent | `0-255` |
+
+Additional observations:
+
+- `memory.oom.group` was `0` at all six non-root levels and absent at root.
+- Job/step/user/task controllers were `cpuset cpu memory`. The task's
+  `cgroup.subtree_control` was empty; its user/step/job parents enabled
+  `cpuset cpu memory`.
+- `slurmstepd.scope` exposed `cpuset cpu io memory pids` but enabled only
+  `cpuset cpu memory` in its subtree. The process-count controller was therefore
+  not propagated into the observed job hierarchy.
+- Missing root limit files are not themselves an error. No finite ancestor cap
+  was found for the memory, swap or process-count controls inspected.
+- CPUs `24` and `152` are logical CPU identifiers; physical-core/SMT topology was
+  not measured by this probe.
+
+### Supported conclusion and its limits
+
+The requested 2 GiB **was not enforced as a hard cgroup memory cap in this
+allocation**. CPU cpuset confinement was present despite the absence of a CPU
+bandwidth quota. No finite cgroup process-count limit was observed; the separate
+per-user process limit was very large. These observations do not establish the
+absence of every possible scheduler monitoring mechanism, and do not qualify
+other partitions, nodes or later allocations.
+
+This rules out simply substituting these observed inherited limits for the
+current adapter's per-invocation controls. It does not make writable delegation
+a scientific requirement. A different adapter could use a properly configured
+scheduler boundary, VM or external sandbox after explicit implementation and
+qualification. Neither namespaces alone nor a per-process `ulimit` has been
+validated here as an equivalent replacement.
+
+No gate was disabled, no sandbox approval was generated from these failures, and
+no actual CooperBench repository/test execution has been reported. Existing
+fixture results remain engineering results with the limitations recorded above.
+
+Official interface references:
+[Linux cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html),
+[Slurm cgroup configuration](https://slurm.schedmd.com/cgroup.conf.html), and
+[Apptainer inherited scheduler limits](https://apptainer.org/docs/user/1.5/cgroups.html#applying-resource-limits-with-external-tools).
+
+## Hosting alternatives discussed, not validated
+
+The user considered PBS H200 migration, a personal RTX 5080 PC, Colab Pro+,
+external CPU sandboxes and renting an A100 VM. The latest instruction is to
+document progress and the blocker first. None of these discussions establishes
+an available sandbox or an executed migration.
+
+- No PBS site configuration, allocation limits or GPU run has been supplied.
+- The user reports an RTX 5080, but PC OS/CPU/RAM/free disk and Docker capability
+  remain unknown. The short A100 preflight does not prove full local-model fit.
+- The user reports a Colab Pro+ subscription; no Colab inference, runtime
+  qualification or connection to an external sandbox has been tested.
+- No remote execution adapter, Docker adapter or standalone GPU launch mode has
+  been implemented. The current GPU backend still requires Slurm.
+- No rental or cloud purchase was made by the agent. GPU type alone would not
+  establish administrative control of the required execution boundary.
+
+The conditional PBS migration notes remain in [handoff.md](../handoff.md).
+
+### Documentation checkpoint validation (2026-09-16)
+
+After recording this evidence, `python -m unittest discover -s tests -v` ran
+**76 tests: 75 passed, 1 skipped**, in 11.057 seconds. The skip remains the real
+container/cgroup qualification test requiring `BC_SANDBOX_TEST_PROFILE`.
+`python scripts/check_shell.py` passed all nine shell checks. `git diff --check`,
+Markdown code-fence checks, and local link/heading-anchor checks passed.
+This update changed documentation only and executed no new cluster experiments.
+
 ## Opt-in coding E0 implementation (local checks only)
 
 The Apptainer/cgroup adapter, bounded repository transfer, clean coding worker,
@@ -172,7 +417,7 @@ executed by the agent and no coding task success is claimed.
   Earlier serialized fixture manifests remain readable after optional coding
   configuration fields were added.
 
-Still pending: delegated cgroup capability on the real compute allocation,
+Still pending: resolving the observed delegation/resource blocker on the real allocation,
 qualification of the actual coding image, explicit site/image/source review,
 real upstream task environment controls, and the first clean GPU coding episode.
 Four-policy coding execution/calibration and Protocol B remain unsupported.

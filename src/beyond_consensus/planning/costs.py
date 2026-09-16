@@ -24,11 +24,23 @@ class CostEstimates:
             positive(getattr(self, name), name)
 
 
-def compatibility(config: RunConfig) -> str:
-    return digest({"model": config.model, "budget_rules": {
+def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
+    instructions = WORKER_INSTRUCTIONS
+    if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
+        from ..runtime.data_domain import SQL_INSTRUCTIONS, SILO_INSTRUCTIONS
+        instructions = SILO_INSTRUCTIONS if config.task_kind == "silo" else SQL_INSTRUCTIONS
+    data = {"model": config.model, "budget_rules": {
         name: getattr(config.budget, name) for name in ("input_weight", "output_weight", "tool_charge")},
         "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind,
-        "worker_instructions": WORKER_INSTRUCTIONS})
+        "worker_instructions": instructions}
+    if task is not None and task.kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
+        from ..tasks.data_manifest import regime
+        data["data_regime"] = regime(task)
+        data["execution_limits"] = task.metadata.get("execution_limits", task.metadata.get("harness", {}).get("limits"))
+        if task.kind != "silo":
+            from ..runtime.sqlite_executor import capabilities
+            data["executor_runtime"] = capabilities()
+    return digest(data)
 
 
 def estimates(config: RunConfig, backend: Backend, task: TaskInstance) -> CostEstimates:
@@ -39,7 +51,7 @@ def estimates(config: RunConfig, backend: Backend, task: TaskInstance) -> CostEs
         expected_origin = "mock-measured" if config.model.backend == "mock" else "development-measured"
         if data["origin"] != expected_origin or data["sample_count"] < 1:
             raise BCError("Real calibration must contain measured development operations")
-        if data["compatibility"] != compatibility(config):
+        if data["compatibility"] != compatibility(config, task):
             raise BCError("Calibration model/budget/monitor/split/prompt mismatch; create a new run")
         if task.group in data["groups"]:
             raise BCError("Calibration and evaluation base-feature pools overlap")

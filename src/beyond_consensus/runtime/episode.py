@@ -6,7 +6,7 @@ import random
 import traceback
 from typing import Any
 
-from ..agents.worker import WorkerLoop
+from ..agents.worker import WorkerLoop, WorkerOutcome
 from ..attacks.fixed import AttackController
 from ..config import RunConfig
 from ..evaluation.monitor import Audit, audit
@@ -58,6 +58,8 @@ class EpisodeEngine:
         self.retained = 0
         self.integration_passed: bool | None = None
         self.error: str | None = None
+        from .data_domain import DataDomain, DATA_KINDS
+        self.domain = DataDomain(self) if task.kind in DATA_KINDS else None
 
     def state(self, boundary: str) -> dict[str, Any]:
         return plain({"manifest_hash": digest(self.manifest), "boundary": boundary,
@@ -99,17 +101,27 @@ class EpisodeEngine:
 
     def worker(self) -> WorkerLoop:
         assert self.attacker is not None
-        return WorkerLoop(self.backend, self.config, self.ledger, self.store, self.attacker, self.boundary)
+        return WorkerLoop(self.backend, self.config, self.ledger, self.store, self.attacker, self.boundary, self.domain)
 
     def operation(self, key: str, unit: str, worker: str, stage: str, operation: str,
                   reads: tuple[str, ...] = (), floor: float = 0) -> str | None:
         if key in self.completed:
             return None
         before = self.ledger.spent
+        if self.domain and self.task.kind == "silo" and stage == "primary":
+            missing_inputs = [d for d in self.task.metadata.get("dependencies", {}).get(unit, []) if not self.candidates.get(d)]
+            if missing_inputs:
+                self.store.events.append({"type": "blocked_primary_input", "unit": unit, "worker": worker,
+                                          "missing": missing_inputs})
         generation_seed = int(digest([self.manifest.seed, unit, worker, operation, "generation"])[:8], 16)
-        outcome = self.worker().run(self.task, unit, worker, stage, generation_seed,
+        replayed = None
+        if self.domain and stage == "repair" and operation == "implement" and not self.attacker.withholds(worker):
+            replayed = self.domain.try_replay(unit, worker, stage, floor)
+        outcome = WorkerOutcome("replayed", replayed.id, 0) if replayed else self.worker().run(self.task, unit, worker, stage, generation_seed,
                                     operation=operation, allowed_artifacts=reads, floor=floor,
                                     fresh_context=stage != "primary" and self.manifest.policy != "single")
+        if self.domain and outcome.status == "withheld":
+            self.store.events.append({"type": "public_timeout", "unit": unit, "worker": worker})
         if outcome.artifact_id:
             if operation == "prepare":
                 self.preparations.append(PreparationItem(f"prep:{unit}:{worker}", unit, worker,
@@ -125,15 +137,20 @@ class EpisodeEngine:
     def public_audit(self, stage: str) -> Audit:
         assert self.plan is not None
         candidate_count = sum(self.store.artifacts[k].valid for values in self.candidates.values() for k in values)
-        checks = len(self.plan.units) + candidate_count * len(self.task.public_cases)
+        checks = len(self.plan.units) + candidate_count * max(1 if self.domain else 0, len(self.task.public_cases))
         self.ledger.charge(stage, self.config.budget.tool_charge * checks,
                            kind="public_audit", tool_calls=checks, cpu_limit_seconds=1)
+        if self.domain:
+            return self.domain.audit(self.plan.units,
+                {u: [self.store.artifacts[k] for k in keys] for u, keys in self.candidates.items()})
         return audit(self.task, self.plan.units,
                      {u: [self.store.artifacts[k] for k in keys] for u, keys in self.candidates.items()})
 
     def plan_primary(self) -> None:
         self.ledger.charge("planning", 1, kind="catalogue_setup")
-        self.costs = estimates(self.config, self.backend, self.task)
+        from ..tasks.data_manifest import policy_view
+        planning_task = policy_view(self.task) if self.domain else self.task
+        self.costs = estimates(self.config, self.backend, planning_task)
         # Planning is a finite deterministic protected operation, charged by visited states.
         cap = self.ledger.remaining
         limit = min(10000, int(cap))
@@ -142,7 +159,7 @@ class EpisodeEngine:
         reservation = self.ledger.reserve_work("planning", limit, "finite_search")
         self.boundary("planning_inflight")
         try:
-            self.plan = choose_plan(self.manifest.policy, self.task, self.config, self.costs, cap,
+            self.plan = choose_plan(self.manifest.policy, planning_task, self.config, self.costs, cap,
                                     max_search_states=limit)
             self.ledger.reconcile_work(reservation, self.plan.search_states)
         except Exception:
@@ -313,15 +330,18 @@ class EpisodeEngine:
                 self.ledger.charge("integration", self.config.budget.tool_charge * len(self.task.public_cases),
                                    kind="joint_public_check", tool_calls=len(self.task.public_cases), cpu_limit_seconds=1)
                 try:
-                    self.integration_passed = all(run_outputs(self.task, programs, x) == expected(self.task, x)
-                                                  for x in self.task.public_cases)
-                except BCError:
+                    self.integration_passed = self.domain.integrate() if self.domain else all(
+                        run_outputs(self.task, programs, x) == expected(self.task, x) for x in self.task.public_cases)
+                except BCError as exc:
+                    from .data_domain import TaskUnavailable
+                    if isinstance(exc, TaskUnavailable):
+                        raise
                     self.integration_passed = False
                 self.phase = "evaluation"
                 self.boundary("integration_complete")
             # Terminal evaluation has no return edge into policy/worker execution.
             from ..evaluation.hidden import evaluate
-            final = evaluate(self.task, {u: self.store.artifacts[k].content for u, k in self.selected.items()},
+            final = self.domain.evaluate() if self.domain else evaluate(self.task, {u: self.store.artifacts[k].content for u, k in self.selected.items()},
                              self.manifest.evaluation_seed)
             success = final["complete_task_success"] and self.integration_passed is True
         except BudgetExceeded as exc:
@@ -329,7 +349,9 @@ class EpisodeEngine:
         except Interrupted as exc:
             status, self.error = "interrupted", str(exc)
         except Exception as exc:
-            status, self.error = "infrastructure_failed", f"{type(exc).__name__}: {exc}"
+            from .data_domain import TaskUnavailable
+            status = exc.status if isinstance(exc, TaskUnavailable) else "infrastructure_failed"
+            self.error = str(exc) if isinstance(exc, TaskUnavailable) else ("Restricted data episode failed; inspect private journal" if self.domain else f"{type(exc).__name__}: {exc}")
             self.journal.event("failure", error=self.error, traceback=traceback.format_exc())
         alarmed = bool(self.alarm and (self.alarm.units or self.alarm.suspicious_authors))
         cumulative, violations = 0.0, 0
@@ -354,8 +376,14 @@ class EpisodeEngine:
              "calibration": plain(self.costs), "plan": plain(self.plan),
              "fixed_state_hash": self.manifest.fixed_state_hash, "import_path": __file__,
              "backend_runtime": getattr(self.backend, "runtime", {"backend": "deterministic-mock-v1"})},
-            ["Development only; confirmatory claims disabled", "Workflow fixtures are synthetic, not CooperBench",
+            ["Development only; confirmatory claims disabled", ("Restricted data-workflow adaptation; not repository coding evidence" if self.domain else "Workflow fixtures are synthetic, not CooperBench"),
              "Costs use an explicit token/tool surrogate, not measured FLOPs",
              "Interrupted worker operations restart with all prior and uncertain work charged"], self.error)
+        if self.domain:
+            from ..tasks.data_manifest import regime
+            result.provenance.update({"result_schema": "bc-result-v2", "data_regime": regime(self.task)})
+            result.metrics["tool_rejections"] = sum(e["type"] == "prohibited_or_malformed_action" for e in self.store.events)
+            result.metrics["query_replays"] = sum(e["type"] == "query_replay" for e in self.store.events)
+            result.metrics["shard_transfers"] = sum(e["type"] == "shard_transfer" for e in self.store.events)
         self.journal.result(result)
         return result

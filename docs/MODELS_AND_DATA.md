@@ -1,6 +1,18 @@
 # Models, data and execution boundary
 
-## Verified upstream interfaces, untested GPU stack
+## Current data-workflow migration
+
+The required evaluation path is restricted SQLite/SILO on the existing Slurm
+cluster. See [MIGRATION_SQLITE_SILO.md](MIGRATION_SQLITE_SILO.md) for pinned
+upstream interfaces, licences, staging and native/pair prerequisites. The
+CooperBench setup and delegation discussion below are retained as optional
+legacy context. Existing model pins and the validated backend remain unchanged.
+
+## Model interfaces and original validation scope
+
+The later user-reported Qwen3.5-4B GPU preflight and numeric pilots are recorded
+in [VALIDATION.md](VALIDATION.md). SQLite/SILO GPU runs and the planned 9B study
+remain unvalidated. The original model-interface audit below is preserved.
 
 The official Qwen3.5-4B configuration identifies
 `Qwen3_5ForConditionalGeneration`, not a generic causal-LM checkpoint. The adapter

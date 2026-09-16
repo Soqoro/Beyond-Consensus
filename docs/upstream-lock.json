@@ -1,0 +1,136 @@
+{
+  "schema": "bc-upstream-audit-v1",
+  "data_revision": "0664a2f28555faa0dd2947c8c23288df79bcc06b",
+  "sqlite_code_commit": "abd11b6db92a1c9f809b32f7564c7c71b34d67f0",
+  "silo_commit": "e74127782ed1c42fff474249961f022c063d76f2",
+  "licenses": {
+    "data": "CC-BY-SA-4.0",
+    "sqlite_code": "not established; no vendored source",
+    "silo": "Unlicense"
+  },
+  "files": {
+    "data-README.md": {
+      "sha256": "e088115d4d480e7f4b339c10e1502beaa782209b7f2e89f93b370167404cba7d",
+      "bytes": 8476
+    },
+    "data-crypto_crypto_column_meaning_base.json": {
+      "sha256": "cf0573b3ec6a39719e1088678fcd1583f92f1b254fa69f66505ceebc99d31b70",
+      "bytes": 15511
+    },
+    "data-crypto_crypto_kb.jsonl": {
+      "sha256": "b563541bee69ce71cdc0eed218273adbea061e6d6b372f6609b2c204886817cf",
+      "bytes": 23111
+    },
+    "data-crypto_crypto_schema.txt": {
+      "sha256": "b625fccfb1629fb87c1529919f103b1aeab58508c03662df224beae2084545f2",
+      "bytes": 13789
+    },
+    "data-livesqlbench_data_sqlite.jsonl": {
+      "sha256": "2b964165a6cda878a4e4d4de9ccef1c6ad623b96e5215b522d81be284c9fcebc",
+      "bytes": 180705
+    },
+    "mini-README.md": {
+      "sha256": "f0c50409ce3270c021538f9707ef3179c684da3744a54ae87e9b1c57f85a9b3b",
+      "bytes": 3807
+    },
+    "mini-evaluation_db_utils.py": {
+      "sha256": "c2ba251c87bdc4ba5394fbd6098c7afd3788f9fc18061d3dbdfb9702a3b91345",
+      "bytes": 11080
+    },
+    "mini-evaluation_single_instance_eval_sqlite.py": {
+      "sha256": "5cd94df2763f2cece4185124865663648973319d367a461ab1ca1f98968221fe",
+      "bytes": 12989
+    },
+    "mini-evaluation_test_utils.py": {
+      "sha256": "8e25a14f3aded5c4cbc05ec4bc454bca8bbc4402645561411385c12d8467b4ce",
+      "bytes": 12859
+    },
+    "mini-evaluation_utils.py": {
+      "sha256": "0f6c409f471cf37404766575fdba31e102df0661281df0d554bd56fc9bcb48a7",
+      "bytes": 7170
+    },
+    "mini-utils_prompt_generator.py": {
+      "sha256": "167a6fc02876d4a6a10496d6d97c36b248d1bbbd75187fef951ed5e9014e00aa",
+      "bytes": 5454
+    },
+    "silo-II-11_n2.json": {
+      "sha256": "4cbabaa8ef52f42bc0bac7de1e19150cb7f9e86e8707a9f3dc78f67553293ef3",
+      "bytes": 6185
+    },
+    "silo-II-11_n5.json": {
+      "sha256": "d48069486a91a8aaacefc412f8d2143f0e74ef35cfea1ae0423664b6adafa80d",
+      "bytes": 12307
+    },
+    "silo-II-20_n2.json": {
+      "sha256": "c42f0f90faa1848693b0eb00cf3ab9ff085527f77e6218cd462b289fd2d2bab5",
+      "bytes": 5665
+    },
+    "silo-II-20_n5.json": {
+      "sha256": "2c955054c1c1d9494bb7b72b124cc922836d7756946d19d7621513fcb831bd8c",
+      "bytes": 10963
+    },
+    "silo-LICENSE": {
+      "sha256": "6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e",
+      "bytes": 1211
+    },
+    "silo-README.md": {
+      "sha256": "c01728fb5fdf395db600fe7598940170fb1fe6b022e1455ab64de30d12226267",
+      "bytes": 11188
+    },
+    "silo-benchmark_generator_main.py": {
+      "sha256": "1ca8f79d805eca659239045eb7e0ad9ff151efe53282a9d70edd675c04751af9",
+      "bytes": 14453
+    },
+    "silo-benchmark_generator_paradigm_i.py": {
+      "sha256": "9464b565994744d67530680a195d7fc59d08cce5ad442fbef5984c656dbe97c3",
+      "bytes": 20494
+    },
+    "silo-benchmark_generator_paradigm_ii.py": {
+      "sha256": "510922971d3d596e446975479b542aa36be600e5301adae4168900788d99f007",
+      "bytes": 27012
+    },
+    "silo-pyproject.toml": {
+      "sha256": "92f99d1c374a7ba193ab01560a0bff289206a658736db925f3a1b233db4d7b35",
+      "bytes": 460
+    },
+    "silo-src_engine.py": {
+      "sha256": "8f4e14f7aba909a1698dff8941cf8fcd52a15afbd0a9c267d4ba2090b460c9dd",
+      "bytes": 19105
+    },
+    "silo-src_msg_evaluate.py": {
+      "sha256": "ab88fb4882082eabb85a14fd88aacd2810230f6546af7495b4e56ee9a2cddd1d",
+      "bytes": 628
+    },
+    "silo-src_msg_run_round.py": {
+      "sha256": "97dc1c238310e2e8cdfbdb3e6ce84c800d0b52c0fd4c547e906bb6ab1e2b59fa",
+      "bytes": 526
+    },
+    "silo-src_msg_tools.py": {
+      "sha256": "5e5a6bb6462ee0de9f01485d3e303c94e63a81fa6df1617da2df9bc6488c4468",
+      "bytes": 4870
+    },
+    "silo-src_utils_metrics.py": {
+      "sha256": "d0dbd36a281f5e475522c1db7f1a0522831bc760a6f83b7a4198eef3acc1d06e",
+      "bytes": 9354
+    },
+    "silo-src_utils_parsing.py": {
+      "sha256": "e2fed479ec84a9cacbce91c3c15fc2d169114db2a0ae0fecd03e8263653424bd",
+      "bytes": 2333
+    },
+    "silo-src_utils_prompts.py": {
+      "sha256": "bb6cc29e3421ccfb2b389eb117fd675e17577b88a2f77ee8760e69f8d762f04e",
+      "bytes": 9114
+    }
+  },
+  "license_discrepancies": {
+    "silo": {
+      "LICENSE": "Unlicense",
+      "pyproject.toml": "MIT",
+      "recorded_action": "Preserve actual LICENSE text; record mismatch. No upstream runner vendored."
+    }
+  },
+  "upstream_python": {
+    "silo": ">=3.13",
+    "adapter": ">=3.12; existing environment retained"
+  }
+}

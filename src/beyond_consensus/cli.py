@@ -25,6 +25,7 @@ def parser() -> argparse.ArgumentParser:
     make.add_argument("--config", type=Path, required=True)
     make.add_argument("--output", type=Path, required=True)
     make.add_argument("--model-lock", type=Path)
+    make.add_argument("--data-manifest", type=Path, help="Explicit validated SQLite/SILO manifest override")
     run = sub.add_parser("run", help="Run/resume complete episodes from a pinned manifest")
     run.add_argument("--manifest", type=Path, required=True)
     run.add_argument("--output", type=Path, required=True)
@@ -47,7 +48,7 @@ def parser() -> argparse.ArgumentParser:
     stage.add_argument("--config", type=Path, required=True)
     stage.add_argument("--root", type=Path, required=True)
     stage.add_argument("--dry-run", action="store_true")
-    data = sub.add_parser("stage-data", help="Explicit official dataset staging, never executes scripts")
+    data = sub.add_parser("stage-data", help="Legacy CooperBench download; new data paths use sqlite-stage/silo-generate")
     data.add_argument("--root", type=Path, required=True)
     data.add_argument("--revision")
     data.add_argument("--dry-run", action="store_true")
@@ -56,7 +57,7 @@ def parser() -> argparse.ArgumentParser:
         coop.add_argument("--"+name, type=Path, required=True)
     coop.add_argument("--upstream-commit", required=True)
     coop.add_argument("--dataset-revision", required=True)
-    doctor = sub.add_parser("doctor", help="Lightweight login/sandbox capabilities; no model loading")
+    doctor = sub.add_parser("doctor", help="Lightweight login/data-executor capabilities; no model loading")
     doctor.add_argument("--dry-run", action="store_true")
     doctor.add_argument("--cluster", type=Path)
     probe = sub.add_parser("sandbox-probe", help="Qualify fixed container probes; never approves repository execution")
@@ -109,17 +110,24 @@ def parser() -> argparse.ArgumentParser:
     export.add_argument("--output", type=Path, required=True)
     export.add_argument("--bundle", type=Path, required=True)
     export.add_argument("--dry-run", action="store_true")
-    calibration = sub.add_parser("calibrate", help="Measure cold/index/prepared operations on development fixture groups")
+    calibration = sub.add_parser("calibrate", help="Measure cold/index/prepared operations on development task groups")
     calibration.add_argument("--config", type=Path, required=True)
     calibration.add_argument("--output", type=Path, required=True)
     calibration.add_argument("--model-lock", type=Path)
+    from .data_cli import add_parsers
+    add_parsers(sub)
     return p
 
 
 def dispatch(args: argparse.Namespace) -> Any:
+    from .data_cli import COMMANDS, dispatch as dispatch_data
+    if args.command in COMMANDS:
+        return dispatch_data(args)
     from .experiments.manifest import build_manifest, validate_manifest
     if args.command == "manifest":
         config = load_config(args.config)
+        if args.data_manifest:
+            config = replace(config, data_manifest=str(args.data_manifest.resolve()))
         if config.coding_environment:
             from .runtime.repository import CodingEnvironment
             environment = CodingEnvironment(Path(config.coding_environment), config.coding_environment_hash)
@@ -143,8 +151,8 @@ def dispatch(args: argparse.Namespace) -> Any:
         from .evaluation.aggregate import aggregate
         if args.command == "demo":
             config = load_config(args.config)
-            if config.model.backend != "mock" or config.task_kind != "workflow_fixture":
-                raise BCError("demo only accepts the mock backend and labelled workflow fixtures")
+            if config.model.backend != "mock" or config.task_kind not in ("workflow_fixture", "sqlite_fixture", "silo"):
+                raise BCError("demo only accepts the mock backend and labelled fixtures/SILO adaptation")
             manifest = build_manifest(config, ROOT)
             rows = run_manifest(manifest, args.output, ROOT)
         else:
@@ -286,6 +294,14 @@ def dispatch(args: argparse.Namespace) -> Any:
         from .models.transformers_backend import preflight
         config = validate_manifest(read_json(args.manifest))
         result = preflight(config.model, args.model_lock)
+        if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair"):
+            import tempfile
+            from .runtime.sqlite_executor import execute
+            from .tasks.sqlite_tasks import fixture_database, read_query
+            with tempfile.TemporaryDirectory(prefix="bc-sql-preflight-") as temporary:
+                database = fixture_database(Path(temporary)/"source.sqlite", 0)
+                result["sqlite_executor"] = execute(database, ["measurements"], [], [read_query("measurements", ["id", "value"])])
+            result["command_failed"] = result["sqlite_executor"]["status"] != "ok"
         atomic_json(args.output, result)
         return result
     if args.command == "export":

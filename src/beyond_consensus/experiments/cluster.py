@@ -284,8 +284,9 @@ def doctor(config: ClusterConfig | None = None) -> dict[str, Any]:
     info["storage"] = storage
     if found["sinfo"]:
         info["partitions"] = command(["sinfo", "--noheader", "--format=%P|%G|%m|%l|%a"])
-    from ..runtime.sandbox import capabilities
-    info["sandbox"] = capabilities()
+    from ..runtime.sqlite_executor import capabilities
+    info["data_workflows"] = capabilities()
+    info["legacy_cooperbench"] = "Optional; requires explicit approved repository sandbox. Inspect only when selected."
     return info
 
 

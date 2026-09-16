@@ -1,0 +1,210 @@
+{
+  "license": "Unlicense",
+  "commit": "e74127782ed1c42fff474249961f022c063d76f2",
+  "vectors": [
+    {
+      "family": "II-11",
+      "workers": 2,
+      "input_shards": [
+        [
+          43,
+          22,
+          40,
+          21,
+          43,
+          8,
+          47,
+          20,
+          33,
+          20,
+          43,
+          27,
+          21,
+          26,
+          45
+        ],
+        [
+          19,
+          36,
+          9,
+          13,
+          27,
+          43,
+          25,
+          44,
+          48,
+          12,
+          40,
+          37,
+          20,
+          26,
+          36
+        ]
+      ],
+      "expected_sha256": "c6bd529350f91222f61bcab2d5b6e6a6f17e2c26a90d4b2b48e6379780912715",
+      "source_sha256": "4cbabaa8ef52f42bc0bac7de1e19150cb7f9e86e8707a9f3dc78f67553293ef3",
+      "source_file": "benchmarks/II-11_n2.json"
+    },
+    {
+      "family": "II-20",
+      "workers": 2,
+      "input_shards": [
+        [
+          "Block_0_Data",
+          "Block_1_Data",
+          "Block_2_Data",
+          "Block_3_Data",
+          "Block_4_Data"
+        ],
+        [
+          "Block_5_Data",
+          "Block_6_Data",
+          "Block_7_Data",
+          "Block_8_Data",
+          "Block_9_Data"
+        ]
+      ],
+      "expected_sha256": "0ddb88e895355f220c2c3c8f79517662e547da21507096394a2970d32d14d7bb",
+      "source_sha256": "c42f0f90faa1848693b0eb00cf3ab9ff085527f77e6218cd462b289fd2d2bab5",
+      "source_file": "benchmarks/II-20_n2.json"
+    },
+    {
+      "family": "II-11",
+      "workers": 5,
+      "input_shards": [
+        [
+          25,
+          44,
+          35,
+          22,
+          25,
+          49,
+          48,
+          9,
+          45,
+          47,
+          6,
+          33,
+          48,
+          23,
+          4
+        ],
+        [
+          7,
+          28,
+          15,
+          5,
+          22,
+          39,
+          50,
+          40,
+          39,
+          26,
+          50,
+          21,
+          2,
+          41,
+          18
+        ],
+        [
+          29,
+          32,
+          15,
+          23,
+          36,
+          25,
+          28,
+          12,
+          44,
+          38,
+          43,
+          25,
+          6,
+          50,
+          40
+        ],
+        [
+          19,
+          16,
+          46,
+          5,
+          6,
+          18,
+          10,
+          25,
+          46,
+          41,
+          10,
+          48,
+          25,
+          21,
+          24
+        ],
+        [
+          7,
+          6,
+          1,
+          20,
+          29,
+          24,
+          49,
+          18,
+          7,
+          9,
+          6,
+          12,
+          28,
+          29,
+          36
+        ]
+      ],
+      "expected_sha256": "4884baa182ed5ae162775827c025c926df5318a2d68d8446fa79d6efabea2f05",
+      "source_sha256": "d48069486a91a8aaacefc412f8d2143f0e74ef35cfea1ae0423664b6adafa80d",
+      "source_file": "benchmarks/II-11_n5.json"
+    },
+    {
+      "family": "II-20",
+      "workers": 5,
+      "input_shards": [
+        [
+          "Block_0_Data",
+          "Block_1_Data",
+          "Block_2_Data",
+          "Block_3_Data",
+          "Block_4_Data"
+        ],
+        [
+          "Block_5_Data",
+          "Block_6_Data",
+          "Block_7_Data",
+          "Block_8_Data",
+          "Block_9_Data"
+        ],
+        [
+          "Block_10_Data",
+          "Block_11_Data",
+          "Block_12_Data",
+          "Block_13_Data",
+          "Block_14_Data"
+        ],
+        [
+          "Block_15_Data",
+          "Block_16_Data",
+          "Block_17_Data",
+          "Block_18_Data",
+          "Block_19_Data"
+        ],
+        [
+          "Block_20_Data",
+          "Block_21_Data",
+          "Block_22_Data",
+          "Block_23_Data",
+          "Block_24_Data"
+        ]
+      ],
+      "expected_sha256": "b9e5c835274deca6b744d11d154f00b652647666529411c4c5d218c9127dca3b",
+      "source_sha256": "2c955054c1c1d9494bb7b72b124cc922836d7756946d19d7621513fcb831bd8c",
+      "source_file": "benchmarks/II-20_n5.json"
+    }
+  ]
+}

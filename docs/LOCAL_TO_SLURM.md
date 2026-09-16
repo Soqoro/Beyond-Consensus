@@ -4,6 +4,12 @@ All submissions and large staging commands below are **manual next steps**.
 Implementation did not submit jobs, download weights/datasets, or run the E1 grid.
 Local development needs Python 3.12+, no CUDA or container runtime.
 
+**Current required path:** SQLite/SILO restricted data tools on this existing
+Slurm cluster. Use the already validated GPU environment and Qwen model lock.
+Do not repeat environment/model setup when those assets already exist.
+CooperBench commands below are optional legacy; delegation is not required by
+the new path. See [migration notes](MIGRATION_SQLITE_SILO.md) for prerequisites.
+
 ## 1. LOCAL: edits, tests and the user's GitHub push
 
 From the existing repository:
@@ -26,6 +32,17 @@ python scripts/bc.py demo --output outputs/mock-demo
 git diff
 git status --short
 ```
+
+The new SQLite CPU check is:
+
+```bash
+python scripts/bc.py data-capabilities
+python scripts/bc.py demo --config configs/sqlite-demo.json --output outputs/sqlite-demo
+```
+
+Linux CPU resource controls and defensive SQLite settings are required by its
+fixed executor. Unsupported platforms report a capability block. Numeric and
+SILO CPU checks remain independent of that SQL capability.
 
 The second demo command checks completed-episode resume. Reuse the output only
 while code/config/data provenance is unchanged; after edits, select a new output
@@ -163,7 +180,13 @@ page and configure Hugging Face authentication using the provider's normal
 credential mechanism. Never place credentials in repository files, URLs or logs.
 Downloads/installations happen here, never in each array element.
 
-### One-GPU preflight and one-task E0 smoke
+### One-GPU preflight and one-task SQLite-fixture E0 smoke
+
+The default `gpu-smoke.json` and `pilot.json` now use labelled SQLite fixtures.
+The prior numeric configs are preserved as `numeric-gpu-smoke.json` and
+`numeric-pilot.json`. Use new manifest/output filenames for the migration to
+avoid confusion with the completed numeric runs. SQL preflight also probes the
+fixed CPU executor inside the same allocated compute job.
 
 ```bash
 python scripts/bc.py manifest --config configs/gpu-smoke.json --model-lock "$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json" --output "$BC_STORAGE/smoke-manifest.json"
@@ -182,7 +205,7 @@ one-task **complete episode** smoke, submit the same manifest using
 `submit_pilot.sh --concurrency 1` after preflight completes. This separates model
 loading/chat-template compatibility from actual worker/task competence.
 
-### Four-task engineering pilot
+### Four-task SQLite-fixture engineering pilot
 
 ```bash
 python scripts/bc.py manifest --config configs/pilot.json --model-lock "$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json" --output "$BC_STORAGE/pilot-manifest.json"
@@ -251,14 +274,80 @@ bash scripts/export_bundle.sh --output "$BC_RUN_OUTPUT" --bundle "$BC_STORAGE/pi
 
 Resume includes only missing/interrupted/infrastructure-failed episodes; completed
 episodes in a partly failed shard are skipped. Provenance changes require a new
-run. Export contains bounded sanitized JSON summaries, manifests, configuration,
-errors and tracebacks. It excludes contexts, hidden contents, credentials,
+run. Export contains bounded sanitized JSON summaries, manifests, configuration
+and errors. New v2 data-workflow exports exclude raw tracebacks and private input
+paths as well as contexts, hidden contents, credentials,
 environment dumps, model caches, repositories and tensors. Inspect the small
 bundle, then download it using the cluster browser's file-download interface.
 Completed jobs depend on neither the browser session nor a local machine, and
 offline batch inference needs no external network after staging.
 
-### CooperBench staging and the 320-episode plan
+### Native SQLite, paired tasks and SILO
+
+Use [the exact staging/review commands](MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands)
+to obtain a private `bc-data-v2` manifest. No database or author test download is
+part of a shard. `sqlite-validate --count 10` checks ten explicitly reviewed
+native tasks. `sqlite-pairs` freezes reviewed candidates and retains block/reject
+reasons. The provided crypto candidate is not yet validated, and no second pair
+has been invented. Register data outside Git. The source databases remain
+immutable; the executor owns disposable state for every invocation.
+
+After native/pair validation and the fixture smoke pass, these commands plan
+the real model path without submitting it:
+
+```bash
+python scripts/bc.py manifest --config configs/sqlite-native-smoke.json \
+  --data-manifest "$BC_STORAGE/sqlite-native-validated.json" \
+  --model-lock "$BC_MODEL_LOCK" --output "$BC_STORAGE/sqlite-native-smoke-manifest.json"
+python scripts/bc.py manifest --config configs/sqlite-pair-validation-pilot.json \
+  --data-manifest "$BC_STORAGE/sqlite-pairs-validated.json" \
+  --model-lock "$BC_MODEL_LOCK" --output "$BC_STORAGE/sqlite-pair-validation-manifest.json"
+bash experiments/submit_pilot.sh --cluster configs/cluster.local.json \
+  --manifest "$BC_STORAGE/sqlite-pair-validation-manifest.json" \
+  --model-lock "$BC_MODEL_LOCK" --concurrency 1 --dry-run
+```
+
+The two-pair config requires two approved **development** pairs; a smaller
+validated set stays blocked. For four approved tasks use the corresponding
+`sqlite-native-pilot.json` or `sqlite-pair-pilot.json` config. A user removes
+`--dry-run` only when ready to submit and previous campaigns are reconciled.
+
+SILO staging creates small deterministic data; no upstream batch runner, API or
+Redis server is used:
+
+```bash
+python scripts/bc.py silo-generate --family II-11 --seeds 0 1 2 3 4 5 6 7 \
+  --access protected_original_shards --output "$BC_STORAGE/silo-prefix.json"
+python scripts/bc.py silo-validate --input "$BC_STORAGE/silo-prefix.json"
+python scripts/bc.py manifest --config configs/silo-smoke.json \
+  --data-manifest "$BC_STORAGE/silo-prefix.json" --model-lock "$BC_MODEL_LOCK" \
+  --output "$BC_STORAGE/silo-smoke-manifest.json"
+```
+
+`silo-pilot.json` requests four eligible development inputs; manifest creation
+reports the actual available count. Generate Pipeline Hash with `--family II-20
+--seeds 0` in a separate file. Repeated seeds do not create different Pipeline
+Hash data. `--access no_recovery_copy` creates a separately reported boundary
+diagnostic. Keep access regimes in separate manifests and campaigns.
+
+For the planned main study:
+
+```bash
+python scripts/bc.py manifest --config configs/e1.json \
+  --data-manifest "$BC_STORAGE/sqlite-pairs-validated.json" \
+  --model-lock "$BC_STORAGE/models/Qwen--Qwen3.5-9B/model-lock.json" \
+  --output "$BC_STORAGE/sqlite-e1-manifest.json"
+```
+
+This requires 20 approved development pairs and the separately staged, pinned
+9B checkpoint; no download happens here. The grid is 20 × 4 × 2 × 2 = 320 final
+episodes, still a plan. `silo-e1.json` applies the same count gate to the distinct
+SILO environment. Missing data is never substituted with fixtures or repeated
+inputs. Stop at smoke/pilot if clean competence, execution limits or runtime
+validity are unresolved. New-environment semantic sabotage is intentionally
+gated; numeric sabotage diagnostics do not satisfy that gate.
+
+### Optional legacy CooperBench staging and coding plan
 
 For the new bounded clean coding E0 path, first follow
 [CODING_SANDBOX.md](CODING_SANDBOX.md). Its qualification and evaluator controls
@@ -278,7 +367,7 @@ Read `dataset-lock.json` for the exact staged directory and revision. Run
 --output DATA_MANIFEST.json`. These uppercase arguments are values to fill from
 the inspected upstream/staging metadata, not guessed task IDs.
 
-Copy `configs/e1.json` to a gitignored local JSON file and set `data_manifest` to
+Copy `configs/cooper-e1.legacy.json` to a gitignored local JSON file and set `data_manifest` to
 that absolute validated path. Stage/resolve Qwen3.5-9B separately. The E1 config
 describes 320 planned episodes. **Execution is currently blocked pending an
 approved, tested repository sandbox and a coding worker/evaluator adapter.**
