@@ -1,5 +1,60 @@
 # Local validation record
 
+## SQLite JSON-action correction and second GPU smoke (2026-09-16)
+
+The user reported job **1076647**, experiment
+`4d0f42b1c0fa761e14566eff627251d44bc528402fa1c056a05df8273fc578b5`, snapshot
+`bb6cf30a38760b717bc395bef65af35638544d23efa70fb51fb637fa20c946fc`, and episode
+`39b500698245592014be8ffdf0d0f66f263ffbdc01e7876ed524e35a42b760f5`.
+The clean fixture episode completed with **0/1 successes**, no missing shards,
+one clean-condition alarm, one integration failure and no reserve violations.
+All four primary operations ended `malformed`, with charged work of 5100, 5791,
+7379 and 8967 for u0 through u3 respectively. There were **12** rejected actions.
+
+The retained trace confirms the revised source-ID prompt was present. It records
+successful reads of u0, the schema, u1, u2 and u3. The proposed query bodies
+included the requested ID column, multipliers 1–4 and ascending ID ordering.
+However, every query action omitted the closing `}` for `select_sql` before
+`permitted_artifact_versions`. Local parsing of all 12 literal strings from the
+trace reproduced `JSONDecodeError: Expecting ',' delimiter` at line 1, column
+257. None of those query actions reached SQL execution. The source-ID correction
+therefore reached the model, but complete-task competence remained unresolved.
+
+The new local correction provides an `invalid_json` response with parser message,
+line and column from the worker's own generated text. SQL errors also remind it
+of the top-level field layout. The shared prompt places bindings before the
+query tree in its hypothetical example. A separate `invalid_action_fields`
+response lists required public fields if valid JSON nests bindings incorrectly;
+appending a final brace to the reported action alone is insufficient. Rejections
+record an error code and assignment in the private provenance log. Errors raised
+inside an already-dispatched operation remain sanitized, including internal JSON
+decoder errors; they are not presented as diagnostics of the worker's text.
+
+The runtime never inserts braces, moves fields, executes a repaired action or
+supplies a corrected task solution. The model must generate a fresh valid action
+within the existing retry limit. Rejected generations retain their full model
+charges and re-prefill charges; parsed-but-rejected actions also retain their
+tool charge. Policies, budget rules, model settings, task requirements and scoring
+are unchanged. A new manifest is required for the revised shared instructions.
+
+Targeted CPU regressions reproduce the exact missing-brace action, verify zero
+SQL dispatch on rejected actions, check both malformed JSON and incorrect field
+nesting, keep private errors hidden, and exercise charged correction by a scripted
+worker across all four assignments. These are engineering checks; a third GPU
+fixture smoke must pass before any pilot. Both failed runs remain recorded and
+must not be overwritten or resumed under changed source.
+
+Local validation for this correction:
+
+| Command | Outcome |
+| --- | --- |
+| `python -m unittest discover -s tests -v` | **116 tests: 115 passed, 1 skipped**, 37.797 seconds |
+| `python scripts/check_shell.py` | All **9** shell/Slurm files passed |
+| `git diff --check` | Passed |
+
+The single skip remains opt-in legacy container/cgroup qualification. No GPU
+rerun, job submission, model/dependency change or Git push was performed here.
+
 ## SQLite source-ID correction and cluster evidence (2026-09-16)
 
 The user reported SQLite preflight job **1076633** on an NVIDIA A100-SXM4-40GB.

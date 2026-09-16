@@ -34,6 +34,12 @@ from beyond_consensus.util import BCError, atomic_json, digest, file_hash, plain
 
 SQL_AVAILABLE = all(capabilities()[k] for k in ('defensive','trusted_schema_off','process_limits','extension_loading_disabled','table_inventory'))
 
+# Exact malformed u0 action reported from Slurm job 1076647: select_sql was
+# never closed before the bindings field. This must not be repaired by tools.
+MISSING_SELECT_BRACE = ('{"tool":"run_read_query","select_sql":{"columns":[{"expr":{"column":"id"}},'
+    '{"expr":{"binary":["*",{"column":"value"},{"literal":1}]}}],"from":{"table":"measurements"},'
+    '"order_by":[{"expr":{"column":"id"},"direction":"asc"}],"permitted_artifact_versions":{}}')
+
 
 def domain_at(directory, task=None):
     task = task or fixtures()[0]
@@ -158,6 +164,123 @@ class ExecutorTests(unittest.TestCase):
 
 @unittest.skipUnless(SQL_AVAILABLE, 'Fixed SQL executor needs supported stdlib CPU resource controls')
 class DataEpisodeTests(unittest.TestCase):
+    def test_query_missing_brace_reports_location_without_tool_execution(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class RepeatingModel(MockBackend):
+            def generate(self, *args):
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        for raw in (MISSING_SELECT_BRACE, MISSING_SELECT_BRACE.replace('measurements', 'PRIVATE_BODY_SENTINEL')):
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as temp:
+                domain = domain_at(temp)
+                loop = WorkerLoop(RepeatingModel(), domain.engine.config, domain.engine.ledger,
+                                  domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+                with patch.object(domain, 'sql') as sql:
+                    outcome = loop.run(domain.task, 'u0', 'w0', 'primary', 0)
+                    sql.assert_not_called()
+                self.assertEqual(outcome.status, 'malformed')
+                self.assertEqual(outcome.actions, domain.engine.config.malformed_retries + 1)
+                errors = [json.loads(m['content']) for m in domain.store.contexts['w0'].messages
+                          if m['role'] == 'user' and '"error_code"' in m['content']]
+                self.assertEqual(len(errors), outcome.actions)
+                for error in errors:
+                    self.assertEqual(error['error_code'], 'invalid_json')
+                    self.assertEqual(error['parser_error'], "Expecting ',' delimiter")
+                    self.assertEqual((error['line'], error['column']), (1, len(raw) + 1))
+                    self.assertNotIn('PRIVATE_BODY_SENTINEL', json.dumps(error))
+                    self.assertNotIn('select_sql', error)
+                self.assertFalse(domain.store.artifacts)
+                self.assertFalse(any(e['kind'] in ('tool', 'sql_execution') for e in domain.engine.ledger.entries))
+                calls = [e for e in domain.engine.ledger.entries if e['kind'] == 'model']
+                self.assertEqual(len(calls), outcome.actions)
+                self.assertTrue(all(e['work'] > 0 and e['input_tokens'] > 0 for e in calls))
+                rejected = [e for e in domain.store.events if e['type'] == 'prohibited_or_malformed_action']
+                self.assertEqual(len(rejected), outcome.actions)
+                self.assertTrue(all(e['error_code'] == 'invalid_json' and e['unit'] == 'u0' for e in rejected))
+
+    def test_nested_query_bindings_are_rejected_with_public_field_guidance(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class RepeatingModel(MockBackend):
+            def generate(self, *args):
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        for tool in ('run_read_query', 'submit_view_definition'):
+            for duplicate in (False, True):
+                with self.subTest(tool=tool, duplicate=duplicate), tempfile.TemporaryDirectory() as temp:
+                    # Appending a brace makes JSON valid but leaves bindings at the wrong level.
+                    action = json.loads(MISSING_SELECT_BRACE + '}')
+                    action['tool'] = tool
+                    required = {'tool', 'select_sql', 'permitted_artifact_versions'}
+                    if tool == 'submit_view_definition':
+                        action['artifact_name'] = 'example_view'
+                        required.add('artifact_name')
+                    if duplicate:
+                        action['permitted_artifact_versions'] = {}
+                    raw = json.dumps(action)
+                    domain = domain_at(temp)
+                    loop = WorkerLoop(RepeatingModel(), domain.engine.config, domain.engine.ledger,
+                                      domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+                    with patch.object(domain, 'sql') as sql:
+                        outcome = loop.run(domain.task, 'u0', 'w0', 'primary', 0)
+                        sql.assert_not_called()
+                    self.assertEqual(outcome.status, 'malformed')
+                    self.assertEqual(outcome.actions, domain.engine.config.malformed_retries + 1)
+                    errors = [json.loads(m['content']) for m in domain.store.contexts['w0'].messages
+                              if m['role'] == 'user' and '"error_code"' in m['content']]
+                    self.assertEqual(len(errors), outcome.actions)
+                    for error in errors:
+                        self.assertEqual(error['error_code'], 'invalid_action_fields')
+                        self.assertEqual(set(error['required_fields']), required)
+                        self.assertEqual(set(error), {'error', 'error_code', 'required_fields'})
+                    self.assertFalse(domain.store.artifacts)
+                    for kind in ('model', 'tool'):
+                        entries = [e for e in domain.engine.ledger.entries if e['kind'] == kind]
+                        self.assertEqual(len(entries), outcome.actions)
+                        self.assertTrue(all(e['work'] > 0 for e in entries))
+
+    def test_scripted_worker_corrects_json_with_fully_charged_retry(self):
+        class MissingBraceModel(MockBackend):
+            def __init__(self):
+                self.parser_feedback = []
+
+            def generate(self, messages, max_new_tokens, seed):
+                observation = json.loads(messages[-1]['content'])
+                if observation.get('tool') == 'read_source':
+                    factor = observation['result']['factor']
+                    self.broken = MISSING_SELECT_BRACE.replace('"literal":1', f'"literal":{factor}')
+                    return Generation(self.broken, (len(self.broken.encode()) + 3) // 4)
+                if 'error' in observation:
+                    if observation.get('error_code') != 'invalid_json':
+                        return Generation(self.broken, (len(self.broken.encode()) + 3) // 4)
+                    self.parser_feedback.append(observation)
+                # The next model call generates a valid action from its own visible source.
+                return super().generate(messages, max_new_tokens, seed)
+
+        config = RunConfig(task_kind='sqlite_fixture', monitor_id='data-structure-v1',
+                           policies=('single',), attacks=('clean',), max_actions=12)
+        manifest = build_manifest(config, ROOT)
+        backend = MissingBraceModel()
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_manifest(manifest, Path(temp), ROOT, backend=backend)[0]
+            self.assertTrue(result['success'])
+            self.assertEqual(len(backend.parser_feedback), 4)
+            self.assertEqual(result['metrics']['tool_rejections'], 4)
+            entries = result['costs']['entries']
+            calls = [e for e in entries if e['kind'] == 'model']
+            self.assertEqual(len(calls), 16)
+            self.assertTrue(all(e['work'] == e['input_tokens'] * config.budget.input_weight
+                                + e['output_tokens'] * config.budget.output_weight for e in calls))
+            # Four malformed generations never dispatch tools; all valid calls are charged.
+            tools = [e for e in entries if e['kind'] == 'tool']
+            self.assertEqual(len(tools), 12)
+            self.assertTrue(all(e['work'] == config.budget.tool_charge for e in tools))
+
     def test_unknown_source_feedback_allows_charged_recovery_across_assignments(self):
         class ConfusedSourceModel(MockBackend):
             def __init__(self):
@@ -211,14 +334,17 @@ class DataEpisodeTests(unittest.TestCase):
         cases = [{'tool': 'read_source', 'name': name} for name in
                  ('fixture', '/private/hidden-evaluation', ['u0'])]
         cases.append({'tool': 'inspect_schema', 'database_id': 'fixture'})
-        for action in cases:
-            with self.subTest(action=action), tempfile.TemporaryDirectory() as temp:
+        cases = [(action, BCError('HIDDEN_SQL /private/gold-tests.json')) for action in cases]
+        cases.append(({'tool': 'inspect_schema', 'database_id': 'fixture'},
+                      json.JSONDecodeError('HIDDEN_SQL /private/gold-tests.json', 'PRIVATE_DOCUMENT', 0)))
+        for action, exception in cases:
+            with self.subTest(action=action, exception=type(exception).__name__), tempfile.TemporaryDirectory() as temp:
                 raw = json.dumps(action)
                 domain = domain_at(temp)
                 loop = WorkerLoop(RepeatingModel(), domain.engine.config, domain.engine.ledger,
                                   domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
                 # Errors from other restricted operations must never echo private exception text.
-                with patch.object(domain, 'handle', side_effect=BCError('HIDDEN_SQL /private/gold-tests.json')):
+                with patch.object(domain, 'handle', side_effect=exception):
                     outcome = loop.run(domain.task, 'u2', 'w0', 'primary', 0)
                 self.assertEqual(outcome.status, 'malformed')
                 self.assertEqual(outcome.actions, domain.engine.config.malformed_retries + 1)

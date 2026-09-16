@@ -9,8 +9,9 @@ Start with [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md),
 [STATUS.md](docs/STATUS.md) and [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md).
 The new path reuses the model, workers, budgets, provenance and scheduler, and
 does not require cgroup delegation. Real database/material validation remains
-pending. The user-reported SQLite/model preflight passed, but the full fixture
-smoke failed; a source-ID prompt/error correction awaits a new GPU smoke.
+pending. The user-reported SQLite/model preflight passed, but two full fixture
+smokes failed. Job 1076647 read the contracts correctly, then emitted malformed
+query-action JSON. Improved parser/field feedback awaits a new GPU smoke.
 Prior results and delegation probes are preserved below as history, not current
 execution instructions.
 
@@ -25,16 +26,16 @@ execution instructions.
   original-shard access rules, all-output scoring and public-data parity tests.
 - M4 configs and guarded submission paths exist. Successful real-model smoke/pilot,
   sufficient approved development instances and measured calibration are pending.
-- Validation: **113 tests, 112 passed, one legacy sandbox integration skip**;
+- Validation: **116 tests, 115 passed, one legacy sandbox integration skip**;
   **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
-  [the current validation record](docs/VALIDATION.md#sqlite-source-id-correction-and-cluster-evidence-2026-09-16)
+  [the current validation record](docs/VALIDATION.md#sqlite-json-action-correction-and-second-gpu-smoke-2026-09-16)
   for exact commands and the limits of this evidence.
 
 First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
 After the user reviews, commits and pushes the changes, use the existing browser
 terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). The reported
 preflight job 1076633 already passed. Create a new SQLite fixture smoke manifest
-after pulling the source-ID correction, using the existing model lock;
+after pulling the JSON-action correction, using the existing model lock;
 stage and review real data separately before native/pair runs. No jobs, large
 downloads, messages or pushes were performed during this migration.
 

@@ -92,18 +92,37 @@ class WorkerLoop:
                 raise
             messages.append({"role": "assistant", "content": generation.text})
             self.boundary("model_complete")
+            action_parsed = False
             try:
                 action = json.loads(generation.text)
+                action_parsed = True
                 artifact = self._tool(task, unit, identity, action, stage, operation, allowed_artifacts, floor)
                 self.boundary("tool_complete")
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
             except (ValueError, TypeError, KeyError, BCError) as exc:
-                from ..runtime.data_domain import TaskUnavailable
+                from ..runtime.data_domain import ActionFieldsError, SQL_KINDS, TaskUnavailable
                 if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
-                if self.domain and isinstance(exc, UnknownSource):
+                if self.domain and isinstance(exc, json.JSONDecodeError) and not action_parsed:
+                    # Parser diagnostics describe only the worker's own text;
+                    # never return the document or an unrelated tool exception.
+                    observation = {
+                        "error": "Invalid JSON syntax. No tool was executed. Resend one complete JSON object with matching braces and brackets.",
+                        "error_code": "invalid_json",
+                        "parser_error": exc.msg, "line": exc.lineno, "column": exc.colno,
+                    }
+                    if task.kind in SQL_KINDS:
+                        observation["hint"] = ("For SQL actions, write permitted_artifact_versions before select_sql "
+                                               "at the top level. Close both the query object and the action object.")
+                elif self.domain and isinstance(exc, ActionFieldsError):
+                    observation = {
+                        "error": "SQL tool arguments must be top-level action fields. permitted_artifact_versions is a sibling of select_sql, never inside it.",
+                        "error_code": "invalid_action_fields",
+                        "required_fields": list(exc.required_fields),
+                    }
+                elif self.domain and isinstance(exc, UnknownSource):
                     # Only repeat public assignment metadata. Do not echo the
                     # invalid name, raw exception, source contents or gold.
                     observation = {
@@ -116,7 +135,8 @@ class WorkerLoop:
                     observation = {"error": str(exc) if not self.domain else "Action rejected by the restricted tool contract"}
                 self._observe(identity, observation)
                 if self.domain:
-                    self.store.events.append({"type": "prohibited_or_malformed_action", "identity": identity, "stage": stage})
+                    self.store.events.append({"type": "prohibited_or_malformed_action", "identity": identity,
+                        "unit": unit, "stage": stage, "error_code": observation.get("error_code", "restricted_action_rejected")})
                 self.boundary("malformed_action")
                 if malformed > self.config.malformed_retries:
                     return WorkerOutcome("malformed", None, turn + 1)

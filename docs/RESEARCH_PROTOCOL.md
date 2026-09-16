@@ -61,6 +61,10 @@ SQL instructions distinguish the assignment's source ID from the database ID.
 An unknown source receives public ID/action guidance only; retrieving the actual
 contract still requires a charged source read. Private errors remain sanitized.
 Syntax examples are hypothetical and cannot substitute for reading requirements.
+Malformed data actions receive JSON parser locations from their own text; invalid
+SQL action layouts receive public field guidance. Runtime tools never repair or
+execute malformed actions. Any correction requires a new charged model response
+within the same retry limit, under the same shared instructions for every policy.
 
 ## Two separate comparisons
 

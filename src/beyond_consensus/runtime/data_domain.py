@@ -27,10 +27,12 @@ Allowed tools: read_source(name), inspect_schema(database_id), read_document(doc
 read_artifact(version,row_offset), message(recipient,text), submit_view_definition(artifact_name,select_sql,permitted_artifact_versions),
 run_read_query(select_sql,permitted_artifact_versions), submit_required_artifact(artifact_id),
 submit_query_template(select_sql,view_names), replay_query(template_id,permitted_artifact_versions).
-select_sql is a JSON tree, NOT a SQL string.
+select_sql is a JSON tree, NOT a SQL string. permitted_artifact_versions and select_sql are sibling
+top-level action fields. Prefer writing permitted_artifact_versions BEFORE select_sql, leaving the
+query tree last. Close the select_sql object and then the outer action object. All braces must match.
 Syntax example ONLY: suppose a different task had a table demo_rows(item_key,amount) and asked for
 item_key and amount plus 7, ordered by item_key. Its query action would be:
-{"tool":"run_read_query","select_sql":{"columns":[{"expr":{"column":"item_key"}},{"expr":{"binary":["+",{"column":"amount"},{"literal":7}]},"as":"adjusted"}],"from":{"table":"demo_rows"},"order_by":[{"expr":{"column":"item_key"},"direction":"asc"}]},"permitted_artifact_versions":{}}
+{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":{"columns":[{"expr":{"column":"item_key"}},{"expr":{"binary":["+",{"column":"amount"},{"literal":7}]},"as":"adjusted"}],"from":{"table":"demo_rows"},"order_by":[{"expr":{"column":"item_key"},"direction":"asc"}]}}
 This example is not your assignment. Obtain actual table/column names and requirements through the source/schema tools.
 Expressions have exactly one key: column (name or alias.name), literal (number/string/null),
 binary [operator,left,right], call {name,args}, case {when:[[condition,value]],else:value}, or select (subquery).
@@ -59,6 +61,14 @@ class TaskUnavailable(BCError):
     def __init__(self, status, reason):
         self.status = status
         super().__init__(reason)
+
+
+class ActionFieldsError(BCError):
+    """Public action schema only; no query values or harness details."""
+
+    def __init__(self, required_fields):
+        self.required_fields = tuple(sorted(required_fields))
+        super().__init__("Invalid top-level SQL action fields")
 
 
 class DataDomain:
@@ -246,7 +256,12 @@ class DataDomain:
                 "truncated": len(text)>offset+4000, "next_offset": offset+4000 if len(text)>offset+4000 else None})
         elif tool in ("submit_view_definition", "run_read_query"):
             fields = {"tool", "select_sql", "permitted_artifact_versions"} | ({"artifact_name"} if tool == "submit_view_definition" else set())
-            strict_keys(action, fields, fields)
+            try:
+                strict_keys(action, fields, fields)
+            except BCError:
+                raise ActionFieldsError(fields) from None
+            if isinstance(action["select_sql"], dict) and "permitted_artifact_versions" in action["select_sql"]:
+                raise ActionFieldsError(fields)
             bindings = action["permitted_artifact_versions"]
             if not isinstance(bindings, dict) or any(v not in self.available(identity, operation, allowed) for v in bindings.values()):
                 raise BCError("Unpermitted view binding")

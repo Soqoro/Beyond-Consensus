@@ -17,14 +17,15 @@ and delegation evidence below is retained as history.
   original output obligations. Communication changes are labelled explicitly.
 - Preserved: numeric diagnostics, original model/dependency settings, A/B budget
   separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
-- Locally validated: 113 tests (112 passed, one opt-in legacy sandbox skip), nine
+- Locally validated: 116 tests (115 passed, one opt-in legacy sandbox skip), nine
   shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
   failure paths. These are engineering checks, not model/benchmark results.
 - User-reported cluster check: SQLite/model preflight job 1076633 passed on an
-  A100 40 GB. The first full SQLite fixture smoke completed but failed (0/1).
-  Its trace shows database/source-ID confusion and queries submitted without
-  reading the assigned contracts. Shared prompt/error feedback is corrected
-  locally; a fresh real-model smoke is required before the four-task pilot.
+  A100 40 GB. Two full fixture smokes completed but failed (0/1 each). The first
+  exposed source-ID confusion. Job 1076647 used the revised prompt and read all
+  contracts, but all 12 query attempts omitted a closing JSON brace. Parser and
+  action-field feedback are now corrected locally; a fresh real-model smoke is
+  required before the four-task pilot.
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains

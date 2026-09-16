@@ -30,6 +30,12 @@ readable. New artifacts and private input manifests must stay outside Git.
 | `missing` | Aggregation-only: no result exists for a planned episode. |
 
 Tool rejections are charged events and counted in `metrics.tool_rejections`.
+Private rejection events include assignment and `error_code`: `invalid_json`,
+`invalid_action_fields`, `unknown_source`, or `restricted_action_rejected`.
+JSON parser locations describe only the worker's generated text. Public field
+guidance does not contain query values, references or private exception text.
+Invalid JSON never dispatches a tool; its model generation and re-prefill remain
+charged. Parsed-but-rejected tool actions also incur the normal tool charge.
 The worker may correct an action; exhausting its action/retry limit can leave
 an incomplete `completed` episode. A known execution limit ends with its own
 status and does not silently restart under increased limits.
