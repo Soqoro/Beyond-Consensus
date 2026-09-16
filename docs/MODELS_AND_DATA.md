@@ -87,6 +87,14 @@ feature alone as complete success would change the research question.
 
 ## Current execution blocker
 
+**Update:** an opt-in clean coding E0 adapter now exists; see
+[CODING_SANDBOX.md](CODING_SANDBOX.md). It requires a reviewed dependency image,
+delegated cgroup v2 limits, measured node-specific isolation checks and explicit
+approval, plus task-specific baseline/reference evaluator controls. Those gates
+have not been met in this workspace. The ordinary fixture workflow remains the
+only execution mode enabled by default. The historical boundary below describes
+the initial implementation; no basic Alpine probe alone enables coding.
+
 The AAI snapshot does not establish a usable isolation facility. This repository
 therefore supports **only the bounded typed workflow interpreter** for execution.
 Its four arithmetic operations have numeric/step limits; there is no `eval`,

@@ -59,6 +59,31 @@ def parser() -> argparse.ArgumentParser:
     doctor = sub.add_parser("doctor", help="Lightweight login/sandbox capabilities; no model loading")
     doctor.add_argument("--dry-run", action="store_true")
     doctor.add_argument("--cluster", type=Path)
+    probe = sub.add_parser("sandbox-probe", help="Qualify fixed container probes; never approves repository execution")
+    probe.add_argument("--profile", type=Path, required=True)
+    probe.add_argument("--output", type=Path, required=True)
+    approval = sub.add_parser("sandbox-approve", help="Record explicit image/site review of passing qualification reports")
+    approval.add_argument("--reports", type=Path, nargs="+", required=True)
+    approval.add_argument("--reviewer", required=True)
+    approval.add_argument("--image-reviewed", action="store_true")
+    approval.add_argument("--output", type=Path, required=True)
+    inspect = sub.add_parser("sandbox-inspect", help="Read-only runtime/image fingerprints and cgroup delegation check")
+    inspect.add_argument("--runtime-root", type=Path, required=True)
+    inspect.add_argument("--image", type=Path, required=True)
+    profile = sub.add_parser("sandbox-profile", help="Fingerprint a private runtime/image; writes no approval")
+    for name in ("runtime-root", "image", "scratch-root", "output"):
+        profile.add_argument("--"+name, type=Path, required=True)
+    profile.add_argument("--python", default="/usr/local/bin/python3")
+    profile.add_argument("--cgroup-parent", default="current")
+    environment = sub.add_parser("cooper-environment", help="Record explicitly reviewed pristine source and joint test commands")
+    for name in ("data-manifest", "base-root", "profile", "approval", "suites", "output"):
+        environment.add_argument("--"+name, type=Path, required=True)
+    environment.add_argument("--task-id", required=True)
+    environment.add_argument("--reviewer", required=True)
+    environment.add_argument("--source-reviewed", action="store_true")
+    validation = sub.add_parser("cooper-validate-environment", help="Run baseline and reference controls inside an approved sandbox")
+    for name in ("environment", "data-manifest", "output"):
+        validation.add_argument("--"+name, type=Path, required=True)
     submit = sub.add_parser("submit", help="Guarded Slurm submission; explicit user action only")
     submit.add_argument("--cluster", type=Path, required=True)
     submit.add_argument("--manifest", type=Path, required=True)
@@ -95,6 +120,15 @@ def dispatch(args: argparse.Namespace) -> Any:
     from .experiments.manifest import build_manifest, validate_manifest
     if args.command == "manifest":
         config = load_config(args.config)
+        if config.coding_environment:
+            from .runtime.repository import CodingEnvironment
+            environment = CodingEnvironment(Path(config.coding_environment), config.coding_environment_hash)
+            config = replace(config, coding_environment_hash=environment.hash)
+        if config.coding_validation:
+            measured_hash = digest(read_json(config.coding_validation))
+            if config.coding_validation_hash and config.coding_validation_hash != measured_hash:
+                raise BCError("Coding validation changed; update configuration explicitly")
+            config = replace(config, coding_validation_hash=measured_hash)
         if args.model_lock:
             from .models.staging import resolve_model_config
             config = replace(config, model=resolve_model_config(config.model, args.model_lock))
@@ -172,6 +206,66 @@ def dispatch(args: argparse.Namespace) -> Any:
         from .experiments.cluster import doctor, load_cluster
         return doctor(load_cluster(args.cluster) if args.cluster else None) if not args.dry_run else {
             "operations": ["scheduler/module/storage capability inspection"], "model_loaded": False}
+    if args.command == "sandbox-inspect":
+        from .runtime.apptainer import runtime_hash, absolute, cgroup_parent
+        from .util import file_hash
+        result = {"runtime_sha256": runtime_hash(absolute(str(args.runtime_root))),
+                  "image_sha256": file_hash(absolute(str(args.image))), "repository_execution": False}
+        try:
+            result["cgroup_membership"] = Path("/proc/self/cgroup").read_text()
+            result["cgroup_mount_controllers"] = Path("/sys/fs/cgroup/cgroup.controllers").read_text().strip()
+            from types import SimpleNamespace
+            result["delegated_cgroup_parent"] = str(cgroup_parent(SimpleNamespace(cgroup_parent="current")))
+            result["delegated_cgroup_available"] = True
+        except (OSError, BCError) as exc:
+            result["cgroup_error"] = str(exc)
+            result["delegated_cgroup_available"] = False
+        return result
+    if args.command == "sandbox-profile":
+        from .runtime.apptainer import SandboxProfile, runtime_hash, absolute
+        from .util import file_hash
+        if args.output.exists():
+            raise BCError("Use a new sandbox profile path; do not overwrite a pinned profile")
+        profile = SandboxProfile(str(absolute(str(args.runtime_root))), runtime_hash(args.runtime_root),
+            str(absolute(str(args.image))), file_hash(args.image), str(absolute(str(args.scratch_root))),
+            cgroup_parent=args.cgroup_parent, python=args.python)
+        atomic_json(args.output, profile)
+        return {"profile": str(args.output), "profile_hash": digest(profile), "approved": False}
+    if args.command == "sandbox-probe":
+        from .runtime.apptainer import SandboxProfile, qualify
+        return qualify(SandboxProfile.load(args.profile), args.output)
+    if args.command == "sandbox-approve":
+        from .runtime.apptainer import approve
+        return approve(args.reports, args.reviewer, args.image_reviewed, args.output)
+    if args.command in ("cooper-environment", "cooper-validate-environment"):
+        from .tasks.cooperbench import validate_manifest as validate_data
+        from .runtime.repository import CodingEnvironment, inventory
+        from .runtime.apptainer import SandboxProfile
+        tasks = validate_data(args.data_manifest)
+        if args.command == "cooper-environment":
+            if not args.source_reviewed or not args.reviewer.strip() or args.output.exists():
+                raise BCError("Use a new output and explicitly review source/base commit and suite commands")
+            task = next((t for t in tasks if t.id == args.task_id), None)
+            if task is None:
+                raise BCError("Task was not imported from the staged dataset")
+            data = {"schema": "cooper-e0-environment-v1", "task_id": task.id, "task_hash": task.source_hash,
+                "base_root": str(args.base_root.resolve()), "base_files": inventory(args.base_root.resolve()),
+                "profile": plain(SandboxProfile.load(args.profile)), "approval": str(args.approval.resolve()),
+                "approval_hash": digest(read_json(args.approval)),
+                "reviewer": args.reviewer, "source_review": True, "suites": read_json(args.suites)}
+            atomic_json(args.output, data)
+            try:
+                CodingEnvironment(args.output).validate_task(task)
+            except Exception:
+                args.output.unlink()
+                raise
+            return {"environment": str(args.output), "hash": digest(data), "execution": "not run"}
+        environment = CodingEnvironment(args.environment)
+        task = next((t for t in tasks if t.id == environment.data["task_id"]), None)
+        if task is None:
+            raise BCError("Environment task is missing from the imported dataset")
+        from .evaluation.cooperbench import validate_environment
+        return validate_environment(environment, task, args.data_manifest, args.output)
     if args.command == "submit":
         from .experiments.cluster import submit, load_cluster
         return submit(ROOT, load_cluster(args.cluster), read_json(args.manifest), read_json(args.model_lock),

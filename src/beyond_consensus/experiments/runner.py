@@ -43,7 +43,7 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                 atomic_json(existing, manifest)
     if config.task_kind == "cooperbench":
         from ..runtime.sandbox import require_repository_sandbox
-        require_repository_sandbox()
+        require_repository_sandbox(config, tasks=[task_from(t) for t in manifest["tasks"]])
     selected = [e for e in manifest["episodes"] if shard is None or e["shard"] == shard]
     stopped = [False]
     previous_handlers = {}
@@ -89,7 +89,11 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                         # remaining planned episodes stay explicitly missing.
                         break
                 task = task_from(next(t for t in manifest["tasks"] if t["id"] == episode.task_id))
-                engine = EpisodeEngine(task, episode, config, backend, journal, attempt, lambda: stopped[0])
+                engine_type = EpisodeEngine
+                if config.task_kind == "cooperbench":
+                    from ..runtime.coding_episode import CodingEpisodeEngine
+                    engine_type = CodingEpisodeEngine
+                engine = engine_type(task, episode, config, backend, journal, attempt, lambda: stopped[0])
                 result = engine.run()
                 results.append(read_json(result_path))
                 if result.status == "interrupted":

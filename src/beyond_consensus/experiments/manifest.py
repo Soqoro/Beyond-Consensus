@@ -65,6 +65,11 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
     tasks = load_tasks(config) if tasks is None else tasks
     if len(tasks) != config.task_count or len({t.id for t in tasks}) != len(tasks):
         raise BCError("Task count/uniqueness does not match the planned configuration")
+    if config.coding_environment:
+        from ..runtime.coding_episode import require_coding_e0, validate_coding_task
+        environment = require_coding_e0(config)
+        for task in tasks:
+            validate_coding_task(config, environment, task)
     if config.protocol == "B" and (len(tasks) != 1 or len(config.seeds) != 1 or len(config.attacks) != 1):
         raise BCError("Each Protocol B manifest compares policies on exactly one frozen task/seed/alarm")
     source = source_revision(root)
@@ -92,7 +97,10 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     if data.get("schema") != "bc-manifest-v1":
         raise BCError("Unknown experiment manifest schema")
     config = from_dict(data["config"])
-    if digest(config) != data["config_hash"] or digest(data["tasks"]) != data["data_hash"]:
+    # Hash the serialized configuration so older immutable fixture reports remain
+    # readable when optional fields are added to RunConfig. New runs still hash
+    # the fully resolved dataclass; source checks prevent resuming old code here.
+    if digest(data["config"]) != data["config_hash"] or digest(data["tasks"]) != data["data_hash"]:
         raise BCError("Manifest config/data hash mismatch")
     if digest(config.model) != data["model_hash"]:
         raise BCError("Manifest model hash mismatch")

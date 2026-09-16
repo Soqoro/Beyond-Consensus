@@ -210,7 +210,8 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Manifest and staged model differ")
     if run_config.task_kind == "cooperbench":
         from ..runtime.sandbox import require_repository_sandbox
-        require_repository_sandbox()
+        from .manifest import task_from
+        require_repository_sandbox(run_config, submission=True, tasks=[task_from(t) for t in manifest["tasks"]])
     if mode == "preflight" and concurrency != 1:
         raise BCError("Preflight requires concurrency=1")
     shards = failed_shards if failed_shards is not None else list(range(1 if mode == "preflight" else run_config.shards))

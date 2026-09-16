@@ -83,11 +83,6 @@ class SafetyAndModelTests(unittest.TestCase):
             with self.assertRaisesRegex(BCError, "No approved repository sandbox"):
                 require_repository_sandbox()
 
-    @unittest.skip("Repository isolation integration unavailable: no approved sandbox adapter or site isolation attestation exists")
-    def test_real_sandbox_network_home_credentials_mount_and_evaluator_isolation(self):
-        # This integration cannot honestly certify isolation by mocking a capability flag.
-        require_repository_sandbox()
-
     def test_gpu_loading_blocked_before_torch_import(self):
         with patch.dict(os.environ, {}, clear=True):
             with self.assertRaisesRegex(BCError, "Slurm GPU allocation"):

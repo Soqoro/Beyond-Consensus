@@ -33,6 +33,9 @@
   archives, resolved input hashes, environment inventory and no editable imports.
 - CPU CI, platform-neutral Python entrypoint, pinned dependency specifications,
   LF enforcement, configuration templates, profiles and the browser-terminal runbook.
+- Opt-in Apptainer/cgroup adapter, qualification/review commands and a clean
+  integrated coding E0 worker/evaluator. CPU tests inject sandbox responses;
+  actual cgroup/container qualification and a real coding episode remain pending.
 
 ## Boundaries and deferred work
 
@@ -44,19 +47,32 @@ including Git history. No such capability was available here. Docker/Apptainer
 presence alone is insufficient. The loader fails closed; it does not execute a
 stub and mark it successful.
 
-Once isolation is available, a coding action adapter and joint CooperBench
-evaluation runner still need implementation and validation against that sandbox.
-General coding decomposition/cost calibration cannot be inferred from these
-numeric fixtures. Real GPU fixed-state capture, restored-context reconstruction
+The user subsequently reported a successful basic Apptainer probe on Jupyter
+and supplied successful compute-node probe logs from `node13` (kernel
+`6.8.0-51-generic`, private Apptainer `1.5.3-3.el8`). The probe checked an explicit
+writable work mount, absence of two tested host paths, and a separate network
+namespace with no routes. This establishes basic container operation on that
+node, not the full sandbox contract above. Credential/socket isolation, resource
+enforcement, worker/evaluator separation and hidden-material exclusion remain
+unvalidated. See [VALIDATION.md](VALIDATION.md) for the image identity and evidence.
+
+The clean coding E0 adapter and joint evaluator are now implemented behind
+explicit image/site qualification, source review and baseline/reference controls.
+They remain unvalidated on the cluster and cannot run from the old Alpine probe
+alone. Four-policy coding decomposition/cost calibration cannot be inferred from
+numeric fixtures and remains unimplemented. See [CODING_SANDBOX.md](CODING_SANDBOX.md)
+for exact gates and commands. Real GPU fixed-state capture, restored-context reconstruction
 routes, oracle localization, adaptive attacks, dependency-poisoning sweeps,
 cross-family/Gemma validation, grouped confidence intervals, and E2–E5 are deferred.
 
 Initial implementation validation used CPU and scheduler mocks only. Subsequent
 user-provided cluster logs report a successful Qwen3.5-4B preflight on an A100
 40 GB, followed by a completed but unsuccessful single-task fixture episode.
-The visible worker trace repeats invalid JSON copied from the original prompt;
-the shared prompt and task instructions have now been corrected locally. GPU
-validation of that correction and the four-task pilot remain pending. See
+After correcting the invalid JSON examples, the user reported a successful
+single-task GPU episode and two successful 32-episode fixture pilots: clean
+versus withholding, and clean versus artifact sabotage. No advance preparation
+was used; these runs do not establish a recovery-policy advantage. They do not
+validate real repository isolation or CooperBench execution. See
 [VALIDATION.md](VALIDATION.md) for the reported hardware, revision and limitations.
 
 ## Conflicts and scientific choices
@@ -82,8 +98,8 @@ validation of that correction and the four-task pilot remain pending. See
 See `docs/VALIDATION.md` for the exact commands and outcomes from this workspace.
 Regression tests exercise accounting, exposure, provenance, allocation, final-output
 coverage, grouped splits, resume, protocol separation, sandbox blocking, sanitization,
-and scheduler mocks. The genuine repository-isolation integration test is skipped
-with its actual missing-adapter reason.
+and scheduler mocks. The opt-in repository-isolation integration test is skipped
+without an explicit cluster sandbox profile; it executes real probes when one is supplied.
 
 Next local commands and the separate online-cluster sequence are in
 [LOCAL_TO_SLURM.md](LOCAL_TO_SLURM.md). Stop before experiments until the user has

@@ -5,7 +5,8 @@
 Does recovery-aware delegation improve complete-task success after contributor
 compromise at the **same total execution budget**? The answer may be no.
 The first implementation supports executable numeric workflow fixtures, a real
-text-only model adapter, and a read-only CooperBench manifest adapter.
+text-only model adapter, and a read-only CooperBench manifest adapter. A later
+opt-in clean coding E0 extension is described below; its cluster validation is pending.
 Fixtures are engineering data and cannot establish coding-benchmark findings.
 
 Four identities (`w0`–`w3`) share one frozen backend instance in each episode.
@@ -167,6 +168,40 @@ false alarms, and reserve violations. Repository/base groups are preserved in
 the report. Grouped inferential statistics and confidence intervals are deferred.
 
 ## Planned studies
+
+### Opt-in clean coding E0 extension
+
+`coding-structure-v1` labels a single clean identity implementing both features
+in one integrated repository. The remaining three identities exist in the
+context store but receive no extra uncharged model calls. There is no practical
+coding alarm/repair policy in this extension. Its four-policy/attacked/Protocol B
+configurations fail explicitly instead of reusing the numeric planner.
+
+Only a reviewed image/runtime/profile that passes node-specific sandbox
+qualification may execute code. A reviewed pristine base-tree inventory excludes
+Git history, hidden test material and reference patches. The operator establishes
+that tree's relationship to the dataset's upstream base commit; a bare directory
+is not independently verified Git provenance. Both feature test suites must fail
+the unchanged base and pass the combined reference implementation in separate
+evaluator-only controls before the environment is accepted. Environment, control,
+image, runtime and helper fingerprints are bound to manifests/qualification.
+Incompatible reference patches or tests fail environment validation.
+
+Worker tools execute in bounded offline containers and return validated file
+changes. Both test patches are applied to one submitted integrated candidate,
+then both reviewed feature suites run. Success requires both suites; evaluating
+only one feature cannot produce complete-task success. Hidden evaluation never
+feeds a worker, even after retry. This is a task-specific validated test-command
+contract, not a claim of compatibility with every upstream repository runner.
+
+Model tokens, malformed calls, tool actions, file materialization and container
+work use the explicit token/tool surrogate. Baseline/reference validation work
+is reported separately as environment preparation. Primary coding interruptions
+restart from pristine source while retaining all prior and uncertain charges.
+After terminal evaluation begins, retry only re-evaluates the frozen candidate.
+No live coding result or recovery advantage is claimed from CPU tests.
+
+### Coverage
 
 - E0: clean competence, JSON/tool compatibility, accounting and resume.
 - One-task GPU smoke: Qwen3.5-4B on the numeric fixture language.

@@ -84,6 +84,10 @@ class RunConfig:
     observation_limit: int = 12000
     calibration_file: str | None = None
     data_manifest: str | None = None
+    coding_environment: str | None = None
+    coding_environment_hash: str | None = None
+    coding_validation: str | None = None
+    coding_validation_hash: str | None = None
     fixed_state_file: str | None = None
     monitor_id: str = "public-cases-v1"
     split_id: str = "group-hash-v1"
@@ -117,7 +121,16 @@ class RunConfig:
             raise BCError("Fixed state is only valid in Protocol B")
         if self.confirmatory:
             raise BCError("Confirmatory claims are disabled: this development foundation needs GPU, sandbox, and calibration validation")
-        if self.monitor_id != "public-cases-v1" or self.split_id != "group-hash-v1":
+        if self.coding_environment_hash is not None and not re.fullmatch(r"[a-f0-9]{64}", self.coding_environment_hash):
+            raise BCError("Coding environment hash must be a SHA-256 digest")
+        if self.coding_validation_hash is not None and not re.fullmatch(r"[a-f0-9]{64}", self.coding_validation_hash):
+            raise BCError("Coding validation hash must be a SHA-256 digest")
+        if self.task_kind != "cooperbench" and (self.coding_environment or self.coding_environment_hash or self.coding_validation or self.coding_validation_hash):
+            raise BCError("Coding environments are only valid for CooperBench")
+        allowed_monitors = {"public-cases-v1"}
+        if self.task_kind == "cooperbench":
+            allowed_monitors.add("coding-structure-v1")
+        if self.monitor_id not in allowed_monitors or self.split_id != "group-hash-v1":
             raise BCError("Unsupported monitor/split version")
         if self.data_split not in ("development", "validation", "test"):
             raise BCError("Unknown data split")

@@ -1,0 +1,18 @@
+{
+  "name": "cooper-clean-e0",
+  "task_kind": "cooperbench",
+  "task_count": 1,
+  "data_manifest": null,
+  "coding_environment": null,
+  "coding_validation": null,
+  "policies": ["single"],
+  "attacks": ["clean"],
+  "seeds": [0],
+  "shards": 1,
+  "protocol": "A",
+  "monitor_id": "coding-structure-v1",
+  "model": {"backend": "transformers", "checkpoint": "Qwen/Qwen3.5-4B"},
+  "max_actions": 32,
+  "budget": {"total": 200000, "reserve_fraction": 0},
+  "confirmatory": false
+}

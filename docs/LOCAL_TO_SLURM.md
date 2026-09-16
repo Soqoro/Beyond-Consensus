@@ -260,6 +260,11 @@ offline batch inference needs no external network after staging.
 
 ### CooperBench staging and the 320-episode plan
 
+For the new bounded clean coding E0 path, first follow
+[CODING_SANDBOX.md](CODING_SANDBOX.md). Its qualification and evaluator controls
+are mandatory. The 320-episode four-policy coding campaign below remains planned
+and unsupported by the clean E0 adapter.
+
 Only stage the real dataset when authorized:
 
 ```bash
