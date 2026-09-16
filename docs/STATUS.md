@@ -17,13 +17,18 @@ and delegation evidence below is retained as history.
   original output obligations. Communication changes are labelled explicitly.
 - Preserved: numeric diagnostics, original model/dependency settings, A/B budget
   separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
-- Locally validated: 110 tests (109 passed, one opt-in legacy sandbox skip), nine
+- Locally validated: 113 tests (112 passed, one opt-in legacy sandbox skip), nine
   shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
   failure paths. These are engineering checks, not model/benchmark results.
+- User-reported cluster check: SQLite/model preflight job 1076633 passed on an
+  A100 40 GB. The first full SQLite fixture smoke completed but failed (0/1).
+  Its trace shows database/source-ID confusion and queries submitted without
+  reading the assigned contracts. Shared prompt/error feedback is corrected
+  locally; a fresh real-model smoke is required before the four-task pilot.
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains
-  a candidate. No SQLite/SILO model/Slurm run has been executed.
+  a candidate. Native/paired SQLite and SILO model/Slurm runs remain unexecuted.
 - Deferred: new semantic sabotage until clean/withholding gates pass, remaining
   SILO families, E2–E5, adaptive attacks and grouped inferential statistics.
 

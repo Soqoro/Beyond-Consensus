@@ -33,11 +33,12 @@ lazy; no new container or hosted-service dependency is introduced.
 
 ## Initial evidence and prerequisites
 
-The prior local suite has 76 tests (75 passing, one opt-in legacy sandbox test
-skipped) and nine shell entrypoints. User-reported Slurm numeric smoke/pilot
-results are documented in STATUS and VALIDATION; no SQLite or SILO model
-experiment has run. Existing uncommitted delegation/progress documentation is
-being preserved.
+At migration start the local suite had 76 tests (75 passing, one opt-in legacy
+sandbox test skipped) and nine shell entrypoints. The user's prior Slurm numeric
+smoke/pilot results and uncommitted delegation documentation were preserved.
+Subsequently the user reported a successful SQLite/model preflight and a failed
+full fixture smoke. Source-ID guidance and error feedback are corrected locally;
+a fresh GPU smoke is pending. See STATUS and VALIDATION for the exact evidence.
 
 Small upstream sources were inspected without running downloaded code or
 downloading database/model archives:
@@ -83,7 +84,7 @@ segment cannot pretend its earlier cumulative state does not exist.
 
 | Milestone | Local capability | Remaining gate |
 | --- | --- | --- |
-| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay | Compute-node executor preflight and real-model clean competence |
+| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; user-reported compute-node preflight passed | Real-model clean competence after the source-ID prompt/error correction |
 | M1 | Public staging, prerequisite inspection, review scaffold, exact-count native positive/negative validation command | Real databases, full materials, reviewed SELECT-tree/test translations; ten actual approved tasks have not been validated |
 | M2 | Pair compatibility checks, shared-state evaluation, missing/corrupt-obligation controls, existing model/Slurm path | Two actual validated pairs and user-triggered model episodes; only the named crypto candidate is listed |
 | M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests | Actual model competence on the labelled adaptation |

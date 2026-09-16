@@ -57,6 +57,10 @@ explicitly hypothetical; the worker obtains actual contracts through charged
 source reads. Prompt and task-instruction changes produce new source/data hashes
 and require a new manifest. Calibration compatibility includes the shared worker
 instructions. Invalid JSON and bare programs remain rejected and charged.
+SQL instructions distinguish the assignment's source ID from the database ID.
+An unknown source receives public ID/action guidance only; retrieving the actual
+contract still requires a charged source read. Private errors remain sanitized.
+Syntax examples are hypothetical and cannot substitute for reading requirements.
 
 ## Two separate comparisons
 

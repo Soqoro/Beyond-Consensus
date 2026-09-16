@@ -16,13 +16,22 @@ SQL_KINDS = {"sqlite_fixture", "sqlite_native", "sqlite_pair"}
 DATA_KINDS = SQL_KINDS | {"silo"}
 
 SQL_INSTRUCTIONS = """Use exactly one JSON tool action per turn, no Markdown.
+Every action has a "tool" key with its arguments as top-level keys.
+Work on the current assignment only. The harness will issue the next assignment after submission.
+At the start of each assignment, copy its first_action exactly to read the assigned contract.
+read_source(name) uses a source ID from permitted_sources, normally the current assignment (such as u0).
+The database_id is for inspect_schema(database_id); it is NOT a source ID or table name.
+After reading the contract, inspect the schema and construct the requested artifact using the contract's
+actual columns, transformations and ordering. Do not guess requirements or reuse a previous assignment's answer.
 Allowed tools: read_source(name), inspect_schema(database_id), read_document(document_id,offset),
 read_artifact(version,row_offset), message(recipient,text), submit_view_definition(artifact_name,select_sql,permitted_artifact_versions),
 run_read_query(select_sql,permitted_artifact_versions), submit_required_artifact(artifact_id),
 submit_query_template(select_sql,view_names), replay_query(template_id,permitted_artifact_versions).
-select_sql is a JSON tree, NOT a SQL string. Query: {"columns":[{"expr":{"column":"t.value"},"as":"value"}],"from":{"table":"measurements","as":"t"}}.
-Full action syntax example: {"tool":"run_read_query","select_sql":{"columns":[{"expr":{"literal":1},"as":"example_only"}]},"permitted_artifact_versions":{}}.
-Examples illustrate syntax only; obtain actual tables and requirements from the assigned sources/schema.
+select_sql is a JSON tree, NOT a SQL string.
+Syntax example ONLY: suppose a different task had a table demo_rows(item_key,amount) and asked for
+item_key and amount plus 7, ordered by item_key. Its query action would be:
+{"tool":"run_read_query","select_sql":{"columns":[{"expr":{"column":"item_key"}},{"expr":{"binary":["+",{"column":"amount"},{"literal":7}]},"as":"adjusted"}],"from":{"table":"demo_rows"},"order_by":[{"expr":{"column":"item_key"},"direction":"asc"}]},"permitted_artifact_versions":{}}
+This example is not your assignment. Obtain actual table/column names and requirements through the source/schema tools.
 Expressions have exactly one key: column (name or alias.name), literal (number/string/null),
 binary [operator,left,right], call {name,args}, case {when:[[condition,value]],else:value}, or select (subquery).
 Allowed binary operators: + - * / % = != < <= > >= and or is is not like.

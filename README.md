@@ -50,8 +50,11 @@ Neither data adapter requires containers, cgroup delegation, root, or services.
 
 **Real SQLite benchmark validation remains pending:** databases, author-provided
 solutions/tests, and reviewed translations to the restricted evaluator are
-required. `crypto_M_2` + `crypto_8` is an unvalidated candidate. No SQLite/SILO GPU
-experiment has run. Previous user-reported Slurm numeric runs are recorded in
+required. `crypto_M_2` + `crypto_8` is an unvalidated candidate. The user-reported
+SQLite GPU preflight passed, but the first full fixture smoke failed. Source-ID
+instructions and error feedback have been corrected locally; model competence
+must be rechecked before the pilot. Native/paired SQLite and SILO GPU runs remain
+pending. Cluster observations and prior numeric results are recorded in
 VALIDATION. `configs/e1.json` plans 320 episodes only after 20 approved development
 pairs exist; it never manufactures missing pairs. The default GPU smoke/pilot
 configs now select labelled SQLite fixtures; `numeric-*.json` preserve prior configs.

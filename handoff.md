@@ -8,9 +8,11 @@ sandbox is an active option in this task. CooperBench is optional legacy.
 Start with [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md),
 [STATUS.md](docs/STATUS.md) and [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md).
 The new path reuses the model, workers, budgets, provenance and scheduler, and
-does not require cgroup delegation. Real database/material validation and
-user-triggered Slurm model runs remain pending. Prior results and delegation
-probes are preserved below as history, not current execution instructions.
+does not require cgroup delegation. Real database/material validation remains
+pending. The user-reported SQLite/model preflight passed, but the full fixture
+smoke failed; a source-ID prompt/error correction awaits a new GPU smoke.
+Prior results and delegation probes are preserved below as history, not current
+execution instructions.
 
 ## Current implementation and next step
 
@@ -21,17 +23,18 @@ probes are preserved below as history, not current execution instructions.
   author-supplied evaluation materials. No real pair has been approved.
 - M3 works locally: explicitly adapted four-worker Prefix Sum and Pipeline Hash,
   original-shard access rules, all-output scoring and public-data parity tests.
-- M4 configs and guarded submission paths exist. Real-model smoke/pilot,
+- M4 configs and guarded submission paths exist. Successful real-model smoke/pilot,
   sufficient approved development instances and measured calibration are pending.
-- Validation: **110 tests, 109 passed, one legacy sandbox integration skip**;
+- Validation: **113 tests, 112 passed, one legacy sandbox integration skip**;
   **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
-  [the current validation record](docs/VALIDATION.md#sqlitesilo-migration-validation-2026-09-16)
+  [the current validation record](docs/VALIDATION.md#sqlite-source-id-correction-and-cluster-evidence-2026-09-16)
   for exact commands and the limits of this evidence.
 
 First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
 After the user reviews, commits and pushes the changes, use the existing browser
-terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). Start with
-the labelled SQLite fixture GPU preflight/smoke using the existing model lock;
+terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). The reported
+preflight job 1076633 already passed. Create a new SQLite fixture smoke manifest
+after pulling the source-ID correction, using the existing model lock;
 stage and review real data separately before native/pair runs. No jobs, large
 downloads, messages or pushes were performed during this migration.
 

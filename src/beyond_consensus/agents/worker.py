@@ -24,6 +24,10 @@ class WorkerOutcome:
     actions: int
 
 
+class UnknownSource(BCError):
+    """Source lookup failed before reading any task or harness content."""
+
+
 class WorkerLoop:
     def __init__(self, backend: Backend, config: RunConfig, ledger: BudgetLedger,
                  store: ProvenanceStore, attacker: AttackController,
@@ -99,7 +103,18 @@ class WorkerLoop:
                 if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
-                self._observe(identity, {"error": str(exc) if not self.domain else "Action rejected by the restricted tool contract"})
+                if self.domain and isinstance(exc, UnknownSource):
+                    # Only repeat public assignment metadata. Do not echo the
+                    # invalid name, raw exception, source contents or gold.
+                    observation = {
+                        "error": "read_source needs a permitted source ID. Copy next_action to read the current assignment's contract.",
+                        "error_code": "unknown_source",
+                        "permitted_sources": list(task.sources),
+                        "next_action": {"tool": "read_source", "name": unit},
+                    }
+                else:
+                    observation = {"error": str(exc) if not self.domain else "Action rejected by the restricted tool contract"}
+                self._observe(identity, observation)
                 if self.domain:
                     self.store.events.append({"type": "prohibited_or_malformed_action", "identity": identity, "stage": stage})
                 self.boundary("malformed_action")
@@ -127,6 +142,8 @@ class WorkerLoop:
         if tool == "read_source":
             strict_keys(action, {"tool", "name"}, {"tool", "name"})
             name = action["name"]
+            if not isinstance(name, str) or name not in task.sources:
+                raise UnknownSource("Unknown source name; use a permitted source ID")
             result = task.sources[name]
             self.store.source(identity, name, result)
             self._observe(identity, {**action, "result": result})

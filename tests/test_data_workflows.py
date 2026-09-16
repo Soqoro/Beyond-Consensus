@@ -15,6 +15,7 @@ from unittest.mock import patch
 
 from tests.support import ROOT
 from beyond_consensus.config import RunConfig
+from beyond_consensus.models.base import Generation
 from beyond_consensus.models.mock import MockBackend
 from beyond_consensus.experiments.manifest import build_manifest, episode_from, validate_manifest, validate_splits
 from beyond_consensus.experiments.runner import run_manifest
@@ -157,6 +158,112 @@ class ExecutorTests(unittest.TestCase):
 
 @unittest.skipUnless(SQL_AVAILABLE, 'Fixed SQL executor needs supported stdlib CPU resource controls')
 class DataEpisodeTests(unittest.TestCase):
+    def test_unknown_source_feedback_allows_charged_recovery_across_assignments(self):
+        class ConfusedSourceModel(MockBackend):
+            def __init__(self):
+                self.corrections = []
+
+            def generate(self, messages, max_new_tokens, seed):
+                observation = json.loads(messages[-1]['content'])
+                if 'assignment' in observation:
+                    action = {'tool': 'read_source', 'name': observation['database_id']}
+                elif observation.get('error_code') == 'unknown_source':
+                    self.corrections.append(observation)
+                    action = observation['next_action']
+                else:
+                    return super().generate(messages, max_new_tokens, seed)
+                raw = json.dumps(action)
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        config = RunConfig(task_kind='sqlite_fixture', monitor_id='data-structure-v1',
+                           policies=('single',), attacks=('clean',), max_actions=12)
+        manifest = build_manifest(config, ROOT)
+        backend = ConfusedSourceModel()
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_manifest(manifest, Path(temp), ROOT, backend=backend)[0]
+            self.assertTrue(result['success'])
+            self.assertEqual(result['metrics']['tool_rejections'], 4)
+            self.assertEqual([e['next_action']['name'] for e in backend.corrections], ['u0', 'u1', 'u2', 'u3'])
+            for observation in backend.corrections:
+                self.assertEqual(set(observation), {'error', 'error_code', 'permitted_sources', 'next_action'})
+                self.assertEqual(observation['permitted_sources'], ['u0', 'u1', 'u2', 'u3'])
+            entries = result['costs']['entries']
+            tools = [e for e in entries if e['kind'] == 'tool']
+            calls = [e for e in entries if e['kind'] == 'model']
+            # Each unit pays for the rejected read, corrected read, query and submission.
+            self.assertEqual(len(tools), 16)
+            self.assertTrue(all(e['work'] == config.budget.tool_charge for e in tools))
+            self.assertEqual(len(calls), 16)
+            self.assertTrue(all(e['input_tokens'] > 0 and e['output_tokens'] > 0 for e in calls))
+            checkpoint = read_json(Path(temp)/'episodes'/result['episode_id']/'checkpoint.json')
+            reads = [e['name'] for e in checkpoint['store']['events'] if e['type'] == 'source_read']
+            self.assertEqual(reads, ['u0', 'u1', 'u2', 'u3'])
+
+    def test_rejected_sources_stay_bounded_and_private_errors_stay_generic(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class RepeatingModel(MockBackend):
+            def generate(self, *args):
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        cases = [{'tool': 'read_source', 'name': name} for name in
+                 ('fixture', '/private/hidden-evaluation', ['u0'])]
+        cases.append({'tool': 'inspect_schema', 'database_id': 'fixture'})
+        for action in cases:
+            with self.subTest(action=action), tempfile.TemporaryDirectory() as temp:
+                raw = json.dumps(action)
+                domain = domain_at(temp)
+                loop = WorkerLoop(RepeatingModel(), domain.engine.config, domain.engine.ledger,
+                                  domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+                # Errors from other restricted operations must never echo private exception text.
+                with patch.object(domain, 'handle', side_effect=BCError('HIDDEN_SQL /private/gold-tests.json')):
+                    outcome = loop.run(domain.task, 'u2', 'w0', 'primary', 0)
+                self.assertEqual(outcome.status, 'malformed')
+                self.assertEqual(outcome.actions, domain.engine.config.malformed_retries + 1)
+                observations = [json.loads(m['content']) for m in domain.store.contexts['w0'].messages
+                                if m['role'] == 'user']
+                errors = [o for o in observations if 'error' in o]
+                self.assertEqual(len(errors), outcome.actions)
+                for error in errors:
+                    self.assertNotIn('HIDDEN_SQL', json.dumps(error))
+                    self.assertNotIn('/private/', json.dumps(error))
+                    self.assertNotIn('result', error)
+                    if action['tool'] == 'read_source':
+                        self.assertEqual(error['next_action'], {'tool': 'read_source', 'name': 'u2'})
+                    else:
+                        self.assertEqual(set(error), {'error'})
+                self.assertFalse(domain.store.artifacts)
+                self.assertFalse(any(e['type'] == 'source_read' for e in domain.store.events))
+                for kind in ('tool', 'model'):
+                    entries = [e for e in domain.engine.ledger.entries if e['kind'] == kind]
+                    self.assertEqual(len(entries), outcome.actions)
+                    self.assertTrue(all(e['work'] > 0 for e in entries))
+
+    def test_copied_old_prompt_query_still_fails_complete_task_scoring(self):
+        class CopyQueryModel(MockBackend):
+            def generate(self, messages, max_new_tokens, seed):
+                observation = json.loads(messages[-1]['content'])
+                if 'artifact_id' in observation:
+                    action = {'tool': 'submit_required_artifact', 'artifact_id': observation['artifact_id']}
+                else:
+                    action = {'tool': 'run_read_query', 'permitted_artifact_versions': {},
+                              'select_sql': {'columns': [{'expr': {'column': 't.value'}, 'as': 'value'}],
+                                             'from': {'table': 'measurements', 'as': 't'}}}
+                raw = json.dumps(action)
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        config = RunConfig(task_kind='sqlite_fixture', monitor_id='data-structure-v1',
+                           policies=('single',), attacks=('clean',), max_actions=12)
+        manifest = build_manifest(config, ROOT)
+        with tempfile.TemporaryDirectory() as temp:
+            result = run_manifest(manifest, Path(temp), ROOT, backend=CopyQueryModel())[0]
+            self.assertEqual(result['status'], 'completed')
+            self.assertFalse(result['success'])
+            self.assertEqual(result['metrics']['tool_rejections'], 0)
+            self.assertTrue(result['metrics']['integration_failure'])
+
     def test_preview_does_not_truncate_stored_final_output(self):
         with tempfile.TemporaryDirectory() as temp:
             domain=domain_at(temp)
