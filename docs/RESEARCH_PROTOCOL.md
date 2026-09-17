@@ -73,6 +73,13 @@ available. Column-alias examples explain public JSON grammar only. These hints
 never consult candidate correctness or hidden evaluation, and their additional
 re-prefill/correction costs remain charged.
 
+SILO instructions distinguish preparation outlines from implementation segment
+answers and demonstrate the public JSON action envelopes. A preparation `submit`
+during implementation/replication is rejected with public operation/assignment
+and completion-tool guidance. It creates no artifact and reads no data. Correcting
+the mistake requires new charged model/tool actions under the same retry limit;
+no arithmetic answer or hidden-evaluation feedback is supplied.
+
 ## Two separate comparisons
 
 **Protocol A: equal total allowance.** Planning, preparation, primary work,

@@ -17,7 +17,7 @@ and delegation evidence below is retained as history.
   original output obligations. Communication changes are labelled explicitly.
 - Preserved: numeric diagnostics, original model/dependency settings, A/B budget
   separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
-- Locally validated: 119 tests (118 passed, one opt-in legacy sandbox skip), nine
+- Locally validated: 122 tests (121 passed, one opt-in legacy sandbox skip), nine
   shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
   failure paths. These are engineering checks, not model/benchmark results.
 - User-reported cluster check: SQLite/model preflight job 1076633 passed on an
@@ -32,16 +32,37 @@ and delegation evidence below is retained as history.
   u0 instead of their assigned contract, then generated and submitted their own
   wrong query. Ordinary fixture-0 withholding repair repeated malformed column
   alias JSON three times. Public assignment reminders and column-syntax guidance
-  are implemented locally; source access, strict parsing, accounting and scoring
-  remain unchanged. A new 32-episode fixture pilot must check real-model behavior
-  before larger or semantic-sabotage runs. See
+  were added; source access, strict parsing, accounting and scoring remain
+  unchanged. See
   [the trace evidence and change](VALIDATION.md#assignment-reminders-and-column-alias-guidance-2026-09-17).
+- Latest SQLite pilot result: revised pilot `d9813ae5...`, using four GPUs in
+  `PA100q`, passed **32/32 episodes**: all four policies passed 4/4 clean and
+  4/4 withholding tasks. No integration failures, false alarms, missing episodes
+  or reserve violations were reported; preparation work remained zero. The
+  bounded fixture competence/recovery check and grouped cost audit passed.
+  Replication used 69.47% more total work than ordinary on clean tasks and
+  22.87% more under withholding, with equal success. Four tool rejections were
+  recorded (one per clean policy group); none occurred under withholding.
+  Recovery selected no preparation and showed no success or total-cost advantage
+  over ordinary/JIT.
+  These are four synthetic source groups, not native benchmark findings. See
+  [the successful pilot](VALIDATION.md#second-sqlite-fixture-pilot-passed-2026-09-17).
+- First SILO Prefix Sum single/clean GPU smoke `9d2b2a4a...` completed but failed
+  (0/1 success, no retained artifacts, full coverage, no reserve violations).
+  Eight generated inputs validated beforehand. The trace confirms 12 rejected
+  preparation outlines during implementation, with no source/shard reads or
+  arithmetic answers. Explicit SILO action examples and operation-specific
+  rejection guidance are implemented locally; a fresh one-GPU smoke must check
+  real-model behavior. This is not a recovery-policy comparison. See
+  [the smoke record](VALIDATION.md#first-silo-prefix-sum-gpu-smoke-failed-2026-09-17).
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains
-  a candidate. Native/paired SQLite and SILO model/Slurm runs remain unexecuted.
-- Deferred: new semantic sabotage until clean/withholding gates pass, remaining
-  SILO families, E2–E5, adaptive attacks and grouped inferential statistics.
+  a candidate. Native/paired SQLite runs remain unexecuted; SILO clean model
+  competence remains unestablished after the failed smoke.
+- Deferred: new-environment semantic sabotage remains code-gated; this fixture
+  pass does not enable it. Remaining SILO families, E2–E5, adaptive attacks and
+  grouped inferential statistics are also deferred.
 
 See [MIGRATION_SQLITE_SILO.md](MIGRATION_SQLITE_SILO.md) for M0–M4, precise subset
 limitations, source pins, scorer differences and exact next commands. Local

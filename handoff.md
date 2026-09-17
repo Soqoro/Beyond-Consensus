@@ -15,8 +15,17 @@ but every policy passed only 2/4 clean tasks. Two clean submissions used the
 wrong multipliers; local restricted execution reproduced their incorrect rows.
 The ordinary worker traces confirm wrong-source reads followed by new query
 generation, plus malformed column-alias JSON during fixture-0 repair. Public
-assignment reminders and grammar guidance are implemented locally; a new
-source-pinned fixture pilot is the next real-model check.
+assignment reminders and grammar guidance were added. The revised pilot
+`d9813ae52441c57c670dac7b564b1a81e6ea3cef01881a0a7455e301ef33d2fd` then passed
+32/32 episodes using four GPUs in `PA100q`, as reported by the user. The grouped
+cost audit is complete: replication cost more at equal success; preparation
+remained zero. Four tool rejections occurred across the clean groups, none under
+withholding, and all episodes succeeded.
+The subsequent SILO Prefix Sum single/clean smoke `9d2b2a4a...` completed but
+failed (0/1 success, no retained artifacts). Its trace confirms 12 rejected
+preparation outlines during implementation, with no source/shard reads.
+SILO action examples and operation-specific rejection guidance are implemented
+locally; a new source-pinned smoke is the next model check.
 Prior results and delegation probes are preserved below as history, not current
 execution instructions.
 
@@ -29,14 +38,15 @@ execution instructions.
   author-supplied evaluation materials. No real pair has been approved.
 - M3 works locally: explicitly adapted four-worker Prefix Sum and Pipeline Hash,
   original-shard access rules, all-output scoring and public-data parity tests.
-- M4 configs and guarded submission paths exist. The single-worker smoke passed;
-  the four-policy pilot had partial correctness. Ordinary/JIT/recovery passed
-  1/4 withholding tasks, replication 4/4, with zero preparation work throughout.
-  Pilot validity, approved development instances and measured calibration remain
-  pending; small fixture results establish no recovery/preparation advantage.
-- Validation: **119 tests, 118 passed, one legacy sandbox integration skip**;
+- M4 configs and guarded submission paths exist. The single-worker smoke and
+  revised four-policy pilot passed; the earlier failed pilot is retained. Each
+  policy now passed 4/4 clean and 4/4 withholding fixtures. Replication used
+  69.47% more total work than ordinary on clean tasks and 22.87% more under
+  withholding. Approved development instances and measured calibration remain pending;
+  zero preparation and equal success establish no recovery/preparation advantage.
+- Validation: **122 tests, 121 passed, one legacy sandbox integration skip**;
   **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
-  [the current validation record](docs/VALIDATION.md#assignment-reminders-and-column-alias-guidance-2026-09-17)
+  [the current validation record](docs/VALIDATION.md#first-silo-prefix-sum-gpu-smoke-failed-2026-09-17)
   for exact commands and the limits of this evidence.
 
 First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
@@ -44,12 +54,16 @@ After the user reviews, commits and pushes the changes, use the existing browser
 terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). The reported
 preflight job 1076633 and third smoke already passed. Preserve pilot output
 `ef27dbc828f47f76a631a68f9edbf9628b5510c1e0244e43ed26804bf4dfa3d5` and its failure
-traces. With the assignment-reminder/column-syntax change committed and pulled,
-build `sqlite-pilot-v2-manifest.json` using `configs/pilot.json` and the same
-model lock; inspect the guarded four-shard dry run before user submission. A
-single-worker smoke does not cover these multiworker/repair failures. Do not
-make the public monitor consult terminal correctness to improve results. Stage
-and review real data separately before native/pair runs. No remote jobs,
+traces. The revised pilot and grouped cost/rejection audit have completed.
+See VALIDATION for the eight cost rows and their interpretation.
+Use `configs/cluster.pa100.local.json` for the last
+user-verified submission profile; live scheduler availability can change.
+Next task-family work is native data/material review and a new SILO Prefix Sum
+clean smoke after the operation-guidance change is committed/pushed/pulled.
+Create `silo-smoke-v2-manifest.json` with the same staged data, model lock and
+`configs/silo-smoke.json`; inspect the one-GPU dry run before submission.
+Keep the same model
+lock and campaign guard. Data sabotage is still disabled in code. No remote jobs,
 downloads, messages or pushes were performed from this workspace during this
 result review.
 

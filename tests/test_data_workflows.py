@@ -660,6 +660,97 @@ class DataEpisodeTests(unittest.TestCase):
 
 
 class SILOTests(unittest.TestCase):
+    def test_preparation_outline_repetition_stays_bounded_and_charged(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class OutlineModel(MockBackend):
+            def generate(self, messages, max_new_tokens, seed):
+                requests = [json.loads(m['content']) for m in messages if m['role'] == 'user']
+                unit = next(r['assignment'] for r in reversed(requests) if 'assignment' in r)
+                text = json.dumps({'tool': 'submit', 'content': {
+                    'outline': f'Read source {unit} to get the segment for prefix sum calculation',
+                    'contract': {}}})
+                return Generation(text, (len(text.encode()) + 3) // 4)
+
+        with tempfile.TemporaryDirectory() as temp:
+            domain = domain_at(temp, silo_task())
+            loop = WorkerLoop(OutlineModel(), domain.engine.config, domain.engine.ledger,
+                domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+            for unit in domain.task.sources:
+                outcome = loop.run(domain.task, unit, 'w0', 'primary', 0, fresh_context=False)
+                self.assertEqual((outcome.status, outcome.actions), ('malformed', 3))
+            self.assertFalse(domain.store.artifacts)
+            self.assertFalse(any(e['type'] in ('source_read', 'shard_transfer') for e in domain.store.events))
+            errors = [json.loads(m['content']) for m in domain.store.contexts['w0'].messages
+                      if m['role'] == 'user' and '"error_code"' in m['content']]
+            self.assertEqual(len(errors), 12)
+            for error in errors:
+                self.assertEqual(error['error_code'], 'preparation_only_action')
+                self.assertEqual(error['next_action'], {'tool': 'read_source', 'name': error['current_assignment']})
+                self.assertEqual(set(error), {'error', 'error_code', 'operation', 'current_assignment',
+                    'next_action', 'completion_tool', 'required_fields'})
+            entries = domain.engine.ledger.entries
+            self.assertEqual(sum(e['kind'] == 'model' for e in entries), 12)
+            self.assertEqual(sum(e['kind'] == 'tool' for e in entries), 12)
+            self.assertTrue(all(e['work'] > 0 for e in entries))
+
+    def test_outline_correction_requires_charged_reads_and_real_submission(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.policies.core import common_units
+        from beyond_consensus.schemas import AttackSpec, DelegationPlan
+
+        class CorrectingModel(MockBackend):
+            def __init__(self):
+                self.first = True
+            def generate(self, messages, max_new_tokens, seed):
+                if self.first:
+                    self.first = False
+                    text = '{"tool":"submit","content":{"outline":"Read source u0","contract":{}}}'
+                    return Generation(text, (len(text.encode()) + 3) // 4)
+                return super().generate(messages, max_new_tokens, seed)
+
+        for stage, operation in (('primary', 'implement'), ('repair', 'implement'), ('replication', 'replicate')):
+            with self.subTest(stage=stage), tempfile.TemporaryDirectory() as temp:
+                domain = domain_at(temp, silo_task())
+                domain.engine.plan = DelegationPlan('test', common_units(domain.task))
+                loop = WorkerLoop(CorrectingModel(), domain.engine.config, domain.engine.ledger,
+                    domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+                outcome = loop.run(domain.task, 'u0', 'w0', stage, 0, operation=operation)
+                self.assertEqual((outcome.status, outcome.actions), ('submitted', 4))
+                artifact = domain.store.artifacts[outcome.artifact_id]
+                self.assertEqual(artifact.kind, 'implementation')
+                self.assertEqual(artifact.content['answer'], solve('II-11', generate_inputs('II-11', 0))[0])
+                events = domain.store.events
+                self.assertEqual(sum(e['type'] == 'prohibited_or_malformed_action' for e in events), 1)
+                self.assertEqual(sum(e['type'] == 'shard_transfer' for e in events), 1)
+                messages = domain.store.contexts['w0'].messages
+                actions = [json.loads(m['content'])['tool'] for m in messages if m['role'] == 'assistant']
+                self.assertEqual(actions, ['submit', 'read_source', 'read_shard', 'submit_result'])
+                entries = domain.engine.ledger.entries
+                self.assertEqual(sum(e['kind'] == 'model' for e in entries), 4)
+                self.assertEqual(sum(e['kind'] == 'tool' for e in entries), 4)
+                self.assertTrue(all(e['stage'] == stage and e['work'] > 0 for e in entries))
+
+    def test_preparation_outline_still_allowed_only_for_preparation(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+        with tempfile.TemporaryDirectory() as temp:
+            domain = domain_at(temp, silo_task())
+            loop = WorkerLoop(MockBackend(), domain.engine.config, domain.engine.ledger,
+                domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+            artifact = loop._tool(domain.task, 'u0', 'w0', {'tool': 'submit', 'content': {
+                'outline': 'Read and accumulate every original input', 'contract': {}}},
+                'preparation', 'prepare', ())
+            self.assertEqual(artifact.kind, 'preparation')
+            with self.assertRaises(BCError):
+                loop._tool(domain.task, 'u0', 'w0', {'tool': 'submit_result', 'answer': [0]*15},
+                    'preparation', 'prepare', ())
+            self.assertEqual(len(domain.store.artifacts), 1)
+
     def test_calibration_cannot_cross_access_regimes(self):
         from beyond_consensus.planning.calibration import calibrate
         from beyond_consensus.planning.costs import estimates

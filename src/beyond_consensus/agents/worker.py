@@ -28,6 +28,10 @@ class UnknownSource(BCError):
     """Source lookup failed before reading any task or harness content."""
 
 
+class PreparationOnlyAction(BCError):
+    """SILO submit is unavailable for an implementation/replication operation."""
+
+
 class WorkerLoop:
     def __init__(self, backend: Backend, config: RunConfig, ledger: BudgetLedger,
                  store: ProvenanceStore, attacker: AttackController,
@@ -117,6 +121,14 @@ class WorkerLoop:
                         observation["hint"] = ("For SQL actions, write permitted_artifact_versions before select_sql "
                                                "at the top level. Close both the query object and the action object. "
                                                + SQL_COLUMN_HINT)
+                elif self.domain and isinstance(exc, PreparationOnlyAction):
+                    observation = {
+                        "error": "submit accepts preparation outlines only when operation=prepare. No artifact was created. For this operation, read the assigned contract and original data, then use submit_result with the full integer answer list.",
+                        "error_code": "preparation_only_action",
+                        "operation": operation, "current_assignment": unit,
+                        "next_action": {"tool": "read_source", "name": unit},
+                        "completion_tool": "submit_result", "required_fields": ["answer", "tool"],
+                    }
                 elif self.domain and isinstance(exc, ActionFieldsError):
                     observation = {
                         "error": "SQL tool arguments must be top-level action fields. permitted_artifact_versions is a sibling of select_sql, never inside it.",
@@ -201,6 +213,8 @@ class WorkerLoop:
                     raise BCError("Preparation must be a bounded outline/contract object")
             else:
                 if self.domain:
+                    if task.kind == "silo":
+                        raise PreparationOnlyAction("SILO implementation requires submit_result")
                     raise BCError("Use the domain-specific required-artifact submission tool")
                 validate_program(content)
             content = self.attacker.artifact(identity, content, operation)

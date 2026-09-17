@@ -43,10 +43,20 @@ and the third smoke passed (1/1). Pilot job 1076661 completed all 32 episodes,
 but every policy passed only 2/4 clean fixtures. Wrong multipliers in two clean
 submissions were reproduced locally. The subsequent ordinary worker traces
 confirm reads of u0 instead of the assigned contract, and repeated malformed
-column-alias JSON during fixture-0 repair. Public assignment reminders and
-column-syntax guidance are implemented locally; a new source-pinned fixture
-pilot must check model behavior. See STATUS and VALIDATION for the retained
-evidence, full costs and limits on interpretation.
+column-alias JSON during fixture-0 repair. After public assignment reminders and
+column-syntax guidance were added, the second pilot (`d9813ae5...`) passed all
+32 episodes on user-reported `PA100q` allocations. The grouped cost audit shows
+replication used more total work at equal success, with zero preparation and
+four tool rejections across the clean groups. See STATUS and VALIDATION for
+the retained evidence and limits on interpretation.
+
+The subsequent SILO Prefix Sum single/clean GPU smoke (`9d2b2a4a...`) completed
+but failed joint scoring (0/1). Eight generated inputs passed local data
+validation. The trace confirms 12 preparation-only submissions during
+implementation and no source/shard reads. Explicit action examples and public
+operation-specific rejection guidance are implemented locally; a fresh one-GPU
+smoke must check model behavior before a larger SILO run. This was not a
+recovery-policy comparison.
 
 Small upstream sources were inspected without running downloaded code or
 downloading database/model archives:
@@ -92,14 +102,15 @@ segment cannot pretend its earlier cumulative state does not exist.
 
 | Milestone | Local capability | Remaining gate |
 | --- | --- | --- |
-| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; preflight and third single-worker smoke passed; pilot traces diagnosed | Real-model pilot check of assignment reminders and column-syntax guidance after 2/4 clean successes per policy |
+| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; preflight, third smoke, revised 32/32 GPU fixture pilot and grouped cost audit complete | Fixture results do not validate native task competence |
 | M1 | Public staging, prerequisite inspection, review scaffold, exact-count native positive/negative validation command | Real databases, full materials, reviewed SELECT-tree/test translations; ten actual approved tasks have not been validated |
 | M2 | Pair compatibility checks, shared-state evaluation, missing/corrupt-obligation controls, existing model/Slurm path | Two actual validated pairs and user-triggered model episodes; only the named crypto candidate is listed |
-| M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests | Actual model competence on the labelled adaptation |
-| M4 | One-task smoke passed; four-task pilot completed 32/32 with partial correctness; 320-episode manifest configs and count/split gates exist | Revised pilot validity, enough approved development instances, measured calibration |
+| M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests; first Prefix Sum GPU smoke failed on preparation-only submissions; action guidance updated | Fresh smoke to establish clean model competence on the labelled adaptation |
+| M4 | One-task smoke and revised four-task pilot passed; grouped total-cost comparison recorded; earlier failed pilot retained; 320-episode manifest configs and count/split gates exist | Enough approved development instances and measured calibration |
 
-Semantic-artifact sabotage for the new environments remains gated. Selecting it
-fails with an explanation until clean/withholding pilots establish validity.
+Semantic-artifact sabotage for the new environments remains code-gated.
+The successful fixture pilot does not automatically enable that condition;
+its separate implementation and task-family validity review remain deferred.
 The existing numeric sabotage diagnostic is retained. Adaptive attack search,
 E2–E5, other SILO families, arbitrary SQL setup and repository experiments are
 deferred. No empirical recovery advantage is asserted.
