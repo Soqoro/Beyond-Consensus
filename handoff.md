@@ -1,6 +1,6 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-Updated: 2026-09-16. The **latest attached migration request supersedes the
+Updated: 2026-09-17. The **latest attached migration request supersedes the
 historical deployment discussion below**. Continue on the current Slurm cluster
 with restricted SQLite/SILO data workflows. No PBS, cloud, rental or remote
 sandbox is an active option in this task. CooperBench is optional legacy.
@@ -9,9 +9,14 @@ Start with [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md),
 [STATUS.md](docs/STATUS.md) and [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md).
 The new path reuses the model, workers, budgets, provenance and scheduler, and
 does not require cgroup delegation. Real database/material validation remains
-pending. The user-reported SQLite/model preflight passed, but two full fixture
-smokes failed. Job 1076647 read the contracts correctly, then emitted malformed
-query-action JSON. Improved parser/field feedback awaits a new GPU smoke.
+pending. After two failed fixture smokes, the third passed following source-ID
+and JSON-action feedback corrections. Pilot job 1076661 completed 32/32 episodes
+but every policy passed only 2/4 clean tasks. Two clean submissions used the
+wrong multipliers; local restricted execution reproduced their incorrect rows.
+The ordinary worker traces confirm wrong-source reads followed by new query
+generation, plus malformed column-alias JSON during fixture-0 repair. Public
+assignment reminders and grammar guidance are implemented locally; a new
+source-pinned fixture pilot is the next real-model check.
 Prior results and delegation probes are preserved below as history, not current
 execution instructions.
 
@@ -24,20 +29,29 @@ execution instructions.
   author-supplied evaluation materials. No real pair has been approved.
 - M3 works locally: explicitly adapted four-worker Prefix Sum and Pipeline Hash,
   original-shard access rules, all-output scoring and public-data parity tests.
-- M4 configs and guarded submission paths exist. Successful real-model smoke/pilot,
-  sufficient approved development instances and measured calibration are pending.
-- Validation: **116 tests, 115 passed, one legacy sandbox integration skip**;
+- M4 configs and guarded submission paths exist. The single-worker smoke passed;
+  the four-policy pilot had partial correctness. Ordinary/JIT/recovery passed
+  1/4 withholding tasks, replication 4/4, with zero preparation work throughout.
+  Pilot validity, approved development instances and measured calibration remain
+  pending; small fixture results establish no recovery/preparation advantage.
+- Validation: **119 tests, 118 passed, one legacy sandbox integration skip**;
   **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
-  [the current validation record](docs/VALIDATION.md#sqlite-json-action-correction-and-second-gpu-smoke-2026-09-16)
+  [the current validation record](docs/VALIDATION.md#assignment-reminders-and-column-alias-guidance-2026-09-17)
   for exact commands and the limits of this evidence.
 
 First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
 After the user reviews, commits and pushes the changes, use the existing browser
 terminal to pull and follow [LOCAL_TO_SLURM.md](docs/LOCAL_TO_SLURM.md). The reported
-preflight job 1076633 already passed. Create a new SQLite fixture smoke manifest
-after pulling the JSON-action correction, using the existing model lock;
-stage and review real data separately before native/pair runs. No jobs, large
-downloads, messages or pushes were performed during this migration.
+preflight job 1076633 and third smoke already passed. Preserve pilot output
+`ef27dbc828f47f76a631a68f9edbf9628b5510c1e0244e43ed26804bf4dfa3d5` and its failure
+traces. With the assignment-reminder/column-syntax change committed and pulled,
+build `sqlite-pilot-v2-manifest.json` using `configs/pilot.json` and the same
+model lock; inspect the guarded four-shard dry run before user submission. A
+single-worker smoke does not cover these multiworker/repair failures. Do not
+make the public monitor consult terminal correctness to improve results. Stage
+and review real data separately before native/pair runs. No remote jobs,
+downloads, messages or pushes were performed from this workspace during this
+result review.
 
 ## Historical decision and immediate objective (superseded)
 

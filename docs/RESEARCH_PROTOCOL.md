@@ -65,6 +65,13 @@ Malformed data actions receive JSON parser locations from their own text; invali
 SQL action layouts receive public field guidance. Runtime tools never repair or
 execute malformed actions. Any correction requires a new charged model response
 within the same retry limit, under the same shared instructions for every policy.
+SQL schema/source observations repeat the public current assignment. Reading a
+different permitted source succeeds and returns that source with a reminder of
+the assigned read action; it does not change the assignment or reveal the
+assigned contract without another charged read. Supporting sources remain
+available. Column-alias examples explain public JSON grammar only. These hints
+never consult candidate correctness or hidden evaluation, and their additional
+re-prefill/correction costs remain charged.
 
 ## Two separate comparisons
 

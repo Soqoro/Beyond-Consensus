@@ -101,7 +101,7 @@ class WorkerLoop:
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
             except (ValueError, TypeError, KeyError, BCError) as exc:
-                from ..runtime.data_domain import ActionFieldsError, SQL_KINDS, TaskUnavailable
+                from ..runtime.data_domain import ActionFieldsError, SQL_COLUMN_HINT, SQL_KINDS, TaskUnavailable
                 if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
@@ -115,7 +115,8 @@ class WorkerLoop:
                     }
                     if task.kind in SQL_KINDS:
                         observation["hint"] = ("For SQL actions, write permitted_artifact_versions before select_sql "
-                                               "at the top level. Close both the query object and the action object.")
+                                               "at the top level. Close both the query object and the action object. "
+                                               + SQL_COLUMN_HINT)
                 elif self.domain and isinstance(exc, ActionFieldsError):
                     observation = {
                         "error": "SQL tool arguments must be top-level action fields. permitted_artifact_versions is a sibling of select_sql, never inside it.",
@@ -166,7 +167,10 @@ class WorkerLoop:
                 raise UnknownSource("Unknown source name; use a permitted source ID")
             result = task.sources[name]
             self.store.source(identity, name, result)
-            self._observe(identity, {**action, "result": result})
+            observation = {**action, "result": result}
+            if self.domain:
+                observation.update(self.domain.contract_context(unit, name))
+            self._observe(identity, observation)
         elif tool == "read_artifact":
             strict_keys(action, {"tool", "version"}, {"tool", "version"})
             if action["version"] not in allowed_artifacts:

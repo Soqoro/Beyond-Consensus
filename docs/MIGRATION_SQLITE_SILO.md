@@ -39,7 +39,14 @@ smoke/pilot results and uncommitted delegation documentation were preserved.
 Subsequently the user reported a successful SQLite/model preflight and two failed
 full fixture smokes. The source-ID correction worked in the second trace, which
 then exposed malformed query-action JSON. Parser/action-field guidance is updated
-locally; a fresh GPU smoke is pending. See STATUS and VALIDATION for the evidence.
+and the third smoke passed (1/1). Pilot job 1076661 completed all 32 episodes,
+but every policy passed only 2/4 clean fixtures. Wrong multipliers in two clean
+submissions were reproduced locally. The subsequent ordinary worker traces
+confirm reads of u0 instead of the assigned contract, and repeated malformed
+column-alias JSON during fixture-0 repair. Public assignment reminders and
+column-syntax guidance are implemented locally; a new source-pinned fixture
+pilot must check model behavior. See STATUS and VALIDATION for the retained
+evidence, full costs and limits on interpretation.
 
 Small upstream sources were inspected without running downloaded code or
 downloading database/model archives:
@@ -85,11 +92,11 @@ segment cannot pretend its earlier cumulative state does not exist.
 
 | Milestone | Local capability | Remaining gate |
 | --- | --- | --- |
-| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; user-reported compute-node preflight passed | Real-model clean competence after the source-ID and JSON-action feedback corrections |
+| M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; preflight and third single-worker smoke passed; pilot traces diagnosed | Real-model pilot check of assignment reminders and column-syntax guidance after 2/4 clean successes per policy |
 | M1 | Public staging, prerequisite inspection, review scaffold, exact-count native positive/negative validation command | Real databases, full materials, reviewed SELECT-tree/test translations; ten actual approved tasks have not been validated |
 | M2 | Pair compatibility checks, shared-state evaluation, missing/corrupt-obligation controls, existing model/Slurm path | Two actual validated pairs and user-triggered model episodes; only the named crypto candidate is listed |
 | M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests | Actual model competence on the labelled adaptation |
-| M4 | One-task smoke, four-task pilot, 320-episode manifest configs and count/split gates | Enough approved development instances, pilot validity, measured calibration |
+| M4 | One-task smoke passed; four-task pilot completed 32/32 with partial correctness; 320-episode manifest configs and count/split gates exist | Revised pilot validity, enough approved development instances, measured calibration |
 
 Semantic-artifact sabotage for the new environments remains gated. Selecting it
 fails with an explanation until clean/withholding pilots establish validity.

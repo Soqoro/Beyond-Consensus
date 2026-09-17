@@ -1,6 +1,6 @@
 # Implementation status and handoff
 
-## Current checkpoint: restricted SQLite/SILO migration (2026-09-16)
+## Current checkpoint: restricted SQLite/SILO migration (2026-09-17)
 
 The latest attached implementation request supersedes CooperBench as the required
 backend. We remain on Slurm; PBS and external-hosting paths are not active plans.
@@ -17,15 +17,25 @@ and delegation evidence below is retained as history.
   original output obligations. Communication changes are labelled explicitly.
 - Preserved: numeric diagnostics, original model/dependency settings, A/B budget
   separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
-- Locally validated: 116 tests (115 passed, one opt-in legacy sandbox skip), nine
+- Locally validated: 119 tests (118 passed, one opt-in legacy sandbox skip), nine
   shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
   failure paths. These are engineering checks, not model/benchmark results.
 - User-reported cluster check: SQLite/model preflight job 1076633 passed on an
-  A100 40 GB. Two full fixture smokes completed but failed (0/1 each). The first
-  exposed source-ID confusion. Job 1076647 used the revised prompt and read all
-  contracts, but all 12 query attempts omitted a closing JSON brace. Parser and
-  action-field feedback are now corrected locally; a fresh real-model smoke is
-  required before the four-task pilot.
+  A100 40 GB. After two failed smokes and the source-ID/JSON-action corrections,
+  the third single-worker fixture smoke passed (1/1, all four outputs retained).
+- User-reported pilot job 1076661 completed 32/32 episodes. Every policy passed
+  2/4 clean tasks; ordinary/JIT/recovery passed 1/4 withholding tasks and
+  replication passed 4/4. All episodes stayed below the 100,000-work cap with
+  no reported reserve violations. Preparation was zero; replication costs
+  include four planned duplicates per episode. No recovery advantage is shown.
+- Confirmed diagnosis: ordinary clean fixture 0/u3 and fixture 1/u2 both read
+  u0 instead of their assigned contract, then generated and submitted their own
+  wrong query. Ordinary fixture-0 withholding repair repeated malformed column
+  alias JSON three times. Public assignment reminders and column-syntax guidance
+  are implemented locally; source access, strict parsing, accounting and scoring
+  remain unchanged. A new 32-episode fixture pilot must check real-model behavior
+  before larger or semantic-sabotage runs. See
+  [the trace evidence and change](VALIDATION.md#assignment-reminders-and-column-alias-guidance-2026-09-17).
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains
