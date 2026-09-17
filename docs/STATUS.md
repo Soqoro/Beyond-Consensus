@@ -17,7 +17,7 @@ and delegation evidence below is retained as history.
   original output obligations. Communication changes are labelled explicitly.
 - Preserved: numeric diagnostics, original model/dependency settings, A/B budget
   separation, Slurm registry, one GPU per shard, four-GPU guard and snapshots.
-- Locally validated: 122 tests (121 passed, one opt-in legacy sandbox skip), nine
+- Locally validated: 123 tests (122 passed, one opt-in legacy sandbox skip), nine
   shell files, bounded CPU fixture/SILO mock CLI execution and missing-material
   failure paths. These are engineering checks, not model/benchmark results.
 - User-reported cluster check: SQLite/model preflight job 1076633 passed on an
@@ -52,9 +52,17 @@ and delegation evidence below is retained as history.
   Eight generated inputs validated beforehand. The trace confirms 12 rejected
   preparation outlines during implementation, with no source/shard reads or
   arithmetic answers. Explicit SILO action examples and operation-specific
-  rejection guidance are implemented locally; a fresh one-GPU smoke must check
-  real-model behavior. This is not a recovery-policy comparison. See
+  rejection guidance were added. This is not a recovery-policy comparison. See
   [the smoke record](VALIDATION.md#first-silo-prefix-sum-gpu-smoke-failed-2026-09-17).
+- Second SILO smoke `055d8a4b...` completed with four retained segment artifacts,
+  no public alarm and no repair work, but still 0/1 successes. The trace confirms
+  zero tool rejections, public integration true and only 3/60 correct numerical
+  outputs (0/4 complete segments). Local accumulation/scorer replay confirms
+  arithmetic/indexing and incorrect predecessor carry use. Shared instructions
+  now state the public scalar recurrence and a model-performed increment check;
+  real-model validation requires a fresh source-pinned smoke. Numerical tool
+  feedback, model settings, input sizes and scoring remain unchanged. See
+  [the second smoke](VALIDATION.md#second-silo-smoke-retained-all-segments-but-failed-scoring-2026-09-17).
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains

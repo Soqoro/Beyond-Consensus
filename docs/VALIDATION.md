@@ -1,5 +1,81 @@
 # Local validation record
 
+## Second SILO smoke retained all segments but failed scoring (2026-09-17)
+
+The user supplied the aggregate for experiment
+`055d8a4bc4a459072438d845d6c142763227045f8ad457ac36c27898e072d4bf`, generated
+from `silo-smoke-v2-manifest.json` after the operation-guidance change below.
+The dry run requested one GPU in `PA100q`; actual job ID, snapshot and hardware
+inventory remain unsupplied. The task source group, protected-original-shard
+access regime, adaptation, scorer and upstream pin match the first SILO smoke.
+
+The one single/clean episode completed with full coverage but 0/1 successes.
+All four artifacts were retained; false alarms, detected-but-unfinished cases,
+repair work and reserve violations were zero. No shards were missing/retryable.
+This is progress from the first smoke's zero retained artifacts but not a clean
+competence pass. The subsequent trace for episode
+`aec03aa8d202cc426139bcf7073a44375725dc84970453d3317d588e2c08c936` confirms
+18818 total work, zero tool rejections and successful public integration. All
+four original shards were read and all four answer lists were submitted.
+
+In the current runtime, the SILO public audit accepts segment coverage/shape;
+terminal scoring checks the actual cumulative outputs. The aggregate's
+`integration_failures=1` counts a completed unsuccessful episode and does not by
+itself establish a public integration failure. Here `joint_public_integration`
+is true, while final evaluation reports 0/4 correct segments and
+`native_P_level_II=0.05`. Independent accumulation of the user-visible inputs
+finds exactly 3/60 matching outputs. The visible inputs match generator seed 1
+and the reported source hash; local scorer replay reproduces the reported counts.
+
+| Segment | First incorrect position (1-based) | Submitted value | Correct value from original inputs | Correct outputs |
+| --- | ---: | ---: | ---: | ---: |
+| u0 | 4 | 144 | 100 | 3/15 |
+| u1 | 1 | 11 | 388 | 0/15 |
+| u2 | 1 | 13 | 802 | 0/15 |
+| u3 | 1 | 42 | 1171 | 0/15 |
+
+For u0, the first three outputs are correct; the fourth adds 49 instead of the
+fourth input 5, then the remaining totals stay 44 too high. Later segments also
+fail to use the preceding segment's final cumulative output. For example u1
+begins at 11, consistent with the predecessor's first value 9 plus the new input
+2, even though the visible predecessor's last value was 430. Using that untrusted
+carry would produce 432, still wrong globally but distinct from the submitted
+11. u3 similarly starts at 13+29 rather than the visible predecessor's 490+29;
+its later increments match its original shard. u2 contains further incorrect
+increments. These are arithmetic/indexing and boundary-state failures beyond
+simple propagation of u0's error. There is no evidence of a scorer or tool error.
+
+The shared SILO prompt now restates the public Prefix Sum recurrence explicitly:
+one scalar carry, zero only for the first original segment, predecessor's final
+answer element when using that artifact, then each original input in order.
+It asks the model to check successive differences against the original inputs.
+This is common task-definition guidance, with no task-specific numbers, computed
+carry, calculator tool, new source access or numerical feedback. Public auditing,
+terminal scoring, model/thinking settings, sample sizes and budgets are unchanged.
+The model still performs all arithmetic; the longer prompt/re-prefill is charged.
+
+A regression test injects wrong scalar arithmetic and first-element carry use
+through a scripted worker, verifying that complete shape-valid answers still
+pass public integration, fail terminal scoring and receive no corrective hidden
+feedback or automatic repair. It is not evidence that the real model improves.
+The prompt change invalidates prior calibration compatibility and requires a
+new source-pinned manifest.
+
+Next: after syncing the change, one fresh single/clean diagnostic using
+`silo-smoke-v3-manifest.json` and the same staged inputs/model can test the public
+recurrence clarification. Retain both failed outputs. Reusing this development
+instance does not establish generalization; a pass must precede broader clean
+coverage. This remains a non-confirmatory adaptation check, not a recovery-policy
+comparison or evidence of a recovery advantage. No GPU run or push was performed
+from this workspace.
+
+Validation after the recurrence clarification:
+
+- `python -m unittest discover -s tests -v`: 123 tests, 122 passed and one
+  existing opt-in legacy sandbox integration skip.
+- `python scripts/check_shell.py`: all nine shell files passed.
+- `git diff --check`: passed.
+
 ## First SILO Prefix Sum GPU smoke failed (2026-09-17)
 
 The user generated and validated eight II-11 tasks with protected original
@@ -47,9 +123,10 @@ primary/repair/replication stages, and preserve preparation-only submission rule
 These establish runtime behavior, not real-model success. The prompt revision
 changes calibration compatibility and requires a new source-pinned manifest.
 
-Next: after the change is committed, pushed and pulled by the user, create
+The next step at this checkpoint was to create
 `silo-smoke-v2-manifest.json` with the same SILO data and model lock, inspect its
-one-GPU dry run and run the clean smoke. Preserve the failed result. Larger SILO
+one-GPU dry run and run the clean smoke after syncing the change. That run is
+recorded above. Preserve the failed result. Larger SILO
 pilots remain pending clean model competence; no GPU execution or push was
 performed from this workspace.
 

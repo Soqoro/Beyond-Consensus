@@ -59,8 +59,11 @@ revised fixture pilot passed **32/32 episodes** on user-reported PA100q allocati
 Replication used more total work at equal success; preparation work stayed zero.
 The grouped cost audit is complete. The first SILO Prefix Sum GPU smoke completed
 but failed (0/1): the worker repeatedly submitted preparation outlines during
-implementation. Explicit action examples and rejection guidance are implemented;
-a new smoke must check real-model behavior. Native/paired SQLite GPU
+implementation. After action guidance was added, the second smoke retained all
+four segments with no public alarm but still failed scoring: arithmetic and
+predecessor-carry errors left only 3/60 numerical outputs correct. Shared
+instructions now state the public recurrence explicitly; a new model smoke is
+pending. Native/paired SQLite GPU
 runs remain pending. Cluster observations and prior numeric
 results are recorded in VALIDATION. `configs/e1.json` plans 320 episodes only
 after 20 approved development

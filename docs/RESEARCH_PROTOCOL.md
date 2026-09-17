@@ -79,6 +79,11 @@ during implementation/replication is rejected with public operation/assignment
 and completion-tool guidance. It creates no artifact and reads no data. Correcting
 the mistake requires new charged model/tool actions under the same retry limit;
 no arithmetic answer or hidden-evaluation feedback is supplied.
+For Prefix Sum, the shared instructions state the public scalar recurrence and
+the use of a predecessor segment's last output as carry when consuming that
+artifact. The model is asked to check each local increment against the original
+input. The prompt contains no task-specific carry/answer, and no tool performs
+this self-check or supplies numerical feedback. All model work remains charged.
 
 ## Two separate comparisons
 

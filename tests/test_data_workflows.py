@@ -660,6 +660,55 @@ class DataEpisodeTests(unittest.TestCase):
 
 
 class SILOTests(unittest.TestCase):
+    def test_wrong_prefix_values_pass_public_shape_but_fail_terminal_scoring(self):
+        class WrongBoundaryModel(MockBackend):
+            @staticmethod
+            def data_action(request, messages):
+                action = MockBackend.data_action(request, messages)
+                if action['tool'] != 'submit_result':
+                    return action
+                if request['assignment'] == 'u0':
+                    # One arithmetic slip propagates through the rest of the segment.
+                    action['answer'][3:] = [v+1 for v in action['answer'][3:]]
+                else:
+                    observations = [json.loads(m['content']) for m in messages if m['role'] == 'user']
+                    previous = next(o['result']['answer'] for o in reversed(observations)
+                        if o.get('tool') == 'read_artifact')
+                    # Simulate using the first predecessor output instead of its final carry.
+                    offset = previous[0]-previous[-1]
+                    action['answer'] = [v+offset for v in action['answer']]
+                return action
+
+        config = RunConfig(task_kind='silo', monitor_id='data-structure-v1', max_actions=12,
+                           policies=('single',), attacks=('clean',))
+        task = silo_task('II-11', 2)
+        manifest = build_manifest(config, ROOT, [task])
+        with tempfile.TemporaryDirectory() as temp:
+            row = episode_from(manifest['episodes'][0])
+            journal = EpisodeJournal(Path(temp), row.episode_id)
+            engine = EpisodeEngine(task, row, config, WrongBoundaryModel(), journal, journal.begin(digest(row)))
+            result = engine.run()
+            self.assertEqual(result.status, 'completed')
+            self.assertFalse(result.success)
+            self.assertTrue(result.metrics['joint_public_integration'])
+            self.assertFalse(result.metrics['alarmed'])
+            self.assertEqual(result.metrics['tool_rejections'], 0)
+            self.assertEqual(result.metrics['unaffected_work_retained'], 4)
+            final = result.metrics['final_evaluation']
+            self.assertEqual(final['correct_segments'], 0)
+            self.assertAlmostEqual(final['native_P_level_II'], 3/60)
+            self.assertFalse(engine.routes)
+            # No hidden score or computed correction may flow back into a worker observation.
+            observations = [json.loads(m['content']) for m in engine.store.contexts['w0'].messages
+                            if m['role'] == 'user']
+            self.assertTrue(all(set(o) <= {'assignment', 'operation', 'permitted_sources', 'available_artifacts',
+                'first_action', 'environment', 'database_id', 'document_ids', 'published_artifacts', 'access_regime',
+                'tool', 'name', 'unit', 'version', 'result'} for o in observations))
+            reads = [o for o in observations if o.get('tool') == 'read_shard']
+            self.assertEqual(len(reads), 4)
+            for observed in reads:
+                self.assertEqual(observed['result'], task.metadata['harness']['shards'][observed['unit']])
+
     def test_preparation_outline_repetition_stays_bounded_and_charged(self):
         from beyond_consensus.agents.worker import WorkerLoop
         from beyond_consensus.attacks.fixed import AttackController

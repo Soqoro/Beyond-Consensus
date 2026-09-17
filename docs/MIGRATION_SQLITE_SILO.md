@@ -54,9 +54,12 @@ The subsequent SILO Prefix Sum single/clean GPU smoke (`9d2b2a4a...`) completed
 but failed joint scoring (0/1). Eight generated inputs passed local data
 validation. The trace confirms 12 preparation-only submissions during
 implementation and no source/shard reads. Explicit action examples and public
-operation-specific rejection guidance are implemented locally; a fresh one-GPU
-smoke must check model behavior before a larger SILO run. This was not a
-recovery-policy comparison.
+operation-specific rejection guidance were added. The second smoke (`055d8a4b...`)
+retained all four segments without a public alarm but still failed scoring.
+The trace and local scorer replay confirm 3/60 correct numerical outputs,
+zero tool rejections, and arithmetic/indexing plus predecessor-carry errors.
+The public recurrence is now explicit in shared instructions; another clean
+model smoke is needed before a larger run. These were not recovery-policy comparisons.
 
 Small upstream sources were inspected without running downloaded code or
 downloading database/model archives:
@@ -105,7 +108,7 @@ segment cannot pretend its earlier cumulative state does not exist.
 | M0 | Numeric regression; SQLite fixture, bounded CPU executor, four-policy clean/withholding path, versioned replay; preflight, third smoke, revised 32/32 GPU fixture pilot and grouped cost audit complete | Fixture results do not validate native task competence |
 | M1 | Public staging, prerequisite inspection, review scaffold, exact-count native positive/negative validation command | Real databases, full materials, reviewed SELECT-tree/test translations; ten actual approved tasks have not been validated |
 | M2 | Pair compatibility checks, shared-state evaluation, missing/corrupt-obligation controls, existing model/Slurm path | Two actual validated pairs and user-triggered model episodes; only the named crypto candidate is listed |
-| M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests; first Prefix Sum GPU smoke failed on preparation-only submissions; action guidance updated | Fresh smoke to establish clean model competence on the labelled adaptation |
+| M3 | Two family generator/data/scorer adapters, four-worker inputs, protected/no-copy recovery, public-data parity tests; second Prefix Sum GPU smoke failed on arithmetic/carry errors; public recurrence guidance updated | Fresh smoke and broader clean model competence on the labelled adaptation |
 | M4 | One-task smoke and revised four-task pilot passed; grouped total-cost comparison recorded; earlier failed pilot retained; 320-episode manifest configs and count/split gates exist | Enough approved development instances and measured calibration |
 
 Semantic-artifact sabotage for the new environments remains code-gated.

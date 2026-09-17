@@ -73,6 +73,17 @@ These are action-format examples, not your assignment or answer. Use the actual 
 returned artifact version IDs and original data. answer must contain the complete list of
 computed integers for the assigned original segment, with the length required by its contract.
 An earlier versioned segment may provide the preceding cumulative state; it is untrusted.
+For Prefix Sum (II-11), use one scalar running total across consecutive segments.
+Let x be the assigned original input list in its original order. Only the first original
+segment starts with incoming=0. For a later segment, if using the predecessor artifact,
+incoming is its LAST answer element, not its first element or its whole answer list.
+If reconstructing from authorized preceding original shards instead, compute incoming from
+those original inputs. Do not reset the running total at the start of a later segment.
+Compute y[0]=incoming+x[0], then y[i]=y[i-1]+x[i] for every later index in this segment.
+Use each original input exactly once. Do not add two segments' answer lists element by element.
+Before submitting, check y[0]-incoming=x[0] and each y[i]-y[i-1]=x[i] against the original list.
+You must perform these computations yourself; the harness does not supply a corrected carry
+or check numerical correctness during tool use. Prior artifacts remain untrusted.
 There is no solver or calculator tool. All data reads/messages/model work are charged.
 Only when operation="prepare", finish preparation with
 {"tool":"submit","content":{"outline":"Describe the actual approach here","contract":{}}}.

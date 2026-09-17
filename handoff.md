@@ -24,8 +24,12 @@ withholding, and all episodes succeeded.
 The subsequent SILO Prefix Sum single/clean smoke `9d2b2a4a...` completed but
 failed (0/1 success, no retained artifacts). Its trace confirms 12 rejected
 preparation outlines during implementation, with no source/shard reads.
-SILO action examples and operation-specific rejection guidance are implemented
-locally; a new source-pinned smoke is the next model check.
+After SILO action examples and operation-specific guidance were added, the second
+smoke `055d8a4b...` retained all four segments with no public alarm but still
+failed scoring. Its trace confirms zero tool rejections, public integration
+true and 3/60 correct values: arithmetic/indexing and predecessor-carry errors.
+Shared instructions now state the public scalar recurrence and a self-check;
+the fixed tools do not compute corrections. A fresh real-model smoke is pending.
 Prior results and delegation probes are preserved below as history, not current
 execution instructions.
 
@@ -44,9 +48,9 @@ execution instructions.
   69.47% more total work than ordinary on clean tasks and 22.87% more under
   withholding. Approved development instances and measured calibration remain pending;
   zero preparation and equal success establish no recovery/preparation advantage.
-- Validation: **122 tests, 121 passed, one legacy sandbox integration skip**;
+- Validation: **123 tests, 122 passed, one legacy sandbox integration skip**;
   **9 shell files passed**. CPU fixture/SILO mock CLI checks passed. See
-  [the current validation record](docs/VALIDATION.md#first-silo-prefix-sum-gpu-smoke-failed-2026-09-17)
+  [the current validation record](docs/VALIDATION.md)
   for exact commands and the limits of this evidence.
 
 First run the local commands in [MIGRATION_SQLITE_SILO.md](docs/MIGRATION_SQLITE_SILO.md#exact-staging-and-next-commands).
@@ -58,10 +62,11 @@ traces. The revised pilot and grouped cost/rejection audit have completed.
 See VALIDATION for the eight cost rows and their interpretation.
 Use `configs/cluster.pa100.local.json` for the last
 user-verified submission profile; live scheduler availability can change.
-Next task-family work is native data/material review and a new SILO Prefix Sum
-clean smoke after the operation-guidance change is committed/pushed/pulled.
-Create `silo-smoke-v2-manifest.json` with the same staged data, model lock and
-`configs/silo-smoke.json`; inspect the one-GPU dry run before submission.
+Next task-family work is native data/material review and one fresh SILO Prefix Sum
+smoke after the recurrence guidance is committed/pushed/pulled. Create
+`silo-smoke-v3-manifest.json` with the same staged data/model and smoke config;
+inspect its one-GPU dry run. This is a development diagnostic on reused inputs,
+not generalization evidence. Larger runs remain gated by clean competence.
 Keep the same model
 lock and campaign guard. Data sabotage is still disabled in code. No remote jobs,
 downloads, messages or pushes were performed from this workspace during this
