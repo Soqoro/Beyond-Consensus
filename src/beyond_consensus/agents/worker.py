@@ -14,7 +14,7 @@ from ..runtime.budget import BudgetExceeded, BudgetLedger
 from ..runtime.provenance import ProvenanceStore
 from ..schemas import ArtifactVersion, TaskInstance, WORKERS
 from ..tasks.workflow import interpret, validate_program
-from ..util import BCError, canonical, strict_keys
+from ..util import BCError, canonical, strict_keys, digest
 
 
 @dataclass(frozen=True)
@@ -42,7 +42,7 @@ class WorkerLoop:
 
     def run(self, task: TaskInstance, unit: str, identity: str, stage: str, seed: int,
             *, operation: str = "implement", allowed_artifacts: tuple[str, ...] = (),
-            floor: float = 0, fresh_context: bool = True) -> WorkerOutcome:
+            floor: float = 0, fresh_context: bool = True, preparation_style: str | None = None) -> WorkerOutcome:
         if task.kind != "workflow_fixture" and self.domain is None:
             raise BCError("Worker tools require the typed workflow adapter; repository execution is blocked")
         if fresh_context:
@@ -56,6 +56,13 @@ class WorkerLoop:
         if not any(message["role"] == "system" for message in ctx.messages):
             ctx.messages.insert(0, initial[0])
         ctx.messages.extend(initial[1:])
+        if preparation_style is not None:
+            goals = {"index": "Read the assigned sources. Record their identifiers, locations and dependencies in the outline and contract; do not implement the final answer.",
+                "outline": "Read the assigned sources. Record an approach and obligations for subsequent reconstruction in the outline and contract; do not implement the final answer."}
+            if operation != "prepare" or preparation_style not in goals:
+                raise BCError("Unknown labelled preparation measurement")
+            ctx.messages.append({"role": "user", "content": canonical({"preparation_style": preparation_style,
+                "preparation_goal": goals[preparation_style]})})
         self.store.save_context(identity)
         for version in allowed_artifacts:
             if self.ledger.remaining - self.config.budget.tool_charge < floor:
@@ -63,7 +70,8 @@ class WorkerLoop:
             self.ledger.charge(stage, self.config.budget.tool_charge, kind="context_reconstruction",
                                tool_calls=1, cpu_limit_seconds=1)
             value = self.store.read(identity, version)
-            self._observe(identity, {"tool": "read_artifact", "version": version, "result": value})
+            self._observe(identity, self.domain.artifact_observation(unit, version, value) if self.domain else
+                          {"tool": "read_artifact", "version": version, "result": value})
         self.boundary("worker_start")
         if self.attacker.withholds(identity):
             if self.ledger.remaining - self.attacker.spec.timeout_seconds * self.config.budget.timeout_charge_per_second < floor:
@@ -80,6 +88,10 @@ class WorkerLoop:
             messages = self.store.contexts[identity].messages
             input_tokens = self.backend.count_input(messages)
             if input_tokens + self.config.model.max_new_tokens > self.config.model.context_limit:
+                self.store.events.append({"type": "context_limit", "unit": unit, "identity": identity,
+                    "input_tokens": input_tokens, "context_limit": self.config.model.context_limit,
+                    "max_new_tokens": self.config.model.max_new_tokens, "history_truncated": False})
+                self.boundary("context_limit")
                 raise BCError("Context limit exceeded; history was not silently truncated")
             reservation = self.ledger.reserve_call(stage, input_tokens, self.config.model.max_new_tokens, floor,
                                                    generation_seed=seed + turn)
@@ -89,6 +101,13 @@ class WorkerLoop:
                 self.ledger.reconcile(reservation, output_tokens=generation.output_tokens,
                                       reasoning_tokens=generation.reasoning_tokens,
                                       device_seconds=generation.device_seconds)
+                self.store.events.append({"type": "generation_metadata", "identity": identity, "unit": unit,
+                    "stage": stage, "operation": operation, "generation_seed": seed+turn,
+                    "messages_hash": digest(messages), "message_count": len(messages), "history_truncated": False,
+                    "input_tokens": input_tokens, "output_tokens": generation.output_tokens,
+                    "reasoning_tokens": generation.reasoning_tokens, "max_new_tokens": self.config.model.max_new_tokens,
+                    "context_limit": self.config.model.context_limit, "thinking": self.config.model.thinking,
+                    "silo_interface": self.config.silo_interface, "details": generation.diagnostics})
             except Exception:
                 if reservation in self.ledger.reservations:
                     self.ledger.reconcile(reservation, output_tokens=None, reasoning_tokens=None, failed=True)
@@ -158,6 +177,9 @@ class WorkerLoop:
     def _observe(self, identity: str, value: Any) -> None:
         text = canonical(value)
         if len(text) > self.config.observation_limit:
+            self.store.events.append({"type": "observation_limit", "identity": identity,
+                "size": len(text), "limit": self.config.observation_limit, "truncated": False})
+            self.boundary("observation_limit")
             raise BCError("Observation exceeds configured bound; no silent truncation")
         self.store.contexts[identity].messages.append({"role": "user", "content": text})
 

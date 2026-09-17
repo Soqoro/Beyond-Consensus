@@ -21,10 +21,12 @@ def add_parsers(sub):
     native.add_argument("--staged", type=Path, required=True)
     native.add_argument("--task-ids", nargs="+")
     native.add_argument("--count", type=int, default=10)
+    native.add_argument("--up-to", action="store_true", help="Select at most ten supported development tasks by structure and ID")
     native.add_argument("--output", type=Path, required=True)
     pair = sub.add_parser("sqlite-pairs", help="Validate and freeze explicit candidates; retain rejections")
     for name in ("staged", "candidates", "output"):
         pair.add_argument("--"+name, type=Path, required=True)
+    pair.add_argument("--count", type=int, help="Require this many explicit candidate pairs; missing slots stay blocked")
     silo = sub.add_parser("silo-generate", help="Generate pinned four-worker SILO data; no model calls")
     silo.add_argument("--family", choices=("II-11", "II-20"), required=True)
     silo.add_argument("--seeds", nargs="+", type=int, default=[0])
@@ -71,12 +73,14 @@ def dispatch(args):
         result = generate_manifest(args.family, args.seeds, args.access)
     elif args.command == "sqlite-validate":
         from .tasks.data_manifest import validate_native
-        if args.count < 1:
+        if args.count < 1 or args.up_to and args.count > 10:
             raise BCError("Validation count must be positive")
-        result = validate_native(read_json(args.staged), args.task_ids, args.count)
+        result = validate_native(read_json(args.staged), args.task_ids, args.count, args.up_to)
     else:
         from .tasks.data_manifest import validate_pairs
-        result = validate_pairs(read_json(args.staged), read_json(args.candidates))
+        if args.count is not None and args.count < 1:
+            raise BCError("Pair count must be positive")
+        result = validate_pairs(read_json(args.staged), read_json(args.candidates), args.count)
     atomic_json(args.output, result)
     return {"manifest": str(args.output), "environment": result["environment"],
         "tasks": len(result["tasks"]), "status": result.get("status", "written"),

@@ -116,10 +116,15 @@ def parser() -> argparse.ArgumentParser:
     calibration.add_argument("--model-lock", type=Path)
     from .data_cli import add_parsers
     add_parsers(sub)
+    from .diagnostic_cli import add_parsers as add_diagnostics
+    add_diagnostics(sub)
     return p
 
 
 def dispatch(args: argparse.Namespace) -> Any:
+    from .diagnostic_cli import COMMANDS as DIAGNOSTICS, dispatch as dispatch_diagnostics
+    if args.command in DIAGNOSTICS:
+        return dispatch_diagnostics(args)
     from .data_cli import COMMANDS, dispatch as dispatch_data
     if args.command in COMMANDS:
         return dispatch_data(args)

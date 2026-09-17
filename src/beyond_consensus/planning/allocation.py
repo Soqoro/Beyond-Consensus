@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from typing import Callable
 
 from ..schemas import DelegationPlan, RecoveryRoute, WORKERS
+from ..util import plain
 
 
 @dataclass(frozen=True)
@@ -23,7 +24,12 @@ class Schedule:
 
 
 def shortest_schedule(routes: list[RecoveryRoute], available: set[str], targets: set[str],
-                      excluded: set[str], cap: float, max_states: int = 10000) -> Schedule:
+                      excluded: set[str], cap: float, max_states: int = 10000,
+                      trace: dict | None = None) -> Schedule:
+    original = routes
+    if trace is not None:
+        trace.update(available=sorted(available), targets=sorted(targets), excluded=sorted(excluded),
+                     allowance=cap, state_limit=max_states)
     if cap < 0:
         return Schedule((), None, "infeasible", 0)
     # Safe dominance pruning: a route with weaker prerequisites, no additional
@@ -44,6 +50,13 @@ def shortest_schedule(routes: list[RecoveryRoute], available: set[str], targets:
         if previous == needed:
             break
     routes = [r for r in routes if set(r.produces) & needed]
+    if trace is not None:
+        active = {r.id for r in routes}
+        trace["routes"] = [{**plain(r), "structural_validation": "valid_schema",
+            "eligibility": "contributor_conflict" if r.executor in excluded or set(r.contributors) & excluded else
+                           "predicted_dominated_or_irrelevant" if r.id not in active else
+                           "requires_prerequisite" if not (set(r.prerequisites)|set(r.preparation)) <= available else "available"}
+                          for r in original]
     serial = itertools.count()
     initial = frozenset(available)
     queue = [(0.0, next(serial), initial, ())]
@@ -82,10 +95,14 @@ class Allocation:
 
 def solve_allocation(plans: list[DelegationPlan], routes_for: Callable[[DelegationPlan], list[RecoveryRoute]],
                      cost_for: Callable[[DelegationPlan], float], cap: float,
-                     max_states: int = 100000) -> Allocation:
+                     max_states: int = 100000, trace: list | None = None) -> Allocation:
     winner, best_cost, states, limited = None, float("inf"), 0, False
     for plan in plans:
         base = cost_for(plan)
+        record = {"plan_id": plan.id, "base_cost": base, "scenarios": [], "worst_total": None,
+                  "reason": "over_budget" if base > cap else "evaluating"}
+        if trace is not None:
+            trace.append(record)
         if base > cap:
             continue
         worst, feasible = base, True
@@ -102,9 +119,13 @@ def solve_allocation(plans: list[DelegationPlan], routes_for: Callable[[Delegati
             if states >= max_states:
                 limited, feasible = True, False
                 break
+            detail = {} if trace is not None else None
             schedule = shortest_schedule(routes_for(plan), available,
                                          {u.id for u in plan.units}, {compromised}, cap-base,
-                                         max_states=max_states-states)
+                                         max_states=max_states-states, trace=detail)
+            if trace is not None:
+                record["scenarios"].append({"excluded_identity": compromised,
+                    "affected_units": sorted(affected), "schedule": plain(schedule), **detail})
             states += schedule.states
             if schedule.cost is None:
                 feasible = False
@@ -113,8 +134,17 @@ def solve_allocation(plans: list[DelegationPlan], routes_for: Callable[[Delegati
             worst = max(worst, base + schedule.cost)
         if feasible and worst < best_cost:
             winner, best_cost = plan, worst
+        record.update(worst_total=worst if feasible else None,
+                      reason="feasible" if feasible else "search_limit" if limited else "no_feasible_schedule")
         if limited:
             break
     status = ("heuristic_search_limit" if winner else "search_limit_no_certificate") if limited else (
         "exact_finite" if winner else "infeasible")
+    if trace is not None:
+        for record in trace:
+            if winner and record["plan_id"] == winner.id:
+                record["reason"] = "selected_no_preparation" if not winner.preparation else "selected"
+            elif record["reason"] == "feasible":
+                record["reason"] = ("objective_tie" if record["worst_total"] == best_cost else
+                                    "predicted_dominated" if not limited else "not_selected_limited_search")
     return Allocation(winner, best_cost if winner else None, status, states)

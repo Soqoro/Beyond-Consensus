@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from ..config import ModelConfig
-from ..util import BCError, file_hash, plain, read_json
+from ..util import BCError, file_hash, plain, read_json, digest
 from .base import Generation
 from .staging import resolve_model_config
 
@@ -25,6 +25,29 @@ def require_allocation() -> None:
 def dependencies() -> dict[str, str]:
     return {name: importlib.metadata.version(name) for name in
             ("torch", "transformers", "tokenizers", "huggingface-hub", "safetensors")}
+
+
+def verify_thinking_template(tokenizer, enabled):
+    """Validate the staged template, not an assumed model-family capability."""
+    template = tokenizer.chat_template
+    result = {"template_hash": digest(template), "reasoning_requested": enabled, "reasoning_support_verified": False}
+    if not enabled:
+        return result
+    if not isinstance(template, str) or "enable_thinking" not in template:
+        raise BCError("Reasoning mode unsupported: staged chat template has no enable_thinking switch")
+    messages = [{"role": "user", "content": "Template capability probe"}]
+    off = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+    on = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=True)
+    closing = tokenizer.convert_tokens_to_ids("</think>")
+    if off == on or "<think>" not in on or closing is None or closing == getattr(tokenizer, "unk_token_id", None):
+        raise BCError("Reasoning mode unsupported: template switch or reasoning delimiter could not be verified")
+    result.update(reasoning_support_verified=True, probe_off_hash=digest(off), probe_on_hash=digest(on))
+    return result
+
+
+def stopping_reason(ids, eos, cap):
+    eos_ids = eos if isinstance(eos, list) else [eos]
+    return "eos" if ids and ids[-1] in eos_ids else "length_limit" if len(ids) >= cap else "other_or_unknown"
 
 
 class TransformersBackend:
@@ -62,6 +85,7 @@ class TransformersBackend:
                                                        trust_remote_code=False)
         if not self.tokenizer.chat_template:
             raise BCError("Staged tokenizer has no official chat template")
+        template_check = verify_thinking_template(self.tokenizer, config.thinking)
         self.model = Qwen3_5ForConditionalGeneration.from_pretrained(
             lock["model_path"], dtype=getattr(torch, config.dtype), local_files_only=True,
             trust_remote_code=False, attn_implementation="sdpa")
@@ -71,7 +95,17 @@ class TransformersBackend:
         self.model.requires_grad_(False)
         self.runtime = {"dependencies": dependencies(), "checkpoint_revision": config.revision,
                         "tokenizer_revision": config.tokenizer_revision, "loader": type(self.model).__name__,
-                        "model_path": lock["model_path"], "import_path": __file__}
+                        "model_path": lock["model_path"], "import_path": __file__,
+                        "chat_template": template_check, "settings": plain(config),
+                        "model_lock_hash": digest(lock), "slurm_job_id": os.environ["SLURM_JOB_ID"],
+                        "model_lock": {k: lock.get(k) for k in ("schema", "checkpoint", "revision", "tokenizer_revision", "metadata_hashes", "status")},
+                        "slurm_array_job_id": os.environ.get("SLURM_ARRAY_JOB_ID"),
+                        "slurm_array_task_id": os.environ.get("SLURM_ARRAY_TASK_ID"),
+                        "hardware": torch.cuda.get_device_name(0),
+                        "compute_capability": list(torch.cuda.get_device_capability(0)),
+                        "vram_total_bytes": torch.cuda.get_device_properties(0).total_memory,
+                        "torch_cuda": torch.version.cuda,
+                        "snapshot_id": Path(__file__).resolve().parents[3].name if (Path(__file__).resolve().parents[3]/"snapshot.json").exists() else None}
 
     def encode(self, messages: list[dict[str, str]]) -> Any:
         return self.tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
@@ -110,7 +144,14 @@ class TransformersBackend:
             else:
                 reasoning = None
         text = self.tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
-        return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000)
+        eos = self.model.generation_config.eos_token_id
+        stop = stopping_reason(ids, eos, max_new_tokens)
+        return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
+            {"finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
+             "rendered_input_tokens": size, "reasoning_partition_known": reasoning is not None,
+             "reasoning_and_answer_share_output_budget": True,
+             "peak_allocated_bytes": torch.cuda.max_memory_allocated(0),
+             "peak_reserved_bytes": torch.cuda.max_memory_reserved(0)})
 
 
 def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
@@ -118,7 +159,7 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
     torch = backend.torch
     torch.cuda.reset_peak_memory_stats()
     result = backend.generate([{"role": "user", "content": 'Reply exactly with {"ready":true}.'}],
-                              min(64, config.max_new_tokens), 0)
+                              config.max_new_tokens if config.thinking else min(64, config.max_new_tokens), 0)
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)
     try:

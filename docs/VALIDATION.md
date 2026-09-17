@@ -1,5 +1,139 @@
 # Local validation record
 
+## Bounded native/allocation/SILO validation cycle (2026-09-17)
+
+Implemented the incremental cycle described in
+[VALIDATION_CYCLE.md](VALIDATION_CYCLE.md), preserving the previously uncommitted
+documentation and all historical observations below. No GPU or native benchmark
+result was generated during this work.
+
+Final local checks on Python 3.12.7:
+
+| Command | Actual outcome |
+| --- | --- |
+| `python -m unittest discover -s tests -v` | **151 tests: 150 passed, one skipped**, 54.044 seconds |
+| `python -m unittest tests.test_validation_cycle -v` | **28 passed**, 9.111 seconds |
+| `python scripts/check_shell.py` | **9 shell files passed** LF/usage/dry-run/strict handling and `bash -n` |
+| `python -m compileall -q src tests scripts` | Passed |
+| `git diff --check` | Passed |
+| `python -I -S scripts/bc.py --help` | Passed with isolated Python and site packages disabled |
+
+The skip is the existing opt-in legacy sandbox integration test, not a missing
+SQLite/SILO test. The suite exercises the fixed stdlib SQLite executor; it does
+not validate a GPU, native author materials, or site/container capabilities.
+
+New focused regressions establish:
+
+- Native missing/empty material and integrity failures stay unscored; reports do
+  not expose gold, hidden tests or private paths. Synthetic positive/negative
+  controls, common-bundle pair tests, reset/source integrity and native-subset
+  comparison parity pass. Missing second and reversed duplicate pairs stay blocked.
+- Optional allocation tracing leaves decisions unchanged, exposes actual
+  candidates/scenarios/limits, and reproduces 256 recovery versus zero JIT primary
+  search states for four independent fixture units with equal route estimates.
+  Charge IDs, stage/total reconciliation and the model-token formula expose
+  duplicate/mismatched accounting without discarding legitimate equal charges.
+- Constructed preparation executes and is source-grounded; eligible restoration
+  charges reads and re-prefill; compromised dependencies are rejected. Replication
+  is selected under its existing objective, and JIT retains identical after-alarm
+  preparation operations. The unchanged additive catalogue cannot produce a
+  strict advance-preparation optimum; see the explicit scientific conflict in the
+  cycle document. No selected favorable empirical plan was manufactured.
+- The labelled third-smoke excerpt reproduces 15/60 correct values. Offline
+  analysis separates incoming and local increment errors from inherited state.
+  Shape-valid all-wrong answers pass public integration and fail final scoring
+  without oracle feedback. Boundary replay preserves wrong actual values,
+  rejects altered content under an existing version, and retains missing slots.
+- Fresh deterministic development selection, local-task labelling, confirmation
+  separation, default settings, template capability rejection, stopping/limit
+  observations, condition grouping, immutable snapshots and mocked Slurm dry runs
+  behave as specified. Operation measurements use the actual worker/ledger path;
+  interrupted operation work and disjoint holdout validation are exercised.
+  Sanitized bundles preserve allowlisted runtime facts and exclude private paths.
+
+The final CLI preparation checks wrote reports/data/manifests outside Git under
+`/tmp/bc-validation-final.CiLfBU`:
+
+- `sqlite-readiness` returned `scoring_unavailable`: no staged native manifest was
+  supplied locally. The historical 270 public records were not re-inspected.
+- `allocation-reproduce` used explicit **constructed** cold/prepare/prepared
+  predictions of 2000 each and reproduced the 256-state planner charge. These
+  are not measured model costs or a reconstruction of the remote pilot ledger.
+- `silo-battery`, `validation-config`, `manifest` and `diagnostic-costs` prepared
+  eight full and 32 local executions, plus a 24-boundary ceiling and two held-out
+  confirmation sources. No model executed. Boundary data require real baseline
+  submissions and were not fabricated.
+- `measurement-plan` excluded those diagnostic/confirmation sources and prepared
+  four fresh sources split two/two for training and holdout: 96 operations across
+  four executions. The training config/manifest froze successfully; no empirical
+  measurement or automatic calibration activation occurred.
+
+Remaining gates: actual native databases/documents and nonempty author
+solutions/tests with bound manual review; a second compatible pair candidate;
+historical remote ledgers/checkpoints for exact attribution of the 256-unit gap;
+and user-triggered GPU preflight/clean diagnostic measurements. Staged template
+reasoning support and any 9B revision/hardware fit are unverified. No job,
+download, push, external message or broad four-policy campaign was launched.
+
+Exact local and browser-terminal commands are in the
+[ordered runbook](VALIDATION_CYCLE.md#ordered-commands).
+
+## Third SILO smoke still failed complete-task scoring (2026-09-17)
+
+The user reported the completed recurrence-guidance smoke, experiment
+`9a7b999f0fdae4ed106080940417c0ee6002fd691658ca8b7044623bd15a583e`, from
+`silo-smoke-v3-manifest.json`. Its reviewed dry run requested one GPU in `PA100q`;
+actual job ID, snapshot and hardware inventory have not been supplied.
+
+The single/clean episode again had full coverage and 0/1 successes. All four
+artifacts were retained, with no public alarm, repair work, reserve violations or
+missing/retryable shards. Protocol A, the source group, protected-original-shard
+access, adaptation, scorer and upstream pin match the preceding two smokes.
+The provided stderr excerpt contains only the optional fast-path fallback notice.
+
+The subsequent trace identifies episode
+`f5215f0f62c9ca58609549707de361b298aa6d3bc7326ae235684a527a7fdf58` with
+21581 work units, zero tool rejections and public integration true. Its final
+scorer reports one correct segment and `native_S=native_P_level_II=0.25`.
+Independent accumulation of the posted inputs confirms **15/60 correct outputs**,
+all in u0. Local scorer replay reproduces the reported metrics and source hash;
+all original inputs match the second smoke.
+
+| Segment | Correct outputs | First submitted value | Correct first value from original inputs | Visible predecessor's last value |
+| --- | ---: | ---: | ---: | ---: |
+| u0 | 15/15 | 9 | 9 | None |
+| u1 | 0/15 | 11 | 388 | 386 |
+| u2 | 0/15 | 13 | 802 | 458 |
+| u3 | 0/15 | 46 | 1171 | 436 |
+
+The explicit recurrence guidance coincided with u0 becoming fully correct,
+raising value accuracy from 3/60 to 15/60 and complete segments from zero to
+one. Total work increased by 2763, from 18818 to 21581. Task success remained
+zero. This is a descriptive development comparison, not a general causal or
+competence claim.
+
+Boundary-state errors persist even with a correct predecessor: u1 sees u0's
+final value 386 but starts at 11, consistent with using its first value 9 plus
+the new input 2. Its entire submitted answer list is identical to the previous
+run. The second u1 increment is 60 instead of 25. u2 starts at 13 rather than
+the 460 implied by its visible predecessor's final value 458; its second
+increment is 85 instead of 2. These are additional errors, not just propagation
+of an earlier wrong total. u3's first value implies incoming state 17, not its
+visible predecessor's final value 436; subsequent increments match its shard.
+The trace does not establish why the model chose 17. No hidden computed carry
+or correction was supplied, and the public structural checks behaved as designed.
+
+Next: pause prompt-only reruns and the larger SILO policy pilot. The current
+frozen model setup has not established clean competence on this task. Any next
+model/reasoning condition should be an explicit, separately labelled competence
+diagnostic with fresh provenance and appropriate charged generation/context
+budgets, keeping source access and scoring fixed. The prior instruction to retain
+the validated model/thinking configuration remains in force; no configuration
+or runtime change was made in this review. All three failed outputs are preserved.
+These are repeated development observations on one source group, not independent
+test instances or a recovery-policy comparison. A completed scientific failure
+remains terminal, not a retryable infrastructure error.
+
 ## Second SILO smoke retained all segments but failed scoring (2026-09-17)
 
 The user supplied the aggregate for experiment
@@ -61,9 +195,9 @@ feedback or automatic repair. It is not evidence that the real model improves.
 The prompt change invalidates prior calibration compatibility and requires a
 new source-pinned manifest.
 
-Next: after syncing the change, one fresh single/clean diagnostic using
-`silo-smoke-v3-manifest.json` and the same staged inputs/model can test the public
-recurrence clarification. Retain both failed outputs. Reusing this development
+The next step at that checkpoint was a fresh single/clean diagnostic using
+`silo-smoke-v3-manifest.json` and the same staged inputs/model to test the public
+recurrence clarification. Its failed aggregate is recorded above. Reusing this development
 instance does not establish generalization; a pass must precede broader clean
 coverage. This remains a non-confirmatory adaptation check, not a recovery-policy
 comparison or evidence of a recovery advantage. No GPU run or push was performed

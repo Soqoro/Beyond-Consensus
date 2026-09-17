@@ -1,0 +1,18 @@
+{
+  "evidence": "User-supplied third smoke excerpt; selected answers and visible predecessor values only. Not a reconstructed full checkpoint.",
+  "experiment_id": "9a7b999f0fdae4ed106080940417c0ee6002fd691658ca8b7044623bd15a583e",
+  "episode_id": "f5215f0f62c9ca58609549707de361b298aa6d3bc7326ae235684a527a7fdf58",
+  "generator_seed": 1,
+  "source_group": "silo:II-11:97ae088492a5d9f12eaad65d59e3c28999dde552aac28794b8784963585feb4a",
+  "answers": {
+    "u0": [9,46,95,100,117,125,157,206,235,266,308,333,347,354,386],
+    "u1": [11,71,99,138,187,237,238,283,312,330,377,392,430,437,458],
+    "u2": [13,98,100,142,177,178,203,247,261,289,336,338,372,387,436],
+    "u3": [46,78,114,129,152,167,211,226,275,305,324,326,353,389,431]
+  },
+  "visible": {
+    "u1": {"predecessor_artifact_id":"7047d2dd47303d14ac8790762c42e5b54b6c40fa05b4706f99f5890ac7e50aca","submitted_final_value":386},
+    "u2": {"predecessor_artifact_id":"511378d7068824447f118c87693cdfda5b7072fab8405cb6eaba9d439cca073f","submitted_final_value":458},
+    "u3": {"predecessor_artifact_id":"906b41b7ac2c39b02392252f9e682cca28c8152fa13af6f6ba414bc4841549fe","submitted_final_value":436}
+  }
+}

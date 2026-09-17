@@ -19,7 +19,7 @@ def source_revision(root: Path) -> str:
     if marker.exists():
         return read_json(marker)["source_revision"]
     try:
-        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True, stderr=subprocess.DEVNULL).strip()
     except (OSError, subprocess.CalledProcessError):
         commit = "uncommitted"
     files = {str(p.relative_to(root)): file_hash(p) for directory in ("src", "scripts", "experiments", "configs")
@@ -99,6 +99,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
         from ..tasks.data_manifest import regime
         if len({digest(regime(t)) for t in tasks}) != 1:
             raise BCError("Cannot mix task/scorer/access regimes in one manifest")
+        if any(t.metadata.get("diagnostic_mode") for t in tasks) and (
+                config.policies != ("single",) or config.attacks != ("clean",) or config.protocol != "A"):
+            raise BCError("SILO diagnostic modes require their own single/clean Protocol A manifest")
         if config.task_kind in ("sqlite_native", "sqlite_pair") and any(
                 t.metadata.get("readiness") != "reference_validated" or not t.metadata.get("validation_hash") for t in tasks):
             raise BCError("Scored native/pair manifests require completed reference validation")

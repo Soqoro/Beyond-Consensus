@@ -32,7 +32,8 @@ def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
     data = {"model": config.model, "budget_rules": {
         name: getattr(config.budget, name) for name in ("input_weight", "output_weight", "tool_charge")},
         "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind,
-        "worker_instructions": instructions}
+        "worker_instructions": instructions, "silo_interface": config.silo_interface,
+        "operation_measurement": config.operation_measurement}
     if task is not None and task.kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
         from ..tasks.data_manifest import regime
         data["data_regime"] = regime(task)

@@ -11,6 +11,21 @@ readable. New artifacts and private input manifests must stay outside Git.
 | `bc-manifest-v2` | Existing full planned grid and hashes plus a single `data_regime`. SQL tasks bind executor/runtime capabilities. Environments, releases, scorer/tool policies and access regimes cannot mix. |
 | `bc-result-v2` | Recorded in result provenance with the data regime. Existing budget/provenance/result structure remains; final diagnostics do not feed policy execution. |
 | `bc-summary-v2` | All planned statuses and source-group counts; native diagnostics are not pooled as joint-completion accuracy. No episode-independent confidence intervals. |
+| `bc-native-readiness-v1` | Sanitized file/material/review support status. Not a validation approval or model score. |
+| `bc-observations-v1` | Separate tri-state public coverage/shape/integration, missing obligations, evaluator, final semantics and execution status. Historical unknowns are null. |
+| `bc-ledger-observations-v2` | Additive charge IDs; same `token_tool_surrogate_v1` accounting. Entries, not sums of entries plus stage summaries, define spent work. |
+| `bc-allocation-trace-v1` | Optional private trace of the unchanged finite candidate/scenario search. Predicted costs and unknown cost components remain explicit. |
+| `bc-silo-battery-v1` | Frozen selection/count plan for eight full, 32 local, up to 24 actual-boundary executions and two separate confirmation sources. |
+| `bc-actual-predecessor-v1` | Actual baseline version/content, submission sequence, parent closure and baseline manifest/episode/checkpoint/condition pins. Hash validation rejects replacing content under the old version. No gold substitution. |
+| `bc-silo-attribution-v1` | Offline evaluator-only global/incoming/local error attribution. Never a public monitor observation. |
+| `bc-operation-cost-validation-v1` | Labelled mock/real operation measurements and disjoint holdout errors, not automatically deployable allocator calibration. |
+
+SILO local/boundary tasks remain `bc-data-v2` with distinct adaptation/scorer and
+`diagnostic_mode`. Their exact derivation is checked against original generated
+inputs; original source groups remain shared across modes. Config fields
+`silo_interface`, `development_profile`, `operation_measurement` and
+`allocation_diagnostics` are explicit opt-ins. Changed conditions get new
+manifests; mode/interface/measurement differences cannot pool in aggregation.
 
 ## Result statuses
 
@@ -18,7 +33,7 @@ readable. New artifacts and private input manifests must stay outside Git.
 
 | Status | Success field and aggregation |
 | --- | --- |
-| `completed` | Boolean full joint/segment completion; semantic failures count. |
+| `completed` | Boolean full joint/segment completion; semantic failures count. Labelled operation-only measurements use null success and no accuracy denominator. |
 | `budget_exhausted` | False; all prior work retained and counted. |
 | `scoring_unavailable` | Null; missing reviewed evaluation is excluded from semantic accuracy. |
 | `blocked_prerequisite` | Null; staged source missing/changed/active. |

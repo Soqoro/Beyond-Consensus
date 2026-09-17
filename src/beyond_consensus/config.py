@@ -93,8 +93,26 @@ class RunConfig:
     split_id: str = "group-hash-v1"
     data_split: str = "development"
     confirmatory: bool = False
+    allocation_diagnostics: bool = False
+    silo_interface: str = "original"
+    development_profile: str | None = None
+    operation_measurement: bool = False
 
     def __post_init__(self) -> None:
+        if type(self.allocation_diagnostics) is not bool or type(self.operation_measurement) is not bool:
+            raise BCError("Diagnostic switches must be booleans")
+        if self.silo_interface not in ("original", "submitted_final_value_v1"):
+            raise BCError("Unknown SILO serialization variant")
+        if self.silo_interface != "original" and self.task_kind != "silo":
+            raise BCError("SILO serialization is only available for SILO")
+        if self.development_profile is not None and not re.fullmatch(r"[a-z0-9_-]{1,80}", self.development_profile):
+            raise BCError("Invalid development profile label")
+        if self.development_profile == "qwen35-9b-later" and not self.model.revision:
+            raise BCError("Resolve the later 9B profile explicitly with validation-config --revision before staging")
+        if self.operation_measurement and (self.policies != ("single",) or self.attacks != ("clean",) or self.protocol != "A"):
+            raise BCError("Operation measurements require a separate single/clean Protocol A manifest")
+        if self.operation_measurement and self.task_kind not in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):
+            raise BCError("Operation measurements are restricted data workflows")
         for name in ("task_count", "shards", "max_actions", "observation_limit"):
             if type(getattr(self, name)) is not int or getattr(self, name) < 1:
                 raise BCError(f"{name} must be a positive integer")

@@ -52,6 +52,18 @@ def export_bundle(output: Path, target: Path, *, dry_run: bool = False) -> dict[
                     public_result["error"] = "Details retained in the private journal"
                 public_result["costs"] = {k: result["costs"][k] for k in (
                     "cap", "spent", "remaining", "stages", "historical_work", "work_unit", "uncertain_work")}
+                provenance = result.get("provenance", {})
+                runtime = provenance.get("backend_runtime", {})
+                public_result["provenance"] = {"condition": provenance.get("condition"),
+                    "source_revision": provenance.get("source_revision"),
+                    "model_hash": provenance.get("model_hash"),
+                    "runtime": {k: runtime.get(k) for k in ("dependencies", "checkpoint_revision", "tokenizer_revision",
+                        "loader", "chat_template", "settings", "model_lock_hash", "model_lock", "slurm_job_id", "slurm_array_job_id",
+                        "slurm_array_task_id", "hardware", "compute_capability", "vram_total_bytes", "torch_cuda", "snapshot_id")}}
+                checkpoint = path.parent/"checkpoint.json"
+                if checkpoint.exists():
+                    public_result["generation_diagnostics"] = [e for e in read_json(checkpoint)["store"]["events"]
+                        if e["type"] in ("generation_metadata", "context_limit", "observation_limit")]
             results.append(public_result)
         events = output / "episodes" / row["episode_id"] / "events.jsonl"
         if events.exists():

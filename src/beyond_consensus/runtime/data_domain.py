@@ -122,6 +122,10 @@ class DataDomain:
         return SILO_INSTRUCTIONS if self.task.kind == "silo" else SQL_INSTRUCTIONS
 
     def available(self, identity, operation, allowed):
+        if self.task.metadata.get("diagnostic_mode") == "boundary":
+            # Ancestors are retained for identity/taint validation, not additional reads.
+            frozen = self.task.metadata["harness"]["predecessor"]
+            return set(allowed) | {k for k, a in self.store.artifacts.items() if a.valid and k not in frozen["artifacts"]}
         if operation in ("prepare", "replicate") or getattr(self.engine, "calibrating", False):
             return set(allowed) | {k for k, a in self.store.artifacts.items() if a.valid and a.author == identity
                 and k in self.store.contexts[identity].reads and a.kind != "implementation"}
@@ -148,6 +152,17 @@ class DataDomain:
                 context["notice"] = ("This permitted source describes a different assignment. "
                     "Read your contract with assigned_contract_action before constructing your report.")
         return context
+
+    def artifact_observation(self, unit, version, content):
+        observation = {"tool": "read_artifact", "version": version, "result": content}
+        if (self.task.kind == "silo" and self.engine.config.silo_interface == "submitted_final_value_v1"
+                and self.store.artifacts[version].unit == self.task.sources[unit].get("previous")):
+            answer = content.get("answer") if isinstance(content, dict) else None
+            valid = isinstance(answer, list) and len(answer) == self.task.sources[unit]["length"] and all(type(v) is int and abs(v)<=10**9 for v in answer)
+            observation.update(predecessor_artifact_id=version,
+                submitted_final_value=answer[-1] if valid else None,
+                submitted_final_value_status="available" if valid else "unavailable_malformed_artifact")
+        return observation
 
     def charge(self, stage, kind, floor=0, **usage):
         work = self.engine.config.budget.tool_charge
@@ -251,7 +266,7 @@ class DataDomain:
             content = self.store.read(identity, action["version"])
             if self.task.kind in SQL_KINDS and isinstance(content, dict) and "rows" in content:
                 content = {**content, **self.preview(content["rows"], action.get("row_offset", 0))}
-            loop._observe(identity, {**action, "result": content})
+            loop._observe(identity, {**action, **self.artifact_observation(unit, action["version"], content)})
             return None
         if tool == "read_shard" and self.task.kind == "silo":
             strict_keys(action, {"tool", "unit"}, {"tool", "unit"})
@@ -497,6 +512,9 @@ class DataDomain:
         selected = {u: self.store.artifacts[k].content for u, k in self.engine.selected.items()}
         self.charge("final_evaluation", "complete_output_scoring")
         if self.task.kind == "silo":
+            if self.task.metadata.get("diagnostic_mode"):
+                from ..tasks.silo_diagnostics import score_derived
+                return score_derived(self.task, selected)
             return silo_score(self.task.metadata["family"], list(self.task.metadata["harness"]["shards"].values()),
                 {u: content["answer"] for u, content in selected.items()})
         if self.task.kind != "sqlite_fixture" and not self.task.metadata.get("evaluation"):

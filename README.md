@@ -1,5 +1,11 @@
 # Beyond Consensus
 
+The current incremental work is the [bounded validation cycle](docs/VALIDATION_CYCLE.md):
+native readiness/reference controls, allocator and ledger audits, and fresh SILO
+competence diagnostics. It preserves the pinned 4B/no-thinking default and all
+historical results. Native materials and real cluster validation remain pending;
+the runbook prepares guarded dry runs only.
+
 Research foundation for **Adversarially Robust Division of Labour in LLM Agent Teams**.
 
 The question is whether recovery-aware delegation improves complete-task success
@@ -62,8 +68,11 @@ but failed (0/1): the worker repeatedly submitted preparation outlines during
 implementation. After action guidance was added, the second smoke retained all
 four segments with no public alarm but still failed scoring: arithmetic and
 predecessor-carry errors left only 3/60 numerical outputs correct. Shared
-instructions now state the public recurrence explicitly; a new model smoke is
-pending. Native/paired SQLite GPU
+instructions now state the public recurrence explicitly, but the third smoke
+also failed complete-task scoring. Its trace shows improvement to 15/60 correct
+values (one segment), with persistent carry/arithmetic errors. Further prompt-only
+reruns and larger SILO pilots are paused pending a model-competence decision.
+Native/paired SQLite GPU
 runs remain pending. Cluster observations and prior numeric
 results are recorded in VALIDATION. `configs/e1.json` plans 320 episodes only
 after 20 approved development

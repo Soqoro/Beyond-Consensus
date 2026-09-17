@@ -1,5 +1,31 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
+## Latest continuation: bounded validation cycle
+
+The incremental native/allocation/SILO diagnostic tooling is now implemented.
+Start with [VALIDATION_CYCLE.md](docs/VALIDATION_CYCLE.md) and its ordered commands;
+the migration narrative below preserves earlier progress. Native materials,
+real GPU/template checks, and full historical pilot ledgers remain unavailable
+locally. No jobs or downloads were launched.
+
+The allocator reproduces 256 primary finite-search charges under equal route
+estimates, consistent with the reported gap but not proven for the old run.
+Its present objective lets JIT buy the same preparation after an alarm: cheaper
+prepared repair alone cannot justify advance preparation. This scientific
+conflict is documented rather than resolved by forcing a plan. Preparation
+execution, dependency rejection and charged restoration are covered by behavioral
+tests; empirical cost comparisons remain future measurements.
+
+The next SILO path freezes eight fresh development sources: full baselines first,
+then 32 separate local tasks and up to 24 continuations from **actual** baseline
+artifacts. Original serialization and pinned 4B/no-thinking remain the control.
+No gold carry or arithmetic tool is exposed. Native reference checks can proceed
+independently once actual materials are staged and reviewed.
+
+See [the validation record](docs/VALIDATION.md) for current test counts.
+
+## Preserved migration handoff
+
 Updated: 2026-09-17. The **latest attached migration request supersedes the
 historical deployment discussion below**. Continue on the current Slurm cluster
 with restricted SQLite/SILO data workflows. No PBS, cloud, rental or remote
@@ -29,7 +55,11 @@ smoke `055d8a4b...` retained all four segments with no public alarm but still
 failed scoring. Its trace confirms zero tool rejections, public integration
 true and 3/60 correct values: arithmetic/indexing and predecessor-carry errors.
 Shared instructions now state the public scalar recurrence and a self-check;
-the fixed tools do not compute corrections. A fresh real-model smoke is pending.
+the fixed tools do not compute corrections. The third smoke `9a7b999f...` also
+failed complete-task scoring while retaining all four artifacts. Its trace
+confirms 15/60 values correct (u0 fully correct), zero tool rejections, public
+integration true and 21581 work. Wrong carries and local arithmetic errors
+persist in later segments. Pause further prompt-only reruns and larger SILO pilots.
 Prior results and delegation probes are preserved below as history, not current
 execution instructions.
 
@@ -62,11 +92,12 @@ traces. The revised pilot and grouped cost/rejection audit have completed.
 See VALIDATION for the eight cost rows and their interpretation.
 Use `configs/cluster.pa100.local.json` for the last
 user-verified submission profile; live scheduler availability can change.
-Next task-family work is native data/material review and one fresh SILO Prefix Sum
-smoke after the recurrence guidance is committed/pushed/pulled. Create
-`silo-smoke-v3-manifest.json` with the same staged data/model and smoke config;
-inspect its one-GPU dry run. This is a development diagnostic on reused inputs,
-not generalization evidence. Larger runs remain gated by clean competence.
+Next task-family work is native data/material review and an explicit decision
+about a separate SILO model/reasoning competence condition. The frozen settings
+remain unchanged; do not silently change thinking mode, weights or generation
+limits. Any authorized change needs fresh provenance and charged budgets.
+These are development diagnostics on reused inputs, not generalization evidence.
+Larger runs remain gated by clean competence.
 Keep the same model
 lock and campaign guard. Data sabotage is still disabled in code. No remote jobs,
 downloads, messages or pushes were performed from this workspace during this

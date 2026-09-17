@@ -159,14 +159,29 @@ class EpisodeEngine:
         reservation = self.ledger.reserve_work("planning", limit, "finite_search")
         self.boundary("planning_inflight")
         try:
+            allocation_trace = {} if self.config.allocation_diagnostics else None
             self.plan = choose_plan(self.manifest.policy, planning_task, self.config, self.costs, cap,
-                                    max_search_states=limit)
+                                    max_search_states=limit, trace=allocation_trace)
             self.ledger.reconcile_work(reservation, self.plan.search_states)
+            if allocation_trace is not None:
+                from ..util import atomic_json
+                from ..diagnostics.allocation import calibration_metadata
+                allocation_trace["calibration"] = calibration_metadata(self.config, planning_task)
+                atomic_json(self.journal.path / "allocation-diagnostic.json", allocation_trace)
         except Exception:
             if reservation in self.ledger.reservations:
                 self.ledger.reconcile_work(reservation, None)
             raise
         self.attacker = AttackController.after_allocation(self.manifest.attack, self.plan)
+        frozen = self.task.metadata.get("harness", {}).get("predecessor")
+        if self.task.metadata.get("diagnostic_mode") == "boundary" and frozen:
+            from ..tasks.silo_diagnostics import validate_predecessor
+            validate_predecessor(frozen, self.task.metadata["original_unit"])
+            from ..schemas import ArtifactVersion
+            for key, record in frozen["artifacts"].items():
+                self.store.artifacts[key] = ArtifactVersion(**record)
+            self.store.events.append({"type": "frozen_baseline_import", "version": frozen["version"],
+                "baseline_manifest_hash": frozen["baseline_manifest_hash"], "checkpoint_hash": frozen["checkpoint_hash"]})
         self.journal.event("allocation_published", plan=self.plan, calibration=self.costs.status)
         self.journal.event("coalition_committed", selection_hash=digest(self.attacker.coalition),
                            attacker_work=self.attacker.selection_work)
@@ -180,6 +195,8 @@ class EpisodeEngine:
                 self.operation(f"prepare:{unit}:{author}", unit, author, "preparation", "prepare", floor=self.plan.reserve)
             for unit in self.plan.units:
                 reads = tuple(self.candidates[d][-1] for d in unit.inputs if self.candidates.get(d))
+                if self.task.metadata.get("diagnostic_mode") == "boundary":
+                    reads = (self.task.metadata["harness"]["predecessor"]["version"],)
                 self.operation(f"primary:{unit.id}", unit.id, unit.owner, "primary", "implement", reads,
                                floor=self.plan.reserve)
             for unit, author in self.plan.replicas:
@@ -385,5 +402,14 @@ class EpisodeEngine:
             result.metrics["tool_rejections"] = sum(e["type"] == "prohibited_or_malformed_action" for e in self.store.events)
             result.metrics["query_replays"] = sum(e["type"] == "query_replay" for e in self.store.events)
             result.metrics["shard_transfers"] = sum(e["type"] == "shard_transfer" for e in self.store.events)
+        from ..evaluation.metrics import observations
+        result.metrics["observations"] = observations(status, final, self.integration_passed,
+            self.task.required_outputs if self.phase == "evaluation" else None,
+            self.selected if self.phase == "evaluation" else None,
+            not set(self.task.required_outputs)-set(self.selected) if self.domain and self.phase == "evaluation" else None)
+        result.provenance["condition"] = {"profile": self.config.development_profile,
+            "silo_interface": self.config.silo_interface,
+            "diagnostic_mode": self.task.metadata.get("diagnostic_mode", "full"),
+            "operation_measurement": self.config.operation_measurement}
         self.journal.result(result)
         return result

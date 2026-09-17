@@ -36,7 +36,8 @@ class BudgetLedger:
         positive(work, "charge", allow_zero=True)
         if work > self.remaining + 1e-9:
             raise BudgetExceeded(f"{stage}/{kind} needs {work:g}; remaining {self.remaining:g}")
-        self.entries.append({"stage": stage, "kind": kind, "work": work, **usage})
+        self.entries.append({"entry_id": f"charge-{len(self.historical)+len(self.entries)}",
+                             "stage": stage, "kind": kind, "work": work, **usage})
 
     def reserve_call(self, stage: str, input_tokens: int, max_output: int, floor: float = 0,
                      generation_seed: int | None = None) -> str:
@@ -99,7 +100,7 @@ class BudgetLedger:
         stages: dict[str, float] = {}
         for entry in self.entries:
             stages[entry["stage"]] = stages.get(entry["stage"], 0) + entry["work"]
-        return {"cap": self.cap, "spent": self.spent, "remaining": self.remaining,
+        return {"observation_schema": "bc-ledger-observations-v2", "cap": self.cap, "spent": self.spent, "remaining": self.remaining,
                 "stages": stages, "historical_work": sum(e["work"] for e in self.historical),
                 "work_unit": "token_tool_surrogate_v1", "entries": self.entries,
                 "historical_entries": self.historical,

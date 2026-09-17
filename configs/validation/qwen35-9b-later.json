@@ -1,0 +1,24 @@
+{
+  "name": "bounded-clean-later-model",
+  "development_profile": "qwen35-9b-later",
+  "task_kind": "silo",
+  "task_count": 8,
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
+  "policies": ["single"],
+  "attacks": ["clean"],
+  "seeds": [0],
+  "shards": 4,
+  "allocation_diagnostics": true,
+  "model": {
+    "backend": "transformers",
+    "checkpoint": "Qwen/Qwen3.5-9B",
+    "revision": null,
+    "tokenizer_revision": null,
+    "dtype": "bfloat16",
+    "thinking": false,
+    "context_limit": 8192,
+    "max_new_tokens": 768,
+    "do_sample": false
+  }
+}

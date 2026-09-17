@@ -104,6 +104,16 @@ def records(path):
     return result
 
 
+def nonempty_material(value):
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, list):
+        return bool(value) and all(nonempty_material(item) for item in value)
+    if isinstance(value, dict):
+        return bool(value) and any(nonempty_material(item) for item in value.values())
+    return False
+
+
 def stage(root, output, materials=None, review=None):
     """Register already staged local files. No network, SQL setup, or test exec."""
     root = _outside_git(root)
@@ -148,7 +158,7 @@ def inspect(staged):
         key = record["instance_id"]
         private = full.get(key, {})
         reasons = []
-        if not private.get("sol_sql") or not private.get("test_cases"):
+        if not nonempty_material(private.get("sol_sql")) or not nonempty_material(private.get("test_cases")):
             reasons.append("scoring_unavailable: missing nonempty author solution/test material")
         approved = review.get("tasks", {}).get(key)
         if not approved:

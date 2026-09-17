@@ -1,5 +1,20 @@
 # Local → GitHub → Slurm online terminal
 
+## Active bounded validation cycle (2026-09-17)
+
+Follow [VALIDATION_CYCLE.md](VALIDATION_CYCLE.md#ordered-commands) for the current
+ordered local checks, historical ledger audit, native material/review/CPU
+controls, and fresh SILO control/local/boundary dry runs. That runbook uses the
+existing registry and submission wrappers. It stops before job submission and
+the broad four-policy campaign. Earlier setup and E1 instructions below are
+reference material, not authorization to repeat staging or launch a grid.
+
+Native scoring still needs real databases and approved author evaluators.
+SILO diagnostics can proceed independently, starting with eight full clean
+control executions and freezing actual predecessor submissions afterward.
+The operation-cost measurement path is optional and uses separate manifests.
+None of these jobs was submitted during local implementation.
+
 All submissions and large staging commands below are **manual next steps**.
 Implementation did not submit jobs, download weights/datasets, or run the E1 grid.
 Local development needs Python 3.12+, no CUDA or container runtime.

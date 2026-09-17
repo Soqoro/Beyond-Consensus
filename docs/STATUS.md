@@ -1,6 +1,41 @@
 # Implementation status and handoff
 
-## Current checkpoint: restricted SQLite/SILO migration (2026-09-17)
+## Current checkpoint: bounded validation tooling (2026-09-17)
+
+The incremental cycle is implemented locally; see
+[VALIDATION_CYCLE.md](VALIDATION_CYCLE.md) for findings, the scientific conflict
+and exact ordered commands, and [VALIDATION.md](VALIDATION.md) for test outcomes.
+Prior changes and all reported cluster successes/failures below remain intact.
+
+- Native: sanitized per-task readiness, at-most-ten deterministic development
+  reference controls, reset/integrity/scorer diagnostics and two-candidate pair
+  counts. Real native/pair validation remains blocked by unstaged databases and
+  unapproved/missing author solutions/tests; only synthetic controls ran locally.
+- Allocation: opt-in candidate/scenario traces, immutable ledger reconciliation
+  and operation-cost measurements through the existing runner. Current equal
+  allowance reproduction visits 256 recovery states versus zero JIT states.
+  Matching the old aggregate gap is not raw-ledger verification.
+- Scientific conflict: the current additive catalogue permits identical JIT
+  preparation after an alarm; no preparation weakly dominates advance preparation.
+  A strict nonzero selection cannot be honestly manufactured by cheaper warm
+  costs alone. Actual preparation execution/restoration and JIT parity are tested
+  separately with explicitly constructed behavior. No optimizer objective changed.
+- SILO: offline attribution, generation/context metadata, frozen fresh-source
+  full/local/actual-boundary modes, optional actual-final-value serialization,
+  explicit 4B control/reasoning and unresolved 9B profiles. Default prompts/model
+  and the structural monitor remain unchanged. Eight diagnostic sources imply
+  at most 64 executions per condition; two separate confirmation sources are held
+  out. No new real-model competence result exists.
+- Metrics: public coverage/shape/integration, missing artifacts, evaluator,
+  semantic correctness and execution status are separate additive observations.
+  Legacy integration failure remains readable; historical absent facts are null.
+- No jobs, large downloads, commits, pushes or messages to dataset authors.
+  Cluster validation and the historical complete-ledger audit are pending.
+- Final local validation: **151 tests (150 passed, one existing legacy opt-in
+  skip), 28 focused tests passed, all nine shell checks passed**, plus compilation,
+  diff hygiene and isolated stdlib CLI help. These are local engineering results.
+
+## Migration checkpoint and cluster history (2026-09-17)
 
 The latest attached implementation request supersedes CooperBench as the required
 backend. We remain on Slurm; PBS and external-hosting paths are not active plans.
@@ -59,10 +94,20 @@ and delegation evidence below is retained as history.
   zero tool rejections, public integration true and only 3/60 correct numerical
   outputs (0/4 complete segments). Local accumulation/scorer replay confirms
   arithmetic/indexing and incorrect predecessor carry use. Shared instructions
-  now state the public scalar recurrence and a model-performed increment check;
-  real-model validation requires a fresh source-pinned smoke. Numerical tool
+  were updated to state the public scalar recurrence and a model-performed
+  increment check. Numerical tool
   feedback, model settings, input sizes and scoring remain unchanged. See
   [the second smoke](VALIDATION.md#second-silo-smoke-retained-all-segments-but-failed-scoring-2026-09-17).
+- Third SILO smoke `9a7b999f...`, after the recurrence clarification, still
+  completed with 0/1 successes, four retained artifacts and no public alarm or
+  repair work. Its trace confirms 21581 work, zero tool rejections and public
+  integration true. Accuracy improved from 3/60 to 15/60 values (u0 fully
+  correct), but later segments still use wrong carries and have local arithmetic
+  errors. Local scorer replay agrees. Pause prompt-only reruns and larger SILO
+  pilots; a separately labelled model/reasoning competence condition would need
+  an explicit change to the frozen setup. No runtime/configuration changes were
+  made during this review. See
+  [the third smoke](VALIDATION.md#third-silo-smoke-still-failed-complete-task-scoring-2026-09-17).
 - Blocked externally: native benchmark validation needs actual databases,
   author-supplied nonempty solutions/tests and reviewed restricted translations.
   No actual native tasks or pairs have been validated. The crypto pair remains

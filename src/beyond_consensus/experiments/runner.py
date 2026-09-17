@@ -92,6 +92,9 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                         break
                 task = task_from(next(t for t in manifest["tasks"] if t["id"] == episode.task_id))
                 engine_type = EpisodeEngine
+                if config.operation_measurement:
+                    from ..runtime.measurement import MeasurementEngine
+                    engine_type = MeasurementEngine
                 if config.task_kind == "cooperbench":
                     from ..runtime.coding_episode import CodingEpisodeEngine
                     engine_type = CodingEpisodeEngine

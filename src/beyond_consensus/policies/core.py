@@ -10,7 +10,7 @@ from ..planning.allocation import solve_allocation
 from ..planning.costs import CostEstimates
 from ..schemas import Alarm, DelegationPlan, RecoveryRoute, RecoveryUnit, TaskInstance, WORKERS
 from ..tasks.workflow import dependencies, ordered_units
-from ..util import digest
+from ..util import digest, plain
 
 
 def common_units(task: TaskInstance, boundary: str = "isolated_contract") -> tuple[RecoveryUnit, ...]:
@@ -37,12 +37,23 @@ def catalogue(plan: DelegationPlan, costs: CostEstimates) -> list[RecoveryRoute]
 
 
 def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
-                costs: CostEstimates, cap: float, max_search_states: int = 10000) -> DelegationPlan:
+                costs: CostEstimates, cap: float, max_search_states: int = 10000,
+                trace: dict | None = None) -> DelegationPlan:
     reserve = config.budget.total * config.budget.reserve_fraction if policy in ("recovery", "replication") else 0
     basic = DelegationPlan("common", common_units(task), reserve=reserve)
+    if trace is not None:
+        trace.update(schema="bc-allocation-trace-v1", policy=policy, task_id=task.id, group=task.group,
+            costs=plain(costs), cap=cap, reserve=reserve, state_limit=max_search_states,
+            work_unit="token_tool_surrogate_v1", candidates=[], evaluations=[],
+            unmodeled_costs=["checking", "integration", "planner_search_overhead"],
+            calibration_warning="missing_calibration" if not costs.calibration_id else None,
+            scope="finite boundary/subset catalogue; single-identity public-detection scenarios, not attacker truth")
     if policy in ("ordinary", "jit", "single"):
         if policy == "single":
             basic.units = tuple(replace(u, owner="w0") for u in basic.units)
+        if trace is not None:
+            trace.update(selected=plain(basic), decision="fixed_policy_no_advance_search", candidate_count=1,
+                         candidates=[{"plan": plain(basic), "routes": plain(catalogue(basic, costs))}])
         return basic
     candidates = []
     for boundary in ("isolated_contract", "context_linked"):
@@ -56,6 +67,14 @@ def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
                                         choices if policy == "recovery" else (),
                                         choices if policy == "replication" else (), reserve)
             candidates.append(candidate)
+    if trace is not None:
+        trace["candidate_count"] = len(candidates)
+        trace["preparation_candidates"] = sum(bool(p.preparation) for p in candidates)
+        trace["candidates"] = [{"plan": plain(p), "routes": plain(catalogue(p, costs)),
+            "normal": len(p.units)*costs.cold, "preparation": len(p.preparation)*costs.prepare,
+            "replication": len(p.replicas)*costs.cold, "checking": None, "integration": None,
+            "primary_allowance_feasible": (len(p.units)+len(p.replicas))*costs.cold+len(p.preparation)*costs.prepare <= cap-reserve,
+            "candidate_generation": "generated", "structural_validation": "valid_schema"} for p in candidates]
     def base_cost(plan: DelegationPlan) -> float:
         return len(plan.units)*costs.cold + len(plan.preparation)*costs.prepare + len(plan.replicas)*costs.cold
     if policy == "replication":
@@ -66,6 +85,8 @@ def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
         if not feasible:
             basic.allocation_status = "infeasible" if len(evaluated) == len(candidates) else "search_limit_no_certificate"
             basic.search_states = len(evaluated)*len(WORKERS)
+            if trace is not None:
+                trace.update(selected=plain(basic), decision=basic.allocation_status)
             return basic
         def score(p: DelegationPlan) -> tuple[float, float]:
             worst = max(sum(costs.cold for u in p.units if u.owner == compromised
@@ -76,11 +97,25 @@ def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
         plan.predicted_cost = sum(score(plan))
         plan.search_states = len(evaluated)*len(WORKERS)
         plan.allocation_status = "exact_finite_replication_objective" if len(evaluated) == len(candidates) else "heuristic_search_limit"
+        if trace is not None:
+            trace.update(selected=plain(plan), decision="selected_replication" if plan.replicas else "selected_no_replication")
+            trace["evaluations"] = [{"plan_id": p.id, "objective": score(p),
+                "reason": "selected" if p.id == plan.id else "over_budget" if p not in feasible else "not_selected",
+                "scenarios": [{"excluded_identity": w, "exposed_reconstruction": sum(costs.cold for u in p.units
+                    if u.owner == w and not any(k == u.id and a != w for k,a in p.replicas))} for w in WORKERS]}
+                for p in evaluated]
         return plan
-    allocation = solve_allocation(candidates, lambda p: catalogue(p, costs), base_cost, cap, max_states=max_search_states)
+    allocation = solve_allocation(candidates, lambda p: catalogue(p, costs), base_cost, cap, max_states=max_search_states,
+                                  trace=trace["evaluations"] if trace is not None else None)
     plan = allocation.plan or basic
     plan.allocation_status = allocation.status
     plan.predicted_cost, plan.search_states = allocation.worst_cost, allocation.states
+    if trace is not None:
+        trace.update(selected=plain(plan), decision=allocation.status if allocation.plan is None else
+                     "selected_no_preparation" if not plan.preparation else "selected_preparation")
+        evaluated_ids = {e["plan_id"] for e in trace["evaluations"]}
+        trace["evaluations"].extend({"plan_id": p.id, "reason": "unavailable_search_limit"}
+                                    for p in candidates if p.id not in evaluated_ids)
     return plan
 
 
