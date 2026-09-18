@@ -411,5 +411,7 @@ class EpisodeEngine:
             "silo_interface": self.config.silo_interface,
             "diagnostic_mode": self.task.metadata.get("diagnostic_mode", "full"),
             "operation_measurement": self.config.operation_measurement}
+        if self.config.organization != "legacy":
+            result.provenance["condition"]["organization"] = self.config.organization
         self.journal.result(result)
         return result

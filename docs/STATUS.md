@@ -1,6 +1,29 @@
 # Implementation status and handoff
 
-## Current checkpoint: bounded validation tooling (2026-09-17)
+## Current checkpoint: recoverability research gate (2026-09-18)
+
+See [RESEARCH_GATE.md](RESEARCH_GATE.md) for the structural audit, precise deferral
+assumptions, remaining cost gaps and narrowed command sequence. No preceding-cycle
+browser commands have been run by the user. Historical remote ledger attribution
+and native material/reference/model gates remain pending.
+
+The 32 candidates are two exposure labels times 16 backup masks with fixed owners
+and unit outputs. Linked numeric fixtures have two material dependency workflows;
+independent SQLite fixtures and SILO have one. Opt-in organization conditions
+expose the existing numeric alternatives with common JIT and a common configured
+reserve. They do not implement native intermediate-view generation or certify a
+native organization optimizer. Missing native variation/calibration fails closed.
+
+The read-only ledger audit now reconciles stage entries and matched recovery/JIT
+gaps without fabricating absent candidate/state/operation observations. The
+`silo-battery --full-only` path prepares just eight original full controls; reuse
+of frozen inputs is supported. Defaults, terminal failures, restricted SQLite,
+four identities/one frozen model per shard and Slurm guards remain intact.
+
+Local suite: **160 tests, 159 passed and one existing legacy integration skip**.
+No cluster/GPU execution, real native validation, commit, push or download occurred.
+
+## Prior checkpoint: bounded validation tooling (2026-09-17)
 
 The incremental cycle is implemented locally; see
 [VALIDATION_CYCLE.md](VALIDATION_CYCLE.md) for findings, the scientific conflict

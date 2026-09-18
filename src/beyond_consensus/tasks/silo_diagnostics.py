@@ -84,6 +84,35 @@ def data_manifest(tasks, **metadata):
     return {"schema": "bc-data-v2", "environment": "silo", "tasks": plain(tasks), **metadata}
 
 
+def full_control(start=1000, exclusions=(), reuse=None):
+    """Prepare only eight original full tasks; never expand into other campaigns."""
+    if reuse is None:
+        tasks, selection = fresh_sources(start, 8, exclusions)
+    else:
+        from .data_manifest import validate_data
+        tasks = validate_data(Path(reuse))
+        if len(tasks) != 8 or any(t.kind != "silo" or t.metadata.get("diagnostic_mode") or
+                t.metadata.get("family") != "II-11" or t.metadata.get("access_regime") != "protected_original_shards"
+                or grouped_split(t.group) != "development" for t in tasks):
+            raise BCError("Reuse requires exactly eight full development Prefix Sum controls with the original access regime")
+        excluded = {task(seed=s).metadata["base_hash"] for s in range(8)}
+        for path in exclusions:
+            excluded.update(t["metadata"]["base_hash"] for t in read_json(path).get("tasks", []) if t["kind"] == "silo")
+        hashes = [t.metadata["base_hash"] for t in tasks]
+        if len(set(hashes)) != 8 or excluded.intersection(hashes):
+            raise BCError("Reused sources overlap inspected/excluded content or each other")
+        prior = read_json(reuse)
+        selection = {"reused_manifest_hash": digest(prior), "original_selection": prior.get("selection"),
+            "selection": "reuse frozen inputs without consulting outcomes", "excluded_manifest_hashes": [digest(read_json(p)) for p in exclusions]}
+    return {"full": data_manifest(tasks, selection=selection),
+        "plan": {"schema": "bc-silo-full-control-v1", "full": 8, "planned_executions": 8,
+            "execution_seeds": [0], "selection": selection, "model_executed": False,
+            "source_groups": [t.group for t in tasks], "generator_seeds": [t.metadata["generator_seed"] for t in tasks],
+            "measured_cost_estimate": None, "cost_status": "unmeasured; use diagnostic-costs for explicit action/cap bounds",
+            "next_decision": "Inspect eight full-control results before selecting any local/boundary subset or one additional competence condition",
+            "automatic_followup": False}}
+
+
 def battery(start=1000, exclusions=()):
     tasks, selection = fresh_sources(start, 8, exclusions)
     confirmation, confirmation_selection = fresh_sources(selection["next_seed"], 2, exclusions)

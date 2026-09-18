@@ -1,5 +1,6 @@
 """Allocation explanations and ledger reconciliation, without model execution."""
 from collections import Counter, defaultdict
+import json
 from pathlib import Path
 
 from ..planning.costs import compatibility
@@ -43,6 +44,8 @@ def reconcile(ledger, result=None, rules=None):
             if abs(predicted-entry["work"]) > 1e-9:
                 model_mismatches.append({"entry_index": index, "recorded_work": entry["work"], "token_formula_work": predicted})
     return {"entry_count": len(entries), "entry_total": total, "stages": dict(stages), "kinds": dict(kinds),
+        "stage_entries": {stage: [{"entry_index": i, **entry} for i, entry in enumerate(entries) if entry["stage"] == stage]
+                          for stage in stages},
         "summary_total_matches": total == ledger["spent"] if "spent" in ledger else None,
         "stage_totals_match": dict(stages) == ledger["stages"] if "stages" in ledger else None,
         "result_total": expected, "result_total_matches": total == expected if expected is not None else None,
@@ -57,6 +60,8 @@ def reconcile(ledger, result=None, rules=None):
 def inspect_output(output):
     output = Path(output)
     manifest = read_json(output / "manifest.json")
+    from ..experiments.manifest import validate_manifest
+    validate_manifest(manifest)
     reports, totals = [], defaultdict(list)
     for row in manifest["episodes"]:
         path = output / "episodes" / row["episode_id"]
@@ -65,25 +70,81 @@ def inspect_output(output):
             reports.append({"episode_id": row["episode_id"], "status": "result_unavailable"})
             continue
         result = read_json(result_path)
-        if "costs" in result:
+        checkpoint = read_json(path/"checkpoint.json") if (path/"checkpoint.json").exists() else {}
+        if isinstance(result.get("costs", {}).get("entries"), list):
             ledger = result["costs"]
         elif costs_path.exists():
             ledger = read_json(costs_path)
-        elif (path / "checkpoint.json").exists():
-            ledger = read_json(path / "checkpoint.json")["ledger"]
+        elif checkpoint:
+            ledger = checkpoint["ledger"]
         else:
             reports.append({"episode_id": row["episode_id"], "status": "ledger_unavailable"})
             continue
+        if not isinstance(ledger.get("entries"), list):
+            reports.append({"episode_id": row["episode_id"], "status": "ledger_entries_unavailable",
+                "reported_total": result.get("costs", {}).get("spent"), "reconciliation": None})
+            continue
         detail = reconcile(ledger, result, manifest["config"]["budget"])
         trace = path / "allocation-diagnostic.json"
-        reports.append({"episode_id": row["episode_id"], "policy": row["policy"], "condition": row["attack"]["family"],
+        plan = result.get("provenance", {}).get("plan") or checkpoint.get("plan")
+        events = []
+        if (path/"events.jsonl").exists():
+            events = [json.loads(line) for line in (path/"events.jsonl").read_text().splitlines() if line.strip()]
+        allocation = read_json(trace) if trace.exists() else None
+        observed_search = sum(e["work"] for e in ledger["entries"] if e["stage"] == "planning" and e["kind"] == "finite_search")
+        checks = {"episode_manifest": result.get("provenance", {}).get("manifest_hash") == digest(row),
+            "source": result.get("provenance", {}).get("source_revision") == manifest["source_revision"]}
+        reports.append({"episode_id": row["episode_id"], "task_id": row["task_id"], "seed": row["seed"],
+            "policy": row["policy"], "condition": row["attack"]["family"],
             "ledger_hash": digest(ledger), "reconciliation": detail,
-            "recorded_plan": result.get("provenance", {}).get("plan"),
-            "recorded_cost_estimates": result.get("provenance", {}).get("calibration"),
-            "allocation": read_json(trace) if trace.exists() else None,
+            "identity_checks": checks, "result_hash": digest(result),
+            "recorded_plan": plan,
+            "recorded_cost_estimates": result.get("provenance", {}).get("calibration") or checkpoint.get("costs"),
+            "ledger_schema": ledger.get("observation_schema"), "config_hash": manifest["config_hash"],
+            "source_revision": manifest["source_revision"], "calibration_hash": manifest.get("calibration_hash"),
+            "observed_search_work": observed_search,
+            "recorded_search_states": plan.get("search_states") if plan else None,
+            "search_charge_matches_recorded_states": observed_search == plan["search_states"] if plan and "search_states" in plan else None,
+            "candidate_count": allocation.get("candidate_count") if allocation else None,
+            "executed_preparation_replication": [{k: e.get(k) for k in ("key", "unit", "executor", "operation", "measured_work", "outcome")}
+                for e in events if e["type"] == "operation" and e.get("operation") in ("prepare", "replicate")]
+                if (path/"events.jsonl").exists() else None,
+            "stage_preparation_work": detail["stages"].get("preparation", 0),
+            "stage_replication_work": detail["stages"].get("replication", 0),
+            "allocation": allocation,
             "allocation_status": "recorded" if trace.exists() else "candidate_trace_not_recorded"})
         totals[(row["policy"], row["attack"]["family"])].append(detail)
+    paired = []
+    indexed = {(r["task_id"], r["seed"], r["condition"], r["policy"]): r for r in reports if r.get("reconciliation")}
+    for key, recovery in indexed.items():
+        if key[-1] != "recovery":
+            continue
+        jit = indexed.get((*key[:-1], "jit"))
+        if not jit:
+            paired.append({"task_id": key[0], "seed": key[1], "condition": key[2], "status": "missing_jit_ledger"})
+            continue
+        rd, jd = recovery["reconciliation"], jit["reconciliation"]
+        delta = rd["entry_total"]-jd["entry_total"]
+        stages = {s: rd["stages"].get(s, 0)-jd["stages"].get(s, 0) for s in rd["stages"].keys() | jd["stages"].keys()}
+        search_delta = recovery["observed_search_work"]-jit["observed_search_work"]
+        verified = all(all(r["identity_checks"].values()) and r["search_charge_matches_recorded_states"] is True
+            and r["reconciliation"]["result_total_matches"] is True
+            and r["reconciliation"]["stage_totals_match"] is True
+            and not r["reconciliation"]["duplicate_entry_ids"] and not r["reconciliation"]["model_charge_mismatches"]
+            for r in (recovery, jit))
+        paired.append({"task_id": key[0], "seed": key[1], "condition": key[2],
+            "total_work_difference": delta, "stage_differences": stages,
+            "finite_search_difference": search_delta, "non_search_residual": delta-search_delta,
+            "status": "reconciled" if verified else "incomplete_or_inconsistent_evidence",
+            "entire_gap_matches_search": verified and delta == search_delta and stages.get("planning", 0) == search_delta
+                and all(v == 0 for s, v in stages.items() if s != "planning")})
     return {"schema": "bc-allocation-analysis-v1", "derived": True, "manifest_hash": digest(manifest),
+        "experiment_id": manifest["experiment_id"], "source_revision": manifest["source_revision"],
+        "mode": manifest["config"].get("model", {}).get("backend"),
+        "evidence_origin": "saved episode ledgers; mock runs remain mock evidence",
+        "config_hash": manifest["config_hash"], "calibration_hash": manifest.get("calibration_hash"),
+        "recovery_jit_pairs": paired,
+        "missing_evidence_note": "Absent candidate traces/calibration origin/operation events remain unknown; planned preparation is not proof of execution.",
         "original_charges_modified": False, "episodes": reports,
         "groups": {"/".join(k): {"episodes_with_ledgers": len(v),
             "mean_total_work": sum(r["entry_total"] for r in v)/len(v),

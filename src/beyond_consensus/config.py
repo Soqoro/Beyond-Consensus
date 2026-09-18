@@ -97,8 +97,13 @@ class RunConfig:
     silo_interface: str = "original"
     development_profile: str | None = None
     operation_measurement: bool = False
+    organization: str = "legacy"
 
     def __post_init__(self) -> None:
+        if self.organization not in ("legacy", "fixed_isolated", "fixed_linked", "select_boundary"):
+            raise BCError("Unknown organization condition")
+        if self.organization != "legacy" and (self.policies != ("jit",) or self.protocol != "A" or self.operation_measurement):
+            raise BCError("Organization conditions require common JIT repair, Protocol A, and no operation measurements")
         if type(self.allocation_diagnostics) is not bool or type(self.operation_measurement) is not bool:
             raise BCError("Diagnostic switches must be booleans")
         if self.silo_interface not in ("original", "submitted_final_value_v1"):

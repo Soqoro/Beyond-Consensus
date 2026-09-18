@@ -1,6 +1,18 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: bounded validation cycle
+## Latest continuation: research gate (2026-09-18)
+
+Start with [RESEARCH_GATE.md](docs/RESEARCH_GATE.md), which supersedes the earlier
+battery-first sequence. The user has not run the previous browser commands.
+Local changes add an exact catalogue inventory, matched saved-ledger audit,
+opt-in existing numeric boundary choices with common JIT/reserve, and eight-only
+SILO preparation. The full local suite passed 159 tests with one existing skip.
+Native materials, native workflow alternatives/costs, historical remote ledger
+attribution and actual clean-model competence remain blocked/unconfirmed. No
+remote execution or empirical recovery advantage is claimed. Review and push
+manually, then pull/audit before any separately authorized small GPU control.
+
+## Prior continuation: bounded validation cycle
 
 The incremental native/allocation/SILO diagnostic tooling is now implemented.
 Start with [VALIDATION_CYCLE.md](docs/VALIDATION_CYCLE.md) and its ordered commands;

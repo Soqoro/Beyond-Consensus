@@ -93,6 +93,12 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
         raise BCError("Task count/uniqueness does not match the planned configuration")
     if any(t.kind != config.task_kind for t in tasks):
         raise BCError("Manifest task environment mismatch")
+    if config.organization != "legacy":
+        from ..policies.core import require_boundary_variation
+        for task in tasks:
+            require_boundary_variation(task)
+        if config.model.backend != "mock" and not config.calibration_file:
+            raise BCError("Organization conditions require compatible measured calibration before a real-model manifest")
     from ..runtime.data_domain import DATA_KINDS
     data_mode = config.task_kind in DATA_KINDS
     if data_mode:

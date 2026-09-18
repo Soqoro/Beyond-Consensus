@@ -1,10 +1,11 @@
 # Beyond Consensus
 
-The current incremental work is the [bounded validation cycle](docs/VALIDATION_CYCLE.md):
-native readiness/reference controls, allocator and ledger audits, and fresh SILO
-competence diagnostics. It preserves the pinned 4B/no-thinking default and all
-historical results. Native materials and real cluster validation remain pending;
-the runbook prepares guarded dry runs only.
+The next step is the [recoverability research gate](docs/RESEARCH_GATE.md): audit
+what the 32 plans actually vary, reconcile saved cluster ledgers, unblock native
+SQLite materials, and prepare only eight SILO full controls. The prior
+[bounded validation tooling](docs/VALIDATION_CYCLE.md) remains available; its full
+diagnostic/measurement batteries are not the initial campaign. The pinned
+4B/no-thinking default and historical results are preserved.
 
 Research foundation for **Adversarially Robust Division of Labour in LLM Agent Teams**.
 

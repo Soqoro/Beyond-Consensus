@@ -10,13 +10,46 @@ from ..planning.allocation import solve_allocation
 from ..planning.costs import CostEstimates
 from ..schemas import Alarm, DelegationPlan, RecoveryRoute, RecoveryUnit, TaskInstance, WORKERS
 from ..tasks.workflow import dependencies, ordered_units
-from ..util import digest, plain
+from ..util import BCError, digest, plain
 
 
 def common_units(task: TaskInstance, boundary: str = "isolated_contract") -> tuple[RecoveryUnit, ...]:
     return tuple(RecoveryUnit(u, f"Implement the permitted contract for {u}", WORKERS[i % 4],
                               dependencies(task, u) if boundary == "context_linked" or task.kind == "silo" else (),
                               (u,), boundary) for i, u in enumerate(ordered_units(task)))
+
+
+def candidate_plans(policy: str, task: TaskInstance, reserve: float) -> list[DelegationPlan]:
+    """Legacy ordered catalogue: two exposure boundaries times backup masks.
+
+    Unit boundaries, terminal obligations, primary order and owners stay fixed.
+    Boundary labels need not denote different dependency graphs.
+    """
+    candidates = []
+    for boundary in ("isolated_contract", "context_linked"):
+        units = common_units(task, boundary)
+        for mask in itertools.product((False, True), repeat=len(units)):
+            choices = tuple((u.id, WORKERS[(WORKERS.index(u.owner)+1) % 4])
+                            for u, chosen in zip(units, mask) if chosen)
+            candidates.append(DelegationPlan(digest([boundary, choices])[:16], units,
+                choices if policy == "recovery" else (),
+                choices if policy == "replication" else (), reserve))
+    return candidates
+
+
+def boundary_plans(task: TaskInstance, reserve: float) -> list[DelegationPlan]:
+    """Existing primary-read alternatives only; no generated native view plans."""
+    return [DelegationPlan("boundary-jit-v1:"+boundary, common_units(task, boundary), reserve=reserve)
+            for boundary in ("isolated_contract", "context_linked")]
+
+
+def require_boundary_variation(task: TaskInstance) -> None:
+    plans = boundary_plans(task, 0)
+    if tuple(u.inputs for u in plans[0].units) == tuple(u.inputs for u in plans[1].units):
+        raise BCError("Decomposition readiness gap: existing boundaries have identical primary dependency structures")
+    # Native independence/semantic equivalence is not established by structural checks.
+    if task.kind != "workflow_fixture":
+        raise BCError("Decomposition readiness gap: native alternative legality and calibrated operation costs are unvalidated")
 
 
 def catalogue(plan: DelegationPlan, costs: CostEstimates) -> list[RecoveryRoute]:
@@ -39,6 +72,33 @@ def catalogue(plan: DelegationPlan, costs: CostEstimates) -> list[RecoveryRoute]
 def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
                 costs: CostEstimates, cap: float, max_search_states: int = 10000,
                 trace: dict | None = None) -> DelegationPlan:
+    if config.organization != "legacy":
+        require_boundary_variation(task)
+        if config.model.backend != "mock" and costs.status != "development-calibrated":
+            raise BCError("Decomposition readiness gap: real organization selection requires compatible measured calibration")
+        reserve = config.budget.total * config.budget.reserve_fraction
+        candidates = boundary_plans(task, reserve)
+        if config.organization != "select_boundary":
+            plan = candidates[config.organization == "fixed_linked"]
+            plan.allocation_status = "prespecified_boundary"
+        else:
+            # Same JIT catalogue, owners and reserve rule in all organization arms.
+            # Unlike legacy recovery, both arms enforce the same primary reserve gate.
+            eligible = [p for p in candidates if len(p.units)*costs.cold <= cap-reserve]
+            allocation = solve_allocation(eligible, lambda p: catalogue(p, costs),
+                lambda p: len(p.units)*costs.cold, cap, max_states=max_search_states,
+                trace=trace.setdefault("evaluations", []) if trace is not None else None)
+            plan = allocation.plan or candidates[0]
+            plan.allocation_status, plan.predicted_cost, plan.search_states = allocation.status, allocation.worst_cost, allocation.states
+        if trace is not None:
+            trace.update(schema="bc-boundary-jit-v1", organization=config.organization,
+                candidate_count=len(candidates) if config.organization == "select_boundary" else 1,
+                candidates=[plain(p) for p in candidates], selected=plain(plan),
+                reserve_rule="configured_fraction_same_across_organization_arms", reserve=reserve,
+                preparation_permission="identical JIT catalogue after alarm; no advance preparation",
+                unmodeled_costs={"checking": None, "integration": None, "planner_search_overhead": None},
+                semantic_equivalence="fixture obligations unchanged; not inferred from structural validation")
+        return plan
     reserve = config.budget.total * config.budget.reserve_fraction if policy in ("recovery", "replication") else 0
     basic = DelegationPlan("common", common_units(task), reserve=reserve)
     if trace is not None:
@@ -55,18 +115,7 @@ def choose_plan(policy: str, task: TaskInstance, config: RunConfig,
             trace.update(selected=plain(basic), decision="fixed_policy_no_advance_search", candidate_count=1,
                          candidates=[{"plan": plain(basic), "routes": plain(catalogue(basic, costs))}])
         return basic
-    candidates = []
-    for boundary in ("isolated_contract", "context_linked"):
-        units = common_units(task, boundary)
-        # Every subset, including no preparation/replication. Backup authors rotate;
-        # the catalogue permits every identity during later reconstruction.
-        for mask in itertools.product((False, True), repeat=len(units)):
-            choices = tuple((u.id, WORKERS[(WORKERS.index(u.owner)+1) % 4])
-                            for u, chosen in zip(units, mask) if chosen)
-            candidate = DelegationPlan(digest([boundary, choices])[:16], units,
-                                        choices if policy == "recovery" else (),
-                                        choices if policy == "replication" else (), reserve)
-            candidates.append(candidate)
+    candidates = candidate_plans(policy, task, reserve)
     if trace is not None:
         trace["candidate_count"] = len(candidates)
         trace["preparation_candidates"] = sum(bool(p.preparation) for p in candidates)

@@ -3,6 +3,24 @@
 These schemas extend the existing records; v1 numeric/legacy results remain
 readable. New artifacts and private input manifests must stay outside Git.
 
+The research-gate additions are opt-in/read-only:
+
+- `bc-planning-structure-v1` counts actual unit/output/dependency/owner/mask/reserve
+  differences separately. Label differences alone do not count as decompositions.
+- `bc-silo-full-control-v1` plans exactly eight original full controls with no
+  automatic follow-up. Reused sources retain a digest of their frozen manifest.
+- `bc-allocation-analysis-v1` additionally records per-stage entries, provenance,
+  observed search charges and matched recovery/JIT residuals. Missing ledgers,
+  traces or operation events stay unavailable; historical charges are untouched.
+- `RunConfig.organization` defaults to `legacy`. `fixed_isolated`, `fixed_linked`
+  and `select_boundary` are separately identified existing numeric boundary/JIT
+  conditions with a common configured reserve. They require policy `jit`, Protocol
+  A, material graph variation and (for real runs) compatible measured calibration.
+  Native alternative legality remains unvalidated and fails closed. Their trace
+  is `bc-boundary-jit-v1`; model/evaluator views contain no organization label.
+
+See [RESEARCH_GATE.md](RESEARCH_GATE.md) for scientific assumptions and gates.
+
 | Record/version | Required interpretation |
 | --- | --- |
 | `bc-sqlite-stage-v1` | Exact audited release, public metadata hash, registered local database/document paths and hashes; optional author material and review pins. Registration is not scored readiness. |

@@ -4,7 +4,7 @@ from pathlib import Path
 
 from .util import BCError, atomic_json, digest, plain, read_json
 
-COMMANDS = {"sqlite-readiness", "allocation-audit", "allocation-reproduce", "silo-analyze",
+COMMANDS = {"sqlite-readiness", "planning-audit", "allocation-audit", "allocation-reproduce", "silo-analyze",
     "silo-battery", "silo-boundaries", "validation-config", "measurement-plan", "measurement-report", "diagnostic-costs"}
 
 
@@ -12,6 +12,9 @@ def add_parsers(sub):
     native = sub.add_parser("sqlite-readiness", help="Sanitized per-task readiness; no SQL or model execution")
     native.add_argument("--staged", type=Path)
     native.add_argument("--output", type=Path, required=True)
+    planning = sub.add_parser("planning-audit", help="Count actual decompositions separately from backup masks; no model")
+    planning.add_argument("--config", type=Path, required=True)
+    planning.add_argument("--output", type=Path, required=True)
     for name in ("allocation-audit", "silo-analyze", "silo-boundaries", "diagnostic-costs"):
         p = sub.add_parser(name, help="Read existing immutable results; write a separately identified diagnostic")
         if name == "diagnostic-costs":
@@ -32,6 +35,9 @@ def add_parsers(sub):
         p.add_argument("--output-root", type=Path, required=True)
         p.add_argument("--seed-start", type=int, default=default)
         p.add_argument("--exclude", type=Path, nargs="*", default=[])
+        if name == "silo-battery":
+            p.add_argument("--full-only", action="store_true", help="Prepare only eight full controls; no local/boundary/confirmation campaign")
+            p.add_argument("--reuse-full", type=Path, help="Reuse an existing frozen eight-source full manifest with --full-only")
     config = sub.add_parser("validation-config", help="Write an explicit opt-in config for validated/frozen development data")
     config.add_argument("--data-manifest", type=Path, required=True)
     config.add_argument("--profile", choices=("qwen35-4b-control", "qwen35-4b-reasoning", "qwen35-9b-later"), default="qwen35-4b-control")
@@ -65,7 +71,13 @@ def dispatch(args):
             raise BCError("Use a new directory for the frozen development plan")
         from .tasks.silo_diagnostics import battery, fresh_sources, data_manifest
         if args.command == "silo-battery":
-            results = battery(args.seed_start, args.exclude)
+            if args.reuse_full and not args.full_only:
+                raise BCError("--reuse-full requires --full-only")
+            if args.full_only:
+                from .tasks.silo_diagnostics import full_control
+                results = full_control(args.seed_start, args.exclude, args.reuse_full)
+            else:
+                results = battery(args.seed_start, args.exclude)
         else:
             tasks, selection = fresh_sources(args.seed_start, 4, args.exclude)
             results = {"training": data_manifest(tasks[:2], selection=selection),
@@ -110,6 +122,12 @@ def dispatch(args):
     elif args.command == "allocation-audit":
         from .diagnostics.allocation import inspect_output
         result = inspect_output(args.run)
+    elif args.command == "planning-audit":
+        from .config import load_config
+        from .experiments.manifest import load_tasks
+        from .diagnostics.planning import audit
+        config = load_config(args.config)
+        result = audit(load_tasks(config), config)
     elif args.command == "allocation-reproduce":
         from .config import load_config
         from .experiments.manifest import load_tasks
@@ -133,7 +151,7 @@ def dispatch(args):
         else:
             audit = inspect_output(args.run)
             manifest = read_json(args.run/"manifest.json")
-            costs = [e["reconciliation"]["entry_total"] for e in audit["episodes"] if "reconciliation" in e]
+            costs = [e["reconciliation"]["entry_total"] for e in audit["episodes"] if e.get("reconciliation")]
         from .experiments.manifest import validate_manifest
         validate_manifest(manifest)
         unit_counts = {t["id"]: len(t["required_outputs"]) for t in manifest["tasks"]}
@@ -146,7 +164,9 @@ def dispatch(args):
             "per_call_output_tokens_including_reasoning": manifest["config"]["model"]["max_new_tokens"],
             "context_limit": manifest["config"]["model"]["context_limit"],
             "prediction": "Observed full execution costs are not measured local/boundary costs; no unmeasured savings assumed.",
-            "per_condition_max_executions": 64}
+            "per_condition_max_executions": len(manifest["episodes"]),
+            "estimate_status": "observed_run_costs" if costs else "unmeasured_caps_and_action_bounds_only",
+            "proposed_additional_executions": 0}
     if args.command not in ("validation-config", "silo-boundaries"):
         result["analysis_source_revision"] = source_revision(root)
         result["analysis_cpu_seconds"] = time.process_time()-start

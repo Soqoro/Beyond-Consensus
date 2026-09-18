@@ -1,6 +1,14 @@
 # Local → GitHub → Slurm online terminal
 
-## Active bounded validation cycle (2026-09-17)
+## Active research gate (2026-09-18)
+
+Start with [RESEARCH_GATE.md](RESEARCH_GATE.md#ordered-next-commands). The user has
+not run the previous cycle's browser commands. After local review/manual push,
+pull and audit saved ledgers first; prepare only eight SILO full controls. Native
+references remain gated on actual materials. The earlier battery/measurement
+instructions are available tooling, not the currently authorized campaign.
+
+## Earlier bounded validation cycle (2026-09-17)
 
 Follow [VALIDATION_CYCLE.md](VALIDATION_CYCLE.md#ordered-commands) for the current
 ordered local checks, historical ledger audit, native material/review/CPU

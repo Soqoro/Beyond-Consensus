@@ -1,5 +1,10 @@
 # Bounded validation cycle
 
+The narrower next step is [RESEARCH_GATE.md](RESEARCH_GATE.md). Use its
+`silo-battery --full-only` workflow first. The full 64-execution diagnostic and
+96-operation measurement paths below are retained capabilities, not the initial
+campaign or authorization to execute them.
+
 ## Implementation plan (2026-09-17)
 
 1. Reuse native staging and reference controls to report sanitized per-task
@@ -336,6 +341,7 @@ cd "$BC_REFERENCE_SOURCE"
 "$BC_PYTHON" -I scripts/bc.py sqlite-validate --staged "$BC_CYCLE/reviewed-stage.json" --up-to --count 10 --output "$BC_CYCLE/native-validated.json"
 "$BC_PYTHON" -I scripts/bc.py sqlite-pairs --staged "$BC_CYCLE/reviewed-stage.json" --candidates "$BC_CYCLE/pairs.private.json" --count 2 --output "$BC_CYCLE/pairs-validated.json"
 SH
+bash -n "$BC_CYCLE/native-reference-job.sh"
 sbatch --test-only --partition="$BC_PARTITION" --nodes=1 --ntasks=1 \
   --cpus-per-task=2 --mem=8G --time=00:30:00 \
   --output="$BC_CYCLE/native-%j.out" --error="$BC_CYCLE/native-%j.err" \

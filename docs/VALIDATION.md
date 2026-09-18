@@ -1,5 +1,71 @@
 # Local validation record
 
+## Recoverability research gate (2026-09-18)
+
+The user has not run the previous cycle's browser-terminal commands. The starting
+local checkout was clean. This incremental cycle preserves earlier observations;
+no remote audit, GPU experiment or real native reference validation was performed.
+See [RESEARCH_GATE.md](RESEARCH_GATE.md) for evidence, inference, blockers and the
+ordered next decisions.
+
+| Actual local command | Outcome |
+| --- | --- |
+| `python -m unittest discover -s tests -v` | **160 tests: 159 passed, one existing opt-in legacy integration skip**, 53.409 seconds |
+| `python -m unittest tests.test_research_gate -v` | **9 passed**, 3.435 seconds |
+| `python scripts/check_shell.py` | **9 shell files passed**, including `bash -n` |
+| `python scripts/check_docs_shell.py` | **19 documented shell blocks and one embedded Bash script passed**; no commands executed |
+| `python -m compileall -q src tests scripts` | Passed |
+| `git diff --check` | Passed |
+| `python -I -S scripts/bc.py --help` | Passed; GPU imports remain lazy |
+
+Focused behavior evidence:
+
+- Catalogue counting distinguishes 32 labelled/masked candidates from one actual
+  independent SQLite workflow, or two linked numeric dependency workflows.
+  Outputs, owners, serial order, reserve and newly introduced intermediate units
+  are counted separately. Unknown checking/integration costs remain null.
+- Prescribed linked/isolated numeric workflows and selected existing boundaries
+  retain all obligations under the same JIT repair and reserve rule. Actual linked
+  artifact reads are charged/versioned; invalidating the upstream version also
+  invalidates descendants. New organization conditions get new experiment IDs.
+  Hidden-material sentinels cannot affect candidate inventory or generation.
+- Tiny exact additive fixtures exercise deferral over compromise scenarios with
+  both cheap and expensive preparation. JIT retains identical after-alarm tools.
+  These are scripted fixtures, not real-model planning or preparation benefits.
+- A saved **mock** run's paired ledgers reconcile the 256-unit search difference;
+  inconsistent/duplicated entries prevent confirmation. Missing raw ledger data
+  remains unavailable, never measured zero. Source result files remain unchanged.
+  This does not confirm the historical cluster attribution.
+- The initial SILO preparation contains only eight full single/clean episodes.
+  Reuse preserves frozen contents and rejects excluded/duplicate sources. A fake
+  scheduler dry run checks one GPU per shard and `--array=0-3%1`, with no submission.
+  The embedded-script test catches syntax errors inside a quoted here-document,
+  which outer-block `bash -n` alone would miss.
+
+Actual CLI preparation/audit artifacts are outside Git at
+`/tmp/bc-research-gate.jpqKf9`: numeric and SQLite `planning-audit` reports,
+`sqlite-readiness`, and `silo-battery --full-only` / `validation-config` outputs.
+Readiness is `scoring_unavailable`; the historical 270 metadata records were not
+re-inspected. The generated seeds are 1001, 1002, 1003, 1007, 1008, 1011, 1013,
+1014, with eight distinct development source groups. Only full/plan data files
+were frozen; no local/boundary/confirmation/measurement campaign was created.
+
+`build_manifest` was also called locally on the pinned control config to check
+the eight-episode plan, followed by the actual `diagnostic-costs --manifest` CLI.
+No staged model lock is available locally, so this is **an unstaged local plan**,
+not a cluster-ready submission. Regenerate with the actual `--model-lock` after
+pulling the reviewed source. Cost report: eight executions, 800000 total cap
+units, 384 primary actions, 8192 context, 768 generated-token cap per call;
+measured work/mean costs remain null. No hardware result is inferred.
+
+Native decomposition selection is still blocked: no validated public task
+structure/legal alternative plans or compatible measured operation costs are
+available. The implemented opt-in layer exposes only existing numeric dependency
+choices; it is not a native intermediate-view generator or a research-ready
+optimizer. The native reference/scorer boundary and all historical failures below
+remain intact. No commit, push, job submission, author contact or large download
+was performed.
+
 ## Bounded native/allocation/SILO validation cycle (2026-09-17)
 
 Implemented the incremental cycle described in

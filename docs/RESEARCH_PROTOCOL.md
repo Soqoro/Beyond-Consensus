@@ -35,6 +35,19 @@ not general program partitioning. Preparation authors in the advance catalogue
 use the next identity cyclically; the repair catalogue includes every executor
 and preparation author. Optimality claims are limited to this stated catalogue.
 
+The [2026-09-18 research gate](RESEARCH_GATE.md) clarifies that four-unit legacy
+allocation enumerates two exposure labels × 16 backup masks. It does not change
+unit partitions or primary owners. Only tasks with source dependencies can have
+different primary artifact-read graphs; independent SQLite fixtures and SILO
+collapse to one graph. Opt-in `organization` conditions expose existing numeric
+dependency alternatives under the same JIT repair and configured reserve rule.
+Native alternatives remain blocked, and default `legacy` behavior is unchanged.
+The configured reserve is not optimized. Legacy recovery's predicted feasibility
+does not include its runtime reserve floor or checking/integration/search overhead;
+those actual charges can exhaust a supposedly feasible execution. Null predicted
+costs must not be interpreted as zero. See the gate for the limited additive-cost
+deferral argument; it is not a claim of universal task-success dominance.
+
 The model receives assignments and tool observations, never a method name.
 The mock backend deterministically compiles visible arithmetic contracts into the
 allowlisted workflow language. It does not sample success probabilities. A real
