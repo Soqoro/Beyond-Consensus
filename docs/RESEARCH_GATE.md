@@ -1,6 +1,37 @@
 # Recoverability research gate — 2026-09-18
 
-## Implementation plan
+## Current decision after cluster follow-up
+
+The user completed the historical ledger audit and both bounded SILO conditions.
+Original and explicit actual-carry interfaces both scored **0/8 complete tasks
+and 101/480 values**. Carry improved some local consistency but cost 6.8% more.
+Pause further runs of this 4B/no-thinking SILO setting, including the larger
+diagnostic/measurement batteries. The one additional interface condition has
+been used; a reasoning/model sweep is not the next step.
+
+The user-reported historical audit reconciled all eight recovery/JIT pairs:
+each 256-unit gap is entirely finite-search charges, with zero non-search
+residual. This supersedes the earlier unconfirmed attribution below. Full
+provenance, limitations and the comparison are recorded in
+[VALIDATION.md](VALIDATION.md#cluster-follow-up-reported-by-the-user-2026-09-18).
+
+**Native follow-up:** the solar files, author material and private review are
+staged; both individual references passed cluster CPU controls and their one
+joint pair passed locally. Preflight 1077667 passed. The two-task model control
+1077671 completed but scored 0/2: both workers exhausted 12 actions rereading
+the requirement, without documents, SQL or submissions. This is one source
+group, not a broad competence measurement. See
+[the traces and interface correction](VALIDATION.md#solar-native-model-control-read-loop-2026-09-18).
+
+The next local change removes the schema reread cue and supplies a charged
+public-document title catalogue. Its GPU effect is untested. Preserve the failed
+control and prepare only a fresh two-task comparison after review and deployment,
+with the same inputs/model/settings. The [ordered next commands](#ordered-next-commands)
+stop at preflight dry run. A second pair, clean-model competence and native
+decomposition/policy gates remain unmet. `crypto_8` still lacks tests; the crypto
+pair remains blocked. No wider campaign or reasoning/model sweep follows.
+
+## Prior implementation plan and decision rationale
 
 1. Count actual candidate structures separately from preparation/replica masks,
    names and owners. Expose existing material dependency alternatives through
@@ -13,10 +44,10 @@
 4. Test execution/provenance, unchanged defaults and fail-closed gates; verify
    documentation shell blocks and generated scripts. Record actual outcomes.
 
-The user has not run the preceding cycle's browser-terminal commands. No new
-cluster result, remote ledger audit or native validation is available. The local
-checkout was clean at the start of this task. Existing historical records remain
-unchanged. No commit, push, job submission or large download is authorized here.
+At the implementation checkpoint, the user had not run the preceding cycle's
+browser commands and no new remote observations were available. The follow-up
+above supersedes that execution status; the scientific rationale below is retained.
+No commit, push, job submission or large download is authorized by this update.
 
 Detailed prior tooling and manual native prerequisites are in
 [VALIDATION_CYCLE.md](VALIDATION_CYCLE.md); historical results are in
@@ -117,6 +148,11 @@ Predicted, reserved and realized work must remain separate:
 
 ## Decision 3: historical 256 units
 
+**Follow-up:** the user supplied the saved-ledger audit. All eight matched pairs
+reconcile a 256-unit search difference and zero non-search residual. The account
+below describes the earlier reproduction and audit design; candidate counts and
+calibration origin are still not inferred from aggregate charges alone.
+
 Reported fixture evidence remains 32/32 successes, zero preparation and recovery
 minus JIT work of 256 in each condition. The earlier constructed-cost reproduction
 is 32 candidates × four excluded identities × two visited states. It is not the
@@ -131,8 +167,8 @@ search difference and residual stage costs. It marks the entire gap explained on
 when the recorded charges reconcile. Unknown counts stay unknown; legitimate
 repeated charges remain in place. Derived reports have their own source/hash/CPU
 provenance and never modify results. A mock saved-ledger regression confirms the
-mechanism, not the historical cluster result. The browser audit below is the first
-cluster action after pulling the reviewed code.
+mechanism, not the historical cluster result. The separate user-reported audit
+now provides the historical charge attribution; raw ledgers remain remote.
 
 ## Decision 4: native SQLite is the application priority
 
@@ -159,6 +195,10 @@ from comparative policy success. Heavy file hashing and controls use a CPU job.
 
 ## Decision 5: only eight full SILO controls initially
 
+**Completed:** the original eight controls and the single actual-carry follow-up
+both failed complete-task competence. The following is the frozen initial design,
+not a request to rerun it. Costs are now observed (173439 and 185156 respectively).
+
 `silo-battery --full-only` creates only `full.json` and `plan.json`: eight original
 II-11 tasks, one seed, single/clean, original access/scoring. It does not create
 local, boundary, confirmation or operation-measurement campaigns. `--reuse-full`
@@ -172,7 +212,7 @@ available in this session. Full group/content IDs are in the generated plan.
 Pinned `qwen35-4b-control` remains BF16, no thinking, 8192 context and 768 generated
 tokens. No longer generation or prompt change was introduced.
 
-Costs are currently unmeasured: report eight per-episode caps and the 384 primary
+Before execution, costs were unmeasured: report eight per-episode caps and the 384 primary
 action bound (8 × 4 × 12); an action may include charged prefill/tools. Do not call
 these bounds measured estimates or assume hardware from a partition label. The
 existing preflight records allocated device/memory and respects CUDA_VISIBLE_DEVICES.
@@ -227,6 +267,253 @@ manifest provenance. There are no fabricated runnable native pilot rows.
 
 ## Ordered next commands
 
+### Solar read-loop correction
+
+Review and commit/push the local code/tests/docs first using the usual manual
+Git workflow. The changed shared prompt/tool observations require a fresh
+manifest; do not retry the terminal failures in `solar-control.YYPkSx`.
+The private CPU validation manifest and model lock are reused unchanged.
+
+Then, in the cluster browser terminal with `bc-gpu-py312` active:
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_SOLAR_CHECK="$BC_STORAGE/private/livesqlbench/solar-check.NatDlH"
+export BC_MODEL_LOCK="$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json"
+export BC_CLUSTER=configs/cluster.pa100.local.json
+export BC_SOLAR_RECHECK="$(mktemp -d "$BC_STORAGE/private/livesqlbench/solar-interface.XXXXXX")"
+
+(
+  set -eu
+  test -z "$(git status --porcelain)"
+  test -f "$BC_SOLAR_CHECK/native-validated.private.json"
+  test -f "$BC_MODEL_LOCK"
+  test -f "$BC_CLUSTER"
+  python - <<'PY'
+from pathlib import Path
+source = Path("src/beyond_consensus/runtime/data_domain.py").read_text()
+if 'elif tool == "list_documents":' not in source:
+    raise SystemExit("Stop: pull the reviewed document-discovery correction first")
+PY
+  python scripts/bc.py validation-config --profile qwen35-4b-control \
+    --data-manifest "$BC_SOLAR_CHECK/native-validated.private.json" \
+    --output "$BC_SOLAR_RECHECK/config.json"
+  python scripts/bc.py manifest --config "$BC_SOLAR_RECHECK/config.json" \
+    --model-lock "$BC_MODEL_LOCK" --output "$BC_SOLAR_RECHECK/manifest.json"
+  python scripts/bc.py diagnostic-costs --manifest "$BC_SOLAR_RECHECK/manifest.json" \
+    --output "$BC_SOLAR_RECHECK/planned-costs.json"
+  python -m json.tool "$BC_SOLAR_RECHECK/planned-costs.json"
+  bash experiments/submit_gpu_preflight.sh --cluster "$BC_CLUSTER" \
+    --manifest "$BC_SOLAR_RECHECK/manifest.json" \
+    --model-lock "$BC_MODEL_LOCK" --dry-run
+)
+```
+
+Expect exactly two planned single/clean episodes and a new experiment ID.
+Stop at this dry run. A later authorized preflight/pilot uses the same new
+manifest and the shared registry, at one concurrent GPU. No larger caps or
+model changes are part of this correction. A second failure is preserved and
+inspected for progress/document use before considering any further condition;
+passing these two development tasks alone would not open the broader policy gate.
+
+### Solar clean-model control preparation
+
+Historical preparation for the now-completed failed control. Use the correction
+section above for the current next step. The individual solar references passed
+cluster CPU validation in `solar-check.NatDlH`; this prepared two single/clean
+episodes at the unchanged 4B/no-thinking settings. It is one database group,
+not an independent two-source benchmark. Competence/pair/policy gates remain pending.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_SOLAR_CHECK="$BC_STORAGE/private/livesqlbench/solar-check.NatDlH"
+export BC_MODEL_LOCK="$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json"
+export BC_CLUSTER=configs/cluster.pa100.local.json
+export BC_PYTHON="$(command -v python)"
+export BC_SOLAR_GPU="$(mktemp -d "$BC_STORAGE/private/livesqlbench/solar-control.XXXXXX")"
+(
+  set -eu
+  python scripts/bc.py validation-config --profile qwen35-4b-control \
+    --data-manifest "$BC_SOLAR_CHECK/native-validated.private.json" \
+    --output "$BC_SOLAR_GPU/config.json"
+  python scripts/bc.py manifest --config "$BC_SOLAR_GPU/config.json" \
+    --model-lock "$BC_MODEL_LOCK" --output "$BC_SOLAR_GPU/manifest.json"
+  python scripts/bc.py diagnostic-costs --manifest "$BC_SOLAR_GPU/manifest.json" \
+    --output "$BC_SOLAR_GPU/planned-costs.json"
+  python -m json.tool "$BC_SOLAR_GPU/planned-costs.json"
+  bash experiments/submit_gpu_preflight.sh --cluster "$BC_CLUSTER" \
+    --manifest "$BC_SOLAR_GPU/manifest.json" \
+    --model-lock "$BC_MODEL_LOCK" --dry-run
+)
+```
+
+Expect two planned episodes; preflight requests one GPU. Costs are caps until
+real model execution is observed. Stop at the scheduler dry run. After separately
+authorized preflight succeeds, the existing `submit_pilot.sh` path can execute
+the same manifest with `--concurrency 1`. Preserve any failed or capped model
+outputs; do not change settings or select easier tasks based on those results.
+
+### Solar review transfer and registration
+
+The user has completed public/material staging in `staging.L7bFVF`; the generic
+inventory instructions below are retained as earlier prerequisites. Both solar
+typed references and their one joint pair passed local CPU controls. Cluster
+replay is still pending. The two-pair research gate is incomplete and no GPU
+competence or policy run follows automatically.
+
+Save the completed private review from
+`/tmp/bc-author-materials.f0n5jtmc/solar-review-v1/solar-review.private.json`,
+then upload it through Jupyter beside the cluster checkout's README. This is a
+reviewed strict result-comparison adaptation; its notes explicitly distinguish
+the upstream sampled/tolerant tests. Preserve the earlier unapproved template.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_SQLITE_ROOT="$BC_STORAGE/datasets/livesqlbench-0664a2f"
+export BC_SQLITE_MATERIALS="$BC_STORAGE/private/livesqlbench/materials.private.jsonl"
+export BC_SOLAR_CHECK="$(mktemp -d "$BC_STORAGE/private/livesqlbench/solar-check.XXXXXX")"
+(
+  set -eu
+  printf '%s  %s\n' \
+    '78c2ccc691573f73aae9b38b26416fdced1b3d05f54a36e23a673607624ed31a' \
+    'solar-review.private.json' | sha256sum --check -
+  # Copy to a new private directory; do not overwrite a previous review.
+  cp -- solar-review.private.json "$BC_SOLAR_CHECK/solar-review.private.json"
+  chmod 600 "$BC_SOLAR_CHECK/solar-review.private.json"
+  cmp -- solar-review.private.json "$BC_SOLAR_CHECK/solar-review.private.json"
+  python scripts/bc.py sqlite-stage --root "$BC_SQLITE_ROOT" \
+    --materials "$BC_SQLITE_MATERIALS" \
+    --review "$BC_SOLAR_CHECK/solar-review.private.json" \
+    --output "$BC_SOLAR_CHECK/reviewed-stage.json" \
+    > "$BC_SOLAR_CHECK/inspection.json"
+  python - <<'PY'
+import json
+import os
+from pathlib import Path
+root = Path(os.environ["BC_SOLAR_CHECK"])
+report = json.loads((root / "inspection.json").read_text())
+print(json.dumps({"check_directory": str(root), "tasks": [
+    task for task in report["tasks"] if task["id"] in {"solar_2", "solar_M_3"}
+]}, indent=2))
+PY
+)
+```
+
+`candidate_requires_validation` is expected after registration. It is not a
+reference success. The private upload remains ignored in the checkout; the
+registered copy is outside it. Keep only that outside copy when organizing files.
+
+### Prepare solar CPU batch replay (dry run only)
+
+Use the same reviewed source commit as the existing cluster checkout and preserve
+a read-only source archive. This job runs exactly two native reference controls
+and no model. The configured partition is a starting point, not a claim that the
+site permits CPU-only work there; the scheduler dry run checks that request.
+No GPU is requested. Run after the review registration above succeeds.
+
+```bash
+export BC_SOLAR_PYTHON="$(command -v python)"
+export BC_SOLAR_PARTITION="$(python -c 'import json; print(json.load(open("configs/cluster.pa100.local.json"))["partition"])')"
+(
+  set -euo pipefail
+  : "${BC_SOLAR_CHECK:?Complete solar review registration first}"
+  test -z "$(git status --porcelain)"
+  test -f "$BC_SOLAR_CHECK/reviewed-stage.json"
+  mkdir "$BC_SOLAR_CHECK/source"
+  git archive --format=tar HEAD | tar -xf - -C "$BC_SOLAR_CHECK/source"
+  git rev-parse HEAD > "$BC_SOLAR_CHECK/source-commit.txt"
+  chmod -R a-w "$BC_SOLAR_CHECK/source"
+  cat > "$BC_SOLAR_CHECK/reference-job.sh" <<'SH'
+#!/bin/bash
+set -euo pipefail
+umask 077
+: "${SLURM_JOB_ID:?Run inside a CPU batch allocation}"
+cd "$BC_SOLAR_CHECK/source"
+"$BC_SOLAR_PYTHON" -I scripts/bc.py sqlite-readiness \
+  --staged "$BC_SOLAR_CHECK/reviewed-stage.json" \
+  --output "$BC_SOLAR_CHECK/readiness.json"
+"$BC_SOLAR_PYTHON" -I scripts/bc.py sqlite-validate \
+  --staged "$BC_SOLAR_CHECK/reviewed-stage.json" \
+  --task-ids solar_2 solar_M_3 --count 2 \
+  --output "$BC_SOLAR_CHECK/native-validated.private.json"
+SH
+  bash -n "$BC_SOLAR_CHECK/reference-job.sh"
+  sbatch --test-only --partition="$BC_SOLAR_PARTITION" \
+    --nodes=1 --ntasks=1 --cpus-per-task=2 --mem=4G --time=00:10:00 \
+    --job-name=bc-solar-reference \
+    --output="$BC_SOLAR_CHECK/reference-%j.out" \
+    --error="$BC_SOLAR_CHECK/reference-%j.err" \
+    "$BC_SOLAR_CHECK/reference-job.sh"
+)
+```
+
+Stop at the dry run and inspect the scheduler response. Actual batch submission
+is a separate user action. Failed/partial runs require new output paths; preserve
+the frozen source and review rather than regenerating them from model outcomes.
+
+### Browser terminal: inspect existing native materials
+
+Use the existing checkout/environment. The paths below are runbook defaults,
+not verified cluster inventory. If staging is elsewhere, set `BC_NATIVE_STAGE`
+to that actual manifest before running. This reads public metadata and private
+material/review records through `sqlite-inspect`, printing only status/reason
+counts. It neither executes SQL/model work nor hashes large database files.
+Missing default paths do not prove files are absent elsewhere.
+
+```bash
+: "${BC_STORAGE:?Set BC_STORAGE to the existing dataset storage directory}"
+export BC_NATIVE_STAGE="${BC_NATIVE_STAGE:-$BC_STORAGE/sqlite-stage-public.json}"
+python - <<'PY'
+import json
+import os
+import subprocess
+import sys
+from collections import Counter
+from pathlib import Path
+
+stage = Path(os.environ["BC_NATIVE_STAGE"])
+metadata = Path(os.environ["BC_STORAGE"]) / "datasets/livesqlbench-0664a2f/livesqlbench_data_sqlite.jsonl"
+print(json.dumps({"staging_path": str(stage), "staging_present": stage.is_file(),
+                  "default_metadata_path": str(metadata), "default_metadata_present": metadata.is_file()}))
+if stage.is_file():
+    inspection = subprocess.run(
+        [sys.executable, "scripts/bc.py", "sqlite-inspect", "--staged", str(stage)],
+        text=True, capture_output=True)
+    if inspection.returncode:
+        print("Inspection failed; inspect the staging paths, release hashes and record format locally.")
+        raise SystemExit(inspection.returncode)
+    report = json.loads(inspection.stdout)
+    tasks = report["tasks"]
+    print(json.dumps({"metadata_records": len(tasks), "scored_ready": report["scored_ready"],
+        "statuses": dict(Counter(t["status"] for t in tasks)),
+        "blocking_reasons": dict(Counter(r for t in tasks for r in t["reasons"]))}, indent=2))
+else:
+    print("Locate an existing staging manifest or the actual database/material paths before staging.")
+PY
+```
+
+If author references/tests or review are missing, obtain/review those specific
+materials; keep the tasks unscored. Do not fill them with fixture or model answers.
+Once files are present, follow
+[the existing native CPU gate](VALIDATION_CYCLE.md#3-native-gate-only-when-the-missing-files-are-present):
+immutable staging and readiness (large database hashing in a CPU allocation),
+reviewed reference controls on up to ten supported development tasks, then two
+actual compatible pairs. Inspection alone does not verify database contents,
+supported translations or scoring. Preserve earlier manifests/reports and use
+new output paths. GPU competence follows those gates; no native policy comparison
+or job submission is implied here.
+
+## Historical command sequence — completed SILO screen
+
+The commands below preserve the earlier plan for reproducibility. The ledger
+audit, full control and one interface follow-up have already been run by the
+user. Do not recreate those campaigns or overwrite their frozen files.
+
 ### Local review, then manual commit/push
 
 ```bash
@@ -245,8 +532,8 @@ git diff
 ```
 
 The user reviews, commits and pushes. No data, environments, reports or model
-locks belong in Git. Earlier browser commands have not been run; start here after
-the reviewed code is pushed, in the existing `bc-gpu-py312` environment.
+locks belong in Git. The historical browser sequence used the existing
+`bc-gpu-py312` environment.
 
 ### Browser terminal: pull, audit, then prepare eight controls
 
@@ -340,10 +627,10 @@ No native task or pair is implied ready by these prepared commands.
 
 ## STOP / CONTINUE
 
-- **Continue now locally:** review tests, structural audit and gates. User commits/pushes.
-- **Continue after pull:** read-only historical ledger audit; inspect residuals and missing evidence.
-- **Continue only when authorized:** one-GPU preflight, then eight SILO full controls.
+- **Continue now:** inspect existing native staging and material/review availability.
+- **Completed:** historical charge reconciliation and both eight-source SILO conditions; preserve results.
+- **Continue native validation when ready:** supported CPU references and actual pairs, then clean-model competence with separate job authorization.
 - **Stop for missing native materials/support:** obtain/review the specific prerequisite; keep excluded tasks unscored.
 - **Stop before native policy comparison:** reference, competence, material workflow and cost gates must pass first.
 - **Stop broad campaigns:** no 320-episode, full 64-diagnostic, 96-operation, adaptive attack or model sweep.
-- **Stop repeated SILO tuning:** inspect the eight-source screen; at most one separately justified additional condition, then pause the family if competence stays poor.
+- **Stop repeated SILO tuning:** the original screen and one interface comparison failed; this 4B/no-thinking setting is paused.

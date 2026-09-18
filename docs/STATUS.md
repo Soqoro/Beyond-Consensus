@@ -1,6 +1,120 @@
 # Implementation status and handoff
 
-## Current checkpoint: recoverability research gate (2026-09-18)
+## Current checkpoint: solar clean control exhausted actions on repeated reads (2026-09-18)
+
+User-reported GPU preflight 1077667 passed. Run array 1077671 completed both
+native solar tasks but scored **0/2** with both required artifacts missing.
+Experiment: `39194c9de0eafc3e98c9cf02393afd7483f39476e36b61addf6afc2c6556b9f4`.
+Each trace reads its own contract, inspects the schema, then rereads that contract
+ten times. There are no document reads, SQL attempts, submissions or tool
+rejections. All 24 generations ended with EOS, well below context/output caps.
+This establishes an action-loop failure, not an evaluated wrong SQL query.
+Charged work totals 56867 across the two completed failures.
+
+The shared SQLite interface now removes the schema's repeated contract-read cue
+and provides a charged, paged public-document title catalogue. Supporting-source
+reminders remain; titles are not filtered/ranked using requirements or gold.
+No model, decoding, action/budget cap, scorer or executor access changed. The
+schema cue is a plausible contributor, not a demonstrated causal explanation.
+Whether the correction improves real-model behavior is untested.
+
+Local checks: 163 tests (162 passed, one existing opt-in skip), nine shell files,
+compilation, isolated stdlib help and documentation syntax passed. The public
+solar catalogue fits in one bounded observation; no GPU was run locally.
+
+Next review/commit/push the correction, then create a fresh two-task manifest
+with the same validated native inputs and frozen model settings. Stop at the
+guarded GPU preflight dry run. Historical failures, the SILO pause, and broader
+pair/policy gates remain. See [the trace and validation record](VALIDATION.md#solar-native-model-control-read-loop-2026-09-18).
+
+## Prior checkpoint: solar CPU controls passed on cluster (2026-09-18)
+
+The user reports `command_failed=false`, two admitted native tasks, and
+`status=validated` for both `solar_2` and `solar_M_3`. Positive references, reset
+repeatability, source integrity, missing-obligation rejection and corrupted-
+obligation rejection all passed. The result is
+`/dataset/suaq0001/beyond-consensus/private/livesqlbench/solar-check.NatDlH/native-validated.private.json`.
+The actual batch job ID was not supplied; 1077655 was the preceding scheduler
+dry-run identifier and is not recorded as an executed job.
+
+Next prepare exactly two full single/clean model episodes with the frozen
+`qwen35-4b-control` profile and the existing model lock, then run the guarded
+GPU preflight dry run. These two tasks share one database source group. No model
+competence, cluster pair result or second validated pair is established yet.
+No broader policy comparison is ready. The strict scorer adaptation and SILO
+pause remain unchanged. See [the reported cluster result](VALIDATION.md#solar-cluster-cpu-result-reported-by-the-user-2026-09-18).
+
+## Prior checkpoint: solar references reviewed and locally validated (2026-09-18)
+
+The user reports the private merged material hash verified on the cluster and
+the four pinned solar files staged. The unapproved template is under
+`/dataset/suaq0001/beyond-consensus/private/livesqlbench/staging.L7bFVF/`.
+
+Offline manual review translated `solar_2` and `solar_M_3` into the existing
+restricted SELECT/view trees. Both passed local CPU reference, reset, source
+integrity, missing-obligation and corrupted-obligation controls. Their joint
+two-obligation pair also passed locally. This is **two tasks from one database
+group and one pair**, not the planned two-pair gate or model competence. The
+pair command requested two and correctly reports one missing candidate slot.
+
+The review preserves the pinned author SQL expressions, all outputs and full
+result sets. It uses the existing strict result-comparison adaptation: the
+author's view test samples rows with tolerance and different intermediate
+rounding, so full upstream evaluator equivalence is not claimed. No upstream
+Python test functions or raw downloaded SQL were executed. No scorer, budget,
+limit or runtime code changed. All SQL ran through the fixed restricted executor.
+
+Next upload the completed private review, register it, then reproduce the native
+reference controls in a CPU batch job on the cluster. No cluster job has been
+submitted by the assistant. See [the validation record](VALIDATION.md#solar-reference-review-and-local-cpu-controls-2026-09-18)
+and [the current commands](RESEARCH_GATE.md#solar-review-transfer-and-registration).
+The SILO setting remains paused and the broader native policy gate remains incomplete.
+
+## Prior checkpoint: author supplement received (2026-09-18)
+
+The user supplied the authors' JSONL supplement. All 270 unique IDs join exactly
+to the hash-verified pinned public metadata. A private merged file was produced
+outside Git, preserving all public fields and replacing only `sol_sql`,
+`test_cases` and `external_knowledge`. The raw upload is now ignored by Git.
+
+Under the existing nonempty-material checks, 268 records have complete nonempty
+solution entries, 92 have tests, and 90 pass both presence checks. Two solution
+records contain blank entries; 178 Query records have empty tests. No missing
+material was filled in or removed. The proposed `crypto_M_2 + crypto_8` pair
+remains blocked because `crypto_8` has no tests under the current gate.
+
+This clears the supplement-format/ID-join prerequisite only. No database, SQL or
+author Python test was executed. Databases, private evaluator translations and
+reference/pair validation remain pending. Matching IDs do not certify semantic
+compatibility with the pinned release. See [the inspection record](VALIDATION.md#author-supplement-inspection-2026-09-18).
+Next transfer the merged private material to the cluster outside Git, verify its
+hash, then stage the required public database files and review supported tasks.
+The current SILO setting remains paused.
+
+## Prior checkpoint: native materials next; SILO setting paused (2026-09-18)
+
+The user completed the saved-ledger audit, eight original SILO controls and one
+comparison using `submitted_final_value_v1` on the same eight development sources.
+Both conditions completed with public checks passing, but scored **0/8 tasks and
+101/480 values**. Explicit carry reduced local increment errors from 21 to 7 and
+improved incoming-state consistency from 1/24 to 6/24 later segments; charged work
+rose from 173439 to 185156 (+6.8%). All eight u1 boundaries remained inconsistent.
+These are user-reported development observations, not confirmatory results or
+evidence of recovery-policy performance. Detailed provenance and denominators are
+in [VALIDATION.md](VALIDATION.md#cluster-follow-up-reported-by-the-user-2026-09-18).
+
+The historical audit reconciled all eight matched recovery/JIT pairs: each
+256-unit gap is a finite-search charge difference with zero non-search residual.
+This confirms recorded accounting, not measured GPU time or an advantage.
+
+Pause additional runs of the current 4B/no-thinking SILO setting. Continue native
+SQLite material inspection, reviewed CPU references and actual pair validation
+before clean-model competence. Local readiness remains `scoring_unavailable`
+without a staging manifest; current cluster file availability is unknown. Follow
+[the next commands](RESEARCH_GATE.md#ordered-next-commands). No scientific code,
+defaults or scorer behavior changed in this documentation update.
+
+## Prior checkpoint: recoverability research gate implementation (2026-09-18)
 
 See [RESEARCH_GATE.md](RESEARCH_GATE.md) for the structural audit, precise deferral
 assumptions, remaining cost gaps and narrowed command sequence. No preceding-cycle

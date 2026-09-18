@@ -78,13 +78,26 @@ Malformed data actions receive JSON parser locations from their own text; invali
 SQL action layouts receive public field guidance. Runtime tools never repair or
 execute malformed actions. Any correction requires a new charged model response
 within the same retry limit, under the same shared instructions for every policy.
-SQL schema/source observations repeat the public current assignment. Reading a
+SQL schema/source observations repeat the public current assignment. Schema
+responses do not issue another contract-read action. Reading a
 different permitted source succeeds and returns that source with a reminder of
 the assigned read action; it does not change the assignment or reveal the
 assigned contract without another charged read. Supporting sources remain
 available. Column-alias examples explain public JSON grammar only. These hints
 never consult candidate correctness or hidden evaluation, and their additional
 re-prefill/correction costs remain charged.
+
+The common SQLite interface includes `list_documents(offset)`: a charged,
+deterministically ID-sorted catalogue of all permitted public documents, paged
+at 64 entries. Titles come only from the public KB `knowledge` field or the
+document ID, with explicitly labelled 80-character title previews. This is not
+task-specific retrieval or a gold-selected shortlist. No definition, private
+knowledge selection, reference or test is consulted. Catalogue observations
+enter provenance and prompt re-prefill; full document bodies require separate
+charged `read_document` calls. The model still chooses reads and writes the
+query. Repeated reads remain legal, charged, and subject to the same action cap.
+This shared interface change requires fresh source/manifest/calibration hashes;
+old failed controls remain terminal and cannot be relabelled as reruns.
 
 SILO instructions distinguish preparation outlines from implementation segment
 answers and demonstrate the public JSON action envelopes. A preparation `submit`

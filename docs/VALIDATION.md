@@ -1,6 +1,327 @@
 # Local validation record
 
-## Recoverability research gate (2026-09-18)
+## Solar native model control read loop (2026-09-18)
+
+User-supplied preflight, aggregate and worker trace; the cluster checkpoints are
+not present locally. Preflight job **1077667** passed on an A100-PCIE-40GB with
+the frozen Qwen3.5-4B, BF16/no-thinking settings and an `ok` SQLite executor.
+The 8-token readiness response ended with EOS. Run-array stderr filenames identify
+**1077671**, with no traceback in the supplied log tails.
+
+- Experiment: `39194c9de0eafc3e98c9cf02393afd7483f39476e36b61addf6afc2c6556b9f4`.
+- Manifest: `/dataset/suaq0001/beyond-consensus/private/livesqlbench/solar-control.YYPkSx/manifest.json`.
+- Mode: `gpu_sqlite_native_development`; single/clean, full, protocol A,
+  `qwen35-4b-control`, `bc_livesql_native_v1`, one database source group.
+- Result: 2/2 completed, 0/2 successful, two missing required artifacts; public
+  coverage/shape/integration failed for both. No missing/retryable shards.
+
+| Task | Charged work | Actions | Tool rejections | Largest input / output (tokens) |
+| --- | ---: | ---: | ---: | ---: |
+| `solar_2` | 27882 | 12 | 0 | 3098 / 16 |
+| `solar_M_3` | 28985 | 12 | 0 | 3280 / 17 |
+
+Both traces have exactly the same tool sequence: their own `read_source`, one
+`inspect_schema`, then ten more reads of the same contract. No public document,
+query/view construction or artifact submission was attempted. All 24 generation
+records report `finish_reason=eos`. Each run remained far below the 100000 work
+cap and the 8192 context limit; outputs were below the 768-token allowance.
+The loop reached the configured 12-action limit. A `source_read` event for the
+schema explains the 12 source events; these are not 12 distinct task documents.
+Total work is 56867. These observations establish lack of progress to artifact
+construction, not the semantic accuracy of an attempted SQL solution.
+
+The schema response included `assigned_contract_action` even after the correct
+contract had been read. The initial public document list exposed IDs such as
+`kb-17` without titles, and neither worker attempted to discover the definitions
+needed by the named metrics. The repeated cue is a plausible contributor to the
+loop; the trace alone does not prove it caused the model's behavior.
+
+Shared interface correction in `runtime/data_domain.py`:
+
+- Schema observations retain the current assignment without another read cue;
+  reading a different source still returns the existing assignment reminder.
+- `list_documents(offset)` returns up to 64 public IDs/titles in stable ID order,
+  using only the public KB `knowledge` field or the ID as a fallback. Long titles
+  have explicit 80-character previews; document bodies require separate reads.
+- The catalogue is not filtered by the question, method, reference, private
+  knowledge IDs or hidden tests. It has normal tool/model-prefill charges and
+  provenance. Common instructions explain document discovery and completion.
+- No automatic correction/query generation, free read, loop bypass, new SQL
+  capability or model/budget/decoding/scorer change. Repeated reads still consume
+  actions and can fail. New manifests and calibration compatibility hashes bind
+  the changed interface; old results remain intact.
+
+Focused tests exercise charged discovery through primary, repair, replication
+and preparation; pagination/title previews; hidden-data exclusion; unchanged
+wrong-source guidance; and a repeated-read worker still failing at action 12.
+They use labelled scripted fixtures, not real-model inference. Full unittest
+discovery ran **163 tests in 55.734 seconds: 162 passed, one existing opt-in
+skip**. All nine repository shell checks, compilation, isolated stdlib CLI help,
+31 documented shell blocks, one embedded Bash script, three embedded Python
+snippets and diff hygiene passed.
+
+A CPU-only catalogue check on the already-staged public solar documents listed
+all 55 IDs/titles in one 4997-character observation, below the existing 12000
+character bound, with the normal 10-unit tool charge. No document body, model
+inference or SQL execution occurred in that check. GPU effectiveness remains
+unknown; the two-task native competence gate and broader pair/policy gates remain
+unmet. No job submission, model download, commit or push occurred in this update.
+
+## Solar cluster CPU result reported by the user (2026-09-18)
+
+The user supplied the summary from
+`/dataset/suaq0001/beyond-consensus/private/livesqlbench/solar-check.NatDlH/native-validated.private.json`.
+It reports `command_failed=false`, `validated_tasks=2`, and both `solar_2` and
+`solar_M_3` as `validated`. For each, `positive_joint`,
+`reset_repeat_identical`, `source_integrity_after_controls`, its missing-obligation
+control and its corrupted-obligation control are all true; reasons are null.
+These are individual reference controls, not the two-task joint pair validation.
+
+Earlier, the user verified and canonicalized the uploaded private review to
+its exact recorded hash, registered it, and froze the clean source into the
+same check directory. The scheduler dry run accepted two CPUs on node02 in
+PA100q and printed identifier 1077655. **That is not the actual submission ID**;
+the executed job ID and its node were not supplied with the result summary.
+Raw cluster manifests and ledgers were not copied into this local workspace.
+
+This clears the cluster CPU prerequisite for two development tasks from one
+database group under the existing reviewed result-comparison adaptation. It
+does not establish model competence, full upstream evaluator parity, two
+independent source groups or the requested two-pair gate. Next prepare a
+two-episode single/clean control at the unchanged Qwen3.5-4B revision/settings,
+with fresh GPU preflight and the shared registry guard. No job is submitted by
+this documentation update.
+
+## Solar reference review and local CPU controls (2026-09-18)
+
+Cluster evidence supplied by the user: the merged material SHA-256 matched;
+the four solar files downloaded; public/material registration and the unapproved
+two-task review template succeeded in `staging.L7bFVF`. Both tasks were blocked
+only on review. The assistant then fetched the same four pinned public files
+(2261806 bytes total) into its private temporary workspace for local review.
+
+Manual inspection covered the two author SQL references and their test functions
+as text. All eight source-table inventories/column names came from the public
+schema document. The resulting typed trees compile under `bc-select-tree-v1`:
+
+- `solar_2`: all eight output fields, LEFT JOIN, grouped aggregates, priority CASE
+  and ordered MROI result. The private check consumes the full submitted report.
+- `solar_M_3`: the required named view, both joins and all five output columns;
+  arithmetic and final rounding follow the pinned author SQL. The private check
+  reads every required column from the submitted view and compares all rows.
+
+**Scorer scope:** the existing `bc-sqlite-joint-v1` exact comparison is unchanged.
+For the report it checks ordered values; for the view it checks an unordered
+multiset retaining duplicate counts. Upstream `solar_2` invokes `ex_base`, while
+the view's Python test checks existence/columns and at most five samples with
+0.05 tolerance; its TAPR calculation uses rounded intermediate values unlike the
+author SQL. The review records these differences explicitly. This is a reviewed
+reference-result adaptation, not a claim that arbitrary author Python tests were
+translated with identical semantics. No gold input or hidden check is added to
+worker views, and no output rows are truncated to fit executor limits.
+
+Local CLI controls on the actual pinned solar database:
+
+| Subject | Positive / repeat / source integrity | Missing / corrupted obligations | Charged work |
+| --- | --- | --- | ---: |
+| `solar_2` | Passed | Both rejected | 255 |
+| `solar_M_3` | Passed | Both rejected | 345 |
+| Joint pair `pair-7c327cdcf197f2ac` | Passed | Each of both obligations rejected when removed or corrupted | 575 |
+
+`sqlite-validate --task-ids solar_2 solar_M_3 --count 2` admitted both tasks with
+`command_failed=false`. `sqlite-pairs --count 2` on the single explicit candidate
+validated that one pair but returned `command_failed=true`,
+`status=blocked_or_rejected` and `missing_candidate_slots=1`, as required. The
+second pair is still missing. There is one independent development database
+group and no model/GPU competence observation.
+
+Executor: Python 3.12.7 / SQLite 3.45.3, existing default resource/row/step limits.
+All controls used the fixed trusted executor and charged ledgers. No downloaded
+SQL strings, upstream test functions or repository code were executed. Source:
+`06a0b0d4b34ad0d883736a378b28ab11d1bf68d0:4506cd2f5b98ce6b65014e70a2c58f099403db86295f39a810695a8fc5d5db00`.
+
+Private outputs are in `/tmp/bc-author-materials.f0n5jtmc/solar-review-v1/`:
+`solar-review.private.json`, `solar-pairs.private.json`, reviewed staging and
+native/pair validation manifests. `validation-summary.json` records sanitized
+control outcomes and report bindings. They are local results; do not copy their
+machine-specific staging manifests as cluster validation evidence.
+
+SHA-256 bindings for transferable review inputs and public data:
+
+- Completed private review: `78c2ccc691573f73aae9b38b26416fdced1b3d05f54a36e23a673607624ed31a`.
+- One private pair candidate: `6efb09cf9be1623a329e3d40b83619169d1d30d4fbf599ec6f3ccfcd33640506`.
+- Solar database: `d143744388100c33eaf7330af84dc71321fc7c317332961e4129196fd66cbc27`.
+- Schema: `40ca184d021761f4612341ce689d898256e004d5ecb7a02ca8a364b37a5390b1`.
+- Column meanings: `02ac182f79550cc0047165a080fe35bde0e9bf32264ac49a98d8ebe419d96fbf`.
+- Public KB: `fc9205112fcd1ea67cd16f51d9377d6c7e0fb250bb2bde03236f8efda5fef72e`.
+
+No runtime/scoring source changed. Cluster CPU replay, a second compatible pair
+and later model competence are pending; no cluster submission or push occurred.
+
+Repository verification: full unittest discovery ran 160 tests in 54.989 seconds
+(159 passed, one existing opt-in skip); nine shell files, 22 documented shell
+blocks and two embedded Bash scripts passed. The new documented Python block
+parsed, and `git diff --check` passed. These checks did not submit the prepared
+CPU job or execute its browser commands.
+
+## Author supplement inspection (2026-09-18)
+
+The user uploaded `livesqlbench_sqlite_gt_kg_testcases_20260601.jsonl`, described
+in the authors' response as solutions, oracle knowledge and test functions.
+It is a 359514-byte JSONL supplement with exactly four keys per record:
+`instance_id`, `sol_sql`, `external_knowledge`, `test_cases`. It is not a full
+record file suitable for direct `sqlite-stage --materials` registration.
+
+The small public metadata file was fetched at the existing pinned revision and
+its expected hash verified. Its ID set matches all 270 unique supplement IDs.
+The offline merge replaced only the three private fields and verified every
+other public field was unchanged. The merged file passes the existing `records`
+parser. No missing tests or solution entries were synthesized.
+
+| Check | Observed count |
+| --- | ---: |
+| Exact matching unique task IDs | 270 |
+| Records with nonempty solution lists (shallow check) | 270 |
+| Records passing existing recursive solution-presence check | 268 |
+| Records with nonempty tests | 92 |
+| Records passing both solution and test presence checks | 90 |
+| Query records with / without tests | 2 / 178 |
+| Management records with tests | 90 |
+
+`mental_M_4` has one nonempty and one blank solution entry; `news_M_2` has a
+blank solution entry. Both fail the current completeness check. The known pair
+candidate `crypto_M_2 + crypto_8` still fails the material gate: `crypto_8` has
+no tests. Presence is not restricted-tool support, reviewed evaluator approval,
+reference success or benchmark readiness. Empty tests remain unavailable under
+the current protocol; the receipt of this file does not relax that rule.
+
+Exact SHA-256 bindings:
+
+- Public: `2b964165a6cda878a4e4d4de9ccef1c6ad623b96e5215b522d81be284c9fcebc`.
+- Author supplement: `55f9f98f4cec88890aa5c2baca5bf2db0402679f948ba4ea309a04e0357dcdda`.
+- Merged: `b28bbcf4d1b0f63a6994d6ea1914e187ebc9ba185cb1a69476742b3c4cb3f698`.
+
+Private working files are outside Git in `/tmp/bc-author-materials.f0n5jtmc/`:
+`author-supplement.private.jsonl`, `materials.private.jsonl` and a sanitized
+`merge-report.json`. Private JSONLs have mode 0600. The original uploaded file
+was preserved and excluded via `.gitignore`; it was not committed. Matching IDs
+establish a valid join, not semantic compatibility of author answers/tests with
+the pinned database version. That still requires reviewed CPU controls.
+
+No SQL, test functions, downloaded code or model was executed. No database
+archive was downloaded and no job was submitted. The existing native parser and
+presence gates were used unchanged; the only non-documentation repository edit
+is the ignore pattern for the uploaded private supplement.
+
+Verification: full unittest discovery ran 160 tests in 59.911 seconds, with
+159 passed and one existing opt-in skip. All nine shell files, 20 documented
+shell blocks and one embedded Bash script passed their checks. `git diff --check`
+passed, and `git check-ignore` confirms the uploaded supplement is excluded.
+
+## Cluster follow-up reported by the user (2026-09-18)
+
+Evidence: browser-terminal aggregates, compact per-episode `silo-analyze` output,
+`diagnostic-costs` reports and a matched `allocation-audit` excerpt supplied by
+the user. The compact SILO totals were recomputed locally from those excerpts.
+Raw cluster output directories were not available locally; no cluster execution
+or independent replay of the original result files is claimed.
+
+### Historical SQLite fixture ledger attribution
+
+Pilot `d9813ae52441c57c670dac7b564b1a81e6ea3cef01881a0a7455e301ef33d2fd`:
+all eight matched recovery/JIT pairs (four clean, four withholding) report
+`reconciled` and `entire_gap_matches_search=true`. Each total-work difference is
+256, finite-search difference 256, and non-search residual zero. Mean planning
+work is 257 for recovery and 1 for JIT. This supersedes the earlier claim that
+historical attribution was unconfirmed. It establishes a recorded surrogate-work
+charge difference, not GPU seconds, token counts or a recovery success advantage.
+Historical candidate counts/calibration origins are not inferred from this alone.
+
+### SILO original versus explicit actual-carry interface
+
+Both are eight-source full single/clean development runs under protocol A,
+`qwen35-4b-control`: Qwen3.5-4B, BF16, no thinking, deterministic decoding,
+8192 context and 768 output-token cap. The comparison reuses the same frozen
+source groups and changes only the interface to `submitted_final_value_v1`.
+The carry field copies the actual predecessor submission, including wrong values;
+it does not provide a gold carry or a calculator.
+
+| Observation | Original | Explicit actual carry |
+| --- | ---: | ---: |
+| Completed / planned episodes | 8 / 8 | 8 / 8 |
+| Complete-task successes | 0 / 8 | 0 / 8 |
+| Correct values | 101 / 480 | 101 / 480 |
+| Public coverage / shape / integration passes (each) | 8 / 8 | 8 / 8 |
+| Fully correct first segments | 6 / 8 | 6 / 8 |
+| Incoming-state consistency, later segments | 1 / 24 | 6 / 24 |
+| Within-segment increment errors | 21 / 448 checks | 7 / 448 checks |
+| Later segments with inherited-only error | 0 / 24 | 5 / 24 |
+| Charged work | 173439 | 185156 |
+| Mean charged work per episode | 21679.875 | 23144.5 |
+
+In both conditions every u1 boundary is inconsistent, all 24 later segments
+have zero globally correct values, and all 101 correct values occur in u0.
+The original trace records 96 EOS stops and no limit events. The supplied compact
+carry trace omits stopping metadata, so that observation is not transferred to it.
+All required artifacts are present and evaluators available; the summary's legacy
+`integration_failures=8` means unsuccessful completed episodes, not failed public
+integration. No repair, alarm or reserve violation was reported.
+
+Carry used 11717 additional charged units (+6.7557%). Local consistency improved,
+but neither complete-task nor per-value correctness improved on these eight
+development sources. This is a descriptive comparison with no confirmatory
+inference and no recovery-policy comparison. **Pause additional GPU runs of this
+4B/no-thinking SILO setting.** The next gate is native SQLite material/reference
+readiness, not a larger SILO battery or model sweep.
+
+Provenance supplied in the reports:
+
+- Original experiment: `7cd048f8209c217b2763cc711ed8ee91dc5cdca9c2ecaef8123e215da6252d79`;
+  manifest hash `07c3420e585c596f1be7ab30dc791da98bcd8fc366df93a19bbd4e241469166a`.
+- Carry experiment: `455cb07b9f493a40abc7473d493266690339e32c7d0dd750d65e8dacb52b79ad`;
+  manifest hash `1decc3d43fd1bc7d8675223d77d18d9b7a07471d3fbb07b88e2926e6429ecce8`.
+- Cost report IDs: original `384949b05eda970a57e3c03b3974ce8e6a0927114023074ef31e9a9d7d5b5a65`;
+  carry `10d7df40638b1aa634a7e0a87ba91d51bd205c5ddad7fee1992d26c12daf6945`.
+- Both cost reports identify source
+  `06a0b0d4b34ad0d883736a378b28ab11d1bf68d0:4506cd2f5b98ce6b65014e70a2c58f099403db86295f39a810695a8fc5d5db00`.
+- Model/tokenizer revision: `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`;
+  SILO upstream commit: `e74127782ed1c42fff474249961f022c063d76f2`;
+  adaptation `bc_silo_recoverable_v1`, scorer `silo-segments-v1`.
+- Preflight jobs **1077600** and **1077609** reported NVIDIA A100-PCIE-40GB,
+  BF16 supported, driver 570.133.20, torch 2.10.0+cu126 / transformers 5.3.0,
+  and successful ready-JSON generation. These are preflight observations;
+  actual eight-task campaign job IDs/device reports were not supplied here.
+
+The original frozen plan remains under the user's
+`/dataset/suaq0001/beyond-consensus/research-gate.iK0VlI/silo/` and the comparison
+under `research-gate.iK0VlI/carry-interface.j4zddx/`. Outputs are in the storage
+`outputs/<experiment_id>` directories. Preserve those files and derived reports.
+
+### Local continuation: native prerequisite check
+
+The actual `sqlite-readiness` CLI, without a staged manifest, returned
+`scoring_unavailable`, reason `staging_manifest_not_supplied`; SQL and model
+execution were both false. Runtime checks report Python 3.12.7, SQLite 3.45.3,
+authorizer/defensive mode, disabled extension loading, trusted-schema-off,
+table inventory and process limits available. This establishes local executor
+capabilities only; native ready counts and current cluster files remain unknown.
+The report is outside Git at `/tmp/bc-native-continuation.rfit7o_s/readiness.json`.
+
+No scientific code, scoring behavior, defaults or budgets changed. Current
+instructions now inspect existing native staging/material availability and retain
+the CPU reference/pair gates. No jobs, downloads, pushes or author messages were
+performed during this continuation.
+
+Continuation verification: `python -m unittest discover -s tests -v` ran 160
+tests in 55.904 seconds: **159 passed, one existing opt-in skip**.
+`python scripts/check_shell.py` passed all nine shell files;
+`python scripts/check_docs_shell.py` passed 20 documented shell blocks and one
+embedded Bash script. The new inventory example's embedded Python parsed and its
+missing-manifest branch ran successfully against a temporary directory. No real
+native staging manifest was available to exercise its inspection branch here.
+`git diff --check` passed.
+
+## Prior recoverability research gate implementation (2026-09-18)
 
 The user has not run the previous cycle's browser-terminal commands. The starting
 local checkout was clean. This incremental cycle preserves earlier observations;

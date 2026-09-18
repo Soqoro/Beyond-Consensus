@@ -1,11 +1,18 @@
 # Beyond Consensus
 
-The next step is the [recoverability research gate](docs/RESEARCH_GATE.md): audit
-what the 32 plans actually vary, reconcile saved cluster ledgers, unblock native
-SQLite materials, and prepare only eight SILO full controls. The prior
-[bounded validation tooling](docs/VALIDATION_CYCLE.md) remains available; its full
-diagnostic/measurement batteries are not the initial campaign. The pinned
-4B/no-thinking default and historical results are preserved.
+The next step is [reviewing the solar read-loop correction](docs/RESEARCH_GATE.md#solar-read-loop-correction).
+Both solar references passed cluster CPU controls and GPU preflight passed, but
+the clean model control failed 0/2: workers exhausted 12 actions rereading their
+requirements and never attempted SQL. A local shared-interface correction adds
+charged public document titles and removes the schema's repeated read cue; its
+GPU effect is untested. A second pair and model competence remain pending, and
+no full upstream evaluator equivalence is claimed.
+The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
+and 101/480 values; the carry condition used 6.8% more charged work. Further
+4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier
+256-unit recovery/JIT gap to finite-search charges. See the
+[evidence and limits](docs/VALIDATION.md#cluster-follow-up-reported-by-the-user-2026-09-18).
+Pinned defaults and historical results are preserved.
 
 Research foundation for **Adversarially Robust Division of Labour in LLM Agent Teams**.
 

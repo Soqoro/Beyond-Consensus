@@ -1,6 +1,91 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: research gate (2026-09-18)
+## Latest continuation: solar model read-loop diagnosis (2026-09-18)
+
+Preflight 1077667 passed; user-reported run array 1077671 completed both native
+tasks but failed 0/2 with missing artifacts. Each worker spent all 12 actions on
+one schema read and eleven identical contract reads, with zero rejections and
+no document reads/SQL/submission. All generations ended with EOS; work was
+27882 (`solar_2`) and 28985 (`solar_M_3`). Historical experiment
+`39194c9de0eafc3e98c9cf02393afd7483f39476e36b61addf6afc2c6556b9f4`
+is a completed failure, not retryable infrastructure work.
+
+The local shared-interface correction removes the schema reread cue and adds
+charged, paged public document titles (`list_documents`). It never selects by
+gold or generates SQL. Source reads, limits, model settings and scorer remain
+unchanged; whether it fixes the real model is unmeasured. Next review/commit/push
+then prepare a fresh two-task manifest with the same inputs/settings. Use
+[the bounded preparation commands](docs/RESEARCH_GATE.md#solar-read-loop-correction)
+and stop at preflight dry run. No broader campaign, model sweep or SILO rerun.
+The assistant has not submitted a job or pushed code. See
+[the evidence](docs/VALIDATION.md#solar-native-model-control-read-loop-2026-09-18).
+
+## Prior continuation: solar cluster CPU references passed (2026-09-18)
+
+The user reports both `solar_2` and `solar_M_3` validated with all positive,
+reset, integrity, missing and corrupted controls passing. Use the actual cluster
+manifest at `$BC_STORAGE/private/livesqlbench/solar-check.NatDlH/native-validated.private.json`.
+The next step is a two-task single/clean competence control with
+`qwen35-4b-control`, the existing model lock, fresh preflight and one concurrent
+GPU shard. Keep the unchanged decoding/budget settings. The two tasks are one
+source group; no GPU competence or cluster joint-pair result is available yet.
+The prior dry-run identifier 1077655 is not the actual job ID. See
+[VALIDATION.md](docs/VALIDATION.md#solar-cluster-cpu-result-reported-by-the-user-2026-09-18).
+
+## Prior continuation: solar CPU references pass locally (2026-09-18)
+
+The user staged the solar database/documents and private merged materials on the
+cluster. The assistant completed a private typed-tree review and validated both
+`solar_2` and `solar_M_3` locally, including negative/reset/integrity controls.
+Their one joint pair also passed; the requested second pair remains missing.
+No GPU competence is established. All checks use the existing strict reference
+result-comparison adaptation, with its differences from upstream sample/tolerance
+tests documented in [VALIDATION.md](docs/VALIDATION.md#solar-reference-review-and-local-cpu-controls-2026-09-18).
+
+Transfer `/tmp/bc-author-materials.f0n5jtmc/solar-review-v1/solar-review.private.json`
+through the browser, hash-check and register it outside Git using
+[the current commands](docs/RESEARCH_GATE.md#solar-review-transfer-and-registration).
+Then prepare CPU batch replay from a frozen source copy. No scientific code or
+scorer changes need deployment; the review is private data and must not be pushed.
+The earlier unapproved template and all historical outputs remain intact.
+
+## Prior continuation: private author material joined (2026-09-18)
+
+The uploaded supplement joins all 270 pinned public task IDs. The merged private
+JSONL is outside Git at `/tmp/bc-author-materials.f0n5jtmc/materials.private.jsonl`;
+its SHA-256 is `b28bbcf4d1b0f63a6994d6ea1914e187ebc9ba185cb1a69476742b3c4cb3f698`.
+Transfer it through the cluster's browser upload to private storage outside the
+checkout, then verify that hash. The original attachment is preserved and ignored.
+Do not push either input or the merged file.
+
+268 records pass the solution-presence check, 92 have tests and 90 pass both;
+these are not counts of supported or validated tasks. Empty tests and blank
+solution entries remain unchanged. `crypto_8` has no tests, so the previously
+proposed pair remains blocked. Databases and reviewed evaluator translations
+are still needed before reference validation. No author code/SQL was executed.
+See [the inspection details](docs/VALIDATION.md#author-supplement-inspection-2026-09-18).
+
+## Prior continuation: native SQLite prerequisites (2026-09-18)
+
+Start with [the current research gate](docs/RESEARCH_GATE.md#ordered-next-commands).
+The user has now completed the historical ledger audit and both eight-source
+SILO conditions. Original and explicit actual-carry interfaces each scored
+0/8 tasks and 101/480 values; carry used 185156 versus 173439 work (+6.8%). Local
+arithmetic improved, but all eight u1 boundaries still failed. Pause further
+4B/no-thinking SILO GPU runs. No broader diagnostic or policy campaign follows.
+
+All eight matched historical recovery/JIT ledger pairs reconcile their 256-unit
+gap entirely to finite-search charges. Keep surrogate work distinct from GPU
+time. See [the reported evidence](docs/VALIDATION.md#cluster-follow-up-reported-by-the-user-2026-09-18)
+for full experiment IDs and limitations; raw cluster results are not local.
+
+Next inspect existing native staging, author solution/test materials and private
+review availability. Local readiness has no staging manifest; remote availability
+must be checked. Then use existing CPU reference/pair gates on supported tasks,
+followed by clean-model competence only when ready. No dataset downloads, jobs,
+author messages or pushes were performed by this continuation.
+
+## Prior continuation: research gate implementation (2026-09-18)
 
 Start with [RESEARCH_GATE.md](docs/RESEARCH_GATE.md), which supersedes the earlier
 battery-first sequence. The user has not run the previous browser commands.

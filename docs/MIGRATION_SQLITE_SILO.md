@@ -177,7 +177,10 @@ launch that would consume the protected reserve. All policies use this rule.
 ### Separate task views and native scoring
 
 Workers see verbatim requirements, reviewed schema/column descriptions, and all
-permitted public KB documents by stable IDs. The public record's
+permitted public KB documents by stable IDs. The charged `list_documents(offset)`
+tool lists up to 64 public titles in ID order, with explicit title previews and
+pagination. It does not select documents using the requirement or hidden data.
+Full definitions and relationships require charged `read_document` calls. The public record's
 `external_knowledge` gold-selected IDs are not supplied. Workers cannot inspect
 the raw record, database paths, reference ASTs, reference SQL, test strings or
 material hashes. These remain in private staging/evaluator or harness views.

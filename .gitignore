@@ -36,4 +36,6 @@ bundles/
 *.deb
 *.private.json
 *.private.jsonl
+# Author-supplied hidden evaluation supplements uploaded at the repository root.
+/livesqlbench*_gt_kg_testcases*.jsonl
 .DS_Store

@@ -207,8 +207,9 @@ class DataEpisodeTests(unittest.TestCase):
                     assigned = next(o for o in observations if o.get('tool') == 'read_source' and o['name'] == unit)
                     for value in (schema, wrong):
                         self.assertEqual(value['current_assignment'], unit)
-                        self.assertEqual(value['assigned_contract_action'], {'tool': 'read_source', 'name': unit})
                         self.assertNotIn('error', value)
+                    self.assertNotIn('assigned_contract_action', schema)
+                    self.assertEqual(wrong['assigned_contract_action'], {'tool': 'read_source', 'name': unit})
                     # The supporting source stays available; the reminder supplies no target answer.
                     self.assertEqual(wrong['result'], task.sources['u0'])
                     self.assertEqual(set(wrong), {'tool', 'name', 'result', 'current_assignment',
@@ -232,6 +233,144 @@ class DataEpisodeTests(unittest.TestCase):
                     tools = [e for e in entries if e['kind'] == 'tool']
                     self.assertEqual(len(tools), 5)
                     self.assertTrue(all(e['work'] == domain.engine.config.budget.tool_charge for e in tools))
+
+    def test_document_discovery_after_schema_is_charged_and_preserves_submission(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class DocumentModel(MockBackend):
+            # Scripted interface regression only; no model-competence claim.
+            def generate(self, messages, max_new_tokens, seed):
+                observation = json.loads(messages[-1]['content'])
+                if 'assignment' in observation:
+                    action = observation['first_action']
+                elif observation.get('tool') == 'read_source':
+                    action = {'tool': 'inspect_schema', 'database_id': 'fixture'}
+                elif observation.get('tool') == 'inspect_schema':
+                    action = observation.get('assigned_contract_action', {'tool': 'list_documents'})
+                elif observation.get('tool') == 'list_documents':
+                    selected = next(d for d in observation['documents'] if d['title'] == 'Measurement guide')
+                    action = {'tool': 'read_document', 'document_id': selected['document_id']}
+                else:
+                    return super().generate(messages, max_new_tokens, seed)
+                raw = json.dumps(action)
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        for stage, operation in (('primary', 'implement'), ('repair', 'implement'),
+                                 ('replication', 'replicate'), ('preparation', 'prepare')):
+            with self.subTest(stage=stage), tempfile.TemporaryDirectory() as temp:
+                task = fixtures()[0]
+                public_doc = {'knowledge': 'Measurement guide', 'definition': 'PUBLIC_BODY_ONLY_ON_READ'}
+                task.metadata['harness']['documents'] = {'kb-7': public_doc}
+                task.metadata['evaluation'] = {'secret': 'HIDDEN_TEST_AND_REFERENCE'}
+                domain = domain_at(temp, task)
+                loop = WorkerLoop(DocumentModel(), domain.engine.config, domain.engine.ledger,
+                                  domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+                outcome = loop.run(task, 'u0', 'w0', stage, 0, operation=operation)
+                self.assertEqual(outcome.status, 'submitted')
+                self.assertEqual(outcome.actions, 5 if operation == 'prepare' else 6)
+                messages = domain.store.contexts['w0'].messages
+                observations = [json.loads(m['content']) for m in messages if m['role'] == 'user']
+                listing = next(o for o in observations if o.get('tool') == 'list_documents')
+                self.assertNotIn('PUBLIC_BODY_ONLY_ON_READ', json.dumps(listing))
+                self.assertNotIn('HIDDEN_TEST_AND_REFERENCE', json.dumps(messages))
+                self.assertIn('PUBLIC_BODY_ONLY_ON_READ', next(o for o in observations
+                    if o.get('tool') == 'read_document')['result'])
+                reads = [e['name'] for e in domain.store.events if e['type'] == 'source_read']
+                self.assertEqual(reads, ['u0', 'schema', 'document-index:0', 'document:kb-7'])
+                artifact = domain.store.artifacts[outcome.artifact_id]
+                self.assertIn(digest(listing), artifact.source_hashes)
+                self.assertIn(digest(public_doc), artifact.source_hashes)
+                self.assertEqual(artifact.unit, 'u0')
+                calls = [e for e in domain.engine.ledger.entries if e['kind'] == 'model']
+                tools = [e for e in domain.engine.ledger.entries if e['kind'] == 'tool']
+                self.assertEqual(len(calls), outcome.actions)
+                self.assertEqual(len(tools), outcome.actions)
+                self.assertTrue(all(e['work'] == domain.engine.config.budget.tool_charge for e in tools))
+                self.assertTrue(all(e['work'] == e['input_tokens'] * domain.engine.config.budget.input_weight
+                    + e['output_tokens'] * domain.engine.config.budget.output_weight for e in calls))
+
+    def test_document_catalogue_pages_public_titles_without_gold_or_task_ranking(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        with tempfile.TemporaryDirectory() as temp:
+            domain = domain_at(temp)
+            docs = {f'kb-{i:03}': {'knowledge': 'Public title ' + str(i),
+                'definition': 'UNREAD_DEFINITION', 'description': 'UNREAD_DESCRIPTION'} for i in range(65)}
+            docs['kb-000']['knowledge'] = 't' * 100
+            docs['schema'] = 'UNREAD_SCHEMA_TEXT'
+            domain.task.metadata['harness']['documents'] = dict(reversed(list(docs.items())))
+            loop = WorkerLoop(MockBackend(), domain.engine.config, domain.engine.ledger,
+                              domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+
+            def call(action, unit='u0', identity='w0'):
+                result = loop._tool(domain.task, unit, identity, action, 'primary', 'implement', ())
+                self.assertIsNone(result)
+                return json.loads(domain.store.contexts[identity].messages[-1]['content'])
+
+            first = call({'tool': 'list_documents'})
+            self.assertEqual(len(first['documents']), 64)
+            self.assertEqual(first['total'], 66)
+            self.assertTrue(first['truncated'])
+            self.assertEqual(first['next_offset'], 64)
+            self.assertEqual(first['documents'][0], {'document_id': 'kb-000', 'title': 't'*80,
+                                                    'title_truncated': True})
+            # Different assignment, identity and hidden material cannot select or rank documents.
+            domain.task.metadata['evaluation'] = {'external_knowledge': ['kb-064'], 'secret': 'HIDDEN_GOLD'}
+            domain.task.sources['u1']['requirement'] = 'Different public requirement'
+            self.assertEqual(call({'tool': 'list_documents'}, 'u1', 'w1'), first)
+            second = call({'tool': 'list_documents', 'offset': first['next_offset']})
+            self.assertEqual([d['document_id'] for d in first['documents']+second['documents']], sorted(docs))
+            self.assertFalse(second['truncated'])
+            self.assertIsNone(second['next_offset'])
+            self.assertEqual(second['documents'][-1]['title'], 'schema')
+            empty = call({'tool': 'list_documents', 'offset': 66})
+            self.assertEqual(empty['documents'], [])
+            self.assertFalse(empty['truncated'])
+            visible = json.dumps(domain.store.contexts['w0'].messages + domain.store.contexts['w1'].messages)
+            for secret in ('HIDDEN_GOLD', 'UNREAD_DEFINITION', 'UNREAD_DESCRIPTION', 'UNREAD_SCHEMA_TEXT'):
+                self.assertNotIn(secret, visible)
+            self.assertNotIn(digest(docs['kb-000']), domain.store.contexts['w0'].source_hashes)
+            body = call({'tool': 'read_document', 'document_id': 'kb-000'})
+            self.assertIn('t'*100, body['result'])
+            self.assertIn(digest(docs['kb-000']), domain.store.contexts['w0'].source_hashes)
+            for bad in ({'offset': -1}, {'offset': True}, {'offset': '0'}, {'query': 'HIDDEN_GOLD'}):
+                with self.subTest(bad=bad), self.assertRaises(BCError):
+                    call({'tool': 'list_documents', **bad})
+            tools = [e for e in domain.engine.ledger.entries if e['kind'] == 'tool']
+            self.assertEqual(len(tools), 9)  # Five successful and four rejected calls, all charged.
+            self.assertEqual(domain.engine.ledger.spent, 9 * domain.engine.config.budget.tool_charge)
+
+    def test_repeated_contract_reads_remain_charged_and_hit_action_limit(self):
+        from beyond_consensus.agents.worker import WorkerLoop
+        from beyond_consensus.attacks.fixed import AttackController
+        from beyond_consensus.schemas import AttackSpec
+
+        class RepeatingReadModel(MockBackend):
+            def generate(self, messages, max_new_tokens, seed):
+                action = {'tool': 'read_source', 'name': 'u0'}
+                if sum(m['role'] == 'assistant' for m in messages) == 1:
+                    action = {'tool': 'inspect_schema', 'database_id': 'fixture'}
+                raw = json.dumps(action)
+                return Generation(raw, (len(raw.encode()) + 3) // 4)
+
+        with tempfile.TemporaryDirectory() as temp:
+            domain = domain_at(temp)
+            loop = WorkerLoop(RepeatingReadModel(), domain.engine.config, domain.engine.ledger,
+                              domain.store, AttackController(AttackSpec('clean'), ()), domain=domain)
+            outcome = loop.run(domain.task, 'u0', 'w0', 'primary', 0)
+            self.assertEqual(outcome.status, 'action_limit')
+            self.assertEqual(outcome.actions, 12)
+            self.assertIsNone(outcome.artifact_id)
+            self.assertFalse(domain.store.artifacts)
+            reads = [e['name'] for e in domain.store.events if e['type'] == 'source_read']
+            self.assertEqual(reads, ['u0', 'schema'] + ['u0']*10)
+            self.assertFalse(any(e['type'] == 'prohibited_or_malformed_action' for e in domain.store.events))
+            for kind in ('tool', 'model'):
+                self.assertEqual(sum(e['kind'] == kind for e in domain.engine.ledger.entries), 12)
 
     def test_ignoring_assignment_reminder_still_fails_terminal_scoring(self):
         class AlwaysFirstSourceModel(MockBackend):

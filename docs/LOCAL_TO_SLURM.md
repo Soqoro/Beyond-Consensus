@@ -3,10 +3,13 @@
 ## Active research gate (2026-09-18)
 
 Start with [RESEARCH_GATE.md](RESEARCH_GATE.md#ordered-next-commands). The user has
-not run the previous cycle's browser commands. After local review/manual push,
-pull and audit saved ledgers first; prepare only eight SILO full controls. Native
-references remain gated on actual materials. The earlier battery/measurement
-instructions are available tooling, not the currently authorized campaign.
+completed the ledger audit and both eight-source SILO conditions; both scored
+0/8 complete tasks. Further 4B/no-thinking SILO runs are paused. Solar files and
+author materials are staged and both individual references passed cluster CPU
+controls. The solar model control completed but failed 0/2 after repeated
+contract reads. Review [the interface correction and fresh-manifest steps](RESEARCH_GATE.md#solar-read-loop-correction)
+next. Model competence and the second pair remain pending. Earlier SILO battery/measurement commands
+below are historical tooling, not instructions to rerun those campaigns.
 
 ## Earlier bounded validation cycle (2026-09-17)
 

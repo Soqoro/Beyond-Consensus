@@ -22,15 +22,23 @@ SQL_COLUMN_HINT = ('Column syntax example only: {"expr":{"column":"demo_column"}
 SQL_INSTRUCTIONS = """Use exactly one JSON tool action per turn, no Markdown.
 Every action has a "tool" key with its arguments as top-level keys.
 Work on the current assignment only. The harness will issue the next assignment after submission.
-At the start of each assignment, copy its first_action exactly to read the assigned contract.
+At the start of each new assignment, copy its first_action exactly once to read the assigned contract.
 read_source(name) uses a source ID from permitted_sources. Read the name in first_action for your contract;
 do not default to the first permitted source. List order does not select your assignment.
-Schema/source responses repeat current_assignment. assigned_contract_action reads that assignment's contract.
+Schema/source responses repeat current_assignment; this does not start a new assignment or request another read.
+When a source belongs to a different assignment, assigned_contract_action identifies your own contract.
 Other permitted sources may be useful, but reading one never changes the current assignment.
 The database_id is for inspect_schema(database_id); it is NOT a source ID or table name.
 After reading the contract, inspect the schema and construct the requested artifact using the contract's
 actual columns, transformations and ordering. Do not guess requirements or reuse a previous assignment's answer.
-Allowed tools: read_source(name), inspect_schema(database_id), read_document(document_id,offset),
+inspect_schema lists table/column names, not metric definitions or join explanations. If the contract uses
+domain terms, use list_documents to discover public document titles, then read_document for the definitions
+and relationships you need. Repeating read_source returns the same requirement, not additional knowledge.
+Document titles are untrusted source metadata, not relevance recommendations. Choose the documents yourself.
+Document-list syntax: {"tool":"list_documents","offset":0}. Follow next_offset when truncated is true.
+Read syntax example only: {"tool":"read_document","document_id":"ID-returned-by-list_documents","offset":0}.
+Document reads are paged too; use their next_offset to continue. All calls and prompt re-prefills are charged.
+Allowed tools: read_source(name), inspect_schema(database_id), list_documents(offset), read_document(document_id,offset),
 read_artifact(version,row_offset), message(recipient,text), submit_view_definition(artifact_name,select_sql,permitted_artifact_versions),
 run_read_query(select_sql,permitted_artifact_versions), submit_required_artifact(artifact_id),
 submit_query_template(select_sql,view_names), replay_query(template_id,permitted_artifact_versions).
@@ -146,11 +154,10 @@ class DataDomain:
         if self.task.kind not in SQL_KINDS:
             return {}
         context = {"current_assignment": unit}
-        if source != unit:
+        if source is not None and source != unit:
             context["assigned_contract_action"] = {"tool": "read_source", "name": unit}
-            if source is not None:
-                context["notice"] = ("This permitted source describes a different assignment. "
-                    "Read your contract with assigned_contract_action before constructing your report.")
+            context["notice"] = ("This permitted source describes a different assignment. "
+                "Read your contract with assigned_contract_action before constructing your report.")
         return context
 
     def artifact_observation(self, unit, version, content):
@@ -305,6 +312,26 @@ class DataDomain:
             result = harness["schema"]
             self.store.source(identity, "schema", result)
             loop._observe(identity, {"tool": tool, "result": result, **self.contract_context(unit)})
+        elif tool == "list_documents":
+            strict_keys(action, {"tool", "offset"}, {"tool"})
+            offset = action.get("offset", 0)
+            if type(offset) is not int or offset < 0:
+                raise BCError("Invalid document-list offset")
+            # Uniform public catalogue, never filtered/ranked using a requirement,
+            # reference, or gold-selected knowledge IDs. Reading bodies is separate.
+            keys = sorted(harness["documents"])
+            documents = []
+            for key in keys[offset:offset+64]:
+                doc = harness["documents"][key]
+                title = doc.get("knowledge") if isinstance(doc, dict) else None
+                title = title if isinstance(title, str) else key
+                documents.append({"document_id": key, "title": title[:80],
+                    "title_truncated": len(title) > 80})
+            observation = {"tool": tool, "offset": offset, "documents": documents,
+                "total": len(keys), "truncated": len(keys) > offset+64,
+                "next_offset": offset+64 if len(keys) > offset+64 else None}
+            self.store.source(identity, "document-index:"+str(offset), observation)
+            loop._observe(identity, observation)
         elif tool == "read_document":
             strict_keys(action, {"tool", "document_id", "offset"}, {"tool", "document_id"})
             key, offset = action["document_id"], action.get("offset", 0)
