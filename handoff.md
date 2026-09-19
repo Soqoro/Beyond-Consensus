@@ -1,6 +1,36 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: native limit diagnostic failed; isolate tool use (2026-09-19)
+## Latest continuation: synthetic tools failed; view validation corrected (2026-09-19)
+
+The user-reported four-probe Qwen3.5-4B/no-thinking run completed **0/4** at
+**23786** charged work. All 16 generations stopped at EOS. Aggregate/join/CASE
+failed construction or submission; the view was accepted despite a missing
+FROM clause and required alias. This identifies both model/interface failures
+and a public validation defect; it does not establish general model incapacity.
+
+The executor now resolves every view with a zero-row read and disables SQLite's
+legacy quoted-identifier-to-string fallback. Explicit public output names are
+checked without rows or hidden evaluator information. The synthetic view's
+structured contract now repeats its already public required column names.
+Rejected views create no artifact and remain charged. Valid shape still does
+not imply correct values; terminal scoring remains separate.
+
+The user authorized preparing one fresh four-probe condition:
+`configs/sqlite-tool-compatibility-reasoning.json`, pinned Qwen3.5-4B,
+**thinking enabled, 2048 total generated tokens per call including reasoning**,
+8192 context, 12 actions, 100000 work per episode, one shard/GPU. The old config
+is preserved. This comparison changes reasoning, output allowance, public view
+validation and structured contract presentation; it cannot isolate thinking.
+The executor capability fingerprint changes, so prior native validation must be
+repeated on CPU before any later native run. No reference material enters workers.
+
+Follow [the updated runbook](docs/SQLITE_TOOL_DIAGNOSTIC.md). Four passes would permit
+considering a bounded native clean retry after fresh reference validation;
+otherwise inspect failures once and reassess model/interface compatibility.
+Native/pair/recovery competence remains unmet. Reasoning GPU results are pending;
+no GPU job, push or download was performed locally.
+
+## Prior continuation: native limit diagnostic failed; isolate tool use (2026-09-19)
 
 The cluster audit measured reviewed actions at 623/376 tokens including one stop,
 within 768. The 24-action run (1078011) still scored 0/2 and cost 131348 work.

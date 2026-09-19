@@ -1,5 +1,72 @@
 # Local validation record
 
+## Synthetic GPU failure and public view correction (2026-09-19)
+
+### User-reported GPU observations
+
+Experiment `f082c0b74ce198653acac3d9d2ec955870d66e574f5d67bf436442adf60b195b`
+completed all four synthetic single/clean probes with **0 successes**, one public
+integration pass, three missing required artifacts and **23786** charged work
+(mean 5946.5). All 16 model generations stopped at EOS; none reached the output
+cap. These share one synthetic source group and establish no benchmark or policy
+result. Manifest hash:
+`e3feb29c33fa76b055b964672ec82413e19376eccf6c67b1eb2e339298208257`;
+observed-cost report:
+`86cdc13ab2e1efa8ebb14c5f187f66d657233291a6382f894c013f72153b0b1d`.
+
+| Probe | Episode work | Operation work | Recorded outcome | Trace finding |
+| --- | ---: | ---: | --- | --- |
+| Aggregate | 5792 | 5751 | malformed | Invalid read offset, then invalid JSON/tree construction |
+| Join | 5618 | 5577 | malformed | Invalid read offset, wrong join structure, invented artifact ID |
+| CASE | 6050 | 6009 | malformed | Invented artifact ID and invalid CASE construction |
+| View | 6326 | 6185 | submitted | View missing FROM and required alias was accepted, then failed final scoring |
+
+The exact view defect was reproduced locally: CREATE VIEW alone succeeds without
+resolving its body. This is a harness defect alongside the observed model/interface
+failures. It is not evidence that GPU memory, Slurm, or output length caused these
+four failures, nor proof of general model incapacity.
+
+### Correction and bounded next configuration
+
+Each view now undergoes a fixed zero-row read under the existing authorizer and
+resource limits. SQLite DQS_DDL/DQS_DML are disabled: otherwise an unqualified
+missing quoted identifier can silently become a string literal. String literals
+remain supported through the restricted literal expression. The executor reports
+`view_validation=zero-row-v1` and `double_quoted_strings_disabled=true`; unavailable
+controls fail closed. Capability fingerprints therefore change for calibration
+and native reference validation. Existing native validations must be regenerated
+on CPU before a later native run; old evidence remains preserved.
+
+Only explicitly public structured output names are projected for alias checking;
+no reference SQL, evaluator projections, expected rows or correctness feedback are
+used. The synthetic view source now repeats its already public names as
+`output_columns`. Failed validation remains charged and returns `invalid_view`
+without an artifact. Zero-row resolution does not prove value correctness or
+exercise every data-dependent runtime path. Native contracts lacking explicit
+public output names retain terminal column checks.
+
+The approved new config, `configs/sqlite-tool-compatibility-reasoning.json`, uses
+thinking and a shared reasoning/action generation cap of **2048**, retaining the
+same pinned model, deterministic decoding, 8192 context, 12 actions, 100000 work
+per episode, four probes and one GPU shard. The existing no-thinking config is
+unchanged. The comparison includes reasoning, generation allowance, public
+validation and structured contract presentation; it cannot attribute a difference
+to thinking alone. No new model result is claimed. No jobs, pushes or downloads
+were performed during this local implementation.
+
+### Local validation
+
+`python -m unittest discover -s tests -v`: **177 tests in 68.472 seconds,
+176 passed and one existing opt-in sandbox test skipped**. All nine shell checks
+passed. New regressions cover missing FROM, nonexistent columns, missing public
+aliases, valid constant SELECTs, source integrity, charged rejected calls with no
+stored artifact, wrong values remaining terminal-only, and configuration bounds /
+executor fingerprint invalidation. Existing native reference controls also pass.
+These use CPU scripted workers, not model inference.
+Compilation, isolated standard-library CLI help and four-episode manifest creation
+passed. Documentation checks validated 39 shell blocks and seven Python blocks;
+`git diff --check` passed.
+
 ## Synthetic tool-compatibility diagnostic (2026-09-19)
 
 ### Reported cluster measurements preceding this change

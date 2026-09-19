@@ -10,8 +10,11 @@ controls. The stopping correction passed GPU preflight, but both 12- and 24-acti
 native controls failed 0/2 with missing artifacts. Reviewed answers fit the
 output cap. Pause native reruns and use [the synthetic tool diagnostic](SQLITE_TOOL_DIAGNOSTIC.md)
 to test aggregates, joins, CASE and artifact submission with schemas supplied.
-CPU controls passed; GPU diagnostic outcomes remain pending. A second native
-pair and clean competence remain unmet. Earlier commands are historical tooling.
+The no-thinking diagnostic completed 0/4. View validation is now corrected;
+the current runbook prepares one thinking-enabled, 2048-token condition on the
+same four probes. Its GPU outcomes remain pending. Before a later native run,
+repeat CPU reference validation for the new executor fingerprint. A second
+native pair and clean competence remain unmet. Earlier commands are historical tooling.
 
 ## Earlier bounded validation cycle (2026-09-17)
 

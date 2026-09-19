@@ -29,7 +29,8 @@ def tasks():
         unit = "sqlite-tools-" + probe
         contract = {"kind": "view" if probe == "view" else "query", "requirement": requirement,
             "schema": SCHEMA, "relationships": ["entries.department_id = departments.id"],
-            **({"name": "entry_adjusted"} if probe == "view" else {})}
+            **({"name": "entry_adjusted", "output_columns": ["id", "adjusted_amount"]}
+               if probe == "view" else {})}
         specification = ("Synthetic SQLite tool-compatibility diagnostic, not a benchmark task. "
             "All schema and relationship information is supplied here; no document discovery is needed. "
             "Read the assigned contract, construct the requested artifact, then submit its returned artifact ID. "

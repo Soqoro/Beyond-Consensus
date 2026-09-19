@@ -113,6 +113,10 @@ class ActionFieldsError(BCError):
         super().__init__("Invalid top-level SQL action fields")
 
 
+class ViewValidationError(BCError):
+    """A view cannot resolve or expose its explicitly public required columns."""
+
+
 class DataDomain:
     def __init__(self, engine):
         self.engine = engine
@@ -176,6 +180,19 @@ class DataDomain:
         if self.engine.ledger.remaining-work < floor:
             raise BudgetExceeded("Restricted operation would consume the protected reserve")
         self.engine.ledger.charge(stage, work, kind=kind, **usage)
+
+    def view_contract_queries(self, unit, name):
+        # Only structured PUBLIC contract fields, never evaluator projections.
+        contract = self.task.sources[unit]
+        columns = contract.get("output_columns") if contract.get("name") == name else None
+        if columns is None:
+            return []
+        if not isinstance(columns, list) or not columns or any(not isinstance(c, str) for c in columns):
+            raise BCError("Invalid public output-column contract")
+        for column in columns:
+            identifier(column)
+        return [{"columns": [{"expr": {"column": name+"."+column}} for column in columns],
+                 "from": {"table": name}, "limit": 0}]
 
     def sql(self, views, queries, stage, floor=0):
         harness = self.task.metadata["harness"]
@@ -370,9 +387,15 @@ class DataDomain:
                 content["rows"] = self.sql(views, [tree], stage, floor)[0]["rows"]
                 content["execution_binding_hash"] = digest([views, tree])
             else:
-                # Compile/check the view in a disposable state using a zero-row
-                # validation query. Final evaluation has no injected LIMIT.
-                self.sql(views + [{"name": content["name"], "select": tree}], [], stage, floor)
+                # Executor resolves every view; an optional public contract
+                # projection also checks declared output names without rows.
+                try:
+                    self.sql(views + [{"name": content["name"], "select": tree}],
+                        self.view_contract_queries(unit, content["name"]), stage, floor)
+                except BCError as exc:
+                    if isinstance(exc, (TaskUnavailable, BudgetExceeded)):
+                        raise
+                    raise ViewValidationError("View cannot resolve or expose its public required columns") from None
             artifact = self.store.submit(identity, unit, content, "data_artifact")
             loop._observe(identity, {"tool": tool, "artifact_id": artifact.id,
                 **(self.preview(content["rows"]) if "rows" in content else {})})
@@ -532,6 +555,10 @@ class DataDomain:
             return True  # Coverage/shape only. Hidden scoring has no runtime edge.
         try:
             views, queries, units = self.bundle(self.engine.selected)
+            for unit, version in self.engine.selected.items():
+                content = self.store.artifacts[version].content
+                if content["kind"] == "view":
+                    queries.extend(self.view_contract_queries(unit, content["name"]))
             self.sql(views, queries, "integration")
             return True
         except BCError as exc:

@@ -38,12 +38,17 @@ reviewed native query/view, both fitting 768. A 24-action comparison still faile
 0/2 at 131348 work: the query repeated malformed actions until its retry cap,
 and the view consumed all actions reading. Stop increasing those limits.
 
-The user authorized preparing [four synthetic tool-compatibility probes](SQLITE_TOOL_DIAGNOSTIC.md).
-This is the current next step: supply synthetic schemas directly, keep the same
-restricted tools and model settings, and separate construction/submission from
-document discovery. No native answers enter that diagnostic. No model run has
-been performed locally. Passing probes would not establish native competence.
-A second native pair and broader policy gates remain unmet.
+The [four synthetic tool-compatibility probes](SQLITE_TOOL_DIAGNOSTIC.md)
+completed 0/4 at 23786 work, with every generation stopping at EOS. Three probes
+failed construction/submission; a malformed view passed public validation before
+failing terminal evaluation. The public executor now resolves views and checks
+explicit public output names, with SQLite's quoted-string fallback disabled.
+The user authorized one fresh four-probe reasoning-enabled configuration with
+2048 output tokens shared by reasoning and the action, retaining 12 actions and
+100000 work per episode. This is a configuration comparison including the
+harness correction, not a causal thinking-only experiment. No model run occurred
+locally. Native retries require renewed CPU reference validation; broader policy
+gates remain unmet. See the updated diagnostic runbook for ordered commands.
 
 ## Prior implementation plan and decision rationale
 

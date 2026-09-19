@@ -20,6 +20,7 @@ import tempfile
 import time
 
 POLICY = "bc-select-tree-v1"
+VIEW_VALIDATION = "zero-row-v1"
 FUNCTIONS = frozenset({"abs", "coalesce", "ifnull", "nullif", "round", "length",
     "lower", "upper", "substr", "trim", "replace", "min", "max", "sum", "avg",
     "count", "total", "json_extract", "json_array_length", "json_type"})
@@ -183,9 +184,11 @@ def compile_select(tree, objects):
 
 def capabilities():
     result = {"sqlite": sqlite3.sqlite_version, "python": sys.version.split()[0],
-        "policy": POLICY, "authorizer": hasattr(sqlite3.Connection, "set_authorizer"),
+        "policy": POLICY, "view_validation": VIEW_VALIDATION,
+        "authorizer": hasattr(sqlite3.Connection, "set_authorizer"),
         "defensive": False, "trusted_schema_off": False, "process_limits": False,
-        "extension_loading_disabled": False, "table_inventory": False}
+        "extension_loading_disabled": False, "table_inventory": False,
+        "double_quoted_strings_disabled": False}
     with sqlite3.connect(":memory:") as con:
         try:
             if hasattr(con, "enable_load_extension"):
@@ -196,6 +199,11 @@ def capabilities():
         if hasattr(con, "setconfig") and hasattr(sqlite3, "SQLITE_DBCONFIG_DEFENSIVE"):
             con.setconfig(sqlite3.SQLITE_DBCONFIG_DEFENSIVE, True)
             result["defensive"] = con.getconfig(sqlite3.SQLITE_DBCONFIG_DEFENSIVE)
+        dqs = ("SQLITE_DBCONFIG_DQS_DDL", "SQLITE_DBCONFIG_DQS_DML")
+        if hasattr(con, "setconfig") and all(hasattr(sqlite3, name) for name in dqs):
+            for name in dqs:
+                con.setconfig(getattr(sqlite3, name), False)
+            result["double_quoted_strings_disabled"] = all(not con.getconfig(getattr(sqlite3, name)) for name in dqs)
         con.execute("PRAGMA trusted_schema=OFF")
         result["trusted_schema_off"] = con.execute("PRAGMA trusted_schema").fetchone() == (0,)
         result["table_inventory"] = bool(con.execute("PRAGMA table_list").fetchall())
@@ -230,7 +238,7 @@ def authorizer(objects, creating=None):
 def _child(request):
     limits = {**DEFAULT_LIMITS, **request["limits"]}
     caps = capabilities()
-    if not all(caps[k] for k in ("authorizer", "trusted_schema_off", "defensive", "process_limits", "extension_loading_disabled", "table_inventory")):
+    if not all(caps[k] for k in ("authorizer", "trusted_schema_off", "defensive", "process_limits", "extension_loading_disabled", "table_inventory", "double_quoted_strings_disabled")):
         return {"status": "blocked_capability", "capabilities": caps}
     import resource
     # Covers copying/startup as well as SQLite execution if the parent exits.
@@ -255,6 +263,10 @@ def _child(request):
             if hasattr(con, "enable_load_extension"):
                 con.enable_load_extension(False)
             con.setconfig(sqlite3.SQLITE_DBCONFIG_DEFENSIVE, True)
+            # Compiler identifiers are double quoted; SQLite's legacy fallback
+            # must not silently turn an unresolved identifier into a string.
+            con.setconfig(sqlite3.SQLITE_DBCONFIG_DQS_DDL, False)
+            con.setconfig(sqlite3.SQLITE_DBCONFIG_DQS_DML, False)
             for pragma in ("trusted_schema=OFF", "temp_store=MEMORY", "mmap_size=0", "cache_size=-2048"):
                 con.execute("PRAGMA " + pragma)
             con.execute("PRAGMA hard_heap_limit=" + str(limits["memory_bytes"]//2))
@@ -291,6 +303,12 @@ def _child(request):
                 con.set_authorizer(authorizer(objects, creating=name))
                 con.execute("CREATE VIEW " + identifier(name) + " AS " + sql)
                 objects.add(name)
+                # CREATE VIEW can succeed with unresolved column references.
+                # Resolve every submitted view under the normal read authorizer,
+                # even when the caller supplied no report queries. This fixed
+                # wrapper is not part of the worker's SELECT-tree grammar.
+                con.set_authorizer(authorizer(objects))
+                con.execute("SELECT * FROM " + identifier(name) + " LIMIT 0").close()
             con.set_authorizer(authorizer(objects))
             outputs = []
             size = 0

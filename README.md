@@ -1,13 +1,11 @@
 # Beyond Consensus
 
-The next step is the [four-probe synthetic SQLite tool diagnostic](docs/SQLITE_TOOL_DIAGNOSTIC.md).
-Both reviewed native solar answers fit the 768-token limit, but increasing actions
-to 24 still yielded 0/2 artifacts at 79.1% more work. Pause that native setting.
-The new diagnostic supplies synthetic schemas directly and tests aggregate,
-join, CASE and view/submission behavior with the existing restricted tools.
-CPU controls validate the harness; model results remain pending. These simpler
-fixture scores cannot establish native competence or recovery-policy benefits.
-A second native pair and model competence remain pending.
+The [synthetic SQLite tool diagnostic](docs/SQLITE_TOOL_DIAGNOSTIC.md) scored
+0/4 with Qwen3.5-4B/no thinking. Traces show invalid actions and a view-validation
+defect, now corrected. The next bounded condition enables thinking with a
+2048-token shared reasoning/action allowance on the same four probes and model.
+This compares configurations, not thinking alone. GPU results are pending.
+Native solar runs remain paused at 0/2; native and recovery competence remain unmet.
 The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
 and 101/480 values; the carry condition used 6.8% more charged work. Further
 4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier
