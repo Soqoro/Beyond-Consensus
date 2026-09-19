@@ -111,6 +111,30 @@ artifact. The model is asked to check each local increment against the original
 input. The prompt contains no task-specific carry/answer, and no tool performs
 this self-check or supplies numerical feedback. All model work remains charged.
 
+## Synthetic SQLite tool compatibility
+
+The opt-in `sqlite_fixture_suite=tool_compatibility_v1` creates exactly four
+single/clean Protocol A episodes, seed 0, with one required artifact each:
+aggregate aliases, an inner join, CASE classification, and a named view.
+One fixed trusted synthetic database serves all probes; its data hash and the
+public contracts are frozen into manifests. No native/author materials are used.
+Public schemas and join relationships are given directly in the specification
+and charged contract reads; there are no discovery documents. This is an
+intentional schema-supplied interface condition, not a native benchmark score.
+
+The same worker loop, SQL tool grammar, parser/retry limits, exact version IDs,
+explicit final-submission requirement, public monitor and ledger apply. No model
+output is repaired. A separate terminal-only scorer checks ordered complete
+rows and column aliases against independent Python computations. View evaluation
+reads the required named view through the fixed executor. It never returns
+expected values to the worker or repair planner. The default arithmetic fixture
+suite and native/pair/SILO scorers are unchanged. The adaptation, scorer and
+access regime distinguish the new suite in aggregation; all probes share one
+synthetic source group. No preparation, attack or recovery comparison is allowed
+in this diagnostic. Positive/negative scripted CPU controls are harness tests,
+not LLM measurements. Success on these simpler probes would not imply native
+competence, and failure does not by itself identify a unique underlying cause.
+
 ## Two separate comparisons
 
 **Protocol A: equal total allowance.** Planning, preparation, primary work,

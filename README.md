@@ -1,13 +1,13 @@
 # Beyond Consensus
 
-The next step is the [read-only native budget audit](docs/RESEARCH_GATE.md#solar-budget-audit).
-The user verified the stopping correction on GPU, but the two-task solar control
-still scored 0/2: one worker exhausted its actions reading, and the other emitted
-two malformed query attempts. No required artifact was produced. Measure reviewed
-action token sizes and public-document page costs before selecting another
-bounded condition. No model/budget change or GPU rerun is scheduled.
-A second pair and model competence remain pending; no full upstream evaluator
-equivalence is claimed.
+The next step is the [four-probe synthetic SQLite tool diagnostic](docs/SQLITE_TOOL_DIAGNOSTIC.md).
+Both reviewed native solar answers fit the 768-token limit, but increasing actions
+to 24 still yielded 0/2 artifacts at 79.1% more work. Pause that native setting.
+The new diagnostic supplies synthetic schemas directly and tests aggregate,
+join, CASE and view/submission behavior with the existing restricted tools.
+CPU controls validate the harness; model results remain pending. These simpler
+fixture scores cannot establish native competence or recovery-policy benefits.
+A second native pair and model competence remain pending.
 The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
 and 101/480 values; the carry condition used 6.8% more charged work. Further
 4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier

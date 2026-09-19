@@ -189,7 +189,11 @@ class DataDomain:
         self.engine.ledger.charge(stage, work, kind="sql_execution", cpu_limit_seconds=cpu,
             query_count=len(queries), view_count=len(views), policy=self.task.metadata["tool_policy"])
         if self.task.kind == "sqlite_fixture":
-            database = fixture_database(self.engine.journal.path / "fixture-source.sqlite", self.task.metadata["fixture_seed"])
+            if self.task.metadata.get("sqlite_fixture_suite") == "tool_compatibility_v1":
+                from ..tasks.sqlite_compatibility import database as compatibility_database
+                database = compatibility_database(self.engine.journal.path / "fixture-source.sqlite")
+            else:
+                database = fixture_database(self.engine.journal.path / "fixture-source.sqlite", self.task.metadata["fixture_seed"])
         else:
             try:
                 database = verify_file(harness["database"])
@@ -553,7 +557,13 @@ class DataDomain:
             outputs = self.sql(views, queries, "final_evaluation")
             reports = {u: out["rows"] for u, out in zip(units, outputs)}
             exact, diagnostics = {}, {}
-            if self.task.kind == "sqlite_fixture":
+            if self.task.kind == "sqlite_fixture" and self.task.metadata.get("sqlite_fixture_suite") == "tool_compatibility_v1":
+                from ..tasks.sqlite_compatibility import score, view_check
+                unit = self.task.required_outputs[0]
+                output = (self.sql(views, [view_check()], "final_evaluation")[0]
+                          if self.task.metadata["probe"] == "view" else outputs[0])
+                exact[unit] = score(self.task.metadata["probe"], output)
+            elif self.task.kind == "sqlite_fixture":
                 n = self.task.metadata["fixture_seed"]
                 for u in units:
                     factor = self.task.sources[u]["factor"]

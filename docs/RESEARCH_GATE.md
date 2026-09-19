@@ -33,12 +33,17 @@ two query attempts were malformed before hitting the output cap. The view worker
 continued reading until its action limit. Charged work was 73320. The old stop
 mismatch is resolved; it does not explain the remaining failures.
 
-Next run the [read-only budget audit](#solar-budget-audit). Exact token sizes
-require the cluster's validated private references and existing pinned tokenizer;
-they are unmeasured locally. Do not rerun identical settings, raise limits or
-select another model before reviewing those measurements. A second pair,
-clean-model competence and native decomposition/policy gates remain unmet.
-`crypto_8` still lacks tests. See [the post-EOS record](VALIDATION.md#solar-post-eos-control-and-budget-audit-2026-09-19).
+The subsequent budget audit measured 623/376 tokens including one stop for the
+reviewed native query/view, both fitting 768. A 24-action comparison still failed
+0/2 at 131348 work: the query repeated malformed actions until its retry cap,
+and the view consumed all actions reading. Stop increasing those limits.
+
+The user authorized preparing [four synthetic tool-compatibility probes](SQLITE_TOOL_DIAGNOSTIC.md).
+This is the current next step: supply synthetic schemas directly, keep the same
+restricted tools and model settings, and separate construction/submission from
+document discovery. No native answers enter that diagnostic. No model run has
+been performed locally. Passing probes would not establish native competence.
+A second native pair and broader policy gates remain unmet.
 
 ## Prior implementation plan and decision rationale
 
@@ -275,6 +280,9 @@ cost predictions/reserve/full charged budget; frozen method/prompt/calibration/
 manifest provenance. There are no fabricated runnable native pilot rows.
 
 ## Ordered next commands
+
+Use [the synthetic diagnostic runbook](SQLITE_TOOL_DIAGNOSTIC.md) now. The budget
+audit and EOS sequences below are historical, already completed steps.
 
 ### Solar budget audit
 

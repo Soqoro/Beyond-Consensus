@@ -6,11 +6,12 @@ Start with [RESEARCH_GATE.md](RESEARCH_GATE.md#ordered-next-commands). The user 
 completed the ledger audit and both eight-source SILO conditions; both scored
 0/8 complete tasks. Further 4B/no-thinking SILO runs are paused. Solar files and
 author materials are staged and both individual references passed cluster CPU
-controls. Both solar model controls failed 0/2; the second discovered documents
-but still never attempted SQL. The metadata audit found a model/tokenizer EOS
-mismatch; review [the stopping correction](RESEARCH_GATE.md#solar-turn-stopping-correction)
-next. Its GPU effect is untested. Model competence and the second pair remain pending. Earlier SILO battery/measurement commands
-below are historical tooling, not instructions to rerun those campaigns.
+controls. The stopping correction passed GPU preflight, but both 12- and 24-action
+native controls failed 0/2 with missing artifacts. Reviewed answers fit the
+output cap. Pause native reruns and use [the synthetic tool diagnostic](SQLITE_TOOL_DIAGNOSTIC.md)
+to test aggregates, joins, CASE and artifact submission with schemas supplied.
+CPU controls passed; GPU diagnostic outcomes remain pending. A second native
+pair and clean competence remain unmet. Earlier commands are historical tooling.
 
 ## Earlier bounded validation cycle (2026-09-17)
 

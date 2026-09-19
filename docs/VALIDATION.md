@@ -1,5 +1,79 @@
 # Local validation record
 
+## Synthetic tool-compatibility diagnostic (2026-09-19)
+
+### Reported cluster measurements preceding this change
+
+The read-only budget audit reports reference actions of **622 and 375 content
+tokens**, or **623 and 376 with one stop**, for `solar_2` and `solar_M_3`.
+Both fit 768. Public schema is three pages and columns four; the full public
+catalogue is one page, and reading all public documents plus assumed fixed
+steps would take 65 actions. No assertion is made that all documents are needed.
+Audit input hash: `5c38481e64d4055042691f08c0c2bae4ff64332a8ec43ebaf135458178580003`;
+script hash: `602eed04ca8392e9bb662141f32aa1995c06444cea1bc0593a4aa79a8fbe21c7`;
+model-lock hash: `beb4dcd0f1605695c54e21963cb6a70087b20a76e5c23b6f26571c15283604db`.
+CPU audit time 0.092284807 s, tokenizer subprocess CPU 12.898848828 s, wall
+23.08567424863577 s. This supersedes the previous locally unmeasured status;
+these analysis costs remain separate from episode ledgers.
+
+The authorized 24-action follow-up, array **1078011**, experiment
+`5f4bcf452b24b0b2f267cb9c327e8742042034dd02692ac872c87154c342ff4a`,
+still completed 0/2 with both required artifacts missing. Total work **131348**
+versus **73320** (+79.1%); mean 65674. Maximum per-episode work remained 100000.
+Observed-cost report ID:
+`d1dc30ea9d761a60b203a746789e0c4431a93cfae835707525a51b22334d3ea2`;
+manifest hash `03fc48c60f6999f1d8e746dfb9994861f29185f9df5805238bb08e92bd172f31`.
+
+| Probe | Calls | Recorded operation outcome | Operation work | Trace |
+| --- | ---: | --- | ---: | --- |
+| solar_2 | 13 | malformed | 49716 | Ten reads; three identical invalid capped query attempts, first JSON error at column 256 |
+| solar_M_3 | 24 | action_limit | 81550 | Twenty-four reads, all EOS; no view creation |
+
+Operation work totals 131266; the remaining 82 charged units belong to the
+rest of the episodes and are not attributed to a specific stage by this table.
+The query stopped at the malformed retry guard, not the new action limit.
+Neither task produced an artifact. These observations support stopping action-
+limit increases; they do not prove every compatible model or representation
+would fail. No recovery-policy effect was measured.
+
+### Implementation and local controls
+
+The opt-in `tool_compatibility_v1` SQLite fixture suite generates four separate
+single/clean episodes: grouped sum/count with aliases, a join, CASE, and a named
+view plus explicit final submission. Natural-language requirements, schemas and
+the join relationship are supplied directly; source reads still cost work.
+The suite has no documents or native material and supplies no solution trees to
+workers. Its database setup is fixed trusted code. Generated queries use the
+existing restricted tree compiler/executor; the public monitor does not read
+terminal expectations. Terminal-only scoring compares all columns/rows against
+independent Python calculations; it does not enforce a unique query spelling.
+
+The suite has distinct adaptation/scorer/access labels and one shared synthetic
+source group. The default arithmetic fixture data and scorers remain unchanged.
+The dedicated config preserves the frozen 4B model, no thinking, 768 output,
+8192 context, 12 actions, 100000 work per episode, one shard and four planned
+episodes. No automatic data staging, model selection or job submission is added.
+This intentionally changes task complexity and information presentation; it is
+not a controlled causal test of document discovery alone.
+
+Independent scripted CPU workers construct the four valid trees and consume the
+actual returned version ID for final submission. All four positive episodes
+passed. Each of three negative conditions failed all four: corrupted values,
+wrong column aliases, and creation without final submission (16 total CPU
+control episodes). Tests also check group/regime labels, denied broader
+conditions, preserved default fixtures, positive charged work, four context
+identities and absence of terminal feedback during model calls. These are
+harness controls with test doubles, not real-model successes.
+
+Full suite: **173 tests in 62.182 seconds, 172 passed and one existing opt-in skip**.
+All nine shell-file checks, compilation, isolated standard-library CLI help,
+39 documented shell blocks, six Python snippets and diff hygiene passed. An
+isolated stdlib CLI manifest/planned-cost check produced four episodes, 48
+primary actions and 400000 maximum work, with zero model executions.
+GPU diagnostic results remain pending. Follow the
+[bounded browser-terminal runbook](SQLITE_TOOL_DIAGNOSTIC.md); no native rerun or
+larger campaign follows automatically.
+
 ## Solar post-EOS control and budget audit (2026-09-19)
 
 User-reported preflight **1078003** passed on A100-PCIE-40GB. It generated the

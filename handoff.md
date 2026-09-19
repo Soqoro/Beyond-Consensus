@@ -1,6 +1,24 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: post-EOS control and CPU budget audit (2026-09-19)
+## Latest continuation: native limit diagnostic failed; isolate tool use (2026-09-19)
+
+The cluster audit measured reviewed actions at 623/376 tokens including one stop,
+within 768. The 24-action run (1078011) still scored 0/2 and cost 131348 work.
+Query: 13 calls, three identical invalid capped actions, stopped `malformed`.
+View: 24 reads, stopped `action_limit`. Increasing actions did not help.
+
+The user authorized a small synthetic tool-compatibility diagnostic. The new
+`configs/sqlite-tool-compatibility.json` prepares exactly four clean single-worker
+fixture episodes, seed 0, one shard, no thinking, 12 actions, 768 output tokens,
+8192 context, 100000 work each. Schema/relationships are directly supplied;
+there are no benchmark files or gold-selected document hints. Aggregate aliases,
+join, CASE and named view creation/submission are separate probes. The normal
+parser/tools/monitor/ledger remain in use; the synthetic terminal scorer checks
+all rows and column names independently of the worker's tree. No model result is
+available. Native/pair/recovery gates remain closed. Use [the runbook](docs/SQLITE_TOOL_DIAGNOSTIC.md);
+do not repeat the historical commands below. No jobs or pushes were performed.
+
+## Prior continuation: post-EOS control and CPU budget audit (2026-09-19)
 
 Preflight 1078003 verified EOS 248046 with both stop IDs. Array 1078005 still
 completed 0/2 native solar tasks, 73320 work, both artifacts missing. The view

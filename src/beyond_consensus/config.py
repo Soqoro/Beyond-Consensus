@@ -98,8 +98,17 @@ class RunConfig:
     development_profile: str | None = None
     operation_measurement: bool = False
     organization: str = "legacy"
+    sqlite_fixture_suite: str = "arithmetic_v1"
 
     def __post_init__(self) -> None:
+        if self.sqlite_fixture_suite not in ("arithmetic_v1", "tool_compatibility_v1"):
+            raise BCError("Unknown SQLite fixture suite")
+        if self.sqlite_fixture_suite == "tool_compatibility_v1" and (
+                self.task_kind != "sqlite_fixture" or self.task_count != 4 or
+                self.policies != ("single",) or self.attacks != ("clean",) or
+                self.seeds != (0,) or self.protocol != "A" or self.operation_measurement or
+                self.organization != "legacy" or self.calibration_file or self.fixed_state_file):
+            raise BCError("SQLite tool compatibility is exactly four single/clean fixture diagnostics, seed 0, Protocol A")
         if self.organization not in ("legacy", "fixed_isolated", "fixed_linked", "select_boundary"):
             raise BCError("Unknown organization condition")
         if self.organization != "legacy" and (self.policies != ("jit",) or self.protocol != "A" or self.operation_measurement):

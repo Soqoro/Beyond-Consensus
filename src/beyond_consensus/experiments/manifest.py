@@ -69,6 +69,9 @@ def load_tasks(config: RunConfig) -> list[TaskInstance]:
     if config.task_kind == "workflow_fixture":
         return fixtures(config.task_count)
     if config.task_kind == "sqlite_fixture":
+        if config.sqlite_fixture_suite == "tool_compatibility_v1":
+            from ..tasks.sqlite_compatibility import tasks
+            return tasks()
         from ..tasks.sqlite_tasks import fixtures as sqlite_fixtures
         return sqlite_fixtures(config.task_count)
     if not config.data_manifest:

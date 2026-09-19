@@ -1,6 +1,42 @@
 # Implementation status and handoff
 
-## Current checkpoint: stopping fixed; native budget audit pending (2026-09-19)
+## Current checkpoint: native setting paused; synthetic tool diagnostic prepared (2026-09-19)
+
+The cluster budget audit measured complete reviewed actions at **623 / 376 tokens
+including one stop** for `solar_2` / `solar_M_3`, both below 768. Catalogue plus
+contract/schema/creation/submission leaves seven document-page slots at 12 actions;
+reading full schema and columns alone consumes those seven pages. These are
+representation and conditional route measurements, not model competence.
+
+The user then ran the authorized 24-action condition, array **1078011**, experiment
+`5f4bcf452b24b0b2f267cb9c327e8742042034dd02692ac872c87154c342ff4a`.
+It remained **0/2**, with both artifacts missing, at **131348** work (+79.1%).
+`solar_2` stopped as `malformed` after 13 calls (10 reads, three identical capped
+query attempts with JSON failure at column 256). `solar_M_3` used all 24 calls
+reading and stopped as `action_limit`. Neither produced an artifact.
+
+Pause further native action-limit increases and identical runs. The user authorized
+preparing a four-probe synthetic compatibility diagnostic: aggregate/aliases,
+join, CASE, and view creation/submission. The schema, relationship and natural-
+language requirements are supplied directly. No solution trees or expected rows
+enter worker views. It reuses the restricted executor, shared SQL instructions,
+strict parser, normal accounting and terminal evaluator boundary. Each probe has
+one output and a fresh episode/context; all four identities still exist, and one
+model instance is reused on the single GPU shard. Defaults stay 12 actions,
+768 output tokens, 8192 context, no thinking and 100000 work per episode.
+
+The opt-in config is `configs/sqlite-tool-compatibility.json`, with an explicit
+`sqlite_fixture_suite=tool_compatibility_v1`. Other configs retain arithmetic
+fixtures by default. Labels `bc_sqlite_tool_compatibility_v1`,
+`bc-sqlite-tools-v1`, and `synthetic_schema_supplied` keep these scores separate
+from native/pair/arithmetic/SILO observations. Four probes share one synthetic
+source group. Passing these simpler tasks would not prove native competence;
+failure would not establish general model incapacity or a recovery-policy effect.
+GPU results are pending. No job, push or download was performed locally.
+See [the diagnostic runbook](SQLITE_TOOL_DIAGNOSTIC.md) and
+[the validation record](VALIDATION.md#synthetic-tool-compatibility-diagnostic-2026-09-19).
+
+## Prior checkpoint: stopping fixed; native budget audit pending (2026-09-19)
 
 User-reported preflight **1078003** stopped at tokenizer EOS 248046 using
 `[248044,248046]`. Array **1078005**, experiment
