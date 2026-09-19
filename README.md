@@ -1,10 +1,11 @@
 # Beyond Consensus
 
-The next step is [reviewing the generation stopping correction](docs/RESEARCH_GATE.md#solar-turn-stopping-correction).
-The pinned model config stops at `<|endoftext|>`, while the tokenizer/template
-ends assistant turns with `<|im_end|>`. The backend now explicitly includes both
-stop tokens and logs the effective settings. CPU regressions pass; GPU effect
-is untested. Both prior solar clean-model controls remain 0/2 with no artifacts.
+The next step is the [read-only native budget audit](docs/RESEARCH_GATE.md#solar-budget-audit).
+The user verified the stopping correction on GPU, but the two-task solar control
+still scored 0/2: one worker exhausted its actions reading, and the other emitted
+two malformed query attempts. No required artifact was produced. Measure reviewed
+action token sizes and public-document page costs before selecting another
+bounded condition. No model/budget change or GPU rerun is scheduled.
 A second pair and model competence remain pending; no full upstream evaluator
 equivalence is claimed.
 The user-reported SILO control and actual-carry comparison both scored 0/8 tasks

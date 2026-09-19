@@ -1,6 +1,23 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: verified stopping metadata mismatch (2026-09-19)
+## Latest continuation: post-EOS control and CPU budget audit (2026-09-19)
+
+Preflight 1078003 verified EOS 248046 with both stop IDs. Array 1078005 still
+completed 0/2 native solar tasks, 73320 work, both artifacts missing. The view
+worker spent 12 actions reading; the query worker made two identical malformed
+query attempts, both capped at 768 tokens with their first JSON error at column
+256. No SQL executed. Twenty-two other generations stopped correctly.
+
+Do not repeat the EOS preflight/control sequence below. Next use the
+[read-only budget audit](docs/RESEARCH_GATE.md#solar-budget-audit). The script
+checks recorded validation provenance and compiles reference trees without
+executing them. Optional offline tokenization uses the cluster's existing
+environment; no weights load. Reference contents stay private, outside worker
+views. Counts are unmeasured locally because the prior temporary reference
+files and pinned tokenizer are no longer available. Preserve the historical
+failures and current settings; a larger model/budget is not yet selected.
+
+## Prior continuation: verified stopping metadata mismatch (2026-09-19)
 
 The user reports text-config EOS 248044 (`<|endoftext|>`), tokenizer EOS 248046
 (`<|im_end|>`), and a template using the latter to close messages. There is no

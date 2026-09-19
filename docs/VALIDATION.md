@@ -1,5 +1,84 @@
 # Local validation record
 
+## Solar post-EOS control and budget audit (2026-09-19)
+
+User-reported preflight **1078003** passed on A100-PCIE-40GB. It generated the
+ready JSON in six output tokens, ending at **248046**, effective stops
+`[248044,248046]`, pad 248044, under `tokenizer-turn-eos-v1`. SQLite capability
+checks also passed. This verifies operational turn stopping, not task competence.
+
+Run array **1078005**, experiment
+`cfb6d97fed8222c496b256acffa5880b3ba00a78cab355da0193ba575cd90fd3`,
+then completed both native single/clean development tasks with **0 successes and
+two missing required artifacts**. Profile, task obligations, 12-action cap,
+768-token output cap, 8192 context and 100000 work per episode were unchanged.
+Both tasks share one `database:solar` group; this is not a recovery comparison.
+
+| Task | Charged work | Reads | Query attempts | Rejections | Final artifact |
+| --- | ---: | ---: | ---: | ---: | --- |
+| solar_M_3 | 30641 | 12 | 0 | 0 | Missing |
+| solar_2 | 42679 | 10 | 2 | 2 | Missing |
+
+The view worker reread its contract and consumed nine sequential KB documents
+without constructing a view. The query worker used the catalogue and four metric
+KBs, repeated two KB reads and schema inspection, then attempted the same invalid
+query action twice. Local parsing of the supplied strings confirms both are
+2872 characters and fail first at **column 256**. They also use an unsupported
+`sum` expression key and column names as nonexistent table names. These mistakes
+precede the output cutoff. No query executed, so the run does not measure the
+semantic accuracy of an executed candidate. No reference content is reproduced here.
+
+Of 24 generations, **22 ended at EOS 248046**, and the two query attempts reached
+768 tokens (`length_limit`). The largest prompt was 5390 tokens, leaving room
+for the configured output allowance inside 8192. There is no context overflow in
+these logged calls. Missing fast-path libraries are reported, but these traces
+provide no evidence that installing them fixes the malformed actions or read loop.
+
+Total charged work **73320**, mean **36660**, reconciles with both episode ledgers
+and is 1831 above the preceding 71489 control. The reported observed-costs ID is
+`8bb8e4b9e4cd5660efc26d2f6f73e9122deec8f99811b32d77eeac6f4853dc6d`;
+manifest hash `320336ee7ace48d49889cb7272325f62a325b01b31ed98a071821c5e522b6adf`.
+These are user-supplied remote results, not locally executed GPU measurements.
+
+### Representation and action audit
+
+Source inspection confirms that successful creation/query and final submission
+are separate charged actions, and document pages are 4000 characters. Under the
+explicit scenario of one contract read, schema inspection, one catalogue page,
+one creation/query and one final submission, five of 12 actions are used,
+leaving seven for document pages and retries. This is **conditional arithmetic**,
+not a demonstrated minimal successful route. The worker could choose fewer
+reads, and a reference is not guaranteed to be the shortest valid expression.
+
+The former private `/tmp/bc-author-materials.f0n5jtmc/` review and pinned Qwen
+tokenizer are unavailable locally in this session. Exact reference token sizes
+are therefore **unmeasured**, and no character-to-token heuristic is substituted.
+The cluster retains the validated native manifest and model lock. The new
+`scripts/audit_sqlite_budget.py` validates that manifest, compiles existing trees
+without SQL execution and optionally uses an explicit offline tokenizer subprocess.
+It reports compact action sizes, one-stop token allowance, public page counts,
+input/script/lock hashes and separate CPU/wall measurements. It never prints or
+saves the reference expressions, selects gold-derived worker reads, edits caps,
+loads weights or submits jobs. Existing reports cannot be overwritten.
+
+Local verification: full discovery completed 170 tests in 58.569 seconds,
+169 passed and one existing opt-in test skipped. The final focused audit suite
+passed all four tests, including an additional mocked tokenizer boundary/hash
+check added after full discovery started. It checks 767+1 versus 768+1 against
+the cap, offline invocation and changed-metadata rejection; these synthetic
+counts are test inputs, not measured solar lengths. The other checks cover
+creation/submission envelope fields, reference-text exclusion, character rather
+than byte paging, standard-library default operation and immutable reports.
+All nine shell files, compilation, isolated stdlib CLI/help, 20 shell blocks,
+five Python snippets and diff hygiene passed. No real tokenizer, model or SQL
+execution was performed by this audit locally.
+
+Next collect that private report using [the browser commands](RESEARCH_GATE.md#solar-budget-audit).
+If the canonical reference exceeds the cap, that establishes a representation
+constraint, not impossibility for all equivalent solutions. If it fits, there
+is still no clean-model competence result. More output alone does not repair
+the observed early syntax/grounding errors. No further GPU campaign is prepared.
+
 ## Tokenizer turn-stopping correction (2026-09-19)
 
 The user supplied a read-only inspection of the pinned checkpoint/tokenizer
@@ -55,10 +134,11 @@ seconds: 166 passed, one existing opt-in skip**. All nine shell checks,
 compilation, isolated stdlib CLI help, 33 documented shell blocks, one embedded
 Bash script, five embedded Python snippets and diff hygiene passed.
 
-Next deploy reviewed code, make a fresh two-task manifest and inspect preflight
+At this historical checkpoint, the next step was to deploy reviewed code, make a fresh two-task manifest and inspect preflight
 runtime/generation stop metadata before the bounded control. Do not download or
 fabricate a `generation_config.json`, modify the locked template, raise caps or
-start a broader campaign. GPU effectiveness remains unmeasured.
+start a broader campaign. GPU effectiveness was then unmeasured; the post-EOS
+record above supersedes that status.
 
 ## Solar document-discovery follow-up (2026-09-18)
 

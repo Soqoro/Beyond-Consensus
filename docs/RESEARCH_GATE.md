@@ -27,16 +27,18 @@ The document-catalogue correction was then deployed and run as array 1077718.
 It still failed 0/2: one worker discovered relevant documents but repeated reads
 and emitted a malformed simulated conversation; the other read documents in
 sequence. Neither attempted SQL or submission. Charged work increased 25.7%.
-Pause further identical/prompt-only GPU reruns. The metadata audit has now
-identified model text-config EOS 248044 versus tokenizer/template turn-end
-248046. The backend correction explicitly includes both stop IDs and logs the
-effective set; CPU regressions pass but GPU effectiveness is untested.
-The [ordered next commands](#ordered-next-commands) prepare a fresh bounded
-preflight after review/deployment, not another run of the old snapshot.
-A second pair, clean-model competence and native decomposition/policy gates
-remain unmet. `crypto_8` still lacks tests; the crypto pair remains blocked.
-No wider campaign or reasoning/model sweep follows. See
-[the follow-up evidence](VALIDATION.md#solar-document-discovery-follow-up-2026-09-18).
+The EOS correction then passed preflight 1078003. Array 1078005 still scored
+0/2 with both artifacts missing: 22 generations stopped at tokenizer EOS 248046;
+two query attempts were malformed before hitting the output cap. The view worker
+continued reading until its action limit. Charged work was 73320. The old stop
+mismatch is resolved; it does not explain the remaining failures.
+
+Next run the [read-only budget audit](#solar-budget-audit). Exact token sizes
+require the cluster's validated private references and existing pinned tokenizer;
+they are unmeasured locally. Do not rerun identical settings, raise limits or
+select another model before reviewing those measurements. A second pair,
+clean-model competence and native decomposition/policy gates remain unmet.
+`crypto_8` still lacks tests. See [the post-EOS record](VALIDATION.md#solar-post-eos-control-and-budget-audit-2026-09-19).
 
 ## Prior implementation plan and decision rationale
 
@@ -274,7 +276,66 @@ manifest provenance. There are no fabricated runnable native pilot rows.
 
 ## Ordered next commands
 
+### Solar budget audit
+
+After committing/pushing the audit script locally, run the following in the
+browser terminal. This reads the existing validated private manifest, compiles
+its reviewed reference trees without executing SQL, and loads only the pinned
+tokenizer in the existing environment. It does not load model weights, submit
+jobs, download files or send reference content to a worker. The report remains
+outside Git and contains sizes/counts rather than reference expressions.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_MODEL_LOCK="$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json"
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_SOLAR_CHECK="$BC_STORAGE/private/livesqlbench/solar-check.NatDlH"
+export BC_SOLAR_AUDIT="$(mktemp -d "$BC_STORAGE/private/livesqlbench/solar-budget.XXXXXX")"
+
+"$BC_PYTHON" -I scripts/audit_sqlite_budget.py \
+  --data-manifest "$BC_SOLAR_CHECK/native-validated.private.json" \
+  --model-lock "$BC_MODEL_LOCK" \
+  --tokenizer-python "$BC_PYTHON" \
+  --action-cap 12 \
+  --output-cap 768 \
+  --output "$BC_SOLAR_AUDIT/budget-audit.json"
+```
+
+Share the printed report. The default mode without the two tokenizer arguments
+uses standard-library CPU code and explicitly leaves token sizes unmeasured.
+
+Interpretation rules:
+
+- `content_plus_one_stop_tokens` measures one compact serialization of the
+  already-reviewed artifact action, including one terminal token. It omits extra
+  reasoning/delimiters and is not a guarantee of generated length. A count over
+  768 demonstrates that representation cannot finish in that allowance; it does
+  not rule out shorter equivalent representations. A fitting reference is not
+  evidence that the model can discover or emit it.
+- Four assumed actions cover contract, schema, creation/query and final artifact
+  submission. With one catalogue page, 12 actions leave seven document-page slots
+  and no additional retries if all seven are used. Each extra catalogue page,
+  repeated read or malformed attempt consumes another slot. Required end-to-end
+  model work also includes charged prompt re-prefills and tool observations;
+  this audit does not claim that token/action fit implies total-work or context fit.
+- Full-document page counts reproduce the runtime's 4000-character paging; a
+  catalogue page contains at most 64 titles. Reading all documents is a scenario,
+  not a requirement. Reading schema plus columns is another scenario, not a
+  gold-selected route; no required KB shortlist is derived from evaluation data.
+- If a known reference does not fit, define and separately authorize a fresh,
+  bounded budget condition with explicit output/context/action/total-work costs.
+  If it fits, the current failures still require better task/tool execution;
+  do not call additional budget a proven fix. No automatic GPU command follows.
+- Analysis CPU and tokenizer-process CPU time are reported separately. These
+  offline costs do not rewrite historical episode ledgers or calibrate recovery.
+
 ### Solar turn-stopping correction
+
+Historical sequence, completed in preflight 1078003 and array 1078005. Do not
+repeat it; the budget audit above is current. Original instructions follow.
 
 Review and commit/push the backend correction and its tests/docs locally, then
 run this in the cluster browser terminal. Reuse the validated private task input

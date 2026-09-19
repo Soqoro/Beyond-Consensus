@@ -1,6 +1,31 @@
 # Implementation status and handoff
 
-## Current checkpoint: tokenizer/model stopping mismatch found (2026-09-19)
+## Current checkpoint: stopping fixed; native budget audit pending (2026-09-19)
+
+User-reported preflight **1078003** stopped at tokenizer EOS 248046 using
+`[248044,248046]`. Array **1078005**, experiment
+`cfb6d97fed8222c496b256acffa5880b3ba00a78cab355da0193ba575cd90fd3`,
+completed **0/2**, both required artifacts missing, at **73320** charged work.
+Of 24 generations, 22 stopped at 248046 and two hit the 768-token cap.
+`solar_M_3` consumed all 12 actions reading. `solar_2` attempted a query twice;
+both identical outputs were malformed at character 256, before truncation, and
+also used unsupported expressions and nonexistent tables. Neither query executed.
+The stopping correction is operationally verified; clean competence remains unmet.
+
+The local read-only audit confirms four assumed actions for contract/schema/
+creation/submission plus catalogue and document pages. One catalogue page leaves
+seven of 12 actions for document pages and retries. This is conditional accounting,
+not a necessary minimum or an independently selected successful read plan.
+The validated reference trees and pinned tokenizer are unavailable locally in
+this session; exact reference token counts remain **unmeasured**. Use the new
+[CPU budget audit](RESEARCH_GATE.md#solar-budget-audit) on the cluster, without
+weights, inference, SQL execution or jobs. Its private report includes only sizes,
+public page counts and separately measured analysis costs, never reference text.
+Reference-size fit does not prove model competence, and an oversized reference
+is not a proof that every equivalent query is too long. No cap/model/prompt/scorer
+change or further campaign is made. See [the evidence](VALIDATION.md#solar-post-eos-control-and-budget-audit-2026-09-19).
+
+## Prior checkpoint: tokenizer/model stopping mismatch found (2026-09-19)
 
 The user's pinned metadata identifies model text-config EOS **248044** as
 `<|endoftext|>`, but tokenizer EOS **248046** as `<|im_end|>`, the chat template's
