@@ -1,6 +1,40 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: solar model read-loop diagnosis (2026-09-18)
+## Latest continuation: verified stopping metadata mismatch (2026-09-19)
+
+The user reports text-config EOS 248044 (`<|endoftext|>`), tokenizer EOS 248046
+(`<|im_end|>`), and a template using the latter to close messages. There is no
+staged `generation_config.json`. The previous backend did not explicitly add
+tokenizer EOS to the model's effective stop set. Generated fake dialogue is
+consistent with crossing a turn boundary, but raw historical token IDs were not
+saved and this does not explain all failed tool choices.
+
+Local correction: pass the union of model and verified tokenizer stop IDs on
+every generation, use tokenizer padding if needed, and record effective/final
+token IDs. All tokens remain charged. Real calibration now binds the generation
+policy; new manifests are required. Locked metadata, prompts, budgets, model
+settings and strict action parsing stay unchanged. Review/deploy then use
+[the bounded fresh-manifest/preflight sequence](docs/RESEARCH_GATE.md#solar-turn-stopping-correction).
+No GPU was run locally; both prior solar controls still scored 0/2. See
+[the metadata record](docs/VALIDATION.md#tokenizer-turn-stopping-correction-2026-09-19).
+
+## Prior continuation: document discovery worked partly; native control still fails (2026-09-18)
+
+Array 1077718, experiment `754c06ed06a51174619455ced15d592db875cbbdca1c39f15f157808801643c4`,
+completed 0/2 with missing artifacts and 71489 charged work (+25.7%). The query
+worker used the catalogue and read relevant documents, then generated one
+simulated conversation to the 768-token cap and reread the documents. The view
+worker read `kb-0` through `kb-8` sequentially without the catalogue. Neither
+attempted SQL. Both reached the unchanged 12-action cap.
+
+Pause further identical/prompt-only runs. Next use the [read-only metadata audit](docs/RESEARCH_GATE.md#solar-metadata-audit)
+on the existing model lock; no model loading or job submission is needed.
+A tokenizer/stopping defect is not established by the decoded transcript.
+No code/config/scoring change was made in this follow-up. Preserve both failures;
+clean-model competence, a second pair and broader policy gates remain unmet.
+See [the evidence](docs/VALIDATION.md#solar-document-discovery-follow-up-2026-09-18).
+
+## Prior continuation: solar model read-loop diagnosis (2026-09-18)
 
 Preflight 1077667 passed; user-reported run array 1077671 completed both native
 tasks but failed 0/2 with missing artifacts. Each worker spent all 12 actions on

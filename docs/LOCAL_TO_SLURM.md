@@ -6,9 +6,10 @@ Start with [RESEARCH_GATE.md](RESEARCH_GATE.md#ordered-next-commands). The user 
 completed the ledger audit and both eight-source SILO conditions; both scored
 0/8 complete tasks. Further 4B/no-thinking SILO runs are paused. Solar files and
 author materials are staged and both individual references passed cluster CPU
-controls. The solar model control completed but failed 0/2 after repeated
-contract reads. Review [the interface correction and fresh-manifest steps](RESEARCH_GATE.md#solar-read-loop-correction)
-next. Model competence and the second pair remain pending. Earlier SILO battery/measurement commands
+controls. Both solar model controls failed 0/2; the second discovered documents
+but still never attempted SQL. The metadata audit found a model/tokenizer EOS
+mismatch; review [the stopping correction](RESEARCH_GATE.md#solar-turn-stopping-correction)
+next. Its GPU effect is untested. Model competence and the second pair remain pending. Earlier SILO battery/measurement commands
 below are historical tooling, not instructions to rerun those campaigns.
 
 ## Earlier bounded validation cycle (2026-09-17)

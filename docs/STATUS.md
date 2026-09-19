@@ -1,6 +1,53 @@
 # Implementation status and handoff
 
-## Current checkpoint: solar clean control exhausted actions on repeated reads (2026-09-18)
+## Current checkpoint: tokenizer/model stopping mismatch found (2026-09-19)
+
+The user's pinned metadata identifies model text-config EOS **248044** as
+`<|endoftext|>`, but tokenizer EOS **248046** as `<|im_end|>`, the chat template's
+assistant-turn delimiter. There is no staged `generation_config.json`. The
+backend previously supplied no explicit EOS override. This is a concrete
+stopping mismatch and a plausible explanation for generated extra dialogue;
+historical decoded text does not retain raw special-token IDs, so it cannot
+prove that every failed turn crossed an actual delimiter.
+
+The backend now explicitly passes the union of the loaded model's stop IDs and
+the verified tokenizer turn-end ID, preserving existing model stops. Padding
+falls back to the tokenizer's ID. Effective IDs and the final generated token
+are logged; all generated tokens remain charged. Real calibration compatibility
+binds `tokenizer-turn-eos-v1`. Pinned model/tokenizer files, prompts, sampling,
+reasoning, action/output/context caps, evaluator and restricted tools are unchanged.
+
+Focused CPU tests exercise the old continuation and corrected boundary using a
+scripted token stream, plus invalid-token rejection and calibration binding.
+Full suite: 167 tests (166 passed, one existing opt-in skip); shell, compilation,
+isolated stdlib CLI and documentation syntax checks passed.
+GPU improvement is untested; both earlier native controls remain 0/2. Next
+review/deploy the correction and prepare a fresh two-task manifest, first checking
+effective EOS IDs in the guarded preflight. No broad campaign or SILO rerun.
+See [the metadata and correction](VALIDATION.md#tokenizer-turn-stopping-correction-2026-09-19).
+
+## Prior checkpoint: document discovery progressed; solar still fails 0/2 (2026-09-18)
+
+User-reported run array 1077718, experiment
+`754c06ed06a51174619455ced15d592db875cbbdca1c39f15f157808801643c4`,
+completed both tasks with both required artifacts missing. `solar_2` used the
+public catalogue and read four relevant definitions, then repeated those reads.
+One generation produced a simulated multi-role conversation, exhausted 768 output
+tokens and was rejected as extra JSON data. `solar_M_3` skipped the catalogue,
+reread its contract once and read `kb-0` through `kb-8` sequentially. Neither
+attempted SQL/view creation or submission; both exhausted 12 actions.
+
+Charged work: 40824 + 30665 = 71489, versus 56867 previously (+25.7%).
+The interface enabled useful discovery in one trace but did not establish
+competence. The length-limited output was not a truncated SQL solution.
+Pause further identical/prompt-only GPU reruns and larger campaigns. Next inspect
+the frozen tokenizer/chat-template/stopping metadata without loading weights;
+the trace does not by itself prove a template or EOS defect, or general model
+incapacity. A subsequent model/decoding/budget condition needs an explicit design.
+Runtime, model settings and scoring are unchanged in this documentation update.
+See [the follow-up trace record](VALIDATION.md#solar-document-discovery-follow-up-2026-09-18).
+
+## Prior checkpoint: solar clean control exhausted actions on repeated reads (2026-09-18)
 
 User-reported GPU preflight 1077667 passed. Run array 1077671 completed both
 native solar tasks but scored **0/2** with both required artifacts missing.

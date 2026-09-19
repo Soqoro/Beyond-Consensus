@@ -1,12 +1,12 @@
 # Beyond Consensus
 
-The next step is [reviewing the solar read-loop correction](docs/RESEARCH_GATE.md#solar-read-loop-correction).
-Both solar references passed cluster CPU controls and GPU preflight passed, but
-the clean model control failed 0/2: workers exhausted 12 actions rereading their
-requirements and never attempted SQL. A local shared-interface correction adds
-charged public document titles and removes the schema's repeated read cue; its
-GPU effect is untested. A second pair and model competence remain pending, and
-no full upstream evaluator equivalence is claimed.
+The next step is [reviewing the generation stopping correction](docs/RESEARCH_GATE.md#solar-turn-stopping-correction).
+The pinned model config stops at `<|endoftext|>`, while the tokenizer/template
+ends assistant turns with `<|im_end|>`. The backend now explicitly includes both
+stop tokens and logs the effective settings. CPU regressions pass; GPU effect
+is untested. Both prior solar clean-model controls remain 0/2 with no artifacts.
+A second pair and model competence remain pending; no full upstream evaluator
+equivalence is claimed.
 The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
 and 101/480 values; the carry condition used 6.8% more charged work. Further
 4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier

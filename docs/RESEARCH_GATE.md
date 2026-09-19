@@ -23,13 +23,20 @@ the requirement, without documents, SQL or submissions. This is one source
 group, not a broad competence measurement. See
 [the traces and interface correction](VALIDATION.md#solar-native-model-control-read-loop-2026-09-18).
 
-The next local change removes the schema reread cue and supplies a charged
-public-document title catalogue. Its GPU effect is untested. Preserve the failed
-control and prepare only a fresh two-task comparison after review and deployment,
-with the same inputs/model/settings. The [ordered next commands](#ordered-next-commands)
-stop at preflight dry run. A second pair, clean-model competence and native
-decomposition/policy gates remain unmet. `crypto_8` still lacks tests; the crypto
-pair remains blocked. No wider campaign or reasoning/model sweep follows.
+The document-catalogue correction was then deployed and run as array 1077718.
+It still failed 0/2: one worker discovered relevant documents but repeated reads
+and emitted a malformed simulated conversation; the other read documents in
+sequence. Neither attempted SQL or submission. Charged work increased 25.7%.
+Pause further identical/prompt-only GPU reruns. The metadata audit has now
+identified model text-config EOS 248044 versus tokenizer/template turn-end
+248046. The backend correction explicitly includes both stop IDs and logs the
+effective set; CPU regressions pass but GPU effectiveness is untested.
+The [ordered next commands](#ordered-next-commands) prepare a fresh bounded
+preflight after review/deployment, not another run of the old snapshot.
+A second pair, clean-model competence and native decomposition/policy gates
+remain unmet. `crypto_8` still lacks tests; the crypto pair remains blocked.
+No wider campaign or reasoning/model sweep follows. See
+[the follow-up evidence](VALIDATION.md#solar-document-discovery-follow-up-2026-09-18).
 
 ## Prior implementation plan and decision rationale
 
@@ -267,7 +274,115 @@ manifest provenance. There are no fabricated runnable native pilot rows.
 
 ## Ordered next commands
 
+### Solar turn-stopping correction
+
+Review and commit/push the backend correction and its tests/docs locally, then
+run this in the cluster browser terminal. Reuse the validated private task input
+and model lock; the correction supplies runtime generation options and does not
+edit or download model metadata. Keep the existing model, prompts and caps.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+source "$BC_STORAGE/envs/bc-gpu-py312/bin/activate"
+export BC_PYTHON="$(command -v python)"
+export BC_MODEL_LOCK="$BC_STORAGE/models/Qwen--Qwen3.5-4B/model-lock.json"
+export BC_CLUSTER=configs/cluster.pa100.local.json
+export BC_SOLAR_CHECK="$BC_STORAGE/private/livesqlbench/solar-check.NatDlH"
+export BC_SOLAR_EOS="$(mktemp -d "$BC_STORAGE/private/livesqlbench/solar-eos.XXXXXX")"
+
+(
+  set -eu
+  test -z "$(git status --porcelain)"
+  test -f "$BC_SOLAR_CHECK/native-validated.private.json"
+  test -f "$BC_MODEL_LOCK"
+  test -f "$BC_CLUSTER"
+  python - <<'PY'
+from pathlib import Path
+source = Path("src/beyond_consensus/models/transformers_backend.py").read_text()
+if 'GENERATION_POLICY = "tokenizer-turn-eos-v1"' not in source:
+    raise SystemExit("Stop: pull the reviewed turn-stopping correction first")
+PY
+  python scripts/bc.py validation-config --profile qwen35-4b-control \
+    --data-manifest "$BC_SOLAR_CHECK/native-validated.private.json" \
+    --output "$BC_SOLAR_EOS/config.json"
+  python scripts/bc.py manifest --config "$BC_SOLAR_EOS/config.json" \
+    --model-lock "$BC_MODEL_LOCK" --output "$BC_SOLAR_EOS/manifest.json"
+  python scripts/bc.py diagnostic-costs --manifest "$BC_SOLAR_EOS/manifest.json" \
+    --output "$BC_SOLAR_EOS/planned-costs.json"
+  python -m json.tool "$BC_SOLAR_EOS/planned-costs.json"
+  bash experiments/submit_gpu_preflight.sh --cluster "$BC_CLUSTER" \
+    --manifest "$BC_SOLAR_EOS/manifest.json" --model-lock "$BC_MODEL_LOCK" --dry-run
+)
+```
+
+Expect two planned episodes and a new experiment ID; stop at the dry run.
+After authorized preflight, inspect `runtime.generation_tokens`: expected
+`policy=tokenizer-turn-eos-v1`, `eos_token_id=[248044,248046]` and padding 248044
+for the reported checkpoint. `generation.diagnostics` also reports effective
+IDs and `last_generated_token_id`; an EOS stop can use either supported stop.
+The ready JSON and SQLite executor must still pass before the two-task pilot.
+Use the shared registry and at most one concurrent GPU for this check. Do not
+resume either failed old manifest or launch a larger policy/model campaign.
+
+### Solar metadata audit
+
+Completed historical audit; the turn-stopping correction above is the current
+next step. The revised two-task control had completed and failed. Inspect the
+existing pinned metadata in the browser terminal. This uses only the standard
+library, reads no weights, changes no files and submits no job. A metadata match
+does not alone certify inference or resolve the cause of simulated dialogue.
+
+```bash
+export BC_MODEL_LOCK=/dataset/suaq0001/beyond-consensus/models/Qwen--Qwen3.5-4B/model-lock.json
+
+python - <<'PY'
+import hashlib
+import json
+import os
+from pathlib import Path
+
+lock = json.loads(Path(os.environ["BC_MODEL_LOCK"]).read_text())
+model = Path(lock["model_path"])
+tokenizer = Path(lock["tokenizer_path"])
+print("REVISIONS:", lock["revision"], lock["tokenizer_revision"])
+
+generation_path = model / "generation_config.json"
+generation = json.loads(generation_path.read_text()) if generation_path.is_file() else {"missing": True}
+print("GENERATION CONFIG:", json.dumps(generation, indent=2))
+config = json.loads((model / "config.json").read_text())
+for name, section in (("model", config), ("text", config.get("text_config", {}))):
+    print(name, {k: section.get(k) for k in ("bos_token_id", "eos_token_id", "pad_token_id")})
+
+tc = json.loads((tokenizer / "tokenizer_config.json").read_text())
+print("TOKENIZER SPECIALS:", json.dumps({k: tc.get(k) for k in
+    ("bos_token", "eos_token", "pad_token", "add_bos_token", "add_eos_token")}, indent=2))
+for token_id, entry in tc.get("added_tokens_decoder", {}).items():
+    content = entry.get("content", "")
+    if any(marker in content for marker in ("think", "im_start", "im_end", "endoftext")):
+        print("SPECIAL TOKEN:", token_id, repr(content), "special=", entry.get("special"))
+
+path = tokenizer / "chat_template.jinja"
+if path.is_file():
+    data = path.read_bytes()
+    print("TEMPLATE SHA256:", hashlib.sha256(data).hexdigest())
+    print("CHAT TEMPLATE:\n" + data.decode())
+else:
+    print("CHAT TEMPLATE:", json.dumps(tc.get("chat_template"), indent=2))
+PY
+```
+
+Review this output before proposing a new condition. The decoded transcript
+does not retain all original special-token IDs, so do not infer an EOS bug from
+the printed `user`/`assistant` strings alone. Do not repair multi-object model
+responses by executing their first JSON action; the strict rejection is correct.
+
 ### Solar read-loop correction
+
+Historical instructions for the now-completed second control (0/2). For the
+current next step use the metadata audit above.
 
 Review and commit/push the local code/tests/docs first using the usual manual
 Git workflow. The changed shared prompt/tool observations require a fresh

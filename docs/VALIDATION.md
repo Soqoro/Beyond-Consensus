@@ -1,5 +1,119 @@
 # Local validation record
 
+## Tokenizer turn-stopping correction (2026-09-19)
+
+The user supplied a read-only inspection of the pinned checkpoint/tokenizer
+`851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`. The staged model directory has no
+`generation_config.json`; its `config.json` text configuration has
+`eos_token_id=248044`. Tokenizer metadata resolves:
+
+| ID | Token | Role |
+| --- | --- | --- |
+| 248044 | `<\|endoftext\|>` | Model text-config EOS; tokenizer padding |
+| 248045 | `<\|im_start\|>` | Chat message start |
+| 248046 | `<\|im_end\|>` | Tokenizer EOS and template message end |
+| 248068 / 248069 | `<think>` / `</think>` | Thinking delimiters, not marked special in this tokenizer metadata |
+
+The template file SHA-256 is
+`a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715`.
+It emits `<|im_end|>` after assistant messages and an empty thinking block when
+`enable_thinking=false`. The backend already uses this template and setting;
+the audit does not indicate that reasoning was silently enabled. Its old
+generation call supplied no explicit EOS or padding options and classified stop
+causes only against `model.generation_config.eos_token_id`.
+
+This establishes a config/tokenizer turn-boundary mismatch. It can allow a
+model to continue beyond a valid assistant turn into extra dialogue if its
+effective stop set omits the turn delimiter. The old decoded trace discards
+special tokens, so it cannot prove which raw delimiter appeared in the malformed
+generation. Nor does the mismatch alone explain all repeated document reads.
+
+Correction in `models/transformers_backend.py`:
+
+- Verify that tokenizer EOS resolves consistently, is not unknown, and occurs
+  in the staged template. Invalid/missing token metadata fails explicitly.
+- Preserve the loaded model's EOS IDs and append tokenizer EOS if missing;
+  pass that set explicitly to every generation. Expected for the reported
+  metadata: `[248044, 248046]`. Use tokenizer padding when model padding is unset.
+- Record configured/effective IDs in runtime and effective IDs plus the final
+  generated token in generation diagnostics. Stop classification uses that set.
+- Keep complete generated-token accounting, including EOS; do not clip decoded
+  text to its first JSON action. Model files and generation defaults on disk
+  are not edited. Prompt, model revision, reasoning/sampling, task, scorer and
+  budgets remain fixed.
+- Bind real calibration compatibility to `tokenizer-turn-eos-v1`; source hashes
+  already distinguish new manifests. Old failed controls remain unchanged.
+
+Four focused CPU regressions passed using test doubles, without loading any GPU
+library or model: preserving/model-plus-tokenizer stops and padding; rejecting
+unverified metadata; actual backend `generate` receiving the explicit stop IDs
+and ending a scripted stream before its fake next turn; and real calibration
+invalidation while mock compatibility stays unchanged. The scripted generation
+charges its two tokens including the final EOS. This is adapter behavior, not a
+real-model success claim. Full unittest discovery ran **167 tests in 50.364
+seconds: 166 passed, one existing opt-in skip**. All nine shell checks,
+compilation, isolated stdlib CLI help, 33 documented shell blocks, one embedded
+Bash script, five embedded Python snippets and diff hygiene passed.
+
+Next deploy reviewed code, make a fresh two-task manifest and inspect preflight
+runtime/generation stop metadata before the bounded control. Do not download or
+fabricate a `generation_config.json`, modify the locked template, raise caps or
+start a broader campaign. GPU effectiveness remains unmeasured.
+
+## Solar document-discovery follow-up (2026-09-18)
+
+User-supplied aggregate, cost report and worker messages from array **1077718**:
+
+- Experiment: `754c06ed06a51174619455ced15d592db875cbbdca1c39f15f157808801643c4`.
+- Condition: `qwen35-4b-control`, single/clean, full, protocol A, native SQLite,
+  one `database:solar` group, unchanged 12 actions / 768 output tokens / 8192 context.
+- Manifest hash: `06d6bf890a3098ac56b9de74d73b61ca17764b0da1742a903436a3a2a97557de`.
+- Cost report: `solar-interface.s6cxt7/observed-costs.json`, ID
+  `3b8cde348c9bf1e248d7c8ba7f833a17d231153b707761fa7db0f303f366b99a`.
+- Analysis source: `0db2f608d3a67c9540c9e9b30df9e311ef25a0ba:8ed2ca6d9986ddc5a680aef7e19131c64d97a66cef70278ebb8e655f2bdf5038`.
+- Result: 2/2 completed, 0/2 successful; both artifacts missing and all public
+  coverage/shape/integration checks failed. No missing/retryable shards.
+
+| Task | Charged work | Actions | Rejections | Observed behavior |
+| --- | ---: | ---: | ---: | --- |
+| `solar_2` | 40824 | 12 | 1 | Contract, schema, catalogue, four document reads, one malformed generation, then the four reads again |
+| `solar_M_3` | 30665 | 12 | 0 | Contract, schema, contract again, then nine sequential document reads |
+
+The query worker selected MROI, urgency, revenue-loss and maintenance-cost
+definitions from public titles. Its eighth generation began with a document-read
+action, then emitted simulated user/assistant turns and `<think>` text within
+the same response. It reached 768 tokens (`length_limit`). The parser rejected
+the response with `Extra data`; neither the leading action nor the simulated
+tool results were executed. It then reread the same four definitions. There was
+no SQL/view action or required-artifact submission in either task.
+
+The view worker did not call `list_documents`; after one repeated source read
+it read `kb-0` through `kb-8` in order. Some definitions were relevant, others
+were not. All its generations ended with EOS. Across both episodes, 23 of 24
+generations ended with EOS, one with `length_limit`; the maximum logged input
+was 4377 tokens, below the context cap even with the output allowance reserved.
+Both workers used all 12 actions with substantial work allowance remaining.
+
+Total charged work 71489 (mean 35744.5) is 14622 / 25.7% above the previous
+56867. This is surrogate charged work, not a GPU-time comparison. The catalogue
+enabled useful discovery in one trace, but there is no complete-task improvement
+and no evidence about the correctness of an attempted SQL solution. The single
+length-limited generation was a simulated conversation, not a nearly complete
+SQL artifact; simply enlarging its output cap is not an evidence-backed fix.
+
+Pause identical/prompt-only reruns and broad policy/model sweeps. Inspect the
+existing staged chat template, EOS configuration and tokenizer metadata next,
+without loading weights or submitting a job. The backend uses the staged
+template and model generation configuration; decoded transcript text alone
+does not prove whether generated role markers were ordinary text or special
+tokens, nor establish a stopping/template bug. Do not switch reasoning, enlarge
+budgets, clip the response to its first JSON object or fabricate tool results.
+Any future condition must preserve these failures and have a fresh manifest.
+This update changes documentation only; the prior 163-test code validation
+remains the latest full suite result. All nine shell checks, 32 documented shell
+blocks, one embedded Bash script, four embedded Python snippets and diff hygiene
+passed. No model inference, submission or runtime change occurred locally.
+
 ## Solar native model control read loop (2026-09-18)
 
 User-supplied preflight, aggregate and worker trace; the cluster checkpoints are

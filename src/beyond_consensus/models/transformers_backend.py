@@ -13,6 +13,36 @@ from ..util import BCError, file_hash, plain, read_json, digest
 from .base import Generation
 from .staging import resolve_model_config
 
+GENERATION_POLICY = "tokenizer-turn-eos-v1"
+
+
+def generation_tokens(tokenizer, generation_config):
+    """Preserve model stop IDs and also stop at the staged tokenizer's turn end."""
+    def valid(value):
+        return type(value) is int and value >= 0
+
+    turn_token = tokenizer.eos_token
+    turn_id = tokenizer.eos_token_id
+    if (not isinstance(turn_token, str) or not turn_token or not valid(turn_id)
+            or turn_id == getattr(tokenizer, "unk_token_id", None)
+            or tokenizer.convert_tokens_to_ids(turn_token) != turn_id
+            or not isinstance(tokenizer.chat_template, str)
+            or turn_token not in tokenizer.chat_template):
+        raise BCError("Cannot verify tokenizer turn-end token against the staged chat template")
+    configured = generation_config.eos_token_id
+    eos = [] if configured is None else list(configured) if isinstance(configured, (list, tuple)) else [configured]
+    if any(not valid(value) for value in eos):
+        raise BCError("Invalid model generation EOS token IDs")
+    eos = list(dict.fromkeys([*eos, turn_id]))
+    pad = generation_config.pad_token_id
+    if pad is None:
+        pad = tokenizer.pad_token_id
+    if pad is None:
+        pad = turn_id
+    if not valid(pad):
+        raise BCError("Invalid generation padding token ID")
+    return {"eos_token_id": eos, "pad_token_id": pad}
+
 
 def require_allocation() -> None:
     if not os.environ.get("SLURM_JOB_ID"):
@@ -89,6 +119,7 @@ class TransformersBackend:
         self.model = Qwen3_5ForConditionalGeneration.from_pretrained(
             lock["model_path"], dtype=getattr(torch, config.dtype), local_files_only=True,
             trust_remote_code=False, attn_implementation="sdpa")
+        self.generation_tokens = generation_tokens(self.tokenizer, self.model.generation_config)
         # cuda:0 is Slurm's process-local device. Never overwrite CUDA_VISIBLE_DEVICES.
         self.model.to(torch.device("cuda:0"))
         self.model.eval()
@@ -97,6 +128,10 @@ class TransformersBackend:
                         "tokenizer_revision": config.tokenizer_revision, "loader": type(self.model).__name__,
                         "model_path": lock["model_path"], "import_path": __file__,
                         "chat_template": template_check, "settings": plain(config),
+                        "generation_tokens": {"policy": GENERATION_POLICY,
+                            "configured_eos_token_id": self.model.generation_config.eos_token_id,
+                            "tokenizer_eos_token_id": self.tokenizer.eos_token_id,
+                            **self.generation_tokens},
                         "model_lock_hash": digest(lock), "slurm_job_id": os.environ["SLURM_JOB_ID"],
                         "model_lock": {k: lock.get(k) for k in ("schema", "checkpoint", "revision", "tokenizer_revision", "metadata_hashes", "status")},
                         "slurm_array_job_id": os.environ.get("SLURM_ARRAY_JOB_ID"),
@@ -123,7 +158,7 @@ class TransformersBackend:
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
         options: dict[str, Any] = {"max_new_tokens": max_new_tokens, "do_sample": self.config.do_sample,
-                                  "use_cache": True}
+                                  "use_cache": True, **self.generation_tokens}
         if self.config.do_sample:
             options.update(temperature=self.config.temperature, top_p=self.config.top_p, top_k=self.config.top_k)
         start, end = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
@@ -144,10 +179,13 @@ class TransformersBackend:
             else:
                 reasoning = None
         text = self.tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
-        eos = self.model.generation_config.eos_token_id
+        eos = self.generation_tokens["eos_token_id"]
         stop = stopping_reason(ids, eos, max_new_tokens)
         return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
             {"finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
+             "generation_policy": GENERATION_POLICY, "eos_token_id": list(eos),
+             "pad_token_id": self.generation_tokens["pad_token_id"],
+             "last_generated_token_id": ids[-1] if ids else None,
              "rendered_input_tokens": size, "reasoning_partition_known": reasoning is not None,
              "reasoning_and_answer_share_output_budget": True,
              "peak_allocated_bytes": torch.cuda.max_memory_allocated(0),

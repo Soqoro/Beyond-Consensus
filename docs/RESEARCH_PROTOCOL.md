@@ -142,6 +142,18 @@ tokens include reasoning and control tokens; reasoning is also logged as a
 subset and is not added twice. Unknown reasoning partitioning is null, while
 the complete generated-token charge remains known.
 
+Real text generation explicitly stops on the union of the model generation
+configuration's EOS IDs and the staged tokenizer's verified EOS/turn-end ID
+(`tokenizer-turn-eos-v1`). The tokenizer token must resolve consistently and
+appear in its staged chat template. An absent model pad ID uses the tokenizer
+pad ID (or its EOS if neither supplies padding). These are per-call generation
+options; pinned metadata is not edited. Runtime records expose configured and
+effective stop IDs, and each generation records its final token ID and stop
+cause against the effective set. The terminal token is charged. No generated
+JSON is repaired or shortened to force a valid action. Real calibration
+compatibility binds this generation policy; corrected runs require fresh
+manifests and cannot reuse historical failed episodes as though unchanged.
+
 Every model call reserves its entire prompt and output allowance before
 generation. Calls reconcile actual token counts; failed calls with unknown usage
 retain the full reservation. Re-prefill is charged on every full prompt, including
