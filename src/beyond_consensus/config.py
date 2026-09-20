@@ -24,8 +24,11 @@ class ModelConfig:
     temperature: float = 0.7
     top_p: float = 0.8
     top_k: int = 20
+    action_constraint: str = "none"
 
     def __post_init__(self) -> None:
+        if self.action_constraint not in ("none", "sqlite-json-schema-v1"):
+            raise BCError("Unknown action constraint")
         if self.backend not in ("mock", "transformers"):
             raise BCError("backend must be mock or transformers")
         if self.checkpoint not in ("Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "google/gemma-3-12b-it"):
@@ -101,6 +104,12 @@ class RunConfig:
     sqlite_fixture_suite: str = "arithmetic_v1"
 
     def __post_init__(self) -> None:
+        if self.model.action_constraint != "none" and (
+                self.sqlite_fixture_suite != "tool_compatibility_v1" or self.shards != 1 or
+                self.max_actions != 12 or self.budget.total != 100000 or
+                not self.model.thinking or self.model.max_new_tokens != 2048 or
+                self.model.context_limit != 8192):
+            raise BCError("Constrained actions are gated to the bounded four-probe reasoning diagnostic")
         if self.sqlite_fixture_suite not in ("arithmetic_v1", "tool_compatibility_v1"):
             raise BCError("Unknown SQLite fixture suite")
         if self.sqlite_fixture_suite == "tool_compatibility_v1" and (

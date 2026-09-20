@@ -316,3 +316,22 @@ No live coding result or recovery advantage is claimed from CPU tests.
   Adaptive search, dependency poisoning
   sweeps, general workflow attacks, cross-family replication, Gemma validation,
   and E2–E5 remain extensions.
+
+## Opt-in constrained action diagnostic (2026-09-20)
+
+`sqlite-json-schema-v1` is an explicitly labelled change to action serialization,
+gated to four single/clean synthetic tool probes. It supplies a generic syntax
+grammar without task-specific choices or evaluator information. Thinking remains
+unconstrained until its generated closing token; subsequent logits are masked.
+All generated tokens, including reasoning and syntax, remain model-charged.
+Per-call decoder work reserves 30 CPU seconds at the tool rate and reconciles
+rounded-up measured CPU; unknown work retains the allowance. Task-independent
+static grammar/tokenizer setup time is recorded separately. No jumping forward,
+answer substitution, auto-repair or uncharged model call is introduced.
+
+Declared object-key order and whitespace bounds can change model behavior.
+Compared with the immediately preceding reasoning condition, this is a labelled
+interface comparison including decoder overhead, not a pure model capability or
+policy test. Structural validity still permits wrong SQL, nonexistent IDs,
+incorrect values and missed submission; the existing executor/evaluator decides
+those outcomes. Native and broader runs are gated off for this initial mode.

@@ -37,6 +37,9 @@ def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
     if config.model.backend == "transformers":
         from ..models.transformers_backend import GENERATION_POLICY
         data["generation_policy"] = GENERATION_POLICY
+    if config.model.action_constraint != "none":
+        from ..models.action_schema import contract
+        data["action_constraint"] = contract()
     if config.organization != "legacy":
         data["organization_catalogue"] = "boundary-jit-v1"
     if task is not None and task.kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):

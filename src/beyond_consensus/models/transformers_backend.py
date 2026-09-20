@@ -5,6 +5,7 @@ from __future__ import annotations
 import importlib.metadata
 import os
 import subprocess
+import time
 from pathlib import Path
 from typing import Any
 
@@ -120,6 +121,11 @@ class TransformersBackend:
             lock["model_path"], dtype=getattr(torch, config.dtype), local_files_only=True,
             trust_remote_code=False, attn_implementation="sdpa")
         self.generation_tokens = generation_tokens(self.tokenizer, self.model.generation_config)
+        self.constraint = None
+        if config.action_constraint != "none":
+            from .constrained import ActionConstraint
+            self.constraint = ActionConstraint(self.tokenizer, self.model.get_output_embeddings().weight.shape[0],
+                                               self.generation_tokens["eos_token_id"])
         # cuda:0 is Slurm's process-local device. Never overwrite CUDA_VISIBLE_DEVICES.
         self.model.to(torch.device("cuda:0"))
         self.model.eval()
@@ -141,6 +147,8 @@ class TransformersBackend:
                         "vram_total_bytes": torch.cuda.get_device_properties(0).total_memory,
                         "torch_cuda": torch.version.cuda,
                         "snapshot_id": Path(__file__).resolve().parents[3].name if (Path(__file__).resolve().parents[3]/"snapshot.json").exists() else None}
+        if self.constraint is not None:
+            self.runtime["action_constraint"] = self.constraint.runtime
 
     def encode(self, messages: list[dict[str, str]]) -> Any:
         return self.tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
@@ -161,6 +169,14 @@ class TransformersBackend:
                                   "use_cache": True, **self.generation_tokens}
         if self.config.do_sample:
             options.update(temperature=self.config.temperature, top_p=self.config.top_p, top_k=self.config.top_k)
+        processor = None
+        setup_cpu = 0.0
+        if self.config.action_constraint != "none":
+            start_cpu = time.process_time()
+            closing_id = self.tokenizer.convert_tokens_to_ids("</think>") if self.config.thinking else None
+            processor = self.constraint.processor(size, closing_id)
+            options["logits_processor"] = [processor]
+            setup_cpu = time.process_time()-start_cpu
         start, end = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
         start.record()
         with torch.inference_mode():
@@ -181,8 +197,20 @@ class TransformersBackend:
         text = self.tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
         eos = self.generation_tokens["eos_token_id"]
         stop = stopping_reason(ids, eos, max_new_tokens)
+        constraint_details = {}
+        if processor is not None:
+            from .action_schema import validate_action, contract
+            start_cpu = time.process_time()
+            try:
+                validate_action(text)
+                complete = reasoning is not None
+            except BCError:
+                complete = False
+            constraint_details = {"action_constraint": contract(), "constraint_complete": complete,
+                "constraint_mask_calls": processor.mask_calls,
+                "constraint_cpu_seconds": setup_cpu+processor.cpu_seconds+time.process_time()-start_cpu}
         return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
-            {"finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
+            {**constraint_details, "finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
              "generation_policy": GENERATION_POLICY, "eos_token_id": list(eos),
              "pad_token_id": self.generation_tokens["pad_token_id"],
              "last_generated_token_id": ids[-1] if ids else None,
@@ -196,7 +224,9 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
     backend = TransformersBackend(config, model_lock)
     torch = backend.torch
     torch.cuda.reset_peak_memory_stats()
-    result = backend.generate([{"role": "user", "content": 'Reply exactly with {"ready":true}.'}],
+    prompt = ('Reply with one JSON action to inspect database fixture: tool inspect_schema, database_id fixture.'
+              if config.action_constraint != "none" else 'Reply exactly with {"ready":true}.')
+    result = backend.generate([{"role": "user", "content": prompt}],
                               config.max_new_tokens if config.thinking else min(64, config.max_new_tokens), 0)
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)

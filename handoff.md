@@ -1,6 +1,34 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: synthetic tools failed; view validation corrected (2026-09-19)
+## Latest continuation: reasoning scored 1/4; constrained actions prepared (2026-09-20)
+
+The user-reported reasoning/2048 run
+`3996c58d44658d42f2d94fd08517884c606e068b798aac077118365d995dda63`
+passed only the view probe: **1/4**, **30715** charged work, all 15 generations
+stopping at EOS. Aggregate used unsupported function/grouping forms; CASE and
+join produced invalid JSON. Each failed after three rejected actions, before SQL
+execution. These failures measure model/interface compatibility, not SQL reasoning
+or recovery-policy quality. Further token/action increases are paused.
+
+The user authorized the opt-in `sqlite-json-schema-v1` action mode and
+`configs/sqlite-tool-compatibility-constrained.json`. Same four tasks, model,
+thinking, 2048 shared output cap, context, action and total budgets; one GPU shard.
+A pinned optional XGrammar decoder constrains action syntax after the generated
+reasoning close. No task/gold data or valid artifact IDs enter its grammar. Runtime
+SQL checks and terminal correctness remain separate. Fixed property order, bounded
+whitespace, decoder overhead and this changed interface are explicit limitations.
+A 300-work decoder allowance is reserved per call and reconciled from measured
+CPU time within the existing budget; failed/unknown work remains charged.
+
+[The new ordered runbook](docs/SQLITE_CONSTRAINED_DIAGNOSTIC.md) first installs the
+optional decoder while constraining existing packages, then checks actual token
+masks on CPU with the staged tokenizer. This workspace lacks the optional stack;
+native mask/compilation and GPU results remain unverified. Stdlib CPU tests use
+scripted workers and test doubles. Do not submit if CPU qualification fails.
+No GPU job, model download or push was performed locally. Native/SILO/policy runs
+remain paused. Earlier runbooks below are historical; do not repeat them.
+
+## Prior continuation: synthetic tools failed; view validation corrected (2026-09-19)
 
 The user-reported four-probe Qwen3.5-4B/no-thinking run completed **0/4** at
 **23786** charged work. All 16 generations stopped at EOS. Aggregate/join/CASE

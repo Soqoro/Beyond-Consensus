@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -93,14 +94,32 @@ class WorkerLoop:
                     "max_new_tokens": self.config.model.max_new_tokens, "history_truncated": False})
                 self.boundary("context_limit")
                 raise BCError("Context limit exceeded; history was not silently truncated")
-            reservation = self.ledger.reserve_call(stage, input_tokens, self.config.model.max_new_tokens, floor,
+            decoder_reservation = None
+            decoder_work = 0
+            if self.config.model.action_constraint != "none":
+                from ..models.action_schema import DECODER_CPU_SECONDS
+                decoder_work = DECODER_CPU_SECONDS * self.config.budget.tool_charge
+            reservation = self.ledger.reserve_call(stage, input_tokens, self.config.model.max_new_tokens, floor+decoder_work,
                                                    generation_seed=seed + turn)
+            if decoder_work:
+                decoder_reservation = self.ledger.reserve_work(stage, decoder_work, "constrained_decoding")
             self.boundary("model_inflight")
             try:
                 generation = self.backend.generate(messages, self.config.model.max_new_tokens, seed + turn)
                 self.ledger.reconcile(reservation, output_tokens=generation.output_tokens,
                                       reasoning_tokens=generation.reasoning_tokens,
                                       device_seconds=generation.device_seconds)
+                if decoder_reservation is not None:
+                    from ..models.action_schema import contract
+                    details = generation.diagnostics
+                    seconds = details.get("constraint_cpu_seconds")
+                    if (details.get("action_constraint") != contract() or
+                            type(details.get("constraint_complete")) is not bool or
+                            type(seconds) not in (int, float) or not math.isfinite(seconds) or
+                            not 0 <= seconds <= DECODER_CPU_SECONDS):
+                        raise BCError("Constrained backend omitted valid decoder accounting/provenance")
+                    self.ledger.reconcile_work(decoder_reservation, math.ceil(seconds) * self.config.budget.tool_charge)
+                    self.ledger.entries[-1]["cpu_seconds"] = seconds
                 self.store.events.append({"type": "generation_metadata", "identity": identity, "unit": unit,
                     "stage": stage, "operation": operation, "generation_seed": seed+turn,
                     "messages_hash": digest(messages), "message_count": len(messages), "history_truncated": False,
@@ -111,12 +130,17 @@ class WorkerLoop:
             except Exception:
                 if reservation in self.ledger.reservations:
                     self.ledger.reconcile(reservation, output_tokens=None, reasoning_tokens=None, failed=True)
+                if decoder_reservation in self.ledger.reservations:
+                    self.ledger.reconcile_work(decoder_reservation, None)
                 self.boundary("model_failed")
                 raise
             messages.append({"role": "assistant", "content": generation.text})
             self.boundary("model_complete")
             action_parsed = False
             try:
+                if self.config.model.action_constraint != "none":
+                    if not generation.diagnostics["constraint_complete"]:
+                        raise BCError("Constrained generation ended without a complete action")
                 action = json.loads(generation.text)
                 action_parsed = True
                 artifact = self._tool(task, unit, identity, action, stage, operation, allowed_artifacts, floor)

@@ -30,6 +30,8 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
             "operation_measurement": config.operation_measurement}
         if config.organization != "legacy":
             expected_condition["organization"] = config.organization
+        if config.model.action_constraint != "none":
+            expected_condition["action_constraint"] = config.model.action_constraint
         if "condition" in row["provenance"] and row["provenance"]["condition"] != expected_condition:
             raise BCError("Cannot pool different diagnostic modes, model/interface profiles or measurements")
         if manifest["schema"] == "bc-manifest-v2" and row["status"] != "infrastructure_failed" and row["provenance"].get("data_regime") != manifest["data_regime"]:
@@ -77,7 +79,8 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
     return {"experiment_id": manifest["experiment_id"], "mode": config.mode, "protocol": config.protocol,
             "condition": {"profile": config.development_profile, "silo_interface": config.silo_interface,
                           "diagnostic_mode": manifest["tasks"][0].get("metadata", {}).get("diagnostic_mode", "full"),
-                          "operation_measurement": config.operation_measurement},
+                          "operation_measurement": config.operation_measurement,
+                          **({"action_constraint": config.model.action_constraint} if config.model.action_constraint != "none" else {})},
             "organization": config.organization,
             "legacy_integration_failures_meaning": "completed unsuccessful episodes; not public integration failures",
             **({"schema": "bc-summary-v2", "data_regime": manifest["data_regime"],

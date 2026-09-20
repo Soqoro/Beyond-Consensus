@@ -1,11 +1,12 @@
 # Beyond Consensus
 
-The [synthetic SQLite tool diagnostic](docs/SQLITE_TOOL_DIAGNOSTIC.md) scored
-0/4 with Qwen3.5-4B/no thinking. Traces show invalid actions and a view-validation
-defect, now corrected. The next bounded condition enables thinking with a
-2048-token shared reasoning/action allowance on the same four probes and model.
-This compares configurations, not thinking alone. GPU results are pending.
-Native solar runs remain paused at 0/2; native and recovery competence remain unmet.
+The SQLite tool diagnostic progressed from 0/4 without thinking to **1/4 with
+thinking and 2048 output tokens**. View passed; aggregate/CASE/join failed action
+construction before SQL execution. The next step is the opt-in
+[constrained-action diagnostic](docs/SQLITE_CONSTRAINED_DIAGNOSTIC.md), with the
+same model, four tasks and budgets. Actual decoder/tokenizer qualification on the
+cluster CPU is required before a GPU run; those results are pending. Native and
+recovery competence remain unmet. No automatic campaign expansion is planned.
 The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
 and 101/480 values; the carry condition used 6.8% more charged work. Further
 4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier

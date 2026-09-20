@@ -145,7 +145,11 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
         episodes.append(EpisodeManifest(identifier, experiment, source, config_hash, data_hash, model_hash,
             task.id, task.group, policy, AttackSpec(attack, selection_seed=attack_seed), seed, eval_seed,
             config.protocol, config.mode, i % config.shards, fixed_hash))
-    return plain({"schema": "bc-manifest-v2" if data_mode else "bc-manifest-v1",
+    constraints = {}
+    if config.model.action_constraint != "none":
+        from ..models.action_schema import contract
+        constraints["action_constraint"] = contract()
+    return plain({"schema": "bc-manifest-v2" if data_mode else "bc-manifest-v1", **constraints,
                   **({"data_regime": regime(tasks[0])} if data_mode else {}),
                   "experiment_id": experiment, "config": config,
                   "source_revision": source, "config_hash": config_hash, "data_hash": data_hash,
@@ -158,6 +162,12 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     if data.get("schema") not in ("bc-manifest-v1", "bc-manifest-v2"):
         raise BCError("Unknown experiment manifest schema")
     config = from_dict(data["config"])
+    if config.model.action_constraint != "none":
+        from ..models.action_schema import contract
+        if data.get("action_constraint") != contract():
+            raise BCError("Constrained action contract changed; create a new manifest")
+    elif "action_constraint" in data:
+        raise BCError("Unexpected action constraint metadata")
     if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo") and data["schema"] != "bc-manifest-v2":
         raise BCError("Restricted data workflows require a v2 manifest")
     if data["schema"] == "bc-manifest-v2":
@@ -169,7 +179,7 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     # the fully resolved dataclass; source checks prevent resuming old code here.
     if digest(data["config"]) != data["config_hash"] or digest(data["tasks"]) != data["data_hash"]:
         raise BCError("Manifest config/data hash mismatch")
-    if digest(config.model) != data["model_hash"]:
+    if digest(data["config"]["model"]) != data["model_hash"]:
         raise BCError("Manifest model hash mismatch")
     experiment = digest([data["source_revision"], data["config_hash"], data["data_hash"], data["model_hash"],
                          data["fixed_state_hash"], data["calibration_hash"]])

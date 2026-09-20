@@ -1,5 +1,9 @@
 # Synthetic SQLite tool-compatibility diagnostic
 
+**Historical runbook:** this reasoning/2048 condition completed 1/4 at 30715
+work. Use the [constrained-action continuation](SQLITE_CONSTRAINED_DIAGNOSTIC.md)
+for the current CPU qualification and run sequence. Preserve the old reports.
+
 ## Decision and limits
 
 The first four-probe no-thinking run completed **0/4**, with 23786 charged work

@@ -1,0 +1,3 @@
+# Optional only: install once in the existing GPU environment, never in a job.
+# Keep installed torch/transformers/tokenizers pinned using pip constraints.
+xgrammar==0.1.32

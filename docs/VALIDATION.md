@@ -1,5 +1,63 @@
 # Local validation record
 
+## Reasoning results and constrained action preparation (2026-09-20)
+
+### User-reported cluster evidence
+
+Experiment `3996c58d44658d42f2d94fd08517884c606e068b798aac077118365d995dda63`
+completed four probes: **1 passed (view), 3 failed**, total **30715** work,
+mean 7678.75. All 15 generations stopped at EOS with measured reasoning tokens.
+No failure was an output-cap hit. One synthetic source group, nonconfirmatory.
+Manifest hash `57b915691055499314d8fde8a09fcc47f9e1c21ade3abca0da5cf9738f7ebbc9`;
+report ID `f4b4d1261a61df4c0f7781605585871ae7aa165f897cbcb5632725f073fe9ec3`;
+source `f16fe76dcaa586807686442572f53a78fbacffb2:7dfab42cbb17e3ddfc4f1fdbca1b9ee54d683c6172cc53192135b0079068398c`.
+
+| Probe | Episode work | Operation work | Calls | Rejections | Result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| CASE | 8506 | 8465 | 4 | 3 | Invalid JSON and CASE structure, no SQL execution |
+| Aggregate | 8175 | 8134 | 4 | 3 | Repeated unsupported function/group_by structure, no SQL execution |
+| View | 6910 | Not supplied | 4 | 1 | Passed terminal scoring |
+| Join | 7124 | 7083 | 3 | 3 | Repeated invalid JSON at column 435, no SQL execution |
+
+The join also skipped the requested initial contract read. The task/schema was
+already supplied in its system message; no successful execution is inferred from
+its intended join. Aggregate failure feedback was generic. The earlier 0/4 to
+1/4 comparison changed thinking, output allowance and public view validation;
+it does not isolate thinking. Charged work increased by approximately 29.1%.
+
+### Prepared implementation, not a GPU result
+
+The new opt-in config retains reasoning and all existing bounds; it adds a public
+JSON-schema constraint using pinned XGrammar 0.1.32. Generic recursive expression,
+call, CASE, join, grouping, query/view and tool shapes contain no data-dependent
+choices. A fresh matcher starts only after the generated reasoning close. EOS
+before that boundary and truncated/incomplete actions cannot execute. The parser
+and restricted executor still check permissions, bindings and semantics.
+
+Schemas and dependency versions are bound to manifests/calibration and result
+conditions. Default runs remain unconstrained; historical serialized model hashes
+remain readable. Additional decoder CPU work is reserved and charged even on
+failure. Fixed object order/whitespace and measured overhead are disclosed as
+interface changes. A CPU-only optional-stack checker loads the existing tokenizer
+and tests real token masks and positive/negative syntax controls without weights,
+SQL or task/reference material. See [the runbook](SQLITE_CONSTRAINED_DIAGNOSTIC.md).
+
+The local environment has no torch, transformers, tokenizer or xgrammar packages;
+therefore native grammar compilation/masks and GPU inference remain unverified.
+No dependency/model download, GPU job or push was performed. Local tests use
+stdlib structural validation and scripted worker/processor doubles; they must
+not be reported as constrained model results.
+
+Local verification: full suite **183 tests in 63.306 seconds: 182 passed, one
+existing opt-in sandbox skip**. Six focused constraint tests also passed after
+removing a redundant schema check outside decoder accounting. All nine shell
+checks passed. Compilation, stdlib-only CLI help/manifest construction, eight
+diagnostic runbook shell blocks, two new Python blocks and `git diff --check`
+passed. Controls cover observed malformed shapes, reasoning/prompt boundaries,
+dependency failure, manifest tampering, historical hashes, charged successful and
+failed calls, and truncated actions that cannot execute SQL. No real token-mask
+qualification or GPU inference was performed locally.
+
 ## Synthetic GPU failure and public view correction (2026-09-19)
 
 ### User-reported GPU observations

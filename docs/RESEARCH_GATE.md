@@ -1,5 +1,14 @@
 # Recoverability research gate — 2026-09-18
 
+## Latest continuation (2026-09-20)
+
+The reasoning-enabled four-probe run scored 1/4 at 30715 work. Only view passed;
+all failed actions were rejected before SQL execution. Follow the new
+[constrained-action runbook](SQLITE_CONSTRAINED_DIAGNOSTIC.md): optional dependency
+setup, real CPU tokenizer/mask qualification, then one guarded four-probe run.
+Native qualification and broader policy gates remain unmet. Commands below are
+historical and do not authorize repeated campaigns.
+
 ## Current decision after cluster follow-up
 
 The user completed the historical ledger audit and both bounded SILO conditions.
