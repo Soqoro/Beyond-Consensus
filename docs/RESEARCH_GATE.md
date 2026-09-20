@@ -1,5 +1,10 @@
 # Recoverability research gate — 2026-09-18
 
+**Current continuation (2026-09-20):** the user selected opt-in 27B competence
+validation after the [progress audit](PROGRESS_REPORT_2026-09-20.md).
+Use [QWEN27B_COMPETENCE.md](QWEN27B_COMPETENCE.md) for the new bounded manual
+workflow. Commands below remain historical; no additional run is automatic.
+
 ## Latest continuation (2026-09-20)
 
 The reasoning-enabled four-probe run scored 1/4 at 30715 work. Only view passed;

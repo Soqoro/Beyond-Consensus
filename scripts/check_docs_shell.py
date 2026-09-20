@@ -27,6 +27,6 @@ def check(paths):
 
 if __name__ == "__main__":
     root = Path(__file__).resolve().parents[1]
-    paths = [Path(p) for p in sys.argv[1:]] or [root/"docs/RESEARCH_GATE.md", root/"docs/VALIDATION_CYCLE.md"]
+    paths = [Path(p) for p in sys.argv[1:]] or [root/"docs/RESEARCH_GATE.md", root/"docs/VALIDATION_CYCLE.md", root/"docs/QWEN27B_COMPETENCE.md"]
     blocks, scripts = check(paths)
     print(f"Validated {blocks} documentation shell blocks and {scripts} embedded Bash scripts; no commands executed")

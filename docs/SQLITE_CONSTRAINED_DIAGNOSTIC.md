@@ -1,5 +1,10 @@
 # Four-probe constrained-action diagnostic
 
+**Current continuation (2026-09-20):** the user selected opt-in 27B competence
+validation after the [progress audit](PROGRESS_REPORT_2026-09-20.md).
+Use [QWEN27B_COMPETENCE.md](QWEN27B_COMPETENCE.md) for the new bounded manual
+workflow. Commands below remain historical; no additional run is automatic.
+
 ## Evidence and scope
 
 The reasoning/2048 run `3996c58d44658d42f2d94fd08517884c606e068b798aac077118365d995dda63`

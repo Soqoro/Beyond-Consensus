@@ -1,18 +1,12 @@
 # Beyond Consensus
 
-The SQLite tool diagnostic progressed from 0/4 without thinking to **1/4 with
-thinking and 2048 output tokens**. View passed; aggregate/CASE/join failed action
-construction before SQL execution. The next step is the opt-in
-[constrained-action diagnostic](docs/SQLITE_CONSTRAINED_DIAGNOSTIC.md), with the
-same model, four tasks and budgets. Actual decoder/tokenizer qualification on the
-cluster CPU is required before a GPU run; those results are pending. Native and
-recovery competence remain unmet. No automatic campaign expansion is planned.
-The user-reported SILO control and actual-carry comparison both scored 0/8 tasks
-and 101/480 values; the carry condition used 6.8% more charged work. Further
-4B/no-thinking SILO runs are paused. The saved-ledger audit attributes the earlier
-256-unit recovery/JIT gap to finite-search charges. See the
-[evidence and limits](docs/VALIDATION.md#cluster-follow-up-reported-by-the-user-2026-09-18).
-Pinned defaults and historical results are preserved.
+**Current status: opt-in 27B competence path prepared; not executed.**
+The user selected Qwen3.5-27B after reviewing the
+[2026-09-20 progress report](docs/PROGRESS_REPORT_2026-09-20.md).
+Follow the [ordered manual runbook](docs/QWEN27B_COMPETENCE.md) for staging,
+qualification and bounded tests. Existing 4B controls remain unchanged; the latest
+4B result is 1/4 complete tasks and 3/4 public integration. No 27B memory-fit,
+native-competence or recovery-method result is established.
 
 Research foundation for **Adversarially Robust Division of Labour in LLM Agent Teams**.
 

@@ -41,8 +41,37 @@ def controls():
     return good, bad
 
 
+# Fixed offline synthetic controls; never used by model prompts or task grammars.
+def col(name):
+    return {"column": name}
+
+
+def synthetic_probe_trees():
+    order = lambda name: [{"expr": col(name), "direction": "asc"}]
+    return {
+        "aggregate": {"columns": [{"expr": col("department_id")},
+            {"expr": {"call": {"name": "sum", "args": [col("amount")]}}, "as": "total_amount"},
+            {"expr": {"call": {"name": "count", "args": [col("id")]}}, "as": "entry_count"}],
+            "from": {"table": "entries"}, "group_by": [col("department_id")], "order_by": order("department_id")},
+        "join": {"columns": [{"expr": col("e.id"), "as": "entry_id"},
+            {"expr": col("d.name"), "as": "department_name"}, {"expr": col("e.amount"), "as": "amount"}],
+            "from": {"table": "entries", "as": "e"},
+            "joins": [{"kind": "inner", "source": {"table": "departments", "as": "d"},
+                "on": {"binary": ["=", col("e.department_id"), col("d.id")]}}], "order_by": order("e.id")},
+        "case": {"columns": [{"expr": col("id")}, {"expr": {"case": {"when": [
+            [{"binary": [">", col("amount"), {"literal": 0}]}, {"literal": "positive"}],
+            [{"binary": ["<", col("amount"), {"literal": 0}]}, {"literal": "negative"}]],
+            "else": {"literal": "zero"}}}, "as": "sign_label"}],
+            "from": {"table": "entries"}, "order_by": order("id")},
+        "view": {"columns": [{"expr": col("id")},
+            {"expr": {"binary": ["+", col("amount"), {"literal": 3}]}, "as": "adjusted_amount"}],
+            "from": {"table": "entries"}},
+    }
+
+
 def check(lock_path):
     start = time.process_time()
+    wall_start = time.monotonic()
     lock = read_json(lock_path)
     if lock.get("schema") != "bc-model-lock-v1":
         raise BCError("Unknown model lock")
@@ -51,6 +80,8 @@ def check(lock_path):
             raise BCError("Staged model metadata changed")
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ["TRANSFORMERS_OFFLINE"] = "1"
+    if lock['checkpoint'] == 'Qwen/Qwen3.5-27B' and not os.environ.get('SLURM_JOB_ID'):
+        raise BCError('27B tokenizer qualification requires a CPU batch allocation')
     import torch
     from transformers import AutoTokenizer
     from beyond_consensus.models.constrained import ActionConstraint
@@ -60,11 +91,33 @@ def check(lock_path):
     metadata = read_json(Path(lock["model_path"])/"config.json")
     text_config = metadata.get("text_config", metadata)
     vocab = text_config["vocab_size"]
-    eos = text_config.get("eos_token_id")
-    eos = ([] if eos is None else eos if isinstance(eos,list) else [eos]) + [tokenizer.eos_token_id]
-    eos = list(dict.fromkeys(eos))
+    from types import SimpleNamespace
+    from beyond_consensus.models.transformers_backend import generation_tokens
+    generation = read_json(Path(lock['model_path'])/'generation_config.json')
+    tokens = generation_tokens(tokenizer, SimpleNamespace(
+        eos_token_id=generation.get('eos_token_id'), pad_token_id=generation.get('pad_token_id')))
+    eos = tokens['eos_token_id']
+    rendered = tokenizer.apply_chat_template([
+        {'role': 'system', 'content': 'Use exactly one JSON tool action per turn, no Markdown.'},
+        {'role': 'user', 'content': 'Synthetic qualification only.'}], tokenize=False,
+        add_generation_prompt=True, enable_thinking=True)
+    if '<tool_call>' in rendered or '<tools>' in rendered or not rendered.rstrip().endswith('<think>'):
+        raise BCError('Rendered prompt contradicts JSON protocol or lacks generation thinking opener')
+    from beyond_consensus.models.competence import qualification_key, versions
+    packages = versions()
+    if packages['transformers'] != '5.3.0':
+        raise BCError('Qualification requires the reviewed Transformers 5.3.0 stack')
     constraint = ActionConstraint(tokenizer, vocab, eos)
     good, bad = controls()
+    if lock['checkpoint'] == 'Qwen/Qwen3.5-27B':
+        # Offline qualification only. Never supplied to a worker or per-task grammar.
+        for probe, tree in synthetic_probe_trees().items():
+            action = {'tool': 'submit_view_definition' if probe == 'view' else 'run_read_query',
+                      'permitted_artifact_versions': {}, 'select_sql': tree}
+            if probe == 'view':
+                action = {'tool': 'submit_view_definition', 'artifact_name': 'entry_adjusted',
+                          'permitted_artifact_versions': {}, 'select_sql': tree}
+            good.append(action)
     closing = tokenizer.convert_tokens_to_ids("</think>")
     for action in good:
         text = json.dumps(action, separators=(",", ":"))
@@ -96,6 +149,10 @@ def check(lock_path):
     if any(torch.isfinite(masked[0,token]).item() for token in eos):
         raise BCError("EOS is allowed before the action is complete")
     return {"schema": "bc-action-constraint-check-v1", "status": "passed",
+        "qualification_key": qualification_key(lock, packages), "packages": packages,
+        "effective_generation_tokens": tokens, "vocab_size": vocab,
+        "rendered_prompt_hash": digest(rendered), "prompt_supplies_thinking_opener": True,
+        "native_tool_template_injected": False, "wall_seconds": time.monotonic()-wall_start,
         "model_executed": False, "sql_executed": False, "device": "cpu", "task_inputs_used": False,
         "positive_controls": len(good), "negative_controls": len(bad), "contract": contract(),
         "model_lock_sha256": file_hash(lock_path), "script_sha256": file_hash(Path(__file__)),
@@ -107,13 +164,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-lock", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
     args = parser.parse_args()
+    if args.qualified_lock and args.qualified_lock.exists():
+        raise BCError("Qualified lock already exists; use a fresh path")
     if args.output.exists():
         raise BCError("Use a new report path; previous observations are immutable")
     result = check(args.model_lock)
     with args.output.open("x") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")
+    if args.qualified_lock:
+        lock = read_json(args.model_lock)
+        lock['decoder_qualification'] = result
+        with args.qualified_lock.open('x') as stream:
+            json.dump(lock, stream, indent=2)
     print(json.dumps(result, indent=2))
 
 

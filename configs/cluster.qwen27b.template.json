@@ -1,0 +1,15 @@
+{
+  "partition": null,
+  "account": null,
+  "qos": null,
+  "constraint": null,
+  "time": "02:00:00",
+  "memory_gb": 128,
+  "python": null,
+  "modules": [],
+  "activation_script": null,
+  "storage_root": null,
+  "cache_root": null,
+  "snapshot_root": null,
+  "output_root": null
+}

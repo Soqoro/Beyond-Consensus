@@ -1,5 +1,79 @@
 # Local validation record
 
+## Opt-in 27B implementation checks (2026-09-20)
+
+See [the ordered competence runbook](QWEN27B_COMPETENCE.md). Local checks:
+
+- `python -m unittest discover -s tests -v`: **194 run, 193 passed, one existing
+  opt-in legacy skip**, 68.327 seconds on the stable source tree.
+- `python scripts/check_shell.py`: nine shell files passed.
+- `python scripts/check_docs_shell.py`: 46 shell blocks/four embedded Bash scripts
+  passed syntax checks; no documented command was executed.
+- `python -m compileall -q src tests scripts`, `git diff --check`, and
+  `python -I -S scripts/bc.py --help`: passed.
+- Model staging dry-run downloaded nothing; a /tmp manifest planned exactly four
+  episodes; comparison without historical raw evidence reported unmatched.
+
+An intermediate full run failed the native-reference source-change guard while
+implementation files were being edited. That test passed individually, followed
+by the complete stable-source passing run above. No scoring rule was changed to
+make it pass. Hardware/loader tests use explicit CPU doubles; they establish
+rejection paths, not actual fit or competence. New tests also cover immutable
+profile/lock requirements, quota failures without downloads, model-specific
+qualification keys, the actual loader refusing 40 GB before weight loading,
+synthetic controls, strict CASE scoring, interrupted decoder reservations,
+long-context allowance and stale native executor bindings.
+
+Official small metadata resolved post-trained Qwen3.5-27B to
+`fc05daec18b0a78c049392ed2e771dde82bdf654`. The reviewed Transformers 5.3.0 source
+contains the required loader; installed cluster loading remains unexecuted.
+No dependency environment was changed. No weights/database downloads, GPU jobs,
+commits or pushes were performed. Fresh CPU qualification, actual 80-GB-class
+preflight, all four probe outcomes, renewed solar controls and native 27B
+competence remain pending. No 27B result or general research-readiness claim
+follows from these software checks.
+
+
+## Constrained cluster result and audit report (2026-09-20)
+
+The user supplied CPU qualification, aggregate/cost reports and per-probe traces.
+Qualification passed six positive and four negative controls on CPU, with no
+model or SQL execution. XGrammar 0.1.32, vocabulary 248320 and stops 248044/248046
+were reported. Static setup took 281.770546626 CPU seconds; full qualification
+307.99545583099996 CPU seconds. This supersedes earlier pending qualification.
+
+Experiment `d701d4b32a8d44d6d4b51a7b0df94a7ab1b7b53a98d996a69248f2f2c1b3ba80`
+completed four episodes with **1 success**, **3 public integration passes**, one
+missing required artifact and **28649** charged work. All cases were scored;
+no missing/retryable shards. Latest actual job/node/GPU identifiers were not
+supplied. The remote files were not independently accessed locally.
+
+| Probe | Work | Calls | Rejections | Result |
+| --- | ---: | ---: | ---: | --- |
+| Aggregate | 5704 | 3 | 0 | Grouping executed; addition used instead of sum/count, incorrect values submitted |
+| Join | 12280 | 3 | 3 | Eight duplicate joins/aliases in first action; two retries capped at 2048 before reasoning close |
+| View | 5130 | 3 | 0 | Correct artifact and final result |
+| CASE | 5535 | 3 | 0 | Correct classifications/order, missing required `sign_label` alias |
+
+Ten generations stopped at EOS; two join retries hit the length cap with unknown
+reasoning counts, incomplete constraint status and zero mask calls. No partial
+retry action executed. CASE's strict failure is consistent with the documented
+column-and-row scorer. Do not recode it as a complete-task pass. Legacy
+`integration_failures=3` does not mean three public integration failures.
+
+Manifest hash `99eeae34dfecf7a9bb8b9bdd66d2239303a034b82cd462eae1f131c0b79e2e05`;
+cost report `f6ca1d2e0b666e621c97d9d9f0c5bf16bbe6d0d01ccdfc71c991e75bf797c396`;
+source `497f7ba08cf17a693480e34619dd4a95d60cfaf3:69759f99984dd2b39b754666fe2dca5d615ac85462d93a65635425deb09cf7e0`.
+See [the progress report](PROGRESS_REPORT_2026-09-20.md) for remaining bindings,
+historical results, cost/independence limitations and audit questions. Work is
+paused at the user's request; no next model or campaign is selected. This update
+changes documentation only and makes no new model/runtime/scoring change.
+
+Report checkpoint verification: full unittest discovery ran **183 tests in
+65.531 seconds (182 passed, one existing opt-in sandbox skip)**. All nine shell
+checks passed. Report links, the latest per-probe work sum and `git diff --check`
+passed. No remote model run or independent remote ledger replay was performed.
+
 ## Reasoning results and constrained action preparation (2026-09-20)
 
 ### User-reported cluster evidence

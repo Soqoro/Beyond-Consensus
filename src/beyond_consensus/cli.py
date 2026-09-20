@@ -48,6 +48,7 @@ def parser() -> argparse.ArgumentParser:
     stage.add_argument("--config", type=Path, required=True)
     stage.add_argument("--root", type=Path, required=True)
     stage.add_argument("--dry-run", action="store_true")
+    stage.add_argument("--available-quota-bytes", type=int)
     data = sub.add_parser("stage-data", help="Legacy CooperBench download; new data paths use sqlite-stage/silo-generate")
     data.add_argument("--root", type=Path, required=True)
     data.add_argument("--revision")
@@ -118,10 +119,15 @@ def parser() -> argparse.ArgumentParser:
     add_parsers(sub)
     from .diagnostic_cli import add_parsers as add_diagnostics
     add_diagnostics(sub)
+    from .competence_cli import add_parsers as add_competence
+    add_competence(sub)
     return p
 
 
 def dispatch(args: argparse.Namespace) -> Any:
+    from .competence_cli import COMMANDS as COMPETENCE, dispatch as dispatch_competence
+    if args.command in COMPETENCE:
+        return dispatch_competence(args)
     from .diagnostic_cli import COMMANDS as DIAGNOSTICS, dispatch as dispatch_diagnostics
     if args.command in DIAGNOSTICS:
         return dispatch_diagnostics(args)
@@ -206,7 +212,7 @@ def dispatch(args: argparse.Namespace) -> Any:
         return {"manifest": str(args.output), "planned": manifest["planned_episodes"], "protocol": "B"}
     if args.command == "stage-model":
         from .models.staging import stage_model
-        return stage_model(load_config(args.config).model, args.root, dry_run=args.dry_run)
+        return stage_model(load_config(args.config).model, args.root, dry_run=args.dry_run, quota_bytes=args.available_quota_bytes)
     if args.command == "stage-data":
         from .tasks.cooperbench import stage_dataset
         return stage_dataset(args.root, args.revision, dry_run=args.dry_run)
@@ -297,7 +303,12 @@ def dispatch(args: argparse.Namespace) -> Any:
         return batch(args.snapshot, args.output, args.mode, args.retry)
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
-        config = validate_manifest(read_json(args.manifest))
+        frozen = read_json(args.manifest)
+        config = validate_manifest(frozen)
+        if config.model.checkpoint == "Qwen/Qwen3.5-27B":
+            current = build_manifest(config, ROOT)
+            if current['experiment_id'] != frozen['experiment_id'] or current.get('competence_interface_hashes') != frozen.get('competence_interface_hashes'):
+                raise BCError('27B preflight data/runtime/source bindings changed; prepare a fresh manifest')
         result = preflight(config.model, args.model_lock)
         if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair"):
             import tempfile
@@ -306,7 +317,7 @@ def dispatch(args: argparse.Namespace) -> Any:
             with tempfile.TemporaryDirectory(prefix="bc-sql-preflight-") as temporary:
                 database = fixture_database(Path(temporary)/"source.sqlite", 0)
                 result["sqlite_executor"] = execute(database, ["measurements"], [], [read_query("measurements", ["id", "value"])])
-            result["command_failed"] = result["sqlite_executor"]["status"] != "ok"
+            result["command_failed"] = result.get("command_failed", False) or result["sqlite_executor"]["status"] != "ok"
         atomic_json(args.output, result)
         return result
     if args.command == "export":

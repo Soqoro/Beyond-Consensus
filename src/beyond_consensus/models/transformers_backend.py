@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+import json
 import os
 import subprocess
 import time
@@ -111,6 +112,23 @@ class TransformersBackend:
         architecture = read_json(Path(lock["model_path"]) / "config.json").get("architectures")
         if architecture != ["Qwen3_5ForConditionalGeneration"]:
             raise BCError(f"Unexpected checkpoint architecture {architecture}; loader review required")
+        from .competence import CHECKPOINT, hardware, require_qualification, versions
+        candidate = config.checkpoint == CHECKPOINT
+        hardware_before = hardware(torch) if candidate else None
+        if candidate:
+            require_qualification(lock, versions())
+            if read_json(Path(lock['model_path'])/'config.json').get('quantization_config'):
+                raise BCError('Quantized model metadata is not this BF16 condition')
+            try:
+                driver = subprocess.run(['nvidia-smi', '--query-gpu=driver_version', '--format=csv,noheader'],
+                    capture_output=True, text=True, timeout=10, check=True)
+                hardware_before['driver_versions'] = sorted(set(driver.stdout.splitlines()))
+            except (OSError, subprocess.SubprocessError):
+                hardware_before['driver_versions'] = None
+            for name, expected in lock['weight_hashes'].items():
+                if file_hash(Path(lock['model_path'])/name) != expected:
+                    raise BCError('27B staged weight integrity failed')
+        load_start = time.monotonic()
         self.config, self.torch = config, torch
         self.tokenizer = AutoTokenizer.from_pretrained(lock["tokenizer_path"], local_files_only=True,
                                                        trust_remote_code=False)
@@ -121,13 +139,21 @@ class TransformersBackend:
             lock["model_path"], dtype=getattr(torch, config.dtype), local_files_only=True,
             trust_remote_code=False, attn_implementation="sdpa")
         self.generation_tokens = generation_tokens(self.tokenizer, self.model.generation_config)
+        if candidate:
+            qualified = lock['decoder_qualification']
+            if (self.generation_tokens != qualified.get('effective_generation_tokens') or
+                    template_check['template_hash'] != qualified.get('thinking_template', {}).get('template_hash')):
+                raise BCError('Loaded tokenizer/template/stop configuration differs from CPU qualification')
         self.constraint = None
         if config.action_constraint != "none":
             from .constrained import ActionConstraint
             self.constraint = ActionConstraint(self.tokenizer, self.model.get_output_embeddings().weight.shape[0],
                                                self.generation_tokens["eos_token_id"])
         # cuda:0 is Slurm's process-local device. Never overwrite CUDA_VISIBLE_DEVICES.
-        self.model.to(torch.device("cuda:0"))
+        try:
+            self.model.to(torch.device("cuda:0"))
+        except torch.cuda.OutOfMemoryError as exc:
+            raise BCError('GPU OOM loading model; no offload/quantization/cap fallback. '+str(hardware_before)) from exc
         self.model.eval()
         self.model.requires_grad_(False)
         self.runtime = {"dependencies": dependencies(), "checkpoint_revision": config.revision,
@@ -147,6 +173,15 @@ class TransformersBackend:
                         "vram_total_bytes": torch.cuda.get_device_properties(0).total_memory,
                         "torch_cuda": torch.version.cuda,
                         "snapshot_id": Path(__file__).resolve().parents[3].name if (Path(__file__).resolve().parents[3]/"snapshot.json").exists() else None}
+        if candidate:
+            from .competence import placement
+            self.runtime.update(hardware_before_load=hardware_before, placement=placement(self.model),
+                load_wall_seconds=time.monotonic()-load_start, load_device_seconds=None,
+                load_peak_allocated_bytes=torch.cuda.max_memory_allocated(0),
+                load_peak_reserved_bytes=torch.cuda.max_memory_reserved(0),
+                qualification_key=lock['decoder_qualification']['qualification_key'])
+            if self.model.get_output_embeddings().weight.shape[0] != lock['decoder_qualification']['vocab_size']:
+                raise BCError('Qualified vocabulary differs from loaded logits dimension')
         if self.constraint is not None:
             self.runtime["action_constraint"] = self.constraint.runtime
 
@@ -177,12 +212,31 @@ class TransformersBackend:
             processor = self.constraint.processor(size, closing_id)
             options["logits_processor"] = [processor]
             setup_cpu = time.process_time()-start_cpu
+        wall_start = time.monotonic()
+        candidate = self.config.checkpoint == "Qwen/Qwen3.5-27B"
+        if candidate:
+            options['return_dict_in_generate'] = True
         start, end = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
         start.record()
         with torch.inference_mode():
-            outputs = self.model.generate(**inputs, **options)
+            try:
+                outputs = self.model.generate(**inputs, **options)
+            except torch.cuda.OutOfMemoryError as exc:
+                raise BCError('GPU OOM during generation; no automatic cap/precision/device fallback; '
+                    f'input={size}, cap={max_new_tokens}, allocated={torch.cuda.max_memory_allocated(0)}, '
+                    f'reserved={torch.cuda.max_memory_reserved(0)}') from exc
         end.record()
         torch.cuda.synchronize()
+        cache_details = {}
+        if candidate:
+            cache = getattr(outputs, 'past_key_values', None)
+            try:
+                cache_length = int(cache.get_seq_length()) if cache is not None else None
+            except (AttributeError, TypeError, ValueError):
+                cache_length = None
+            cache_details = {'observed_cache_sequence_length': cache_length,
+                             'state_dtypes': cache_dtypes(cache), 'prefill_seconds': None}
+            outputs = outputs.sequences
         ids = outputs[0, size:].tolist()
         # All generated tokens (including reasoning, delimiters and EOS) remain charged.
         reasoning: int | None = 0
@@ -210,7 +264,8 @@ class TransformersBackend:
                 "constraint_mask_calls": processor.mask_calls,
                 "constraint_cpu_seconds": setup_cpu+processor.cpu_seconds+time.process_time()-start_cpu}
         return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
-            {**constraint_details, "finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
+            {**constraint_details, **cache_details, "generation_wall_seconds": time.monotonic()-wall_start,
+             "finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),
              "generation_policy": GENERATION_POLICY, "eos_token_id": list(eos),
              "pad_token_id": self.generation_tokens["pad_token_id"],
              "last_generated_token_id": ids[-1] if ids else None,
@@ -218,6 +273,45 @@ class TransformersBackend:
              "reasoning_and_answer_share_output_budget": True,
              "peak_allocated_bytes": torch.cuda.max_memory_allocated(0),
              "peak_reserved_bytes": torch.cuda.max_memory_reserved(0)})
+
+
+def cache_dtypes(cache):
+    """Bounded metadata-only traversal; never serialize tensor contents."""
+    found, seen = set(), set()
+    def visit(value, depth=0):
+        if depth > 5 or id(value) in seen:
+            return
+        seen.add(id(value))
+        if hasattr(value, 'dtype') and hasattr(value, 'shape'):
+            found.add(str(value.dtype))
+        elif isinstance(value, (list, tuple)):
+            for item in value: visit(item, depth+1)
+        elif isinstance(value, dict):
+            for item in value.values(): visit(item, depth+1)
+        elif value is not None and hasattr(value, '__dict__'):
+            visit(vars(value), depth+1)
+    visit(cache)
+    return sorted(found) or None
+
+
+def long_history(backend):
+    """Public synthetic history; retain 2048 output slots under TOTAL 8192 cap."""
+    messages = [{'role': 'system', 'content': 'Use exactly one JSON tool action per turn, no Markdown.'},
+        {'role': 'user', 'content': 'Synthetic preflight. Inspect database fixture.'},
+        {'role': 'assistant', 'content': '{"tool":"inspect_schema","database_id":"fixture"}'},
+        {'role': 'user', 'content': ''}]
+    suffix = '\nSynthetic tool result complete. Reply with one inspect_schema action for fixture.'
+    low, high = 0, 16384
+    limit = backend.config.context_limit-backend.config.max_new_tokens
+    while low < high:
+        mid = (low+high+1)//2
+        messages[-1]['content'] = json.dumps({'tool': 'inspect_schema', 'result': {'synthetic_padding': 'synthetic datum ' * mid}, 'instruction': suffix})
+        if backend.count_input(messages) <= limit: low = mid
+        else: high = mid-1
+    messages[-1]['content'] = json.dumps({'tool': 'inspect_schema', 'result': {'synthetic_padding': 'synthetic datum ' * low}, 'instruction': suffix})
+    if not limit-32 <= backend.count_input(messages) <= limit:
+        raise BCError('Synthetic long-context input did not reach the configured allowance')
+    return messages
 
 
 def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
@@ -228,6 +322,19 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
               if config.action_constraint != "none" else 'Reply exactly with {"ready":true}.')
     result = backend.generate([{"role": "user", "content": prompt}],
                               config.max_new_tokens if config.thinking else min(64, config.max_new_tokens), 0)
+    extra = {}
+    if config.checkpoint == "Qwen/Qwen3.5-27B":
+        extended = backend.generate(long_history(backend), config.max_new_tokens, 0)
+        extra = {'long_context_generation': plain(extended), 'worst_case_fit_established': False,
+                 'footprint_note': 'Actual reached input/output/cache lengths only; early EOS does not test full cap.'}
+        def valid_probe(generation):
+            try:
+                action = json.loads(generation.text)
+                return generation.diagnostics.get('constraint_complete') and action == {
+                    'tool': 'inspect_schema', 'database_id': 'fixture'}
+            except (ValueError, TypeError):
+                return False
+        extra['command_failed'] = not (valid_probe(result) and valid_probe(extended))
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)
     try:
@@ -236,7 +343,7 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
         driver_versions = sorted(set(driver.stdout.splitlines()))
     except (OSError, subprocess.SubprocessError):
         driver_versions = None
-    return {"status": "smoke_completed_review_output", "hardware": props.name,
+    return {**extra, "status": "smoke_completed_review_output", "hardware": props.name,
             "compute_capability": [props.major, props.minor], "vram_total_bytes": total,
             "vram_free_bytes": free, "torch_cuda": torch.version.cuda,
             "driver_versions": driver_versions,

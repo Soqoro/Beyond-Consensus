@@ -1,6 +1,43 @@
 # Beyond Consensus: SQLite/SILO migration and progress handoff
 
-## Latest continuation: reasoning scored 1/4; constrained actions prepared (2026-09-20)
+## Current continuation: opt-in 27B competence path (2026-09-20)
+
+The user selected post-trained Qwen3.5-27B and skipped 9B after the audit.
+[The ordered runbook](docs/QWEN27B_COMPETENCE.md) prepares staging, fresh CPU qualification,
+one full A100/H100 80-GB-class GPU preflight, exactly four existing single/clean
+SQL probes, and later renewed solar references/two individual native controls.
+No download, job, commit or push has been performed. No 27B fit/competence result
+exists. Existing 4B defaults and historical observations remain unchanged.
+The actual historical resolved 4B manifest/ledger is absent locally: comparison
+is unmatched until raw evidence and source compatibility are reviewed.
+The pin is `fc05daec18b0a78c049392ed2e771dde82bdf654`; loader source supports the
+existing Transformers 5.3.0 interface, but real checkpoint qualification remains
+pending. New shared accounting fields expose reservation/release without changing
+charges. SILO, policy campaigns, calibration and broader expansion stay paused.
+Gate A (clean worker competence) and gate B (meaningful decomposition/fair research
+comparison) both remain open; passing A never establishes B.
+
+## Prior continuation: audit pause after constrained run (2026-09-20)
+
+The user requests a progress audit before choosing further work. Read the
+[consolidated progress report](docs/PROGRESS_REPORT_2026-09-20.md). It separates
+cluster reports, local software checks, interpretations and outstanding evidence.
+
+Cluster CPU decoder qualification passed six positive/four negative controls.
+The subsequent constrained four-probe run completed **1/4 correct tasks** at
+**28649** charged work; public integration passed **3/4**. View passed. CASE had
+correct values but omitted `sign_label`; aggregate used addition instead of
+sum/count; join repeated aliases and then exhausted two reasoning generations.
+No recovery benefit, native competence or stronger-model result is established.
+This supersedes earlier statements that decoder/GPU qualification was pending.
+
+**Pause new experiments, model selection/downloads and interface tuning until the
+user finishes the audit.** Prior runbooks describe historical procedures, not a
+new submission instruction. Latest actual job/node/GPU details and full remote
+ledger reconciliation remain missing from the supplied evidence. This update is
+documentation only and launches no job.
+
+## Prior continuation: reasoning scored 1/4; constrained actions prepared (2026-09-20)
 
 The user-reported reasoning/2048 run
 `3996c58d44658d42f2d94fd08517884c606e068b798aac077118365d995dda63`

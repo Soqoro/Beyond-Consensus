@@ -146,6 +146,11 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
             task.id, task.group, policy, AttackSpec(attack, selection_seed=attack_seed), seed, eval_seed,
             config.protocol, config.mode, i % config.shards, fixed_hash))
     constraints = {}
+    if config.model.checkpoint == "Qwen/Qwen3.5-27B":
+        from ..diagnostics.competence import fingerprints
+        constraints["competence_interface_hashes"] = fingerprints(root)
+        if config.task_kind == "sqlite_native" and {t.id for t in tasks} != {"solar_2", "solar_M_3"}:
+            raise BCError("27B native gate permits only renewed solar_2 and solar_M_3")
     if config.model.action_constraint != "none":
         from ..models.action_schema import contract
         constraints["action_constraint"] = contract()

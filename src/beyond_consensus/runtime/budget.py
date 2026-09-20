@@ -63,7 +63,8 @@ class BudgetLedger:
             raise BCError("Operation exceeded reserved allowance")
         self.reservations.pop(key)
         self.charge(item["stage"], item["work"] if measured is None else measured,
-                    kind=item["kind"], uncertain=measured is None)
+                    kind=item["kind"], uncertain=measured is None, reservation_id=key,
+                    reserved_work=item["work"], released_work=0 if measured is None else item["work"]-measured)
 
     def reconcile(self, key: str, *, output_tokens: int | None, reasoning_tokens: int | None = 0,
                   device_seconds: float | None = None, failed: bool = False) -> None:
@@ -80,7 +81,8 @@ class BudgetLedger:
                     model_calls=1, device_seconds=device_seconds, failed=failed,
                     uncertain=output_tokens is None,
                     generation_seed=r.get("generation_seed"),
-                    reserved_output_tokens=r["max_output"])
+                    reserved_output_tokens=r["max_output"], reservation_id=key,
+                    reserved_work=r["work"], released_work=r["work"]-work)
 
     def uncertain_inflight(self) -> None:
         for key in list(self.reservations):

@@ -31,8 +31,15 @@ class ModelConfig:
             raise BCError("Unknown action constraint")
         if self.backend not in ("mock", "transformers"):
             raise BCError("backend must be mock or transformers")
-        if self.checkpoint not in ("Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "google/gemma-3-12b-it"):
+        if self.checkpoint not in ("Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-27B", "google/gemma-3-12b-it"):
             raise BCError("Checkpoint has no reviewed loader; add and verify it explicitly")
+        if self.checkpoint == "Qwen/Qwen3.5-27B":
+            from .models.competence import REVISION
+            if (self.revision != REVISION or self.tokenizer_revision != REVISION or
+                    self.dtype != "bfloat16" or not self.thinking or
+                    self.context_limit != 8192 or self.max_new_tokens != 2048 or
+                    self.action_constraint != "sqlite-json-schema-v1"):
+                raise BCError("27B requires the pinned bounded BF16/thinking/constrained competence profile")
         if self.dtype not in ("bfloat16", "float16", "float32"):
             raise BCError("Unsupported dtype; no automatic quantization")
         for name in ("context_limit", "max_new_tokens", "top_k"):
@@ -104,8 +111,15 @@ class RunConfig:
     sqlite_fixture_suite: str = "arithmetic_v1"
 
     def __post_init__(self) -> None:
+        native27 = (self.model.checkpoint == "Qwen/Qwen3.5-27B" and self.task_kind == "sqlite_native"
+                    and self.task_count == 2 and self.policies == ("single",) and self.attacks == ("clean",)
+                    and self.seeds == (0,) and self.protocol == "A" and not self.operation_measurement
+                    and self.organization == "legacy" and not self.calibration_file and not self.fixed_state_file)
+        if self.model.checkpoint == "Qwen/Qwen3.5-27B" and not (
+                native27 or self.sqlite_fixture_suite == "tool_compatibility_v1"):
+            raise BCError("27B is opt-in: four probes or two renewed native solar tasks only")
         if self.model.action_constraint != "none" and (
-                self.sqlite_fixture_suite != "tool_compatibility_v1" or self.shards != 1 or
+                (self.sqlite_fixture_suite != "tool_compatibility_v1" and not native27) or self.shards != 1 or
                 self.max_actions != 12 or self.budget.total != 100000 or
                 not self.model.thinking or self.model.max_new_tokens != 2048 or
                 self.model.context_limit != 8192):
