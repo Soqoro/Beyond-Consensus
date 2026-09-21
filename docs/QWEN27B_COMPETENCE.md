@@ -320,7 +320,7 @@ cd "$BC27_DIR/source"
   --output "$BC27_SOLAR/readiness.json"
 "$BC_PYTHON" -I scripts/bc.py sqlite-validate --staged "$BC27_SOLAR/reviewed-stage.json" \
   --task-ids solar_2 solar_M_3 --count 2 --output "$BC27_SOLAR/native-validated.private.json"
-printf '[{"source_ids":["solar_2","solar_M_3"]}]\n' > "$BC27_SOLAR/pair-candidate.json"
+printf '[{"source_ids":["solar_2","solar_M_3"],"rationale":"Renew both original solar obligations on the shared database"}]\n' > "$BC27_SOLAR/pair-candidate.json"
 "$BC_PYTHON" -I scripts/bc.py sqlite-pairs --staged "$BC27_SOLAR/reviewed-stage.json" \
   --candidates "$BC27_SOLAR/pair-candidate.json" --count 1 \
   --output "$BC27_SOLAR/pair-validated.private.json"

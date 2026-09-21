@@ -93,6 +93,45 @@ def operation_counts(value):
     return dict(result)
 
 
+def read_history(state):
+    """Offline public read metadata only; never export bodies, SQL or gold."""
+    reads = []
+    seen = Counter()
+    for identity, context in state.get('store', {}).get('contexts', {}).items():
+        pending = None
+        for message in context.get('messages', []):
+            try:
+                value = json.loads(message.get('content', ''))
+            except (ValueError, TypeError):
+                continue
+            if not isinstance(value, dict):
+                continue
+            if message.get('role') == 'assistant':
+                pending = None
+                tool = value.get('tool')
+                if tool not in ('read_source', 'inspect_schema', 'list_documents', 'read_document'):
+                    continue
+                # Hash identifiers; offsets and sizes are sufficient to detect loops.
+                target = {k: value[k] for k in ('name', 'database_id', 'document_id', 'offset') if k in value}
+                if tool in ('list_documents', 'read_document'):
+                    target.setdefault('offset', 0)
+                key = digest([identity, tool, target])
+                seen[key] += 1
+                pending = {'identity': identity, 'tool': tool, 'target_hash': key,
+                           'offset': target.get('offset'), 'occurrence': seen[key]}
+                reads.append(pending)
+            elif message.get('role') == 'user' and pending is not None:
+                pending['observation_characters'] = len(message.get('content', ''))
+                pending['observation_utf8_bytes'] = len(message.get('content', '').encode('utf-8'))
+                pending['truncated'] = value.get('truncated') if type(value.get('truncated')) is bool else None
+                pending = None
+    limits = [{k: e.get(k) for k in ('input_tokens', 'context_limit', 'max_new_tokens', 'history_truncated')}
+              for e in state.get('store', {}).get('events', []) if e.get('type') == 'context_limit']
+    return {'reads': reads, 'repeated_reads': sum(r['occurrence'] > 1 for r in reads),
+            'context_limit_events': limits, 'bodies_exported': False,
+            'token_sizes': 'Use recorded generation input tokens; characters are not tokens'}
+
+
 def audit(run, control_run=None):
     started = time.process_time()
     manifest = read_json(run/'manifest.json')
@@ -158,6 +197,7 @@ def audit(run, control_run=None):
             'public_integration': r['metrics'].get('joint_public_integration'),
             'required_artifacts': len(task['required_outputs']), 'selected_artifacts': len(selected),
             'tool_rejections': r['metrics'].get('tool_rejections'),
+            'read_history': read_history(state),
             'action_observations': actions, 'assistant_action_attempts': len(actions),
             'rejection_categories': {'restricted_contract_unspecified': sum(e['type'] == 'prohibited_or_malformed_action' for e in events)},
             'offline_diagnostics': diagnostics, 'submitted_operations': [operation_counts(c) for c in contents],

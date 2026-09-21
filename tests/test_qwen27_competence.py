@@ -158,3 +158,39 @@ class CompetenceTests(unittest.TestCase):
         spec=importlib.util.spec_from_file_location('offline_checker',ROOT/'scripts/check_action_constraints.py')
         module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         self.assertEqual(module.synthetic_probe_trees(),controls())
+
+    def test_native16k_is_separate_and_qualification_cannot_cross_contexts(self):
+        c = load_config(ROOT/'configs/validation/qwen35-27b-native-context16k.json')
+        self.assertEqual(c.model.context_limit, 16384)
+        self.assertEqual(c.model.max_new_tokens, 2048)
+        with self.assertRaises(BCError):
+            replace(self.config(), model=c.model)
+        with self.assertRaises(BCError):
+            replace(c, development_profile='qwen35-27b-sql-competence')
+        lock = {'checkpoint':c.model.checkpoint, 'revision':c.model.revision,
+                'tokenizer_revision':c.model.revision, 'metadata_hashes':{}}
+        lock['decoder_qualification'] = dict(status='passed', model_executed=False,
+            sql_executed=False, qualification_key=qualification_key(lock, {}, 16384))
+        require_qualification(lock, {}, 16384)
+        with self.assertRaises(BCError): require_qualification(lock, {}, 8192)
+        from beyond_consensus.models.transformers_backend import long_history
+        backend = SimpleNamespace(config=c.model,
+            count_input=lambda messages:sum(len(m['content'])//4 for m in messages)+32)
+        size = backend.count_input(long_history(backend))
+        self.assertGreaterEqual(size, 14304)
+        self.assertLessEqual(size + 2048, 16384)
+
+    def test_read_history_is_sanitized_and_detects_repeats_and_limit(self):
+        from beyond_consensus.diagnostics.competence import read_history
+        messages = []
+        for offset in (0, 4000, 0):
+            messages.extend([
+                {'role':'assistant', 'content':json.dumps(dict(tool='read_document', document_id='private-id', offset=offset))},
+                {'role':'user', 'content':json.dumps(dict(result='PRIVATE BODY', truncated=True))}])
+        state = {'store':{'contexts':{'w0':{'messages':messages}}, 'events':[
+            dict(type='context_limit', input_tokens=7000, context_limit=8192, max_new_tokens=2048, history_truncated=False)]}}
+        result = read_history(state)
+        self.assertEqual(result['repeated_reads'], 1)
+        self.assertEqual(result['context_limit_events'][0]['input_tokens'], 7000)
+        self.assertNotIn('PRIVATE BODY', json.dumps(result))
+        self.assertNotIn('private-id', json.dumps(result))

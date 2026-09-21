@@ -1921,3 +1921,18 @@ See [CODING_SANDBOX.md](CODING_SANDBOX.md) for the exact sequence and limitation
 Small official documentation/schema files were inspected over HTTPS. They were
 not installed or executed. See [MODELS_AND_DATA.md](MODELS_AND_DATA.md) for sources
 and the distinction between verified interfaces and untested GPU behavior.
+
+## Native 16K condition and read-history audit (2026-09-21)
+
+CPU-only implementation validation: `python -m unittest discover -s tests -v`
+ran 196 tests in 73.815 seconds, passed with one existing opt-in skip.
+`python scripts/check_shell.py` validated nine shell files;
+`python scripts/check_docs_shell.py` validated the existing 46 blocks/four
+embedded scripts; explicit checking of `docs/NATIVE_CONTEXT16K.md` validated
+five additional blocks and one embedded Bash script. Compileall, stdlib-only
+CLI help and `git diff --check` passed. New tests reject cross-context
+qualification reuse, restrict 16K to the two-task native condition, check
+synthetic long-history sizing and verify sanitized read-loop/context reporting.
+No model, SQL benchmark, download or Slurm job was executed for this change.
+Remote read-history evidence and 16K GPU fit remain pending. Historical native
+context failures are documented in [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md).

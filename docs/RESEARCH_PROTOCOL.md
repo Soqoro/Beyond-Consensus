@@ -335,3 +335,11 @@ interface comparison including decoder overhead, not a pure model capability or
 policy test. Structural validity still permits wrong SQL, nonexistent IDs,
 incorrect values and missed submission; the existing executor/evaluator decides
 those outcomes. Native and broader runs are gated off for this initial mode.
+
+## Separate native context feasibility condition (2026-09-21)
+
+See [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md) for the user-reported two
+8K context-limit failures (62465 work, neither task scored), sanitized offline
+read audit, and opt-in 16K qualification/preflight workflow. Defaults, historical
+results, scoring, action/work caps and history handling remain unchanged.
+The new condition has not run on a GPU. No recovery-policy conclusion follows.

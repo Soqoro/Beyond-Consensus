@@ -211,7 +211,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
     if run_config.model.checkpoint == "Qwen/Qwen3.5-27B":
         from ..models.competence import require_qualification
         report = model_lock.get('decoder_qualification', {})
-        require_qualification(model_lock, report.get('packages', {}))
+        require_qualification(model_lock, report.get('packages', {}), run_config.model.context_limit)
     if run_config.task_kind == "cooperbench":
         from ..runtime.sandbox import require_repository_sandbox
         from .manifest import task_from

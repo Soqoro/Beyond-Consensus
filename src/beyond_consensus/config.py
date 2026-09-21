@@ -37,7 +37,7 @@ class ModelConfig:
             from .models.competence import REVISION
             if (self.revision != REVISION or self.tokenizer_revision != REVISION or
                     self.dtype != "bfloat16" or not self.thinking or
-                    self.context_limit != 8192 or self.max_new_tokens != 2048 or
+                    self.context_limit not in (8192, 16384) or self.max_new_tokens != 2048 or
                     self.action_constraint != "sqlite-json-schema-v1"):
                 raise BCError("27B requires the pinned bounded BF16/thinking/constrained competence profile")
         if self.dtype not in ("bfloat16", "float16", "float32"):
@@ -115,6 +115,12 @@ class RunConfig:
                     and self.task_count == 2 and self.policies == ("single",) and self.attacks == ("clean",)
                     and self.seeds == (0,) and self.protocol == "A" and not self.operation_measurement
                     and self.organization == "legacy" and not self.calibration_file and not self.fixed_state_file)
+        long_native27 = (native27 and self.model.context_limit == 16384 and
+                        self.development_profile == "qwen35-27b-native-context16k")
+        if self.model.checkpoint == "Qwen/Qwen3.5-27B" and self.model.context_limit == 16384 and not long_native27:
+            raise BCError("16K context is restricted to the separate two-task native profile")
+        if self.development_profile == "qwen35-27b-native-context16k" and not long_native27:
+            raise BCError("The native 16K profile requires its explicit model and context condition")
         if self.model.checkpoint == "Qwen/Qwen3.5-27B" and not (
                 native27 or self.sqlite_fixture_suite == "tool_compatibility_v1"):
             raise BCError("27B is opt-in: four probes or two renewed native solar tasks only")
@@ -122,7 +128,7 @@ class RunConfig:
                 (self.sqlite_fixture_suite != "tool_compatibility_v1" and not native27) or self.shards != 1 or
                 self.max_actions != 12 or self.budget.total != 100000 or
                 not self.model.thinking or self.model.max_new_tokens != 2048 or
-                self.model.context_limit != 8192):
+                (self.model.context_limit != 8192 and not long_native27)):
             raise BCError("Constrained actions are gated to the bounded four-probe reasoning diagnostic")
         if self.sqlite_fixture_suite not in ("arithmetic_v1", "tool_compatibility_v1"):
             raise BCError("Unknown SQLite fixture suite")

@@ -116,7 +116,7 @@ class TransformersBackend:
         candidate = config.checkpoint == CHECKPOINT
         hardware_before = hardware(torch) if candidate else None
         if candidate:
-            require_qualification(lock, versions())
+            require_qualification(lock, versions(), config.context_limit)
             if read_json(Path(lock['model_path'])/'config.json').get('quantization_config'):
                 raise BCError('Quantized model metadata is not this BF16 condition')
             try:

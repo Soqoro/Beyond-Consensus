@@ -598,3 +598,11 @@ without an explicit cluster sandbox profile; it executes real probes when one is
 Next local commands and the separate online-cluster sequence are in
 [LOCAL_TO_SLURM.md](LOCAL_TO_SLURM.md). Stop before experiments until the user has
 reviewed the implementation, configured actual site facts and authorized submission.
+
+## Separate native context feasibility condition (2026-09-21)
+
+See [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md) for the user-reported two
+8K context-limit failures (62465 work, neither task scored), sanitized offline
+read audit, and opt-in 16K qualification/preflight workflow. Defaults, historical
+results, scoring, action/work caps and history handling remain unchanged.
+The new condition has not run on a GPU. No recovery-policy conclusion follows.

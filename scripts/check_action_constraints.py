@@ -69,7 +69,7 @@ def synthetic_probe_trees():
     }
 
 
-def check(lock_path):
+def check(lock_path, context_limit=8192):
     start = time.process_time()
     wall_start = time.monotonic()
     lock = read_json(lock_path)
@@ -149,7 +149,7 @@ def check(lock_path):
     if any(torch.isfinite(masked[0,token]).item() for token in eos):
         raise BCError("EOS is allowed before the action is complete")
     return {"schema": "bc-action-constraint-check-v1", "status": "passed",
-        "qualification_key": qualification_key(lock, packages), "packages": packages,
+        "qualification_key": qualification_key(lock, packages, context_limit), "context_limit": context_limit, "packages": packages,
         "effective_generation_tokens": tokens, "vocab_size": vocab,
         "rendered_prompt_hash": digest(rendered), "prompt_supplies_thinking_opener": True,
         "native_tool_template_injected": False, "wall_seconds": time.monotonic()-wall_start,
@@ -165,12 +165,13 @@ def main():
     parser.add_argument("--model-lock", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
+    parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
     args = parser.parse_args()
     if args.qualified_lock and args.qualified_lock.exists():
         raise BCError("Qualified lock already exists; use a fresh path")
     if args.output.exists():
         raise BCError("Use a new report path; previous observations are immutable")
-    result = check(args.model_lock)
+    result = check(args.model_lock, args.context_limit)
     with args.output.open("x") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")
