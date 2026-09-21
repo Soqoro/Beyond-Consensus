@@ -97,7 +97,8 @@ class CompetenceTests(unittest.TestCase):
             self.assertEqual(report['planned'],4);self.assertEqual(report['successes'],0)
             self.assertTrue(all(r['ledger_residual']==0 for r in report['tasks']))
             self.assertFalse(report['sql_executed'])
-            self.assertNotIn('contexts',json.dumps(report))
+            self.assertNotIn('"contexts":', json.dumps(report))
+            self.assertNotIn('"messages":', json.dumps(report))
 
     def test_backend_rejects_40gb_before_weight_loader(self):
         from unittest.mock import Mock
@@ -194,3 +195,52 @@ class CompetenceTests(unittest.TestCase):
         self.assertEqual(result['context_limit_events'][0]['input_tokens'], 7000)
         self.assertNotIn('PRIVATE BODY', json.dumps(result))
         self.assertNotIn('private-id', json.dumps(result))
+
+    def test_native24_profile_preserves_budgets_and_old_limits(self):
+        old = load_config(ROOT/'configs/validation/qwen35-27b-native-context16k.json')
+        new = load_config(ROOT/'configs/validation/qwen35-27b-native-context16k-actions24.json')
+        self.assertEqual(new.max_actions, 24)
+        self.assertEqual(new.budget, old.budget)
+        self.assertEqual(new.model, old.model)
+        self.assertEqual(new.malformed_retries, old.malformed_retries)
+        self.assertEqual(new.task_count, 2)
+        for config, update in ((old, {'max_actions':24}), (new, {'max_actions':12}),
+                               (new, {'max_actions':48}), (new, {'task_count':3}),
+                               (new, {'policies':('recovery',)}),
+                               (new, {'budget':replace(new.budget,total=200000)})):
+            with self.assertRaises(BCError): replace(config, **update)
+
+    def test_private_archive_does_not_change_recovery_snapshots_or_worker_history(self):
+        from beyond_consensus.runtime.provenance import ProvenanceStore
+        from beyond_consensus.diagnostics.competence import archived_histories
+        store = ProvenanceStore()
+        initial = [{'role':'system','content':'INITIAL'}]
+        store.contexts['w0'].messages = copy.deepcopy(initial)
+        store.save_context('w0')
+        store.contexts['w0'].messages.extend([
+            {'role':'user','content':'PRIVATE DOCUMENT'},
+            {'role':'assistant','content':json.dumps({'tool':'submit_view_definition',
+                 'artifact_name':'PRIVATE_NAME','select_sql':{'columns':[{'expr':{'literal':'PRIVATE_VALUE'}}]}})}])
+        artifact = store.submit('w0','u0',{'kind':'view','name':'PRIVATE_NAME'})
+        store.invalidate({artifact.id})
+        self.assertEqual(store.contexts['w0'].messages, initial)
+        self.assertEqual(len(store.snapshots['w0']), 1)
+        self.assertFalse(store.artifacts[artifact.id].valid)
+        self.assertEqual(len(store.context_archives), 1)
+        exported = store.export()
+        restored = ProvenanceStore.restore(exported)
+        self.assertEqual(restored.export(), exported)
+        restored.contexts['w0'].messages.append({'role':'user','content':'later'})
+        self.assertEqual(len(restored.context_archives[0]['context'].messages), 3)
+        report = archived_histories({'store':exported})
+        self.assertEqual(report['histories'][0]['action_observations'][0]['tool'], 'submit_view_definition')
+        self.assertNotIn('PRIVATE', json.dumps(report))
+        # Diagnostic history is never a candidate even when recovery snapshots are absent.
+        restored.snapshots['w0'] = []
+        again = restored.submit('w0','u0',{'kind':'view'})
+        restored.invalidate({again.id})
+        self.assertEqual(restored.contexts['w0'].messages, [])
+        self.assertEqual(len(restored.context_archives), 2)
+        legacy = {k:v for k,v in exported.items() if k != 'context_archives'}
+        self.assertEqual(ProvenanceStore.restore(legacy).context_archives, [])
+        self.assertFalse(archived_histories({'store':legacy})['available'])

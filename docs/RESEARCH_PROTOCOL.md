@@ -343,3 +343,14 @@ See [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md) for the user-reported two
 read audit, and opt-in 16K qualification/preflight workflow. Defaults, historical
 results, scoring, action/work caps and history handling remain unchanged.
 The new condition has not run on a GPU. No recovery-policy conclusion follows.
+
+## Separate native 24-action condition (2026-09-21)
+
+The user authorized `qwen35-27b-native-context16k-actions24` after both 16K native
+operations exhausted 12 actions without selecting required artifacts. This
+changes only the action allowance and condition labels, preserving the 100000
+work budget and all scoring/history rules. Additional turns are not free.
+Diagnostic context archives are never recovery candidates or model inputs.
+See [NATIVE_ACTIONS24.md](NATIVE_ACTIONS24.md) for reported evidence, limitations
+and the manual Slurm workflow. The prior 16K preflight has since passed and its
+two-task result is 0/2; the new 24-action condition is unexecuted.

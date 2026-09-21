@@ -26,12 +26,21 @@ class ProvenanceStore:
         self.contexts = {w: Context(w, contributors={w}) for w in WORKERS}
         self.snapshots: dict[str, list[Context]] = {w: [] for w in WORKERS}
         self.events: list[dict[str, Any]] = []
+        # Private diagnostics only; never a recovery candidate or worker input.
+        self.context_archives: list[dict[str, Any]] = []
 
     def save_context(self, identity: str) -> None:
         self.snapshots[identity].append(copy.deepcopy(self.contexts[identity]))
 
+    def archive_context(self, identity: str, reason: str) -> None:
+        context = self.contexts[identity]
+        if context.messages:
+            self.context_archives.append({"identity": identity, "reason": reason,
+                                          "context": copy.deepcopy(context)})
+
     def reset(self, identity: str) -> None:
         # Identity state belongs to the attacker, never to a context.
+        self.archive_context(identity, "reset")
         self.contexts[identity] = Context(identity, contributors={identity})
         self.events.append({"type": "context_reset", "identity": identity})
 
@@ -108,6 +117,7 @@ class ProvenanceStore:
                 if restored is None:
                     self.reset(identity)
                 else:
+                    self.archive_context(identity, "restore")
                     self.contexts[identity] = copy.deepcopy(restored)
                     self.events.append({"type": "context_restore", "identity": identity})
         self.events.append({"type": "invalidate", "versions": sorted(invalid), "suspicions": sorted(suspects)})
@@ -115,7 +125,7 @@ class ProvenanceStore:
 
     def export(self) -> dict[str, Any]:
         return plain({"artifacts": self.artifacts, "contexts": self.contexts,
-                      "snapshots": self.snapshots, "events": self.events})
+                      "snapshots": self.snapshots, "events": self.events, "context_archives": self.context_archives})
 
     @classmethod
     def restore(cls, state: dict[str, Any]) -> ProvenanceStore:
@@ -130,5 +140,7 @@ class ProvenanceStore:
             for name in ("parents", "contributors", "source_hashes"):
                 data[name] = tuple(data[name])
             store.artifacts[key] = ArtifactVersion(**data)
+        store.context_archives = [{**entry, "context": context(entry["context"])}
+                                  for entry in state.get("context_archives", [])]
         store.events = state["events"]
         return store

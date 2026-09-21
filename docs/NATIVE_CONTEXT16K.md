@@ -125,3 +125,10 @@ Only after review submit that preflight by removing `--dry-run`. Inspect its
 actual input/cache length, memory, placement, completion and command_failed.
 Do not submit the two native episodes until read-audit and preflight review.
 The shared registry remains mandatory. This document launches nothing.
+
+## Follow-up results (2026-09-21)
+
+The user subsequently supplied a passing 16K A100 80GB preflight and two completed
+native failures at the 12-action cap. The read audit showed no repeated reads.
+This supersedes pending-GPU statements above. See [NATIVE_ACTIONS24.md](NATIVE_ACTIONS24.md)
+for exact evidence and the separately authorized next condition.

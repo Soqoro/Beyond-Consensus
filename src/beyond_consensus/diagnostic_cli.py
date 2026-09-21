@@ -40,7 +40,7 @@ def add_parsers(sub):
             p.add_argument("--reuse-full", type=Path, help="Reuse an existing frozen eight-source full manifest with --full-only")
     config = sub.add_parser("validation-config", help="Write an explicit opt-in config for validated/frozen development data")
     config.add_argument("--data-manifest", type=Path, required=True)
-    config.add_argument("--profile", choices=("qwen35-4b-control", "qwen35-4b-reasoning", "qwen35-9b-later", "qwen35-27b-sql-competence", "qwen35-27b-native-context16k"), default="qwen35-4b-control")
+    config.add_argument("--profile", choices=("qwen35-4b-control", "qwen35-4b-reasoning", "qwen35-9b-later", "qwen35-27b-sql-competence", "qwen35-27b-native-context16k", "qwen35-27b-native-context16k-actions24"), default="qwen35-4b-control")
     config.add_argument("--revision", help="Mandatory explicit resolved 9B revision; no lookup/download")
     config.add_argument("--interface", choices=("original", "submitted_final_value_v1"), default="original")
     config.add_argument("--measurement", action="store_true")
@@ -111,7 +111,7 @@ def dispatch(args):
             raise BCError("4B control/reasoning profiles retain the exact recorded revision")
         profile.update(task_kind=tasks[0].kind, task_count=len(tasks), data_manifest=str(args.data_manifest.resolve()),
             shards=min(4, len(tasks)), silo_interface=args.interface, operation_measurement=args.measurement)
-        if args.profile in ("qwen35-27b-sql-competence", "qwen35-27b-native-context16k"):
+        if args.profile in ("qwen35-27b-sql-competence", "qwen35-27b-native-context16k", "qwen35-27b-native-context16k-actions24"):
             if {t.id for t in tasks} != {"solar_2", "solar_M_3"} or args.measurement:
                 raise BCError("27B native gate requires exactly the two renewed individual solar tasks")
             profile["shards"] = 1

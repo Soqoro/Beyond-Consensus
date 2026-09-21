@@ -116,17 +116,20 @@ class RunConfig:
                     and self.seeds == (0,) and self.protocol == "A" and not self.operation_measurement
                     and self.organization == "legacy" and not self.calibration_file and not self.fixed_state_file)
         long_native27 = (native27 and self.model.context_limit == 16384 and
-                        self.development_profile == "qwen35-27b-native-context16k")
+                        self.development_profile in ("qwen35-27b-native-context16k",
+                                                     "qwen35-27b-native-context16k-actions24"))
         if self.model.checkpoint == "Qwen/Qwen3.5-27B" and self.model.context_limit == 16384 and not long_native27:
             raise BCError("16K context is restricted to the separate two-task native profile")
-        if self.development_profile == "qwen35-27b-native-context16k" and not long_native27:
+        if self.development_profile in ("qwen35-27b-native-context16k",
+                                         "qwen35-27b-native-context16k-actions24") and not long_native27:
             raise BCError("The native 16K profile requires its explicit model and context condition")
         if self.model.checkpoint == "Qwen/Qwen3.5-27B" and not (
                 native27 or self.sqlite_fixture_suite == "tool_compatibility_v1"):
             raise BCError("27B is opt-in: four probes or two renewed native solar tasks only")
+        expected_actions = 24 if long_native27 and self.development_profile == "qwen35-27b-native-context16k-actions24" else 12
         if self.model.action_constraint != "none" and (
                 (self.sqlite_fixture_suite != "tool_compatibility_v1" and not native27) or self.shards != 1 or
-                self.max_actions != 12 or self.budget.total != 100000 or
+                self.max_actions != expected_actions or self.budget.total != 100000 or
                 not self.model.thinking or self.model.max_new_tokens != 2048 or
                 (self.model.context_limit != 8192 and not long_native27)):
             raise BCError("Constrained actions are gated to the bounded four-probe reasoning diagnostic")

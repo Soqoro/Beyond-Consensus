@@ -1936,3 +1936,21 @@ synthetic long-history sizing and verify sanitized read-loop/context reporting.
 No model, SQL benchmark, download or Slurm job was executed for this change.
 Remote read-history evidence and 16K GPU fit remain pending. Historical native
 context failures are documented in [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md).
+
+## Native 24-action profile and diagnostic archives (2026-09-21)
+
+The final full CPU suite ran 198 tests in 64.990 seconds: 197 passed, one existing
+opt-in skip. Focused 27B tests passed (15 tests). The initial suite exposed an
+old string-substring privacy assertion: it matched the word `contexts` in the
+new scope description. The assertion now checks for raw `contexts`/`messages`
+JSON fields; explicit private-body/literal sanitization tests also pass. No
+runtime privacy failure or score change was observed. Full suite rerun passed.
+Nine shell files, existing 46 documentation blocks/four embedded scripts and
+six new NATIVE_ACTIONS24 blocks passed syntax validation. Compileall, stdlib CLI
+help and diff whitespace checks passed. No GPU model/benchmark or Slurm job was
+run locally. The 24-action native condition is unexecuted.
+
+Tests enforce the old profiles' limits, the new exact 24-action condition and
+unchanged budget/model/retry settings. They exercise reset/restore archival,
+export/restore round trips, legacy checkpoints, deep-copy independence, private
+text omission and the exclusion of diagnostic archives from recovery candidates.

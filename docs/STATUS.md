@@ -1,6 +1,20 @@
 # Implementation status and handoff
 
-## Current continuation: opt-in 27B competence path (2026-09-20)
+## Current continuation: native 24-action condition (2026-09-21)
+
+User-reported 27B synthetic competence passed 4/4; 16K preflight passed on A100
+80GB. The two native16k episodes completed 0/2 at 113123 work: both hit the
+12-action limit. Solar query read only; solar view created two executable views
+but never selected a required artifact. Neither view has established correctness.
+These reports supersede the unexecuted status of the historical checkpoints below.
+[The new runbook](NATIVE_ACTIONS24.md) prepares only two single/clean native tasks
+at 24 actions, preserving 100000 work and all other limits/scoring. Private
+context archives support later diagnostics without influencing recovery snapshots.
+No 24-action result exists, no job was launched here, and broader research stays
+paused. Gate A remains unmet for these native tasks; gate B remains separate.
+
+
+## Historical implementation checkpoint: opt-in 27B competence path (2026-09-20)
 
 The user selected post-trained Qwen3.5-27B and skipped 9B after the audit.
 [The ordered runbook](QWEN27B_COMPETENCE.md) prepares staging, fresh CPU qualification,

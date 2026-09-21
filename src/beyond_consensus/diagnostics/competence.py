@@ -132,6 +132,47 @@ def read_history(state):
             'token_sizes': 'Use recorded generation input tokens; characters are not tokens'}
 
 
+PUBLIC_TOOLS = frozenset(('read_source', 'inspect_schema', 'list_documents', 'read_document',
+    'run_read_query', 'submit_view_definition', 'submit_query_template', 'replay_query',
+    'submit_required_artifact', 'read_artifact', 'message', 'submit', 'read_shard', 'submit_result'))
+
+
+def action_observations(contexts):
+    actions = []
+    for context in contexts.values():
+        for message in context.get('messages', []):
+            if message.get('role') != 'assistant': continue
+            text = message.get('content', '')
+            try:
+                action = json.loads(text)
+                tree = action.get('select_sql', {}) if isinstance(action, dict) else {}
+                joins = tree.get('joins', []) if isinstance(tree, dict) else []
+                aliases = [j.get('source', {}).get('as') for j in joins if isinstance(j, dict)]
+                aliases = [a for a in aliases if isinstance(a, str)]
+                tool = action.get('tool') if isinstance(action, dict) else None
+                tool = tool if isinstance(tool, str) and tool in PUBLIC_TOOLS else None
+                actions.append({'json_parsed': True, 'tool': tool, 'operations': operation_counts(tree),
+                                'duplicate_join_aliases': len(aliases)-len(set(aliases))})
+            except (ValueError, TypeError):
+                actions.append({'json_parsed': False, 'text_hash': digest(text),
+                                'characters': len(text), 'retained_in_history': True})
+    return actions
+
+
+def archived_histories(state):
+    store = state.get('store', {})
+    histories = []
+    for index, entry in enumerate(store.get('context_archives', [])):
+        contexts = {entry['identity']: entry['context']}
+        histories.append({'index': index, 'identity': entry['identity'], 'reason': entry['reason'],
+            'message_count': len(entry['context'].get('messages', [])),
+            'action_observations': action_observations(contexts),
+            'read_history': read_history({'store': {'contexts': contexts}})})
+    return {'available': 'context_archives' in store, 'histories': histories,
+            'scope': 'Private diagnostic copies before reset/restore; may overlap current history. Do not sum action counts across copies.',
+            'worker_access': False}
+
+
 def audit(run, control_run=None):
     started = time.process_time()
     manifest = read_json(run/'manifest.json')
@@ -170,22 +211,7 @@ def audit(run, control_run=None):
                 k: d.get(k) for k in ('constraint_complete', 'constraint_mask_calls', 'constraint_cpu_seconds',
                     'finish_reason', 'rendered_input_tokens', 'generation_wall_seconds', 'prefill_seconds',
                     'peak_allocated_bytes', 'peak_reserved_bytes', 'observed_cache_sequence_length')})
-        actions = []
-        for context in state.get('store', {}).get('contexts', {}).values():
-            for message in context.get('messages', []):
-                if message.get('role') != 'assistant': continue
-                text = message.get('content', '')
-                try:
-                    action = json.loads(text)
-                    tree = action.get('select_sql', {}) if isinstance(action, dict) else {}
-                    joins = tree.get('joins', []) if isinstance(tree, dict) else []
-                    aliases = [j.get('source', {}).get('as') for j in joins if isinstance(j, dict)]
-                    aliases = [a for a in aliases if isinstance(a, str)]
-                    actions.append({'json_parsed': True, 'operations': operation_counts(tree),
-                                    'duplicate_join_aliases': len(aliases)-len(set(aliases))})
-                except (ValueError, TypeError):
-                    actions.append({'json_parsed': False, 'text_hash': digest(text),
-                                    'characters': len(text), 'retained_in_history': True})
+        actions = action_observations(state.get('store', {}).get('contexts', {}))
         selected = state.get('selected', {})
         artifacts = state.get('store', {}).get('artifacts', {})
         contents = [artifacts[v]['content'] for v in selected.values() if v in artifacts]
@@ -199,6 +225,8 @@ def audit(run, control_run=None):
             'tool_rejections': r['metrics'].get('tool_rejections'),
             'read_history': read_history(state),
             'action_observations': actions, 'assistant_action_attempts': len(actions),
+            'action_history_scope': 'current worker contexts only; reset/restore can remove earlier actions',
+            'archived_context_histories': archived_histories(state),
             'rejection_categories': {'restricted_contract_unspecified': sum(e['type'] == 'prohibited_or_malformed_action' for e in events)},
             'offline_diagnostics': diagnostics, 'submitted_operations': [operation_counts(c) for c in contents],
             'generation_calls': calls, 'model_calls': sum(e.get('model_calls', 0) for e in entries),
