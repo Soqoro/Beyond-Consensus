@@ -18,6 +18,20 @@ ROOT = Path(__file__).resolve().parents[2]
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="bc", description="Beyond Consensus E0/E1 development foundation")
     sub = p.add_subparsers(dest="command", required=True)
+    refs = sub.add_parser("sql-interface-reference", help="Private evaluator-side reference representability; no SQL/model execution")
+    refs.add_argument("--data-manifest", type=Path, required=True)
+    refs.add_argument("--report", type=Path, required=True)
+    pair = sub.add_parser("sql-interface-configs", help="Verify historical native settings and write two fresh interface configs")
+    pair.add_argument("--baseline-manifest", type=Path, required=True)
+    pair.add_argument("--renewed-data", type=Path, required=True)
+    pair.add_argument("--output-root", type=Path, required=True)
+    compare = sub.add_parser("sql-interface-audit", help="Read-only matched native interface comparison")
+    compare.add_argument("--tree-run", type=Path, required=True)
+    compare.add_argument("--text-run", type=Path, required=True)
+    compare.add_argument("--report", type=Path, required=True)
+    plans = sub.add_parser("decomposition-inspect", help="Inspect finite public plans; no model or SQL execution")
+    plans.add_argument("--task-manifest", type=Path, required=True)
+    plans.add_argument("--candidates", type=Path, required=True)
     demo = sub.add_parser("demo", help="Run a labelled CPU mock demonstration")
     demo.add_argument("--output", type=Path, default=Path("outputs/mock-demo"))
     demo.add_argument("--config", type=Path, default=ROOT / "configs/mock-demo.json")
@@ -135,6 +149,28 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command in COMMANDS:
         return dispatch_data(args)
     from .experiments.manifest import build_manifest, validate_manifest
+    if args.command == "sql-interface-reference":
+        if args.report.exists():
+            raise BCError("Use a fresh report path")
+        from .diagnostics.sql_interface import reference_frontend
+        result = reference_frontend(args.data_manifest)
+        atomic_json(args.report, result)
+        return result
+    if args.command == "sql-interface-configs":
+        from .diagnostics.sql_interface import prepare
+        return prepare(args.baseline_manifest, args.renewed_data, args.output_root)
+    if args.command == "sql-interface-audit":
+        if args.report.exists():
+            raise BCError("Use a fresh report path")
+        from .diagnostics.sql_interface import compare
+        result = compare(args.tree_run, args.text_run)
+        atomic_json(args.report, result)
+        return {"report": str(args.report), "model_executed": False, "sql_executed": False}
+    if args.command == "decomposition-inspect":
+        from .planning.decomposition import inspect
+        from .experiments.manifest import task_from
+        task = task_from(read_json(args.task_manifest))
+        return inspect(read_json(args.candidates), task)
     if args.command == "manifest":
         config = load_config(args.config)
         if args.data_manifest:

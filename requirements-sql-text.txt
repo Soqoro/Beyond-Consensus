@@ -1,0 +1,2 @@
+# Optional compiler only; core/CLI remain stdlib. SQLGlot license: MIT.
+sqlglot==27.28.1 --hash=sha256:035e8a905a52a4bdbf0d7c590d8ea98fa4d4195b509b35e20c33dd462ec17b82

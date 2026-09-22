@@ -99,6 +99,10 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
         raise BCError("Task count/uniqueness does not match the planned configuration")
     if any(t.kind != config.task_kind for t in tasks):
         raise BCError("Manifest task environment mismatch")
+    for task in tasks:
+        if task.metadata.get("finite_decomposition") or task.metadata.get("finite_catalogue"):
+            from ..planning.decomposition import resolve
+            resolve(task, config)
     if config.organization != "legacy":
         from ..policies.core import require_boundary_variation
         for task in tasks:
@@ -156,7 +160,10 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
             raise BCError("27B native gate permits only renewed solar_2 and solar_M_3")
     if config.model.action_constraint != "none":
         from ..models.action_schema import contract
-        constraints["action_constraint"] = contract()
+        constraints["action_constraint"] = contract(config.model.action_constraint)
+    if config.model.action_constraint == "sqlite-sql-text-v1":
+        from ..runtime.sql_text import contract as compiler_contract
+        constraints["sql_frontend"] = compiler_contract()
     return plain({"schema": "bc-manifest-v2" if data_mode else "bc-manifest-v1", **constraints,
                   **({"data_regime": regime(tasks[0])} if data_mode else {}),
                   "experiment_id": experiment, "config": config,
@@ -172,10 +179,16 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     config = from_dict(data["config"])
     if config.model.action_constraint != "none":
         from ..models.action_schema import contract
-        if data.get("action_constraint") != contract():
+        if data.get("action_constraint") != contract(config.model.action_constraint):
             raise BCError("Constrained action contract changed; create a new manifest")
     elif "action_constraint" in data:
         raise BCError("Unexpected action constraint metadata")
+    if config.model.action_constraint == "sqlite-sql-text-v1":
+        from ..runtime.sql_text import contract as compiler_contract
+        if data.get("sql_frontend") != compiler_contract():
+            raise BCError("SQL compiler fingerprint changed")
+    elif "sql_frontend" in data:
+        raise BCError("Unexpected SQL frontend contract")
     if config.task_kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo") and data["schema"] != "bc-manifest-v2":
         raise BCError("Restricted data workflows require a v2 manifest")
     if data["schema"] == "bc-manifest-v2":

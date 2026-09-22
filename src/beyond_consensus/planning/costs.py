@@ -34,6 +34,9 @@ def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
         "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind,
         "worker_instructions": instructions, "silo_interface": config.silo_interface,
         "operation_measurement": config.operation_measurement}
+    if config.model.action_constraint == "sqlite-sql-text-v1":
+        from ..runtime.sql_text import contract as compiler_contract
+        data["sql_frontend"] = compiler_contract()
     if config.sqlite_error_feedback != "generic":
         data["sqlite_error_feedback"] = config.sqlite_error_feedback
     if config.model.backend == "transformers":
@@ -41,7 +44,7 @@ def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
         data["generation_policy"] = GENERATION_POLICY
     if config.model.action_constraint != "none":
         from ..models.action_schema import contract
-        data["action_constraint"] = contract()
+        data["action_constraint"] = contract(config.model.action_constraint)
     if config.organization != "legacy":
         data["organization_catalogue"] = "boundary-jit-v1"
     if task is not None and task.kind in ("sqlite_fixture", "sqlite_native", "sqlite_pair", "silo"):

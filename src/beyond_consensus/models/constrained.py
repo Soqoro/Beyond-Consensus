@@ -58,16 +58,16 @@ def load_xgrammar():
 
 
 class ActionConstraint:
-    def __init__(self, tokenizer, vocab_size, eos_ids):
+    def __init__(self, tokenizer, vocab_size, eos_ids, mode="sqlite-json-schema-v1"):
         start = time.process_time()
         self.xgr, self.processor_class = load_xgrammar()
         info = self.xgr.TokenizerInfo.from_huggingface(tokenizer, vocab_size=vocab_size,
                                                       stop_token_ids=eos_ids)
         compiler = self.xgr.GrammarCompiler(info, max_threads=1, cache_enabled=False)
         # Fixed property order enforces required-key presence and uniqueness.
-        self.compiled = compiler.compile_json_schema(action_schema(), any_whitespace=True,
+        self.compiled = compiler.compile_json_schema(action_schema(mode), any_whitespace=True,
                                                      max_whitespace_cnt=2, strict_mode=True)
-        self.runtime = {**contract(), "vocab_size": vocab_size, "stop_token_ids": list(eos_ids),
+        self.runtime = {**contract(mode), "vocab_size": vocab_size, "stop_token_ids": list(eos_ids),
                         "static_setup_cpu_seconds": time.process_time()-start}
 
     def processor(self, prompt_length, closing_id):

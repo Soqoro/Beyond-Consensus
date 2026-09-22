@@ -40,9 +40,13 @@ class EpisodeEngine:
                  backend: Backend, journal: EpisodeJournal, attempt_id: str,
                  stop_requested=lambda: False) -> None:
         self.task, self.manifest, self.config = task, manifest, config
+        from ..planning.decomposition import resolve
+        self.task, self.finite_candidate, self.finite_selection = resolve(task, config)
         self.backend, self.journal, self.attempt_id = backend, journal, attempt_id
         self.stop_requested = stop_requested
         self.ledger = BudgetLedger(config.budget.total, config.budget)
+        if self.finite_candidate:
+            self.ledger.charge("planning", config.budget.tool_charge, kind="finite_graph_validation", cpu_limit_seconds=1)
         self.store = ProvenanceStore()
         self.plan: DelegationPlan | None = None
         self.attacker: AttackController | None = None
@@ -87,6 +91,10 @@ class EpisodeEngine:
         self.ledger = BudgetLedger(ledger["cap"], self.config.budget, ledger["entries"],
                                    ledger["reservations"], ledger["historical"])
         self.ledger.uncertain_inflight()
+        if self.finite_candidate:
+            self.ledger.charge("planning", self.config.budget.tool_charge, kind="finite_graph_revalidation", cpu_limit_seconds=1)
+            if self.finite_selection:
+                self.ledger.charge("planning", self.finite_selection["search_states"], kind="finite_selector_revalidation")
         self.store = ProvenanceStore.restore(state["store"])
         for key in ("phase", "candidates", "completed", "selected", "retained", "integration_passed"):
             setattr(self, key, state[key])
@@ -160,8 +168,15 @@ class EpisodeEngine:
         self.boundary("planning_inflight")
         try:
             allocation_trace = {} if self.config.allocation_diagnostics else None
-            self.plan = choose_plan(self.manifest.policy, planning_task, self.config, self.costs, cap,
-                                    max_search_states=limit, trace=allocation_trace)
+            if self.finite_candidate:
+                from ..planning.decomposition import delegation
+                self.plan = delegation(self.finite_candidate, self.config.budget.total*self.config.budget.reserve_fraction)
+                if self.finite_selection:
+                    self.plan.search_states = self.finite_selection['search_states']
+                    self.journal.event("finite_selection", **self.finite_selection)
+            else:
+                self.plan = choose_plan(self.manifest.policy, planning_task, self.config, self.costs, cap,
+                                        max_search_states=limit, trace=allocation_trace)
             self.ledger.reconcile_work(reservation, self.plan.search_states)
             if allocation_trace is not None:
                 from ..util import atomic_json
@@ -173,6 +188,14 @@ class EpisodeEngine:
                 self.ledger.reconcile_work(reservation, None)
             raise
         self.attacker = AttackController.after_allocation(self.manifest.attack, self.plan)
+        if self.finite_candidate and self.manifest.attack.family != "clean":
+            from ..planning.decomposition import affected
+            from ..schemas import WORKERS
+            # Public-plan-aware structural attacker, fixed before execution.
+            # No detector sees this coalition; all units by the identity count.
+            selected_identity = max(WORKERS, key=lambda w: len(affected(self.finite_candidate, w)))
+            self.attacker = AttackController(self.manifest.attack, (selected_identity,))
+            self.journal.event("finite_attacker_rule", rule="largest_declared_identity_closure_before_execution")
         frozen = self.task.metadata.get("harness", {}).get("predecessor")
         if self.task.metadata.get("diagnostic_mode") == "boundary" and frozen:
             from ..tasks.silo_diagnostics import validate_predecessor
@@ -340,6 +363,10 @@ class EpisodeEngine:
                 self.phase = "integration"
                 self.boundary("repair_complete")
             if self.phase == "integration":
+                if self.finite_candidate:
+                    from ..planning.decomposition import dependency_report
+                    self.ledger.charge("integration", self.config.budget.tool_charge, kind="finite_dependency_audit", cpu_limit_seconds=1)
+                    self.journal.event("finite_observed_dependencies", **dependency_report(self.finite_candidate, self.store))
                 observed = self.public_audit("integration")
                 self.selected = observed.selected
                 from ..tasks.workflow import run_outputs, expected

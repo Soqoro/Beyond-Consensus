@@ -112,11 +112,17 @@ class TransformersBackend:
         architecture = read_json(Path(lock["model_path"]) / "config.json").get("architectures")
         if architecture != ["Qwen3_5ForConditionalGeneration"]:
             raise BCError(f"Unexpected checkpoint architecture {architecture}; loader review required")
+        if config.action_constraint == "sqlite-sql-text-v1":
+            from ..runtime.sql_text import require_qualification as require_frontend
+            require_frontend(lock)
+            from ..runtime.sql_text import VERSION as parser_version
+            if importlib.metadata.version("sqlglot") != parser_version:
+                raise BCError("Pinned SQL parser missing or changed before model loading")
         from .competence import CHECKPOINT, hardware, require_qualification, versions
         candidate = config.checkpoint == CHECKPOINT
         hardware_before = hardware(torch) if candidate else None
         if candidate:
-            require_qualification(lock, versions(), config.context_limit)
+            require_qualification(lock, versions(), config.context_limit, config.action_constraint)
             if read_json(Path(lock['model_path'])/'config.json').get('quantization_config'):
                 raise BCError('Quantized model metadata is not this BF16 condition')
             try:
@@ -148,7 +154,7 @@ class TransformersBackend:
         if config.action_constraint != "none":
             from .constrained import ActionConstraint
             self.constraint = ActionConstraint(self.tokenizer, self.model.get_output_embeddings().weight.shape[0],
-                                               self.generation_tokens["eos_token_id"])
+                                               self.generation_tokens["eos_token_id"], config.action_constraint)
         # cuda:0 is Slurm's process-local device. Never overwrite CUDA_VISIBLE_DEVICES.
         try:
             self.model.to(torch.device("cuda:0"))
@@ -256,11 +262,11 @@ class TransformersBackend:
             from .action_schema import validate_action, contract
             start_cpu = time.process_time()
             try:
-                validate_action(text)
+                validate_action(text, self.config.action_constraint)
                 complete = reasoning is not None
             except BCError:
                 complete = False
-            constraint_details = {"action_constraint": contract(), "constraint_complete": complete,
+            constraint_details = {"action_constraint": contract(self.config.action_constraint), "constraint_complete": complete,
                 "constraint_mask_calls": processor.mask_calls,
                 "constraint_cpu_seconds": setup_cpu+processor.cpu_seconds+time.process_time()-start_cpu}
         return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
@@ -315,6 +321,11 @@ def long_history(backend):
 
 
 def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
+    if config.action_constraint == "sqlite-sql-text-v1":
+        import importlib.metadata
+        from ..runtime.sql_text import VERSION
+        if importlib.metadata.version("sqlglot") != VERSION:
+            raise BCError("Pinned SQL parser required before model loading")
     backend = TransformersBackend(config, model_lock)
     torch = backend.torch
     torch.cuda.reset_peak_memory_stats()
@@ -335,6 +346,26 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
             except (ValueError, TypeError):
                 return False
         extra['command_failed'] = not (valid_probe(result) and valid_probe(extended))
+    if config.action_constraint == "sqlite-sql-text-v1":
+        from ..runtime.sql_text import lower
+        from ..runtime.sqlite_executor import execute
+        from ..tasks.sqlite_compatibility import database
+        import tempfile
+        query_probe = backend.generate([{"role":"user", "content":
+            'Synthetic qualification only. Return one JSON action: tool run_read_query, permitted_artifact_versions {}, select_sql a SQL string selecting id from entries ordered by id.'}], config.max_new_tokens, 0)
+        try:
+            action = json.loads(query_probe.text)
+            if set(action) != {"tool","permitted_artifact_versions","select_sql"} or action["tool"] != "run_read_query" or action["permitted_artifact_versions"] != {}:
+                raise ValueError("Invalid probe envelope")
+            compiled = lower(action["select_sql"], ["entries","departments"])
+            with tempfile.TemporaryDirectory(prefix="bc-sql-preflight-") as tmp:
+                checked = execute(database(Path(tmp)/"synthetic.sqlite"), ["entries","departments"], [], [compiled["tree"]]) if compiled["status"] == "ok" else {"status":"not_executed"}
+            passed = checked["status"] == "ok" and checked["outputs"][0]["columns"] == ["id"] and checked["outputs"][0]["rows"] == [[i] for i in range(1,6)]
+            extra["sql_frontend_probe"] = {"generation":plain(query_probe), "compiler":{k:v for k,v in compiled.items() if k!="tree"}, "passed":passed}
+        except (ValueError,KeyError,TypeError):
+            passed = False
+            extra["sql_frontend_probe"] = {"passed":False}
+        extra["command_failed"] = extra.get("command_failed",False) or not passed
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)
     try:

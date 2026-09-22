@@ -1,6 +1,17 @@
 # Implementation status and handoff
 
-## Current continuation: paired correction diagnostic (2026-09-22)
+## Current decision: pause for progress review (2026-09-22)
+
+The user requested review before running the prepared correction comparison.
+[PROGRESS_REPORT_2026-09-22.md](PROGRESS_REPORT_2026-09-22.md) consolidates reported
+cluster results, local checks, failure attribution and unresolved research gates.
+Latest 27B synthetic feedback-enabled result: 4/4 at 21327 work, zero rejections;
+feedback benefit is untested. Latest native solar result remains 0/2. No recovery
+advantage has been established. Paired correction code is prepared and reportedly
+pushed, but no submission/result has been reported. Pause further submissions
+until the user decides the next step; earlier runbooks remain reference material.
+
+## Prior continuation: paired correction diagnostic (2026-09-22)
 
 The user-reported feedback-enabled run `ef260dc9...` passed 4/4 at 21327 work,
 with zero rejections and reconciled ledgers. It did not exercise feedback and
@@ -669,3 +680,17 @@ See [NATIVE_CONTEXT16K.md](NATIVE_CONTEXT16K.md) for the user-reported two
 read audit, and opt-in 16K qualification/preflight workflow. Defaults, historical
 results, scoring, action/work caps and history handling remain unchanged.
 The new condition has not run on a GPU. No recovery-policy conclusion follows.
+
+### 2026-09-22: SQL input and finite graph implementation phase
+
+The user authorized bounded local implementation after the review. The optional
+SQL-text front end lowers to the unchanged restricted IR/executor, with separate
+compiler and decoder qualification, matched native config preparation from the
+actual historical manifest, and read-only comparison commands. Finite synthetic
+plans now change units/prerequisites/owners in the existing episode engine and
+use its JIT repair. A bounded generation API and selector are implemented and CPU-tested; real-model
+generation, compatible calibration and native graph eligibility remain unqualified. Native
+policy campaigns and supplied-draft correction stay paused. No new GPU results,
+submissions, private-data downloads or commits were made.
+
+See [phase scope, limitations and exact commands](SQL_INTERFACE_AND_DECOMPOSITION_PHASE.md).

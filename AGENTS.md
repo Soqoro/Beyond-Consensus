@@ -30,3 +30,17 @@ behavior. Preserve existing work and record scientific conflicts explicitly.
   environments, or snapshots. Do not put authentication in Git URLs.
 
 Milestones and limitations are tracked in `docs/STATUS.md`.
+
+## SQL interface / finite decomposition phase
+
+- Preserve JSON-tree defaults. Optional SQLGlot is used only by the explicit
+  SQL-text compiler child; core imports and CLI help stay stdlib-only.
+- SQL text must lower to the existing approved IR. Never execute worker SQL
+  directly, normalize unsupported operations away, or repair task semantics.
+- Keep compiler, grammar and native reference approvals separate and hash-bound.
+- Native interface arms must be rebuilt from actual resolved historical settings;
+  no summary-derived budget/seed/feedback assumptions or historical control reuse.
+- Finite graph execution is currently synthetic/mock/JIT-only. Model-generated
+  planning campaigns and native policy runs remain blocked pending the separate competence,
+  legal-variation and compatible-calibration gates. Do not call scripted plans
+  measured research results. See docs/SQL_INTERFACE_AND_DECOMPOSITION_PHASE.md.

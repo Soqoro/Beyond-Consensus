@@ -35,13 +35,15 @@ def enum(*values):
     return {"enum": list(values)}
 
 
-def action_schema():
+def action_schema(mode=MODE):
+    if mode not in (MODE, "sqlite-sql-text-v1"):
+        raise BCError("Unknown action representation")
     name = {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,62}$"}
     column = {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,62}(\\.[A-Za-z][A-Za-z0-9_]{0,62})?$"}
     text = {"type": "string", "maxLength": 4096}
     offset = {"type": "integer", "minimum": 0, "maximum": 2147483647}
     expr = ref("expr")
-    select = ref("select")
+    select = {"type": "string", "maxLength": 16384} if mode == "sqlite-sql-text-v1" else ref("select")
     def tuple_schema(*items):
         return {"type": "array", "prefixItems": list(items), "items": False,
                 "minItems": len(items), "maxItems": len(items)}
@@ -88,14 +90,14 @@ def action_schema():
     return {"$schema": "https://json-schema.org/draft/2020-12/schema", "$defs": defs, "anyOf": actions}
 
 
-def contract():
-    return {"mode": MODE, "schema_sha256": digest(action_schema()), "xgrammar_version": XGRAMMAR_VERSION,
+def contract(mode=MODE):
+    return {"mode": mode, "schema_sha256": digest(action_schema(mode)), "xgrammar_version": XGRAMMAR_VERSION,
             "object_key_order": "schema_declared", "reasoning": "unconstrained_until_think_close",
             "decoder_cpu_allowance_seconds_per_call": DECODER_CPU_SECONDS,
             "decoder_charge": "ceil_process_cpu_seconds_times_tool_charge"}
 
 
-def validate_action(text):
+def validate_action(text, mode=MODE):
     """Stdlib structural check of this schema subset, independent of GPU imports.
 
     This checks shape only. It never fixes text, resolves names or executes SQL.
@@ -114,7 +116,7 @@ def validate_action(text):
                            parse_constant=nonfinite)
     except (ValueError, RecursionError) as exc:
         raise BCError("Incomplete or invalid constrained action JSON") from exc
-    schema = action_schema()
+    schema = action_schema(mode)
     def matches(value, rule, depth=0):
         if depth > 128:
             return False

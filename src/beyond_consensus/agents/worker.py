@@ -124,7 +124,7 @@ class WorkerLoop:
                         from ..models.action_schema import contract
                         details = generation.diagnostics
                         seconds = details.get("constraint_cpu_seconds")
-                        if (details.get("action_constraint") != contract() or
+                        if (details.get("action_constraint") != contract(self.config.model.action_constraint) or
                                 type(details.get("constraint_complete")) is not bool or
                                 type(seconds) not in (int, float) or not math.isfinite(seconds) or
                                 not 0 <= seconds <= DECODER_CPU_SECONDS):
@@ -163,7 +163,7 @@ class WorkerLoop:
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
             except (ValueError, TypeError, KeyError, BCError) as exc:
-                from ..runtime.data_domain import ActionFieldsError, SQL_COLUMN_HINT, SQL_KINDS, TaskUnavailable, ViewValidationError, SQLExecutionError
+                from ..runtime.data_domain import ActionFieldsError, SQL_COLUMN_HINT, SQL_KINDS, TaskUnavailable, ViewValidationError, SQLExecutionError, SQLConstructionError
                 if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
@@ -179,6 +179,11 @@ class WorkerLoop:
                         observation["hint"] = ("For SQL actions, write permitted_artifact_versions before select_sql "
                                                "at the top level. Close both the query object and the action object. "
                                                + SQL_COLUMN_HINT)
+                    if self.config.model.action_constraint == "sqlite-sql-text-v1" and "hint" in observation:
+                        observation["hint"] = "Encode select_sql as one properly escaped JSON string; keep permitted_artifact_versions at the top level."
+                elif self.domain and isinstance(exc, SQLConstructionError):
+                    observation = {"error_code": exc.category,
+                        "error": "SQL construction rejected before database execution. Use one supported SELECT in the query string."}
                 elif self.domain and isinstance(exc, SQLExecutionError) and self.config.sqlite_error_feedback == "sqlite-errors-v1":
                     observation = exc.observation()
                 elif self.domain and isinstance(exc, ViewValidationError):

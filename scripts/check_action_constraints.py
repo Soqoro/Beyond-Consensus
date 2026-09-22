@@ -69,7 +69,7 @@ def synthetic_probe_trees():
     }
 
 
-def check(lock_path, context_limit=8192):
+def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
     start = time.process_time()
     wall_start = time.monotonic()
     lock = read_json(lock_path)
@@ -107,7 +107,7 @@ def check(lock_path, context_limit=8192):
     packages = versions()
     if packages['transformers'] != '5.3.0':
         raise BCError('Qualification requires the reviewed Transformers 5.3.0 stack')
-    constraint = ActionConstraint(tokenizer, vocab, eos)
+    constraint = ActionConstraint(tokenizer, vocab, eos, mode)
     good, bad = controls()
     if lock['checkpoint'] == 'Qwen/Qwen3.5-27B':
         # Offline qualification only. Never supplied to a worker or per-task grammar.
@@ -118,10 +118,18 @@ def check(lock_path, context_limit=8192):
                 action = {'tool': 'submit_view_definition', 'artifact_name': 'entry_adjusted',
                           'permitted_artifact_versions': {}, 'select_sql': tree}
             good.append(action)
+    if mode == "sqlite-sql-text-v1":
+        from beyond_consensus.runtime.sqlite_executor import compile_select
+        for action in good:
+            if "select_sql" in action:
+                action["select_sql"] = compile_select(action["select_sql"], {"entries", "departments", "demo_rows", "demo_other"})[0]
+        bad = ["{}", '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":{}}',
+               '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":"SELECT 1}',
+               '{"tool":"shell","command":"true"}']
     closing = tokenizer.convert_tokens_to_ids("</think>")
     for action in good:
         text = json.dumps(action, separators=(",", ":"))
-        validate_action(text)
+        validate_action(text, mode)
         ids = tokenizer.encode(text, add_special_tokens=False)
         # A closing token in the prompt must not activate the matcher.
         prefix = [closing]
@@ -149,12 +157,12 @@ def check(lock_path, context_limit=8192):
     if any(torch.isfinite(masked[0,token]).item() for token in eos):
         raise BCError("EOS is allowed before the action is complete")
     return {"schema": "bc-action-constraint-check-v1", "status": "passed",
-        "qualification_key": qualification_key(lock, packages, context_limit), "context_limit": context_limit, "packages": packages,
+        "qualification_key": qualification_key(lock, packages, context_limit, mode), "context_limit": context_limit, "packages": packages,
         "effective_generation_tokens": tokens, "vocab_size": vocab,
         "rendered_prompt_hash": digest(rendered), "prompt_supplies_thinking_opener": True,
         "native_tool_template_injected": False, "wall_seconds": time.monotonic()-wall_start,
         "model_executed": False, "sql_executed": False, "device": "cpu", "task_inputs_used": False,
-        "positive_controls": len(good), "negative_controls": len(bad), "contract": contract(),
+        "positive_controls": len(good), "negative_controls": len(bad), "contract": contract(mode),
         "model_lock_sha256": file_hash(lock_path), "script_sha256": file_hash(Path(__file__)),
         "runtime": constraint.runtime, "thinking_template": template,
         "control_hash": digest([good,bad]), "analysis_cpu_seconds": time.process_time()-start}
@@ -166,18 +174,29 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
     parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
+    parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1"), default="sqlite-json-schema-v1")
+    parser.add_argument("--frontend-report", type=Path)
     args = parser.parse_args()
     if args.qualified_lock and args.qualified_lock.exists():
         raise BCError("Qualified lock already exists; use a fresh path")
     if args.output.exists():
         raise BCError("Use a new report path; previous observations are immutable")
-    result = check(args.model_lock, args.context_limit)
+    frontend_report = None
+    if args.action_constraint == "sqlite-sql-text-v1":
+        if not args.frontend_report:
+            raise BCError("SQL text requires --frontend-report from check_sql_frontend.py")
+        from beyond_consensus.runtime.sql_text import require_qualification
+        frontend_report = read_json(args.frontend_report)
+        require_qualification({"sql_frontend_qualification": frontend_report})
+    result = check(args.model_lock, args.context_limit, args.action_constraint)
     with args.output.open("x") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")
     if args.qualified_lock:
         lock = read_json(args.model_lock)
         lock['decoder_qualification'] = result
+        if frontend_report:
+            lock['sql_frontend_qualification'] = frontend_report
         with args.qualified_lock.open('x') as stream:
             json.dump(lock, stream, indent=2)
     print(json.dumps(result, indent=2))

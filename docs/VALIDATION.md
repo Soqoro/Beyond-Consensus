@@ -2007,3 +2007,48 @@ Full suite: `python -m unittest discover -s tests -v` ran **214 tests in
 46 existing documentation blocks/four embedded scripts, and the new runbook's
 two shell blocks passed syntax checks. Compileall, isolated stdlib correction-audit
 CLI help and diff whitespace checks passed. No GPU job, download, commit or push.
+
+## Consolidated progress review (2026-09-22)
+
+Created PROGRESS_REPORT_2026-09-22.md and recorded the user's review pause in
+STATUS.md. Cross-checked recent 27B experiment IDs, statuses and costs against
+uploaded reports; verified report links and work-total arithmetic. Documentation
+only; no runtime, scoring, historical output or task changes.
+
+Regression suite: **214 tests in 81.991 seconds, 213 passed and one existing
+opt-in skip**. All nine shell checks and diff whitespace checks passed. No
+cluster job, download, commit or push occurred. The paired correction experiment
+remains prepared with no reported cluster submission/result.
+
+## 2026-09-22 SQL front end / finite graph implementation
+
+- Full suite with the optional pinned SQLGlot installed in `/tmp/bc-sql-phase-env`:
+  **222 tests, 221 passed, one existing opt-in legacy skip** (final full run: 106.701 seconds).
+  A subsequent focused matched-config test also passed after tightening nested
+  model/budget field-presence checks.
+- The separate compiler qualification passed all four test methods with zero
+  skips: 25 supported synthetic query cases, rejection/resource cases, protected
+  runtime integration, charged construction failures, and valid-but-wrong scoring.
+  It executes only trusted synthetic SQL; it is not a native reference approval.
+- The existing nine shell files passed validation. `compileall`, isolated
+  stdlib-only CLI help and `git diff --check` passed.
+- Constructed finite graphs execute through the existing engine in clean and
+  withholding conditions and preserve completed-run resume. Cost selection tests
+  use explicitly constructed estimates, including an independent-plan win.
+- The optional parser was a 524-kB wheel, SQLGlot 27.28.1 (MIT), installed only in
+  a temporary local environment. No GPU packages, model weights or data archives
+  were downloaded. The stdlib-only environment skips optional-parser tests.
+- No actual 27B tokenizer/XGrammar, Slurm/GPU, renewed private native reference,
+  native paired-interface, real planner-generation or calibration run was executed.
+  See the phase runbook for remaining implementation and external prerequisites.
+
+### 2026-09-23 follow-up review
+
+Reference front-end qualification now blocks missing or extra reference obligations
+before parsing, including a partially populated evaluation map. A mocked coverage
+regression checks this gate without private data. Corrected the parser resource
+limit description: a file-size limit does not prohibit creating files.
+
+Full optional-parser suite: **223 tests in 100.660 seconds, 222 passed and one
+existing opt-in skip**. Nine shell checks, compileall, isolated stdlib-only CLI
+help and diff whitespace checks passed. No cluster jobs or new research results.

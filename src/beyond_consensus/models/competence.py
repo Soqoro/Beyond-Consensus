@@ -32,13 +32,13 @@ def versions():
     return {p: importlib.metadata.version(p) for p in PACKAGES}
 
 
-def qualification_key(lock, packages, context_limit=8192):
+def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1"):
     if context_limit not in (8192, 16384):
         raise BCError("Unsupported qualification context")
     root = Path(__file__).resolve().parents[3]
     return digest({'checkpoint': lock['checkpoint'], 'revision': lock['revision'],
         'tokenizer_revision': lock['tokenizer_revision'], 'metadata': lock['metadata_hashes'],
-        'packages': packages, 'python': list(sys.version_info[:3]), 'contract': contract(),
+        'packages': packages, 'python': list(sys.version_info[:3]), 'contract': contract(mode),
         'settings': {'thinking': True, 'output': 2048, 'total_context': context_limit},
         'implementation': {name: file_hash(root/name) for name in (
             'scripts/check_action_constraints.py',
@@ -46,9 +46,9 @@ def qualification_key(lock, packages, context_limit=8192):
             'src/beyond_consensus/models/action_schema.py', 'src/beyond_consensus/models/transformers_backend.py')}})
 
 
-def require_qualification(lock, packages, context_limit=8192):
+def require_qualification(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1"):
     report = lock.get('decoder_qualification', {})
-    if (report.get('status') != 'passed' or report.get('qualification_key') != qualification_key(lock, packages, context_limit)
+    if (report.get('status') != 'passed' or report.get('qualification_key') != qualification_key(lock, packages, context_limit, mode)
             or report.get('model_executed') is not False or report.get('sql_executed') is not False):
         raise BCError('27B requires a current model-specific CPU qualification bound into a NEW model lock')
     return report

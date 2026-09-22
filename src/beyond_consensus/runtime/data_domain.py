@@ -141,6 +141,12 @@ class ViewValidationError(BCError):
     """A view cannot resolve or expose its explicitly public required columns."""
 
 
+class SQLConstructionError(BCError):
+    def __init__(self, category):
+        self.category = category if category in ("sql_parse_rejected", "sql_ir_rejected", "sql_construction_rejected", "sql_input_limit", "sql_compiler_limit") else "sql_construction_rejected"
+        super().__init__("SQL construction rejected before database execution")
+
+
 class DataDomain:
     def __init__(self, engine):
         self.engine = engine
@@ -155,7 +161,12 @@ class DataDomain:
 
     @property
     def instructions(self):
-        return SILO_INSTRUCTIONS if self.task.kind == "silo" else SQL_INSTRUCTIONS
+        if self.task.kind == "silo":
+            return SILO_INSTRUCTIONS
+        if self.engine.config.model.action_constraint != "sqlite-sql-text-v1":
+            return SQL_INSTRUCTIONS
+        from .sql_text import instructions
+        return instructions(SQL_INSTRUCTIONS)
 
     def available(self, identity, operation, allowed):
         if self.task.metadata.get("diagnostic_mode") == "boundary":
@@ -204,6 +215,25 @@ class DataDomain:
         if self.engine.ledger.remaining-work < floor:
             raise BudgetExceeded("Restricted operation would consume the protected reserve")
         self.engine.ledger.charge(stage, work, kind=kind, **usage)
+
+    def query_payload(self, payload, objects, stage, floor):
+        if self.engine.config.model.action_constraint != "sqlite-sql-text-v1":
+            return payload
+        from .sql_text import lower, CPU_SECONDS
+        work = CPU_SECONDS * self.engine.config.budget.tool_charge
+        if self.engine.ledger.remaining-work < floor:
+            raise BudgetExceeded("SQL compilation would consume the protected reserve")
+        self.engine.ledger.charge(stage, work, kind="sql_compilation", cpu_limit_seconds=CPU_SECONDS)
+        report = lower(payload, objects)
+        self.engine.ledger.entries[-1].update({k: v for k, v in report.items() if k != "tree"})
+        self.store.events.append({"type": "sql_compilation", "stage": stage,
+            "status": report["status"], "category": report.get("category"),
+            "input_hash": digest(payload), "compiler": report["contract"]})
+        if report["status"] == "blocked_prerequisite":
+            raise TaskUnavailable("blocked_prerequisite", "Pinned SQL parser unavailable")
+        if report["status"] != "ok":
+            raise SQLConstructionError(report.get("category"))
+        return report["tree"]
 
     def view_contract_queries(self, unit, name):
         # Only structured PUBLIC contract fields, never evaluator projections.
@@ -403,7 +433,7 @@ class DataDomain:
             if not isinstance(bindings, dict) or any(v not in self.available(identity, operation, allowed) for v in bindings.values()):
                 raise BCError("Unpermitted view binding")
             content = {"kind": "view" if tool == "submit_view_definition" else "query",
-                "select": action["select_sql"], "bindings": bindings}
+                "select": self.query_payload(action["select_sql"], set(harness["tables"]) | set(bindings), stage, floor), "bindings": bindings}
             if tool == "submit_view_definition":
                 name = action["artifact_name"]
                 identifier(name)
@@ -432,8 +462,9 @@ class DataDomain:
             names = action["view_names"]
             if not isinstance(names, list) or len(names) > 16:
                 raise BCError("Invalid declared view names")
-            compile_select(action["select_sql"], set(harness["tables"]) | set(names))
-            content = {"kind": "query_template", "select": action["select_sql"], "view_names": names}
+            payload = self.query_payload(action["select_sql"], set(harness["tables"]) | set(names), stage, floor)
+            compile_select(payload, set(harness["tables"]) | set(names))
+            content = {"kind": "query_template", "select": payload, "view_names": names}
             artifact = self.store.submit(identity, unit, content, "data_artifact")
             loop._observe(identity, {"tool": tool, "template_id": artifact.id})
         elif tool == "replay_query":
@@ -577,13 +608,16 @@ class DataDomain:
         return views, queries, query_units
 
     def integrate(self):
-        if set(self.engine.selected) != set(self.task.required_outputs):
+        if (set(self.task.required_outputs) - set(self.engine.selected) or
+                (not self.task.metadata.get("finite_graph_installed") and set(self.engine.selected) != set(self.task.required_outputs))):
             return False
         if self.task.kind == "silo":
             return True  # Coverage/shape only. Hidden scoring has no runtime edge.
         try:
             views, queries, units = self.bundle(self.engine.selected)
             for unit, version in self.engine.selected.items():
+                if unit not in self.task.required_outputs:
+                    continue
                 content = self.store.artifacts[version].content
                 if content["kind"] == "view":
                     queries.extend(self.view_contract_queries(unit, content["name"]))
@@ -595,7 +629,8 @@ class DataDomain:
             return False
 
     def evaluate(self):
-        selected = {u: self.store.artifacts[k].content for u, k in self.engine.selected.items()}
+        selected = {u: self.store.artifacts[k].content for u, k in self.engine.selected.items()
+                    if not self.task.metadata.get("finite_graph_installed") or u in self.task.required_outputs}
         self.charge("final_evaluation", "complete_output_scoring")
         if self.task.kind == "silo":
             if self.task.metadata.get("diagnostic_mode"):
@@ -612,7 +647,10 @@ class DataDomain:
             outputs = self.sql(views, queries, "final_evaluation")
             reports = {u: out["rows"] for u, out in zip(units, outputs)}
             exact, diagnostics = {}, {}
-            if self.task.kind == "sqlite_fixture" and self.task.metadata.get("sqlite_fixture_suite") in ("tool_compatibility_v1", "tool_correction_v1"):
+            if self.task.metadata.get("synthetic_two_reports"):
+                from ..tasks.sqlite_compatibility import score
+                exact = {u: score("aggregate", out) for u, out in zip(units, outputs)}
+            elif self.task.kind == "sqlite_fixture" and self.task.metadata.get("sqlite_fixture_suite") in ("tool_compatibility_v1", "tool_correction_v1"):
                 from ..tasks.sqlite_compatibility import score, view_check
                 unit = self.task.required_outputs[0]
                 output = (self.sql(views, [view_check()], "final_evaluation")[0]

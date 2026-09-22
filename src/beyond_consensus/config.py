@@ -27,7 +27,7 @@ class ModelConfig:
     action_constraint: str = "none"
 
     def __post_init__(self) -> None:
-        if self.action_constraint not in ("none", "sqlite-json-schema-v1"):
+        if self.action_constraint not in ("none", "sqlite-json-schema-v1", "sqlite-sql-text-v1"):
             raise BCError("Unknown action constraint")
         if self.backend not in ("mock", "transformers"):
             raise BCError("backend must be mock or transformers")
@@ -38,7 +38,7 @@ class ModelConfig:
             if (self.revision != REVISION or self.tokenizer_revision != REVISION or
                     self.dtype != "bfloat16" or not self.thinking or
                     self.context_limit not in (8192, 16384) or self.max_new_tokens != 2048 or
-                    self.action_constraint != "sqlite-json-schema-v1"):
+                    self.action_constraint not in ("sqlite-json-schema-v1", "sqlite-sql-text-v1")):
                 raise BCError("27B requires the pinned bounded BF16/thinking/constrained competence profile")
         if self.dtype not in ("bfloat16", "float16", "float32"):
             raise BCError("Unsupported dtype; no automatic quantization")
@@ -116,6 +116,8 @@ class RunConfig:
             raise BCError("Unknown SQLite error feedback condition")
         if self.sqlite_error_feedback != "generic" and self.sqlite_fixture_suite not in ("tool_compatibility_v1", "tool_correction_v1"):
             raise BCError("SQLite error feedback is gated to synthetic compatibility/correction probes")
+        if self.model.action_constraint == "sqlite-sql-text-v1" and self.sqlite_fixture_suite == "tool_correction_v1":
+            raise BCError("Supplied-draft correction stays on its original interface")
         native27 = (self.model.checkpoint == "Qwen/Qwen3.5-27B" and self.task_kind == "sqlite_native"
                     and self.task_count == 2 and self.policies == ("single",) and self.attacks == ("clean",)
                     and self.seeds == (0,) and self.protocol == "A" and not self.operation_measurement
