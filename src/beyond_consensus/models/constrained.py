@@ -8,7 +8,7 @@ from __future__ import annotations
 import importlib.metadata
 import time
 
-from .action_schema import action_schema, contract, XGRAMMAR_VERSION, DECODER_CPU_SECONDS
+from .action_schema import decoder_schema, contract, XGRAMMAR_VERSION, DECODER_CPU_SECONDS
 from ..util import BCError
 
 
@@ -65,7 +65,7 @@ class ActionConstraint:
                                                       stop_token_ids=eos_ids)
         compiler = self.xgr.GrammarCompiler(info, max_threads=1, cache_enabled=False)
         # Fixed property order enforces required-key presence and uniqueness.
-        self.compiled = compiler.compile_json_schema(action_schema(mode), any_whitespace=True,
+        self.compiled = compiler.compile_json_schema(decoder_schema(mode), any_whitespace=True,
                                                      max_whitespace_cnt=2, strict_mode=True)
         self.runtime = {**contract(mode), "vocab_size": vocab_size, "stop_token_ids": list(eos_ids),
                         "static_setup_cpu_seconds": time.process_time()-start}

@@ -704,3 +704,14 @@ produced. Root cause is unresolved. The offline checker now reports the fixed
 synthetic control, rejected token and independent whole-string grammar acceptance
 on this failure. Grammar, runtime policy and qualification requirements are unchanged.
 A fresh CPU-only text probe is needed; no GPU comparison is ready.
+
+Follow-up probe `sql-text-mask.Q8UTqw` rejects control 1 at token 20 (34821),
+including independent whole-string acceptance. It fails at JSON-escaped quotes
+in a synthetic SQL payload. Inspected XGrammar v0.1.32 `GenerateString` source:
+its min/maxLength production excludes backslashes and provides no escape branch.
+The SQL-text decoder now uses ordinary JSON strings for `select_sql` only; the
+runtime schema retains 16384 characters and the compiler retains 16384 UTF-8
+bytes. Generation caps are unchanged. The decoder projection hash and length
+policy are recorded in the text contract, so qualification must be renewed.
+Quote/backslash/newline/Unicode CPU qualifier controls were added. Actual pinned
+XGrammar/Qwen acceptance remains pending; no GPU run is authorized by this patch.

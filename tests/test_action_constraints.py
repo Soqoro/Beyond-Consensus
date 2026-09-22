@@ -44,6 +44,27 @@ class ConstrainedScript(ScriptedWorker):
 
 
 class ConstraintTests(unittest.TestCase):
+    def test_sql_decoder_escape_projection_keeps_runtime_bounds(self):
+        from beyond_consensus.models.action_schema import action_schema, decoder_schema
+        mode = "sqlite-sql-text-v1"
+        self.assertEqual(decoder_schema(MODE), action_schema(MODE))
+        public = action_schema(mode)
+        projected = decoder_schema(mode)
+        self.assertNotEqual(digest(public), digest(projected))
+        for branch in public["anyOf"]:
+            if "select_sql" in branch["properties"]:
+                self.assertEqual(branch["properties"]["select_sql"]["maxLength"], 16384)
+        for branch in projected["anyOf"]:
+            if "select_sql" in branch["properties"]:
+                self.assertEqual(branch["properties"]["select_sql"], {"type": "string"})
+        action = {"tool": "run_read_query", "permitted_artifact_versions": {},
+                  "select_sql": 'SELECT "x" AS "y"\nFROM "demo"'}
+        self.assertEqual(validate_action(json.dumps(action), mode), action)
+        action["select_sql"] = "x" * 16385
+        with self.assertRaises(BCError):
+            validate_action(json.dumps(action), mode)
+        self.assertEqual(contract(mode)["decoder_schema_sha256"], digest(projected))
+
     def config(self):
         config = load_config(ROOT/"configs/sqlite-tool-compatibility-constrained.json")
         return replace(config, model=replace(config.model, backend="mock"))

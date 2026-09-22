@@ -90,11 +90,31 @@ def action_schema(mode=MODE):
     return {"$schema": "https://json-schema.org/draft/2020-12/schema", "$defs": defs, "anyOf": actions}
 
 
+def decoder_schema(mode=MODE):
+    """Decoder syntax projection; runtime action_schema remains authoritative.
+
+    XGrammar 0.1.32's bounded-string production rejects JSON escapes. Use its
+    normal JSON-string production for SQL only; validate_action and the compiler
+    still enforce character and UTF-8 byte limits before any SQL execution.
+    """
+    schema = action_schema(mode)
+    if mode == "sqlite-sql-text-v1":
+        for branch in schema["anyOf"]:
+            payload = branch["properties"].get("select_sql")
+            if payload is not None:
+                payload.pop("maxLength", None)
+    return schema
+
+
 def contract(mode=MODE):
-    return {"mode": mode, "schema_sha256": digest(action_schema(mode)), "xgrammar_version": XGRAMMAR_VERSION,
+    result = {"mode": mode, "schema_sha256": digest(action_schema(mode)), "xgrammar_version": XGRAMMAR_VERSION,
             "object_key_order": "schema_declared", "reasoning": "unconstrained_until_think_close",
             "decoder_cpu_allowance_seconds_per_call": DECODER_CPU_SECONDS,
             "decoder_charge": "ceil_process_cpu_seconds_times_tool_charge"}
+    if mode == "sqlite-sql-text-v1":
+        result.update(decoder_schema_sha256=digest(decoder_schema(mode)),
+                      sql_string_length_enforcement="runtime-characters-and-utf8-bytes-v1")
+    return result
 
 
 def validate_action(text, mode=MODE):

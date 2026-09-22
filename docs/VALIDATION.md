@@ -2060,3 +2060,11 @@ user-reported cluster failure. Standard-library environment regression run:
 223 tests in 87.683 seconds, 219 passed and four skips (optional parser and legacy
 integration). Nine shell checks and diff whitespace checks passed. Actual
 Qwen tokenizer/XGrammar reproduction remains pending on the cluster.
+
+### SQL-string escape projection fix
+
+Full optional-parser suite: **224 tests in 110.543 seconds, 223 passed and one
+existing opt-in skip**. Seven focused action-constraint tests passed, including
+runtime oversize rejection and separate decoder projection provenance. Shell
+checks, compilation, stdlib-only checker help and whitespace checks passed.
+Actual XGrammar/Qwen controls remain cluster qualification work.

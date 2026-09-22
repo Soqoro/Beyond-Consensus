@@ -123,6 +123,11 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
         for action in good:
             if "select_sql" in action:
                 action["select_sql"] = compile_select(action["select_sql"], {"entries", "departments", "demo_rows", "demo_other"})[0]
+        # Exercise JSON escaping independently of task/reference content.
+        for sql in ('SELECT "demo_value" AS "demo_result" FROM "demo_rows"',
+                    "SELECT 'back\\slash' AS demo_result", "SELECT\n1 AS demo_result",
+                    "SELECT 'café' AS demo_result"):
+            good.append({"tool": "run_read_query", "permitted_artifact_versions": {}, "select_sql": sql})
         bad = ["{}", '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":{}}',
                '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":"SELECT 1}',
                '{"tool":"shell","command":"true"}']

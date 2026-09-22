@@ -342,3 +342,17 @@ export BC_TEXT_RUN="$("$BC_PYTHON" -c 'import json,sys;from pathlib import Path;
 
 Review these four development outcomes before authorizing anything else. Neither
 synthetic plan tests nor compiler qualification opens the native recovery gate.
+
+### SQL-string escape qualification correction (2026-09-23)
+
+The first cluster text qualifier rejected escaped identifier quotes. XGrammar
+0.1.32's bounded-string production excludes JSON escapes (see
+[the pinned GenerateString implementation](https://github.com/mlc-ai/xgrammar/blob/v0.1.32/cpp/json_schema_converter.cc#L1286)).
+For SQL-text payload fields only, a distinct decoder schema uses normal JSON
+strings. Runtime action validation still limits decoded strings to 16384
+characters; the compiler additionally enforces 16384 UTF-8 bytes. Output-token
+and CPU caps are unchanged. This is an explicit decoder/runtime schema split,
+not a claim that the decoder enforces length. Both schema hashes and the length
+policy are bound into the text contract. Tree decoder schema remains unchanged.
+Renew both qualifications from a fresh source snapshot before matched runs;
+new synthetic escaped-string controls must pass on the actual pinned tokenizer.
