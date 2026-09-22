@@ -53,3 +53,34 @@ class ReferenceCoverageTests(unittest.TestCase):
                 self.assertEqual(report['status'], 'blocked')
                 self.assertEqual(report['reports'][0]['status'], 'blocked_reference_coverage')
                 lower.assert_not_called()
+
+
+class LegacyFeedbackTests(unittest.TestCase):
+    def test_only_reviewed_provenance_resolves_without_mutation(self):
+        from beyond_consensus.diagnostics.sql_interface import resolve_baseline_config
+        baseline = {'experiment_id': 'synthetic', 'source_revision': 'synthetic-source',
+                    'config': {'max_actions': 24}}
+        baseline['config_hash'] = digest(baseline['config'])
+        original = deepcopy(baseline)
+        key = ('synthetic', 'synthetic-source', baseline['config_hash'])
+        evidence = {'field': 'sqlite_error_feedback', 'value': 'generic', 'basis': 'mock-only'}
+        with patch('beyond_consensus.diagnostics.sql_interface.LEGACY_FEEDBACK', {key: evidence}):
+            config, resolutions = resolve_baseline_config(baseline)
+            self.assertEqual(config['sqlite_error_feedback'], 'generic')
+            self.assertEqual(resolutions[0]['historical_config_hash'], baseline['config_hash'])
+            self.assertEqual(baseline, original)
+            for field in ('experiment_id', 'source_revision', 'config_hash'):
+                changed = deepcopy(baseline); changed[field] = 'different'
+                with self.assertRaises(BCError): resolve_baseline_config(changed)
+            changed = deepcopy(baseline); changed['config']['max_actions'] = 25
+            changed['config_hash'] = digest(changed['config'])
+            with self.assertRaises(BCError): resolve_baseline_config(changed)
+
+    def test_explicit_setting_is_preserved_and_unknown_omission_blocks(self):
+        from beyond_consensus.diagnostics.sql_interface import resolve_baseline_config
+        config = {'sqlite_error_feedback': 'sqlite-errors-v1'}
+        resolved, evidence = resolve_baseline_config({'config': config, 'config_hash': digest(config)})
+        self.assertEqual(resolved, config)
+        self.assertEqual(evidence, [])
+        with self.assertRaises(BCError):
+            resolve_baseline_config({'config': {}, 'config_hash': digest({})})

@@ -9,13 +9,41 @@ BASELINE = '13edf617e4e897fd76a83fc800acc1d51934bff720e02161a5c9f152fa9f5981'
 TREE = 'sqlite-json-schema-v1'
 TEXT = 'sqlite-sql-text-v1'
 
+# Audited historical worker emits generic restricted-action errors for SQL failures.
+# Match the complete provenance tuple, never just a commit or an absent field.
+LEGACY_FEEDBACK = {
+    (BASELINE,
+     '6e650d6468dd3b03ebca19a40c5a08c50a61e8db:d2ad7fc02b2fad1779809dbbfa97d17e64e5da7542185ee391db4a8618e571cd',
+     '8f306961f925d8082caf028743201e7c562d773aa487ebf1fdad4b0657d4a93b'): {
+        'field': 'sqlite_error_feedback', 'value': 'generic',
+        'basis': 'audited_historical_worker_behavior',
+        'worker_path': 'src/beyond_consensus/agents/worker.py',
+        'worker_sha256': '40f39fd854f9287c8d26fa51ea845f94ec6406a1c86a48969cb9d006c460ad85',
+    },
+}
+
+
+def resolve_baseline_config(baseline):
+    """Resolve only a reviewed legacy omission; never mutate historical input."""
+    config = deepcopy(baseline['config'])
+    if digest(config) != baseline.get('config_hash'):
+        raise BCError('Historical config hash mismatch')
+    if 'sqlite_error_feedback' in config:
+        return config, []
+    key = tuple(baseline.get(k) for k in ('experiment_id', 'source_revision', 'config_hash'))
+    evidence = LEGACY_FEEDBACK.get(key)
+    if evidence is None:
+        raise BCError('Missing resolved native setting: sqlite_error_feedback; unreviewed historical provenance')
+    config['sqlite_error_feedback'] = evidence['value']
+    return config, [{**evidence, 'source_revision': key[1], 'historical_config_hash': key[2]}]
+
 
 def prepare(baseline_path, renewed_data, output):
     from ..tasks.data_manifest import validate_data
     baseline = read_json(baseline_path)
     if baseline.get('experiment_id') != BASELINE or digest(baseline['config']) != baseline.get('config_hash'):
         raise BCError('Supply the actual resolved latest native manifest, with matching config hash')
-    config = baseline['config']
+    config, resolutions = resolve_baseline_config(baseline)
     # Explicit presence: no default budget/feedback/seed inference from summaries.
     for key in ('budget','model','seeds','max_actions','malformed_retries','observation_limit','sqlite_error_feedback'):
         if key not in config:
@@ -55,6 +83,8 @@ def prepare(baseline_path, renewed_data, output):
     report={'schema':'bc-interface-plan-v1','baseline_experiment':BASELINE,
         'baseline_manifest_hash':digest(baseline),'planned_episodes':4,'executed':0,
         'arms':['tree','text'],'frozen_settings':config,
+        'historical_config_hash':baseline['config_hash'],
+        'resolved_config_hash':digest(config),'historical_setting_resolutions':resolutions,
         'treatment_fields':['name','model.action_constraint','necessary query syntax documentation',
                             'decoder schema/qualification','SQL parser CPU allowance charged only when invoked'],
         'shared_changed_field':'renewed data_manifest approval path',

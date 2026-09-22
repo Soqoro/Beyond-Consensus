@@ -2068,3 +2068,12 @@ existing opt-in skip**. Seven focused action-constraint tests passed, including
 runtime oversize rejection and separate decoder projection provenance. Shell
 checks, compilation, stdlib-only checker help and whitespace checks passed.
 Actual XGrammar/Qwen controls remain cluster qualification work.
+
+### Historical native feedback compatibility
+
+Four focused plan/coverage tests passed. Full optional-parser suite: **226 tests
+in 98.834 seconds, 225 passed and one existing opt-in skip**. Regression checks
+cover input immutability, explicit-setting preservation and rejection of altered
+experiment/source/config provenance. Historical source digest reconstructed from
+Git matches the user-reported baseline. Nine shell checks passed; no inference or
+SQL execution was used to resolve the missing feedback field.

@@ -356,3 +356,15 @@ not a claim that the decoder enforces length. Both schema hashes and the length
 policy are bound into the text contract. Tree decoder schema remains unchanged.
 Renew both qualifications from a fresh source snapshot before matched runs;
 new synthetic escaped-string controls must pass on the actual pinned tokenizer.
+
+### Historical setting compatibility
+
+The historical native manifest predates `sqlite_error_feedback`. The plan builder
+has one audited compatibility entry bound to the exact experiment, complete source
+fingerprint and verified config hash reported for that run. It resolves generic
+SQL-error feedback from historical worker code, records the evidence and resolved
+config hash, and preserves the original manifest. It does not default arbitrary
+missing settings. After this diagnostic-only update, reuse the successful
+`sql-interface-escapes.odflct` qualification/reference files and rerun only
+`sql-interface-configs` into its still-absent `matched` directory. Subsequent
+manifests use the new source revision for both arms.

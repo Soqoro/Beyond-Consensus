@@ -715,3 +715,20 @@ bytes. Generation caps are unchanged. The decoder projection hash and length
 policy are recorded in the text contract, so qualification must be renewed.
 Quote/backslash/newline/Unicode CPU qualifier controls were added. Actual pinned
 XGrammar/Qwen acceptance remains pending; no GPU run is authorized by this patch.
+
+### Historical feedback resolution after successful CPU qualifications
+
+User's `sql-interface-escapes.odflct` passed reference representability for both
+solar tasks after completing preceding grammar/reference steps, then stopped at
+matched configuration preparation because the historical config predates the
+`sqlite_error_feedback` field. The supplied provenance is commit
+`6e650d6468dd3b03ebca19a40c5a08c50a61e8db`, source digest
+`d2ad7fc02b2fad1779809dbbfa97d17e64e5da7542185ee391db4a8618e571cd`, config hash
+`8f306961f925d8082caf028743201e7c562d773aa487ebf1fdad4b0657d4a93b`.
+Local Git reconstruction matches that complete source digest. Historical worker
+error handling uses generic SQL failure feedback; the configurable alternative
+was introduced in `a8d748d`. Matched-plan preparation resolves only this exact
+experiment/source/config tuple to `generic`, records evidence and both historical
+and resolved config hashes, and never rewrites the input manifest. Other omissions
+remain blocked. Decoder/compiler/evaluator implementations did not change in this
+compatibility patch. No native GPU comparison results have been reported.
