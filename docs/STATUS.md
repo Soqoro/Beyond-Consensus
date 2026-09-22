@@ -1,6 +1,20 @@
 # Implementation status and handoff
 
-## Current continuation: opt-in execution feedback (2026-09-22)
+## Current continuation: paired correction diagnostic (2026-09-22)
+
+The user-reported feedback-enabled run `ef260dc9...` passed 4/4 at 21327 work,
+with zero rejections and reconciled ledgers. It did not exercise feedback and
+matches the earlier synthetic total; native competence remains 0/2. The user
+approved a separate two-draft × two-feedback-condition diagnostic. Frozen invalid
+drafts are executed and charged before model turns, count against action/retry
+limits, and are never labelled model output. Only feedback and condition labels
+differ between the paired configs. Native and recovery enablement remain blocked.
+See [SQLITE_CORRECTION_DIAGNOSTIC.md](SQLITE_CORRECTION_DIAGNOSTIC.md).
+The paired read-only audit checks matched inputs and separates supplied-draft
+rejections from model rejections. Local scripted controls passed; GPU results are
+pending. No job, download, commit or push occurred in this implementation.
+
+## Prior continuation: opt-in execution feedback (2026-09-22)
 
 Implemented `sqlite-errors-v1` for the four synthetic tool probes only, with legacy
 feedback as the default. Fixed categories/hints contain no raw SQL error text or

@@ -242,6 +242,12 @@ def audit(run, control_run=None):
             'retry_count': sum(e['type']=='prohibited_or_malformed_action' for e in events),
             'prefill_seconds': None})
     passed = sum(r.get('success') is True for r in rows)
+    if manifest["config"].get("sqlite_fixture_suite") == "tool_correction_v1":
+        return {"schema": "bc-competence-audit-v1", "model_executed": False, "sql_executed": False,
+            "experiment_id": manifest["experiment_id"], "planned": manifest["planned_episodes"],
+            "successes": passed, "tasks": rows, "decision": "paired_correction_review_only",
+            "analysis_cpu_seconds": time.process_time()-started,
+            "interpretation": "Supplied invalid drafts; use correction-audit for matched comparison, not native eligibility"}
     comparison = []
     if control_run:
         old = audit(control_run)

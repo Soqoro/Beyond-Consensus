@@ -87,63 +87,78 @@ class WorkerLoop:
         malformed = 0
         for turn in range(self.config.max_actions):
             messages = self.store.contexts[identity].messages
-            input_tokens = self.backend.count_input(messages)
-            if input_tokens + self.config.model.max_new_tokens > self.config.model.context_limit:
-                self.store.events.append({"type": "context_limit", "unit": unit, "identity": identity,
-                    "input_tokens": input_tokens, "context_limit": self.config.model.context_limit,
-                    "max_new_tokens": self.config.model.max_new_tokens, "history_truncated": False})
-                self.boundary("context_limit")
-                raise BCError("Context limit exceeded; history was not silently truncated")
-            decoder_reservation = None
-            decoder_work = 0
-            if self.config.model.action_constraint != "none":
-                from ..models.action_schema import DECODER_CPU_SECONDS
-                decoder_work = DECODER_CPU_SECONDS * self.config.budget.tool_charge
-            reservation = self.ledger.reserve_call(stage, input_tokens, self.config.model.max_new_tokens, floor+decoder_work,
-                                                   generation_seed=seed + turn)
-            if decoder_work:
-                decoder_reservation = self.ledger.reserve_work(stage, decoder_work, "constrained_decoding")
-            self.boundary("model_inflight")
-            try:
-                generation = self.backend.generate(messages, self.config.model.max_new_tokens, seed + turn)
-                self.ledger.reconcile(reservation, output_tokens=generation.output_tokens,
-                                      reasoning_tokens=generation.reasoning_tokens,
-                                      device_seconds=generation.device_seconds)
-                if decoder_reservation is not None:
-                    from ..models.action_schema import contract
-                    details = generation.diagnostics
-                    seconds = details.get("constraint_cpu_seconds")
-                    if (details.get("action_constraint") != contract() or
-                            type(details.get("constraint_complete")) is not bool or
-                            type(seconds) not in (int, float) or not math.isfinite(seconds) or
-                            not 0 <= seconds <= DECODER_CPU_SECONDS):
-                        raise BCError("Constrained backend omitted valid decoder accounting/provenance")
-                    self.ledger.reconcile_work(decoder_reservation, math.ceil(seconds) * self.config.budget.tool_charge)
-                    self.ledger.entries[-1]["cpu_seconds"] = seconds
-                self.store.events.append({"type": "generation_metadata", "identity": identity, "unit": unit,
-                    "stage": stage, "operation": operation, "generation_seed": seed+turn,
-                    "messages_hash": digest(messages), "message_count": len(messages), "history_truncated": False,
-                    "input_tokens": input_tokens, "output_tokens": generation.output_tokens,
-                    "reasoning_tokens": generation.reasoning_tokens, "max_new_tokens": self.config.model.max_new_tokens,
-                    "context_limit": self.config.model.context_limit, "thinking": self.config.model.thinking,
-                    "silo_interface": self.config.silo_interface, "details": generation.diagnostics})
-            except Exception:
-                if reservation in self.ledger.reservations:
-                    self.ledger.reconcile(reservation, output_tokens=None, reasoning_tokens=None, failed=True)
-                if decoder_reservation in self.ledger.reservations:
-                    self.ledger.reconcile_work(decoder_reservation, None)
-                self.boundary("model_failed")
-                raise
-            messages.append({"role": "assistant", "content": generation.text})
-            self.boundary("model_complete")
+            injected = (turn == 0 and self.config.sqlite_fixture_suite == "tool_correction_v1")
+            if injected:
+                if task.metadata.get("sqlite_fixture_suite") != "tool_correction_v1" or operation != "implement":
+                    raise BCError("Correction seed is restricted to its synthetic implementation diagnostic")
+                action_text = canonical(task.metadata["initial_invalid_action"])
+                self._observe(identity, {"diagnostic_input": "supplied_invalid_draft",
+                    "action": task.metadata["initial_invalid_action"], "model_generated": False})
+                self.store.events.append({"type": "diagnostic_seed_action", "identity": identity,
+                    "unit": unit, "stage": stage, "action_hash": digest(task.metadata["initial_invalid_action"]),
+                    "model_generated": False, "counts_toward_action_limit": True})
+            else:
+                input_tokens = self.backend.count_input(messages)
+                if input_tokens + self.config.model.max_new_tokens > self.config.model.context_limit:
+                    self.store.events.append({"type": "context_limit", "unit": unit, "identity": identity,
+                        "input_tokens": input_tokens, "context_limit": self.config.model.context_limit,
+                        "max_new_tokens": self.config.model.max_new_tokens, "history_truncated": False})
+                    self.boundary("context_limit")
+                    raise BCError("Context limit exceeded; history was not silently truncated")
+                decoder_reservation = None
+                decoder_work = 0
+                if self.config.model.action_constraint != "none":
+                    from ..models.action_schema import DECODER_CPU_SECONDS
+                    decoder_work = DECODER_CPU_SECONDS * self.config.budget.tool_charge
+                reservation = self.ledger.reserve_call(stage, input_tokens, self.config.model.max_new_tokens, floor+decoder_work,
+                                                       generation_seed=seed + turn)
+                if decoder_work:
+                    decoder_reservation = self.ledger.reserve_work(stage, decoder_work, "constrained_decoding")
+                self.boundary("model_inflight")
+                try:
+                    generation = self.backend.generate(messages, self.config.model.max_new_tokens, seed + turn)
+                    self.ledger.reconcile(reservation, output_tokens=generation.output_tokens,
+                                          reasoning_tokens=generation.reasoning_tokens,
+                                          device_seconds=generation.device_seconds)
+                    if decoder_reservation is not None:
+                        from ..models.action_schema import contract
+                        details = generation.diagnostics
+                        seconds = details.get("constraint_cpu_seconds")
+                        if (details.get("action_constraint") != contract() or
+                                type(details.get("constraint_complete")) is not bool or
+                                type(seconds) not in (int, float) or not math.isfinite(seconds) or
+                                not 0 <= seconds <= DECODER_CPU_SECONDS):
+                            raise BCError("Constrained backend omitted valid decoder accounting/provenance")
+                        self.ledger.reconcile_work(decoder_reservation, math.ceil(seconds) * self.config.budget.tool_charge)
+                        self.ledger.entries[-1]["cpu_seconds"] = seconds
+                    self.store.events.append({"type": "generation_metadata", "identity": identity, "unit": unit,
+                        "stage": stage, "operation": operation, "generation_seed": seed+turn,
+                        "messages_hash": digest(messages), "message_count": len(messages), "history_truncated": False,
+                        "input_tokens": input_tokens, "output_tokens": generation.output_tokens,
+                        "reasoning_tokens": generation.reasoning_tokens, "max_new_tokens": self.config.model.max_new_tokens,
+                        "context_limit": self.config.model.context_limit, "thinking": self.config.model.thinking,
+                        "silo_interface": self.config.silo_interface, "details": generation.diagnostics})
+                except Exception:
+                    if reservation in self.ledger.reservations:
+                        self.ledger.reconcile(reservation, output_tokens=None, reasoning_tokens=None, failed=True)
+                    if decoder_reservation in self.ledger.reservations:
+                        self.ledger.reconcile_work(decoder_reservation, None)
+                    self.boundary("model_failed")
+                    raise
+                messages.append({"role": "assistant", "content": generation.text})
+                self.boundary("model_complete")
+                action_text = generation.text
             action_parsed = False
             try:
-                if self.config.model.action_constraint != "none":
+                if not injected and self.config.model.action_constraint != "none":
                     if not generation.diagnostics["constraint_complete"]:
                         raise BCError("Constrained generation ended without a complete action")
-                action = json.loads(generation.text)
+                action = json.loads(action_text)
                 action_parsed = True
                 artifact = self._tool(task, unit, identity, action, stage, operation, allowed_artifacts, floor)
+                if injected:
+                    from ..runtime.data_domain import TaskUnavailable
+                    raise TaskUnavailable("blocked_prerequisite", "Diagnostic seed unexpectedly succeeded")
                 self.boundary("tool_complete")
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
@@ -197,7 +212,8 @@ class WorkerLoop:
                 self._observe(identity, observation)
                 if self.domain:
                     self.store.events.append({"type": "prohibited_or_malformed_action", "identity": identity,
-                        "unit": unit, "stage": stage, "error_code": observation.get("error_code", "restricted_action_rejected")})
+                        "unit": unit, "stage": stage, "error_code": observation.get("error_code", "restricted_action_rejected"),
+                        **({"diagnostic_seed": True} if injected else {})})
                 self.boundary("malformed_action")
                 if malformed > self.config.malformed_retries:
                     return WorkerOutcome("malformed", None, turn + 1)

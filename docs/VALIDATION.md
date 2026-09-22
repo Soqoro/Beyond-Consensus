@@ -1993,3 +1993,17 @@ Full `python -m unittest discover -s tests -v`: **211 tests in 68.819 seconds,
 210 passed and one existing opt-in skip**. `python scripts/check_shell.py` passed
 all nine shell files. Isolated stdlib CLI help, new config loading and
 `git diff --check` passed. No GPU execution, download, commit or push occurred.
+
+## Matched supplied-draft correction diagnostic (2026-09-22)
+
+Three focused tests passed: matched frozen tasks/config bounds; real restricted
+CPU execution with scripted correction, seed/tool/model accounting, equal initial
+histories, paired report, and completed-resume non-reexecution; and repeated bad
+model actions exhausting the unchanged retry count with terminal failed scores.
+These are synthetic engineering controls, not new model results.
+
+Full suite: `python -m unittest discover -s tests -v` ran **214 tests in
+80.808 seconds: 213 passed, one existing opt-in skip**. All nine shell files,
+46 existing documentation blocks/four embedded scripts, and the new runbook's
+two shell blocks passed syntax checks. Compileall, isolated stdlib correction-audit
+CLI help and diff whitespace checks passed. No GPU job, download, commit or push.

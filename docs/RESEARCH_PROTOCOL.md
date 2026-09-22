@@ -377,3 +377,18 @@ charges and malformed retry limits apply, including re-prefill of feedback.
 Condition provenance and calibration compatibility separate this option. See
 [SQLITE_ERROR_FEEDBACK.md](SQLITE_ERROR_FEEDBACK.md). This is an interface change,
 not evidence of improved competence or recovery. Historical scores remain fixed.
+
+
+## Supplied-draft correction diagnostic (2026-09-22)
+
+`tool_correction_v1` is a separate two-task synthetic suite, run once under generic
+and once under categorized execution feedback. All other resolved settings,
+source and invalid draft inputs must match. This measures correction from supplied
+near-complete drafts, not spontaneous model errors or native competence. The
+harness executes one frozen invalid action before the first model call, charges
+its tool/SQL work to the episode, and counts it against action and retry limits.
+The draft is a labelled user-side input, never a fabricated assistant generation;
+its later prompt tokens are charged normally. No terminal answer or reference
+feedback reaches workers. Unexpected seed success blocks the diagnostic.
+The comparison retains both successes and failures and permits no automatic
+expansion. See [SQLITE_CORRECTION_DIAGNOSTIC.md](SQLITE_CORRECTION_DIAGNOSTIC.md).

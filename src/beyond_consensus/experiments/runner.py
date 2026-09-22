@@ -22,7 +22,7 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
     config = validate_manifest(manifest)
-    if config.sqlite_fixture_suite == "tool_compatibility_v1" and config.model.backend == "mock" and backend is None:
+    if config.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1") and config.model.backend == "mock" and backend is None:
         raise BCError("Tool compatibility requires a real backend or an explicitly injected CPU test double")
     if config.model.backend == "mock" and config.task_kind in ("sqlite_native", "sqlite_pair") and backend is None:
         raise BCError("Mock compilation is only a labelled fixture/SILO test worker; native tasks require the model adapter")
