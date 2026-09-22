@@ -2052,3 +2052,11 @@ limit description: a file-size limit does not prohibit creating files.
 Full optional-parser suite: **223 tests in 100.660 seconds, 222 passed and one
 existing opt-in skip**. Nine shell checks, compileall, isolated stdlib-only CLI
 help and diff whitespace checks passed. No cluster jobs or new research results.
+
+### SQL-text masked-token diagnostic
+
+Added failure details only to the offline synthetic decoder checker after the
+user-reported cluster failure. Standard-library environment regression run:
+223 tests in 87.683 seconds, 219 passed and four skips (optional parser and legacy
+integration). Nine shell checks and diff whitespace checks passed. Actual
+Qwen tokenizer/XGrammar reproduction remains pending on the cluster.

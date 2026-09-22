@@ -694,3 +694,13 @@ policy campaigns and supplied-draft correction stay paused. No new GPU results,
 submissions, private-data downloads or commits were made.
 
 See [phase scope, limitations and exact commands](SQL_INTERFACE_AND_DECOMPOSITION_PHASE.md).
+
+### 2026-09-23: cluster SQL-text qualification blocked
+
+User reports compiler qualification and 16K tree grammar qualification passed in
+`sql-interface.lkdzxn`. SQL-text qualification stopped with `Valid action token
+was masked`; no text qualification, native reference check or matched plan was
+produced. Root cause is unresolved. The offline checker now reports the fixed
+synthetic control, rejected token and independent whole-string grammar acceptance
+on this failure. Grammar, runtime policy and qualification requirements are unchanged.
+A fresh CPU-only text probe is needed; no GPU comparison is ready.

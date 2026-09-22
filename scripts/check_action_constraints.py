@@ -127,7 +127,7 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
                '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":"SELECT 1}',
                '{"tool":"shell","command":"true"}']
     closing = tokenizer.convert_tokens_to_ids("</think>")
-    for action in good:
+    for control_index, action in enumerate(good):
         text = json.dumps(action, separators=(",", ":"))
         validate_action(text, mode)
         ids = tokenizer.encode(text, add_special_tokens=False)
@@ -139,10 +139,22 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
         if not torch.equal(scores, unchanged) or processor.active:
             raise BCError("Prompt reasoning delimiter activated action constraints")
         prefix.append(closing)
-        for token in [*ids, eos[0]]:
+        for token_index, token in enumerate([*ids, eos[0]]):
             masked = processor(torch.tensor([prefix]), scores.clone())
             if not torch.isfinite(masked[0,token]).item():
-                raise BCError("Valid action token was masked")
+                # Only fixed synthetic controls reach this diagnostic; no task SQL.
+                direct = constraint.xgr.GrammarMatcher(constraint.compiled)
+                string_accepted = direct.accept_string(text)
+                stop_accepted = bool(string_accepted and direct.accept_token(eos[0]))
+                raise BCError("Valid action token was masked: " + json.dumps({
+                    "mode": mode, "control_index": control_index,
+                    "tool": action["tool"], "token_index": token_index,
+                    "token_id": token, "is_stop": token == eos[0],
+                    "token_piece": tokenizer.convert_ids_to_tokens(token),
+                    "synthetic_action": text,
+                    "whole_string_accepted": string_accepted,
+                    "whole_string_stop_accepted": stop_accepted,
+                }, ensure_ascii=True))
             prefix.append(token)
         matcher = constraint.xgr.GrammarMatcher(constraint.compiled)
         if not matcher.accept_string(text) or not matcher.accept_token(eos[0]):
