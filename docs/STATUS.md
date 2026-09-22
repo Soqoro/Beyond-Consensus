@@ -732,3 +732,19 @@ experiment/source/config tuple to `generic`, records evidence and both historica
 and resolved config hashes, and never rewrites the input manifest. Other omissions
 remain blocked. Decoder/compiler/evaluator implementations did not change in this
 compatibility patch. No native GPU comparison results have been reported.
+
+### SQL-text GPU preflight 1080859: blocked probe, not native execution
+
+User-supplied report for text experiment
+`6b4e708894c9885f312473a5a05ff39f9bcdb6c0dbc3efd207d84799e623437c`
+shows `command_failed=true` and `sql_frontend_probe.passed=false`. Qwen27B loaded
+on A100-SXM4-80GB. Inspect-schema probes completed, including 14336 input tokens
+and 89 generated tokens (early EOS); peak reserved memory was 62300094464 bytes.
+The fixed executor smoke passed. Worst-case fit remains unestablished.
+The SQL-query probe's exception branch discarded its generated action, so the
+report cannot identify the failed envelope/compilation/execution stage. Updated
+reporting retains this synthetic generation, failure stage and available compiler
+and executor details. Prompt, caps and pass criteria are unchanged. Decoder lock
+qualification fingerprints include the backend file: fresh CPU qualifications,
+manifests and preflight are required for this source. No native comparison run
+or model-competence conclusion follows from the failed preflight.

@@ -320,6 +320,44 @@ def long_history(backend):
     return messages
 
 
+def check_sql_frontend_probe(generation):
+    """Retain synthetic preflight evidence on every normal validation failure."""
+    from ..runtime.sql_text import lower
+    from ..runtime.sqlite_executor import execute
+    from ..tasks.sqlite_compatibility import database
+    import tempfile
+    report = {"generation": plain(generation), "passed": False, "failure_stage": "json_decode"}
+    try:
+        action = json.loads(generation.text)
+        report["failure_stage"] = "action_envelope"
+        if (not isinstance(action, dict)
+                or set(action) != {"tool", "permitted_artifact_versions", "select_sql"}
+                or action["tool"] != "run_read_query"
+                or action["permitted_artifact_versions"] != {}
+                or not isinstance(action["select_sql"], str)):
+            return report
+        report["failure_stage"] = "sql_compilation"
+        compiled = lower(action["select_sql"], ["entries", "departments"])
+        report["compiler"] = {k: v for k, v in compiled.items() if k != "tree"}
+        if compiled["status"] != "ok":
+            return report
+        report["failure_stage"] = "sql_execution"
+        with tempfile.TemporaryDirectory(prefix="bc-sql-preflight-") as tmp:
+            checked = execute(database(Path(tmp)/"synthetic.sqlite"),
+                              ["entries", "departments"], [], [compiled["tree"]])
+        report["executor"] = checked
+        if checked["status"] != "ok":
+            return report
+        report["failure_stage"] = "result_comparison"
+        report["passed"] = (checked["outputs"][0]["columns"] == ["id"]
+                            and checked["outputs"][0]["rows"] == [[i] for i in range(1, 6)])
+        if report["passed"]:
+            report["failure_stage"] = None
+    except (ValueError, KeyError, TypeError, IndexError) as exc:
+        report["error_type"] = type(exc).__name__
+    return report
+
+
 def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
     if config.action_constraint == "sqlite-sql-text-v1":
         import importlib.metadata
@@ -347,25 +385,10 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
                 return False
         extra['command_failed'] = not (valid_probe(result) and valid_probe(extended))
     if config.action_constraint == "sqlite-sql-text-v1":
-        from ..runtime.sql_text import lower
-        from ..runtime.sqlite_executor import execute
-        from ..tasks.sqlite_compatibility import database
-        import tempfile
         query_probe = backend.generate([{"role":"user", "content":
             'Synthetic qualification only. Return one JSON action: tool run_read_query, permitted_artifact_versions {}, select_sql a SQL string selecting id from entries ordered by id.'}], config.max_new_tokens, 0)
-        try:
-            action = json.loads(query_probe.text)
-            if set(action) != {"tool","permitted_artifact_versions","select_sql"} or action["tool"] != "run_read_query" or action["permitted_artifact_versions"] != {}:
-                raise ValueError("Invalid probe envelope")
-            compiled = lower(action["select_sql"], ["entries","departments"])
-            with tempfile.TemporaryDirectory(prefix="bc-sql-preflight-") as tmp:
-                checked = execute(database(Path(tmp)/"synthetic.sqlite"), ["entries","departments"], [], [compiled["tree"]]) if compiled["status"] == "ok" else {"status":"not_executed"}
-            passed = checked["status"] == "ok" and checked["outputs"][0]["columns"] == ["id"] and checked["outputs"][0]["rows"] == [[i] for i in range(1,6)]
-            extra["sql_frontend_probe"] = {"generation":plain(query_probe), "compiler":{k:v for k,v in compiled.items() if k!="tree"}, "passed":passed}
-        except (ValueError,KeyError,TypeError):
-            passed = False
-            extra["sql_frontend_probe"] = {"passed":False}
-        extra["command_failed"] = extra.get("command_failed",False) or not passed
+        extra["sql_frontend_probe"] = check_sql_frontend_probe(query_probe)
+        extra["command_failed"] = extra.get("command_failed", False) or not extra["sql_frontend_probe"]["passed"]
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)
     try:

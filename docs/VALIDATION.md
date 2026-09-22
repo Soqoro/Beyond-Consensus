@@ -2077,3 +2077,12 @@ cover input immutability, explicit-setting preservation and rejection of altered
 experiment/source/config provenance. Historical source digest reconstructed from
 Git matches the user-reported baseline. Nine shell checks passed; no inference or
 SQL execution was used to resolve the missing feedback field.
+
+### Synthetic preflight failure evidence
+
+Three focused mocked probe tests cover invalid JSON/action envelopes, compiler
+rejection without database access, executor failure, wrong rows and successful
+rows. Full optional-parser suite: **229 tests in 95.897 seconds, 228 passed and
+one existing opt-in skip**. Nine shell checks and whitespace checks passed.
+The historical failed synthetic generation was not recoverable from the supplied
+report; no new GPU result is claimed.
