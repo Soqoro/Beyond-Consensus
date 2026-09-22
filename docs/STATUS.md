@@ -1,6 +1,17 @@
 # Implementation status and handoff
 
-## Current continuation: native 24-action condition (2026-09-21)
+## Current continuation: offline failure audit (2026-09-22)
+
+The 24-action native run completed 0/2 at 171715 work. Solar_2 exhausted retries
+after a capped response and two SQL execution errors; solar_M_3 submitted a
+publicly valid view that failed terminal comparisons. Native competence remains
+unestablished. Further GPU runs and budget increases are paused. The user
+requested a bounded CPU replay: [NATIVE_FAILURE_AUDIT.md](NATIVE_FAILURE_AUDIT.md)
+records the evidence, separate replay accounting and browser commands. No native
+replay has run here; no worker feedback, scoring or executor policy is changed.
+
+
+## Prior continuation: native 24-action condition (2026-09-21)
 
 User-reported 27B synthetic competence passed 4/4; 16K preflight passed on A100
 80GB. The two native16k episodes completed 0/2 at 113123 work: both hit the

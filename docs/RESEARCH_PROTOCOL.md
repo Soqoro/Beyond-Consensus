@@ -354,3 +354,13 @@ Diagnostic context archives are never recovery candidates or model inputs.
 See [NATIVE_ACTIONS24.md](NATIVE_ACTIONS24.md) for reported evidence, limitations
 and the manual Slurm workflow. The prior 16K preflight has since passed and its
 two-task result is 0/2; the new 24-action condition is unexecuted.
+
+## Offline native failure audit (2026-09-22)
+
+The user authorized a fixed CPU-only replay of the two failed queries and the
+selected solar view's reviewed comparisons after the 24-action condition scored
+0/2. This is separate analysis, with a bounded replay ledger, no changed scores,
+no reference output in worker views and no return edge into model execution.
+See [NATIVE_FAILURE_AUDIT.md](NATIVE_FAILURE_AUDIT.md). Runtime executor and
+scoring code are unchanged; diagnostics require their historical hashes and
+SQLite capabilities to match. No arbitrary upstream test code is executed.

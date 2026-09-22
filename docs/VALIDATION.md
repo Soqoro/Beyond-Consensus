@@ -1954,3 +1954,16 @@ Tests enforce the old profiles' limits, the new exact 24-action condition and
 unchanged budget/model/retry settings. They exercise reset/restore archival,
 export/restore round trips, legacy checkpoints, deep-copy independence, private
 text omission and the exclusion of diagnostic archives from recovery candidates.
+
+## Offline native failure replay (2026-09-22)
+
+Full CPU regression: 203 tests in 72.056 seconds, 202 passed and one existing
+opt-in skip. Five new focused tests passed, including a real restricted synthetic
+SQLite child replay reporting an unresolved column without its identifier,
+source integrity preservation, no raw comparison rows in reports, missing-history
+handling, failed-call accounting and replay-call bounds. Nine shell files,
+46 existing documentation blocks/four embedded scripts and the new audit's three
+blocks/one embedded script passed checks. Compileall, stdlib-only CLI/help and
+diff whitespace checks passed. No actual native/private solar replay, model run,
+cluster submission, download, commit or push occurred locally. The new audit
+requires explicit manual CPU Slurm execution; its results remain pending.
