@@ -33,6 +33,24 @@ class SQLRejected(ValueError):
     pass
 
 
+def public_error_category(exc):
+    """Return only fixed categories; exception text never leaves the child."""
+    text = str(exc).lower()
+    for prefix, category in (
+        ("no such column:", "unresolved_column"),
+        ("ambiguous column name:", "ambiguous_column"),
+        ("no such table:", "unresolved_table"),
+        ("no such function:", "unresolved_function"),
+        ("misuse of aggregate", "aggregate_misuse"),
+        ("aggregate functions are not allowed", "aggregate_misuse"),
+        ("wrong number of arguments", "function_arity"),
+        ("near ", "sql_syntax"),
+    ):
+        if text.startswith(prefix):
+            return category
+    return "sqlite_execution_error"
+
+
 def keys(obj, allowed, required=()):
     if not isinstance(obj, dict) or set(obj) - set(allowed) or set(required) - set(obj):
         raise SQLRejected("Invalid structured query fields")
@@ -329,13 +347,16 @@ def _child(request):
             con.close()
 
 
-def execute(database, tables, views, queries, limits=None, *, source_hash=None):
+def execute(database, tables, views, queries, limits=None, *, source_hash=None, error_categories=False):
     """Harness API; callers must charge every invocation, including replay/scoring."""
     limits = {**DEFAULT_LIMITS, **(limits or {})}
     if set(limits) != set(DEFAULT_LIMITS) or any(type(v) is not int or v < 1 for v in limits.values()):
         raise SQLRejected("Invalid harness limits")
     request = {"database": str(Path(database).resolve()), "tables": list(tables),
         "views": views, "queries": queries, "limits": limits, "source_hash": source_hash}
+    if type(error_categories) is not bool:
+        raise SQLRejected("Invalid error feedback flag")
+    request["error_categories"] = error_categories
     raw = json.dumps(request, allow_nan=False)
     if len(raw.encode()) > 2097152 or len(queries) > 32:
         raise SQLRejected("Executor request limit")
@@ -368,7 +389,8 @@ def execute(database, tables, views, queries, limits=None, *, source_hash=None):
 
 if __name__ == "__main__":
     try:
-        value = _child(json.loads(sys.stdin.read(2097153)))
+        request = json.loads(sys.stdin.read(2097153))
+        value = _child(request)
     except SQLRejected:
         value = {"status": "prohibited_operation", "reason": "structured_policy"}
     except sqlite3.DatabaseError as exc:
@@ -376,6 +398,8 @@ if __name__ == "__main__":
         status = "execution_limit" if code in (sqlite3.SQLITE_INTERRUPT, sqlite3.SQLITE_NOMEM, sqlite3.SQLITE_TOOBIG, sqlite3.SQLITE_FULL) else (
             "prohibited_operation" if code == sqlite3.SQLITE_AUTH else "semantic_error")
         value = {"status": status, "reason": "query_execution"}
+        if status == "semantic_error" and request.get("error_categories") is True:
+            value["category"] = public_error_category(exc)
     except (MemoryError, OverflowError):
         value = {"status": "execution_limit", "reason": "memory_or_value"}
     except Exception:

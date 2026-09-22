@@ -1967,3 +1967,29 @@ blocks/one embedded script passed checks. Compileall, stdlib-only CLI/help and
 diff whitespace checks passed. No actual native/private solar replay, model run,
 cluster submission, download, commit or push occurred locally. The new audit
 requires explicit manual CPU Slurm execution; its results remain pending.
+
+## Public SQLite interface audit (2026-09-22)
+
+Added three synthetic restricted-executor controls for unbound aliases versus
+bound/constant SELECTs, SUM arity, and division versus executable multiplication.
+No native inputs, model calls, task-specific answer repairs or runtime behavior
+changes were used. See [SQLITE_INTERFACE_AUDIT.md](SQLITE_INTERFACE_AUDIT.md).
+
+Validation: `python -m unittest discover -s tests -v` ran **206 tests in
+72.776 seconds: 205 passed, one existing opt-in skip**. The three focused tests
+passed. `python scripts/check_shell.py` validated all nine shell files.
+Isolated stdlib CLI help, test-file compilation and `git diff --check` passed.
+No cluster jobs, downloads, commits or pushes were performed.
+
+## Opt-in SQLite execution feedback (2026-09-22)
+
+Added five focused tests for fixed-category privacy/fallback, explicit opt-in and
+manifest/calibration identity, worker correction versus retry exhaustion in both
+legacy and new modes, normal model/tool/SQL charges, terminal-path isolation,
+four positive synthetic episodes, and rejection of mixed feedback provenance.
+All five passed using scripted CPU workers; no actual model competence is claimed.
+
+Full `python -m unittest discover -s tests -v`: **211 tests in 68.819 seconds,
+210 passed and one existing opt-in skip**. `python scripts/check_shell.py` passed
+all nine shell files. Isolated stdlib CLI help, new config loading and
+`git diff --check` passed. No GPU execution, download, commit or push occurred.

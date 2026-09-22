@@ -413,6 +413,8 @@ class EpisodeEngine:
             "operation_measurement": self.config.operation_measurement}
         if self.config.organization != "legacy":
             result.provenance["condition"]["organization"] = self.config.organization
+        if self.config.sqlite_error_feedback != "generic":
+            result.provenance["condition"]["sqlite_error_feedback"] = self.config.sqlite_error_feedback
         if self.config.model.action_constraint != "none":
             result.provenance["condition"]["action_constraint"] = self.config.model.action_constraint
         self.journal.result(result)

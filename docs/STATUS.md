@@ -1,6 +1,30 @@
 # Implementation status and handoff
 
-## Current continuation: offline failure audit (2026-09-22)
+## Current continuation: opt-in execution feedback (2026-09-22)
+
+Implemented `sqlite-errors-v1` for the four synthetic tool probes only, with legacy
+feedback as the default. Fixed categories/hints contain no raw SQL error text or
+hidden evaluation information. Charges and retry limits are unchanged; correction
+requires another charged model action. Manifest/calibration identity and aggregate
+conditions distinguish the option. See [SQLITE_ERROR_FEEDBACK.md](SQLITE_ERROR_FEEDBACK.md)
+and `configs/qwen27b-sql-error-feedback.json`. Scripted CPU checks passed; actual
+model behavior is unmeasured. No GPU submissions, native enablement, commits or
+pushes occurred. Native competence and the research comparison gate remain unmet.
+
+## Prior continuation: public interface audit (2026-09-22)
+
+The user-reported offline replay classified both query errors as unresolved
+columns and confirmed the submitted view's comparison failure. Its 150 replay
+work is separate from historical 171715 work (0/2). Public candidate inspection
+identified missing source aliases/incomplete query structure and a multiplication
+in place of division. See [SQLITE_INTERFACE_AUDIT.md](SQLITE_INTERFACE_AUDIT.md).
+The shared instructions cover basic query syntax, but worker query failures lose
+execution detail in a generic rejection. Three synthetic controls verify name
+resolution, function arity and arithmetic preservation. No runtime/prompt/scorer
+changes or GPU submissions occurred; improved feedback is a proposed fresh
+condition, not an established remedy. Native competence remains unmet.
+
+## Prior continuation: offline failure audit (2026-09-22)
 
 The 24-action native run completed 0/2 at 171715 work. Solar_2 exhausted retries
 after a capped response and two SQL execution errors; solar_M_3 submitted a

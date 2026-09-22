@@ -148,7 +148,7 @@ class WorkerLoop:
                 if artifact:
                     return WorkerOutcome("submitted", artifact.id, turn + 1)
             except (ValueError, TypeError, KeyError, BCError) as exc:
-                from ..runtime.data_domain import ActionFieldsError, SQL_COLUMN_HINT, SQL_KINDS, TaskUnavailable, ViewValidationError
+                from ..runtime.data_domain import ActionFieldsError, SQL_COLUMN_HINT, SQL_KINDS, TaskUnavailable, ViewValidationError, SQLExecutionError
                 if isinstance(exc, (BudgetExceeded, TaskUnavailable)):
                     raise
                 malformed += 1
@@ -164,6 +164,8 @@ class WorkerLoop:
                         observation["hint"] = ("For SQL actions, write permitted_artifact_versions before select_sql "
                                                "at the top level. Close both the query object and the action object. "
                                                + SQL_COLUMN_HINT)
+                elif self.domain and isinstance(exc, SQLExecutionError) and self.config.sqlite_error_feedback == "sqlite-errors-v1":
+                    observation = exc.observation()
                 elif self.domain and isinstance(exc, ViewValidationError):
                     observation = {"error_code": "invalid_view",
                         "error": "View cannot be queried or lacks columns declared in the public contract. No artifact was created. Check FROM, column references and output aliases."}

@@ -34,6 +34,8 @@ def compatibility(config: RunConfig, task: TaskInstance | None = None) -> str:
         "monitor": config.monitor_id, "split": config.split_id, "task_kind": config.task_kind,
         "worker_instructions": instructions, "silo_interface": config.silo_interface,
         "operation_measurement": config.operation_measurement}
+    if config.sqlite_error_feedback != "generic":
+        data["sqlite_error_feedback"] = config.sqlite_error_feedback
     if config.model.backend == "transformers":
         from ..models.transformers_backend import GENERATION_POLICY
         data["generation_policy"] = GENERATION_POLICY

@@ -113,6 +113,30 @@ class ActionFieldsError(BCError):
         super().__init__("Invalid top-level SQL action fields")
 
 
+SQL_ERROR_HINTS = {
+    "unresolved_column": "Check column names and the FROM/join aliases that bind qualified references.",
+    "ambiguous_column": "Qualify ambiguous columns with their declared table aliases.",
+    "unresolved_table": "Check source table names and explicit artifact version bindings.",
+    "unresolved_function": "Use only functions listed in the tool instructions.",
+    "aggregate_misuse": "Check where aggregate functions occur and the grouping expressions.",
+    "function_arity": "Check argument counts: sum/avg/total take one expression; round takes one or two.",
+    "sql_syntax": "Check the structured SELECT sources, joins and expression layout.",
+    "sqlite_execution_error": "Check the structured query against the public schema and tool instructions.",
+}
+
+
+class SQLExecutionError(BCError):
+    """Sanitized public execution feedback, never terminal comparison feedback."""
+    def __init__(self, category):
+        self.category = category if isinstance(category, str) and category in SQL_ERROR_HINTS else "sqlite_execution_error"
+        super().__init__("Restricted query execution failed")
+
+    def observation(self):
+        return {"error": "Query execution failed. No artifact was created.",
+                "error_code": self.category, "feedback_policy": "sqlite-errors-v1",
+                "hint": SQL_ERROR_HINTS[self.category]}
+
+
 class ViewValidationError(BCError):
     """A view cannot resolve or expose its explicitly public required columns."""
 
@@ -217,7 +241,9 @@ class DataDomain:
             except (BCError, OSError) as exc:
                 raise TaskUnavailable("blocked_prerequisite", "Staged database is missing or changed") from exc
         result = execute(database, harness["tables"], views, queries, harness["limits"],
-            source_hash=harness.get("database", {}).get("sha256"))
+            source_hash=harness.get("database", {}).get("sha256"),
+            **({"error_categories": True} if self.engine.config.sqlite_error_feedback == "sqlite-errors-v1"
+               and stage in ("primary", "repair") else {}))
         self.engine.ledger.entries[-1].update({k: result[k] for k in ("status", "steps", "wall_seconds") if k in result})
         if "capabilities" in result:
             self.engine.ledger.entries[-1]["executor_runtime"] = result["capabilities"]
@@ -228,6 +254,8 @@ class DataDomain:
             "queries": digest(queries), "status": result["status"]})
         if result["status"] in ("execution_limit", "blocked_capability", "blocked_prerequisite", "infrastructure_failed"):
             raise TaskUnavailable(result["status"], result.get("reason", "SQL executor capability unavailable"))
+        if result["status"] == "semantic_error" and self.engine.config.sqlite_error_feedback == "sqlite-errors-v1" and stage in ("primary", "repair"):
+            raise SQLExecutionError(result.get("category"))
         if result["status"] != "ok":
             raise BCError("Restricted query failed: " + result["status"])
         return result["outputs"]
@@ -393,7 +421,7 @@ class DataDomain:
                     self.sql(views + [{"name": content["name"], "select": tree}],
                         self.view_contract_queries(unit, content["name"]), stage, floor)
                 except BCError as exc:
-                    if isinstance(exc, (TaskUnavailable, BudgetExceeded)):
+                    if isinstance(exc, (TaskUnavailable, BudgetExceeded, SQLExecutionError)):
                         raise
                     raise ViewValidationError("View cannot resolve or expose its public required columns") from None
             artifact = self.store.submit(identity, unit, content, "data_artifact")

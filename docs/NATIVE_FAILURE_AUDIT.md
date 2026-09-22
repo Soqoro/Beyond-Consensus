@@ -8,8 +8,9 @@ used the 24-action/16K condition and completed 0/2 at 171715 work. Solar_2 used
 `semantic_error`, and three rejections ended the operation as `malformed`.
 Evaluation reported missing obligations. Solar_M_3 used 13 calls and 83153 work,
 selected a view, passed public integration, but failed terminal exact and native
-subset comparisons. No context or action limit bound this run. We have not
-identified the specific execution defect or incorrect view expression.
+subset comparisons. No context or action limit bound this run. The subsequent user-reported replay and public candidate inspection identified
+unbound aliases and an incorrect arithmetic operator; see
+[the public interface audit](SQLITE_INTERFACE_AUDIT.md).
 
 Further GPU reruns and limit increases are paused. The new `native-failure-audit`
 is a CPU-only diagnostic for those two completed native episodes. It never

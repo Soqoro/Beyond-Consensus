@@ -364,3 +364,16 @@ no reference output in worker views and no return edge into model execution.
 See [NATIVE_FAILURE_AUDIT.md](NATIVE_FAILURE_AUDIT.md). Runtime executor and
 scoring code are unchanged; diagnostics require their historical hashes and
 SQLite capabilities to match. No arbitrary upstream test code is executed.
+
+
+## Opt-in synthetic SQL execution feedback (2026-09-22)
+
+The bounded `sqlite_error_feedback=sqlite-errors-v1` condition provides fixed
+public SQL execution categories and generic hints during primary/repair tools.
+It is initially limited to the four synthetic single/clean probes; `generic`
+remains the default. No raw exception text, expected answers or terminal scoring
+feedback is exposed. No tree is repaired and no extra query is executed. Existing
+charges and malformed retry limits apply, including re-prefill of feedback.
+Condition provenance and calibration compatibility separate this option. See
+[SQLITE_ERROR_FEEDBACK.md](SQLITE_ERROR_FEEDBACK.md). This is an interface change,
+not evidence of improved competence or recovery. Historical scores remain fixed.

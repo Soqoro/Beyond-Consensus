@@ -30,6 +30,8 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
             "operation_measurement": config.operation_measurement}
         if config.organization != "legacy":
             expected_condition["organization"] = config.organization
+        if config.sqlite_error_feedback != "generic":
+            expected_condition["sqlite_error_feedback"] = config.sqlite_error_feedback
         if config.model.action_constraint != "none":
             expected_condition["action_constraint"] = config.model.action_constraint
         if "condition" in row["provenance"] and row["provenance"]["condition"] != expected_condition:
@@ -80,6 +82,7 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
             "condition": {"profile": config.development_profile, "silo_interface": config.silo_interface,
                           "diagnostic_mode": manifest["tasks"][0].get("metadata", {}).get("diagnostic_mode", "full"),
                           "operation_measurement": config.operation_measurement,
+                          **({"sqlite_error_feedback": config.sqlite_error_feedback} if config.sqlite_error_feedback != "generic" else {}),
                           **({"action_constraint": config.model.action_constraint} if config.model.action_constraint != "none" else {})},
             "organization": config.organization,
             "legacy_integration_failures_meaning": "completed unsuccessful episodes; not public integration failures",

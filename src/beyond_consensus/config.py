@@ -109,8 +109,13 @@ class RunConfig:
     operation_measurement: bool = False
     organization: str = "legacy"
     sqlite_fixture_suite: str = "arithmetic_v1"
+    sqlite_error_feedback: str = "generic"
 
     def __post_init__(self) -> None:
+        if self.sqlite_error_feedback not in ("generic", "sqlite-errors-v1"):
+            raise BCError("Unknown SQLite error feedback condition")
+        if self.sqlite_error_feedback != "generic" and self.sqlite_fixture_suite != "tool_compatibility_v1":
+            raise BCError("SQLite error feedback is gated to the four synthetic tool probes")
         native27 = (self.model.checkpoint == "Qwen/Qwen3.5-27B" and self.task_kind == "sqlite_native"
                     and self.task_count == 2 and self.policies == ("single",) and self.attacks == ("clean",)
                     and self.seeds == (0,) and self.protocol == "A" and not self.operation_measurement
