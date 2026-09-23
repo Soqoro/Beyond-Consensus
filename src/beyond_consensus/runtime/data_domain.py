@@ -19,6 +19,16 @@ SQL_COLUMN_HINT = ('Column syntax example only: {"expr":{"column":"demo_column"}
                    'The optional "as" field is a sibling of "expr", outside the expression object. '
                    'Close the expression object before adding a column alias. Omit "as" when no alias is needed.')
 
+SQL_TEXT_NAMING_INSTRUCTIONS = """SQL-text naming protocol: sqlite-sql-text-names-v2.
+In inspect_schema's result object, each key is a table name and its list contains that table's column names.
+A documentation key database|table|column identifies a database, table and column; it is not a SQL table name.
+Use the exact table names returned by inspect_schema in FROM and JOIN. A table's ID column is not part of its table name.
+Database/schema-qualified table references are unsupported. In column expressions, table.column or alias.column
+is supported; after assigning a table alias, use alias.column for its columns.
+For example only, demo_db|demo_rows|item_key means table demo_rows and column item_key.
+It does not mean a table named demo_rows.item_key. Do not infer executable table names from document paths.
+"""
+
 SQL_INSTRUCTIONS = """Use exactly one JSON tool action per turn, no Markdown.
 Every action has a "tool" key with its arguments as top-level keys.
 Work on the current assignment only. The harness will issue the next assignment after submission.
@@ -166,7 +176,9 @@ class DataDomain:
         if self.engine.config.model.action_constraint != "sqlite-sql-text-v1":
             return SQL_INSTRUCTIONS
         from .sql_text import instructions
-        return instructions(SQL_INSTRUCTIONS)
+        # Preserve the tree arm verbatim; its column-object hint is not SQL syntax.
+        return SQL_TEXT_NAMING_INSTRUCTIONS + instructions(
+            SQL_INSTRUCTIONS.removesuffix(SQL_COLUMN_HINT + "\n"))
 
     def available(self, identity, operation, allowed):
         if self.task.metadata.get("diagnostic_mode") == "boundary":

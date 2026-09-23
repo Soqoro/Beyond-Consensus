@@ -380,3 +380,23 @@ this diagnostic prompt hash and distinguishes incomplete generation from invalid
 JSON. Prior preflight failures remain failures. Renew backend qualification and
 use fresh manifests/output paths before testing this diagnostic revision; do not
 start native interface episodes until the SQL-text preflight passes.
+
+### New prompt condition: sqlite-sql-text-names-v2
+
+The completed matched development comparison produced tree 0/2 at 171725 charged
+work and text 1/2 at 134471. The successful text task was solar_M_3. The failed
+solar_2 text query used table/column pairs as qualified table names; its recorded
+schema correctly distinguished them. Public document path notation may have
+contributed, but causation is unestablished. Those results remain frozen.
+
+The next SQL-text prompt explicitly describes schema object keys as table names,
+values as column lists, and database|table|column documentation paths as metadata.
+It distinguishes qualified column expressions from unsupported qualified table
+references and omits the leftover tree-only column example. The prompt includes
+the `sqlite-sql-text-names-v2` label. Compiler behavior, worker capabilities,
+model settings and budgets are unchanged. This is a new, source-bound prompt
+condition: prepare fresh manifests and preserve all historical outputs. The
+current parser/backend approval code is unchanged, but all existing hash-bound
+validation checks remain mandatory. Do not edit previous manifests or treat a
+rerun as part of the original matched comparison. Native policy/planning campaigns
+remain gated; no new cluster run is claimed by this change.

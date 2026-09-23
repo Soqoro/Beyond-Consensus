@@ -765,3 +765,34 @@ worker prompts remain unchanged. Unfinished generations are classified before
 JSON parsing and cannot invoke the compiler. This is a changed preflight prompt,
 not a recovered success or a native competence result. Fresh backend qualification
 is required; paired native runs remain paused.
+
+### Completed matched interface development comparison and naming audit
+
+User-provided read-only audit reports matching recorded fields for fresh tree
+experiment `a11a562d9af5e460c728f5dcf68c18a381a3bf5bc29ec3267f36a71ead918341`
+and SQL-text experiment
+`a84f67659e998a2164836a8e66c2e8f06fecdda5a6e66805c72fbe563478143b`.
+Both have two completed episodes with no missing shards. Tree: solar_2 failed
+without an artifact (88572 work); solar_M_3 submitted but incorrect (83153 work).
+Text: solar_2 failed without an artifact (80083 work); solar_M_3 passed (54388
+work, zero tool rejections). Total charged work: tree 171725, text 134471,
+including 60 text-compiler work. Uploaded ledger rows reconcile exactly.
+These are repeatedly inspected tasks in one database, not confirmatory evidence
+or a recovery-policy result.
+
+The separately extracted rejected SQL matched compiler input hash
+`193cc4a19c35292755351cd0685d1e15ba7c654e77a300cca12d6790e4582586`.
+It treated table/ID-column pairs as qualified table names. Worker-visible schema
+correctly distinguished table keys from column lists; public column documentation
+used database|table|column paths. No evidence establishes that documentation
+caused the confusion. The rejected query was also only a partial calculation;
+it was never a successfully submitted complete answer. The text system prompt
+retained a tree-only column example, an independently observed interface defect.
+
+Implemented SQL-text-only naming instructions, labelled
+`sqlite-sql-text-names-v2`, and removed the trailing tree column example from that
+mode. Generic examples only: no benchmark names, joins, formulas or reference
+answers were added. Default tree/SILO instructions, compiler/executor policy,
+scoring and budget settings are unchanged. Any subsequent execution is a fresh
+prompt condition with a new source-bound manifest, not a revision of the above
+scores. No job, model generation, commit or push was performed locally.

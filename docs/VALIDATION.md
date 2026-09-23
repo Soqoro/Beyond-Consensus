@@ -2095,3 +2095,13 @@ suite: **230 tests in 74.124 seconds, 226 passed and four skips** (optional pars
 and opt-in legacy integration). Nine shell checks, compileall and whitespace
 checks passed. No real tokenizer/model generation was run locally. The temporary
 optional-parser environment from earlier turns is no longer present.
+
+### SQL-text naming instructions
+
+Two focused regression tests verify the actual DataDomain text prompt has
+SQL-string query examples accepted by the public envelope schema, retains exact
+version binding instructions, removes the tree column-object hint, and leaves
+tree/SILO prompts unchanged. Full stdlib suite: **232 tests in 80.466 seconds,
+228 passed and four skips** (optional parser and legacy integration). Nine shell
+checks, compileall, isolated CLI help and diff whitespace checks passed. No new
+GPU/model or native SQL evaluation was run.
