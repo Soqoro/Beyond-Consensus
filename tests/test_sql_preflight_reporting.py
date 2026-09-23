@@ -18,6 +18,20 @@ class ProbeReportingTests(unittest.TestCase):
                 self.assertEqual(report['generation']['text'], text)
                 lower.assert_not_called()
 
+    def test_unfinished_generation_never_reaches_compiler(self):
+        # Even a parseable prefix is not a completed constrained action.
+        text = json.dumps({'tool': 'run_read_query', 'permitted_artifact_versions': {}, 'select_sql': 'SELECT id FROM entries'})
+        for diagnostics, stage in [
+            ({'finish_reason': 'length_limit', 'constraint_complete': False}, 'generation_limit'),
+            ({'finish_reason': 'eos', 'constraint_complete': False}, 'incomplete_action'),
+        ]:
+            with patch('beyond_consensus.runtime.sql_text.lower') as lower:
+                report = check_sql_frontend_probe(Generation(text, 2048, diagnostics=diagnostics))
+            self.assertFalse(report['passed'])
+            self.assertEqual(report['failure_stage'], stage)
+            self.assertEqual(report['generation']['text'], text)
+            lower.assert_not_called()
+
     def test_compiler_rejection_is_retained_without_database(self):
         text = json.dumps({'tool': 'run_read_query', 'permitted_artifact_versions': {}, 'select_sql': 'bad SQL'})
         with patch('beyond_consensus.runtime.sql_text.lower', return_value={'status': 'rejected', 'category': 'test'}), \

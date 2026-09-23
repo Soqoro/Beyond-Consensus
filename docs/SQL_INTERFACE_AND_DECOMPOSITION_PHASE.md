@@ -368,3 +368,15 @@ missing settings. After this diagnostic-only update, reuse the successful
 `sql-interface-escapes.odflct` qualification/reference files and rerun only
 `sql-interface-configs` into its still-absent `matched` directory. Subsequent
 manifests use the new source revision for both arms.
+
+### Synthetic GPU probe envelope clarification
+
+The captured SQL probe reached its 2048 output-token limit while debating the
+JSON envelope; zero final-action mask calls were recorded. The replacement
+`explicit-flat-envelope-v2` preflight prompt explicitly lists the three ordered
+top-level fields and synthetic table columns. It supplies no SQL solution and
+changes no native task prompt, generation setting or budget. The report binds
+this diagnostic prompt hash and distinguishes incomplete generation from invalid
+JSON. Prior preflight failures remain failures. Renew backend qualification and
+use fresh manifests/output paths before testing this diagnostic revision; do not
+start native interface episodes until the SQL-text preflight passes.

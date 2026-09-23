@@ -2086,3 +2086,12 @@ rows. Full optional-parser suite: **229 tests in 95.897 seconds, 228 passed and
 one existing opt-in skip**. Nine shell checks and whitespace checks passed.
 The historical failed synthetic generation was not recoverable from the supplied
 report; no new GPU result is claimed.
+
+### Explicit synthetic probe envelope
+
+Four focused preflight-report tests passed, including generation-limit and
+incomplete-action rejection without compiler access. Full stdlib environment
+suite: **230 tests in 74.124 seconds, 226 passed and four skips** (optional parser
+and opt-in legacy integration). Nine shell checks, compileall and whitespace
+checks passed. No real tokenizer/model generation was run locally. The temporary
+optional-parser environment from earlier turns is no longer present.

@@ -748,3 +748,20 @@ and executor details. Prompt, caps and pass criteria are unchanged. Decoder lock
 qualification fingerprints include the backend file: fresh CPU qualifications,
 manifests and preflight are required for this source. No native comparison run
 or model-competence conclusion follows from the failed preflight.
+
+### SQL-text probe generation limit identified
+
+The user-reported preflight for experiment
+`2b78e29935a33d9ac8aec75d025f68e3b7ba5092da41877a83ff5c479b1b9dee`
+failed before SQL compilation: 2048 output tokens, `finish_reason=length_limit`,
+`constraint_complete=false`, zero constraint mask calls. The captured text debates
+flat versus nested tool parameters. Its reasoning token partition is unknown;
+no exact reasoning-token count is inferred. The original user-only preflight
+prompt did not explicitly declare top-level envelope fields. An opt-in synthetic
+probe prompt correction now specifies these fields and the public synthetic
+schema, without providing the answer. It is labelled `explicit-flat-envelope-v2`
+and records its prompt hash. Model/reasoning settings, token/work caps and native
+worker prompts remain unchanged. Unfinished generations are classified before
+JSON parsing and cannot invoke the compiler. This is a changed preflight prompt,
+not a recovered success or a native competence result. Fresh backend qualification
+is required; paired native runs remain paused.

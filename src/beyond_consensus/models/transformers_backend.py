@@ -327,6 +327,12 @@ def check_sql_frontend_probe(generation):
     from ..tasks.sqlite_compatibility import database
     import tempfile
     report = {"generation": plain(generation), "passed": False, "failure_stage": "json_decode"}
+    if generation.diagnostics.get("finish_reason") == "length_limit":
+        report["failure_stage"] = "generation_limit"
+        return report
+    if generation.diagnostics.get("constraint_complete") is False:
+        report["failure_stage"] = "incomplete_action"
+        return report
     try:
         action = json.loads(generation.text)
         report["failure_stage"] = "action_envelope"
@@ -385,9 +391,24 @@ def preflight(config: ModelConfig, model_lock: Path) -> dict[str, Any]:
                 return False
         extra['command_failed'] = not (valid_probe(result) and valid_probe(extended))
     if config.action_constraint == "sqlite-sql-text-v1":
-        query_probe = backend.generate([{"role":"user", "content":
-            'Synthetic qualification only. Return one JSON action: tool run_read_query, permitted_artifact_versions {}, select_sql a SQL string selecting id from entries ordered by id.'}], config.max_new_tokens, 0)
-        extra["sql_frontend_probe"] = check_sql_frontend_probe(query_probe)
+        query_messages = [
+            {"role": "system", "content":
+             'Use exactly one JSON tool action, without Markdown. '
+             'The action has exactly three top-level fields in this order: '
+             '"tool" (the string "run_read_query"), "permitted_artifact_versions" '
+             '(an empty JSON object), and "select_sql" (a SQL string). '
+             'There is no parameters, arguments, or action wrapper.'},
+            {"role": "user", "content":
+             'Synthetic qualification only. Table entries has columns id, department_id, amount. '
+             'Select every id from entries, ordered by id ascending. '
+             'Return the run_read_query action using the specified envelope.'},
+        ]
+        query_probe = backend.generate(query_messages, config.max_new_tokens, 0)
+        extra["sql_frontend_probe"] = {
+            **check_sql_frontend_probe(query_probe),
+            "probe_protocol": "explicit-flat-envelope-v2",
+            "prompt_hash": digest(query_messages),
+        }
         extra["command_failed"] = extra.get("command_failed", False) or not extra["sql_frontend_probe"]["passed"]
     props = torch.cuda.get_device_properties(0)
     free, total = torch.cuda.mem_get_info(0)
