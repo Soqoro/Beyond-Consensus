@@ -161,7 +161,66 @@ def replay_task(task, state, result, ledger):
     return report
 
 
-def audit(run):
+
+def candidate_content(task, state, artifact_id):
+    """Admit only an explicitly named, unbound, historically executed query."""
+    store = state['store']
+    artifact = store.get('artifacts', {}).get(artifact_id)
+    if (task.id != 'solar_2' or task.required_outputs != ('solar_2',) or
+            not artifact or artifact.get('id') != artifact_id or
+            artifact.get('unit') != 'solar_2' or artifact.get('author') != 'w0' or
+            artifact.get('kind') != 'data_artifact' or
+            not artifact.get('complete_provenance') or state.get('selected')):
+        raise BCError('Candidate must be an unselected solar_2 query with complete recorded provenance')
+    content = artifact['content']
+    if (content.get('kind') != 'query' or content.get('bindings') != {} or
+            not isinstance(content.get('select'), dict) or not isinstance(content.get('rows'), list) or
+            content.get('execution_binding_hash') != digest([[], content['select']])):
+        raise BCError('Candidate query execution binding mismatch or unsupported dependencies')
+    events = store.get('events', [])
+    if not any(e.get('type') == 'submit' and e.get('version') == artifact_id and
+               e.get('unit') == 'solar_2' and e.get('author') == 'w0' for e in events):
+        raise BCError('Candidate creation event missing')
+    if not any(e.get('type') == 'sql_execution' and e.get('status') == 'ok' and
+               e.get('stage') == 'primary' and e.get('views') == digest([]) and
+               e.get('queries') == digest([content['select']]) for e in events):
+        raise BCError('Matching historical successful execution missing')
+    evaluation = task.metadata['evaluation']['solar_2']
+    if not 1 <= len(evaluation['checks']) <= 8 or not all(
+            c.get('submitted_report') is True for c in evaluation['checks']):
+        raise BCError('Candidate audit requires reviewed submitted-report checks')
+    return artifact, content, evaluation
+
+
+def replay_candidate(task, state, result, ledger, artifact_id):
+    from ..tasks.sqlite_tasks import compare_rows
+    artifact, content, evaluation = candidate_content(task, state, artifact_id)
+    actual = ledger.call(task, [], [content['select']], 'unsubmitted_candidate')
+    report = dict(task=task.id, artifact_id=artifact_id, content_hash=digest(content),
+        historical_success=result['success'], historical_artifact_valid=artifact['valid'],
+        candidate_promoted=False, comparison_status='offline_unsubmitted_candidate', checks=[],
+        candidate_status=actual['status'], recorded_rows_match=None)
+    if actual['status'] != 'ok':
+        return report
+    rows = actual['outputs'][0]['rows']
+    report['recorded_rows_match'] = rows == content['rows']
+    if not report['recorded_rows_match']:
+        report['comparison_status'] = 'historical_rows_mismatch'
+        return report
+    for index, check in enumerate(evaluation['checks']):
+        reference = ledger.call(task, [], [check['reference']], 'candidate_reference_check')
+        row = dict(check_index=index, reference_status=reference['status'],
+                   exact_match=None, native_comparison_match=None)
+        if reference['status'] == 'ok':
+            expected = reference['outputs'][0]['rows']
+            ordered = check.get('order', evaluation['conditions'].get('order', False))
+            row.update(exact_match=compare_rows(rows, expected, ordered),
+                       native_comparison_match=compare_rows(rows, expected, ordered, native=True))
+        report['checks'].append(row)
+    return report
+
+
+def audit(run, candidate_artifact=None):
     if not os.environ.get('SLURM_JOB_ID'):
         raise BCError('Native failure replay requires a CPU sbatch allocation')
     from ..experiments.manifest import validate_manifest, task_from, source_revision
@@ -200,11 +259,19 @@ def audit(run):
                 raise BCError('Reviewed check count exceeds audit bound')
         hashes[episode['episode_id']] = [file_hash(p) for p in paths]
         inputs.append((task,state,result,paths))
+    if candidate_artifact is not None:
+        for task, state, _, _ in inputs:
+            if task.id == "solar_2":
+                candidate_content(task, state, candidate_artifact)
     ledger = ReplayLedger(config.budget.tool_charge)
     reports = []
     for task,state,result,_ in inputs:
         try:
-            reports.append(replay_task(task,state,result,ledger))
+            if candidate_artifact is not None:
+                if task.id == "solar_2":
+                    reports.append(replay_candidate(task,state,result,ledger,candidate_artifact))
+            else:
+                reports.append(replay_task(task,state,result,ledger))
         except (BCError, ValueError, KeyError, TypeError):
             # Preserve spent replay work without exporting private exception text.
             reports.append(dict(task=task.id, historical_success=result['success'],
@@ -216,6 +283,7 @@ def audit(run):
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     return dict(schema='bc-native-failure-replay-v1', experiment_id=manifest['experiment_id'],
         model_executed=False, sql_executed=bool(ledger.entries), historical_scores_changed=False,
+        candidate_artifact=candidate_artifact,
         worker_feedback=False, tasks=reports, replay_ledger=ledger.entries,
         replay_work=sum(e['work'] for e in ledger.entries), accounting='Separate offline analysis; never added to or substituted for historical episode work',
         analysis_cpu_seconds=time.process_time()-started, child_cpu_seconds=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime,

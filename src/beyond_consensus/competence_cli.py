@@ -15,6 +15,7 @@ def add_parsers(sub):
     p = sub.add_parser('native-failure-audit', help='CPU-only private native failure replay; no model or score changes')
     p.add_argument('--run', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--candidate-artifact', help='Offline solar_2 unsubmitted query comparison; never promotes the artifact')
     p = sub.add_parser('correction-audit', help='Compare matched synthetic correction runs; no model or SQL')
     p.add_argument('--generic-run', type=Path, required=True)
     p.add_argument('--feedback-run', type=Path, required=True)
@@ -33,7 +34,7 @@ def dispatch(args):
         if args.output.resolve().is_relative_to(args.run.resolve()):
             raise BCError('Write offline audit reports outside the historical run directory')
         from .diagnostics.sqlite_failure import audit as replay
-        result = replay(args.run)
+        result = replay(args.run, candidate_artifact=args.candidate_artifact)
         atomic_json(args.output, result)
         return result
     result = (compatibility(read_json(args.manifest), read_json(args.control_manifest) if args.control_manifest else None,

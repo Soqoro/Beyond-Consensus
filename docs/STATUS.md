@@ -796,3 +796,23 @@ answers were added. Default tree/SILO instructions, compiler/executor policy,
 scoring and budget settings are unchanged. Any subsequent execution is a fresh
 prompt condition with a new source-bound manifest, not a revision of the above
 scores. No job, model generation, commit or push was performed locally.
+
+### Naming follow-up and unsubmitted candidate audit (2026-09-23)
+
+User-reported experiment
+`0050bdb57f765b37009c875dfdc8062cfa20f9a0e3195bf6f14da508527f63fa`
+retains 1/2 success: solar_2 failed (94959 work), solar_M_3 passed (56232).
+Total 151191 is 12.4% above the previous SQL-text arm's 134471, with unchanged
+success count. The solar_2 trace shows two compiler rejections, then successful
+compilation/execution returning 1000 rows. It could not reserve the next model
+call (15072 plus 300 decoder allowance; 5081 remaining). No required artifact
+was submitted, and the intermediate query artifact was invalidated. This is
+confirmed budget termination, not evidence that the query was correct.
+
+Added an explicit `native-failure-audit --candidate-artifact` offline option for
+an unselected, unbound solar_2 query. It checks recorded creation/execution hashes,
+replays the unchanged IR through the bounded executor, checks recorded rows, and
+runs the existing reviewed submitted-report comparisons. Invalidated status is
+reported without changing it; no submission, worker feedback or historical score
+write occurs. Replay work remains separate. No candidate correctness result is
+yet available. See [UNSUBMITTED_CANDIDATE_AUDIT.md](UNSUBMITTED_CANDIDATE_AUDIT.md).

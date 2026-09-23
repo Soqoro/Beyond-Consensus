@@ -80,3 +80,38 @@ class FailureAuditTests(unittest.TestCase):
             ledger.call(task,[],[],'failed_query')
             with self.assertRaisesRegex(BCError,'bound'): ledger.call(task,[],[],'failed_query')
         self.assertEqual(ledger.entries[0]['work'],10*DEFAULT_LIMITS['cpu_seconds'])
+
+    def test_unsubmitted_invalidated_candidate_is_compared_without_promotion(self):
+        from beyond_consensus.diagnostics.sqlite_failure import replay_candidate, candidate_content
+        from beyond_consensus.util import digest, plain
+        task = replace(tasks()[0], id='solar_2', required_outputs=('solar_2',))
+        task.metadata['evaluation'] = {'solar_2': {'checks': [
+            {'submitted_report': True, 'reference': {'private': 'reference'}}],
+            'conditions': {'order': True}}}
+        tree = {'columns': [{'expr': {'literal': 1}}]}
+        content = {'kind': 'query', 'select': tree, 'bindings': {}, 'rows': [[1]],
+                   'execution_binding_hash': digest([[], tree])}
+        store = ProvenanceStore()
+        artifact = store.submit('w0', 'solar_2', content, 'data_artifact')
+        store.events.append({'type': 'sql_execution', 'stage': 'primary', 'status': 'ok',
+                             'views': digest([]), 'queries': digest([tree])})
+        store.invalidate({artifact.id})
+        state = plain({'store': store.export(), 'selected': {}})
+        before = digest(state)
+        class Ledger:
+            def call(self, task, views, queries, label):
+                return {'status': 'ok', 'outputs': [{'rows': [[1]]}]}
+        report = replay_candidate(task, state, {'success': False}, Ledger(), artifact.id)
+        self.assertTrue(report['checks'][0]['native_comparison_match'])
+        self.assertFalse(report['historical_artifact_valid'])
+        self.assertFalse(report['historical_success'])
+        self.assertFalse(report['candidate_promoted'])
+        self.assertEqual(digest(state), before)
+        self.assertNotIn('reference', json.dumps(report).replace('reference_status', ''))
+        state['store']['artifacts'][artifact.id]['content']['select'] = {}
+        with self.assertRaisesRegex(BCError, 'binding'):
+            candidate_content(task, state, artifact.id)
+        state['store']['artifacts'][artifact.id]['content'] = content
+        state['store']['events'] = []
+        with self.assertRaisesRegex(BCError, 'creation'):
+            candidate_content(task, state, artifact.id)
