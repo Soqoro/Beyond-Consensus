@@ -8,6 +8,7 @@ from tests.support import ROOT
 from beyond_consensus.config import RunConfig, load_config
 from beyond_consensus.experiments.manifest import build_manifest
 from beyond_consensus.experiments.runner import run_manifest
+from beyond_consensus.diagnostics.competence import audit
 from beyond_consensus.models.mock import MockBackend
 from beyond_consensus.models.base import Generation
 from beyond_consensus.tasks.sqlite_aggregation import tasks, expected, score
@@ -89,6 +90,20 @@ class AggregationTests(unittest.TestCase):
                 results = run_manifest(manifest, Path(tmp), ROOT, backend=Worker(mutation))
                 self.assertEqual(sum(r['success'] for r in results),
                                  2 if mutation is None else 1 if mutation == 'fanout' else 0)
+                report = audit(Path(tmp))
+                self.assertEqual(report['successes'], sum(r['success'] for r in results))
+                self.assertEqual(report['decision'], 'synthetic_aggregation_review_only')
+                self.assertFalse(report['model_executed'])
+                self.assertFalse(report['sql_executed'])
+                self.assertNotIn('historical_4b_evidence', report)
+                for row in report['tasks']:
+                    value = row['offline_diagnostics']['ordered_values_match']
+                    if mutation == 'no_submission':
+                        self.assertIsNone(value)
+                    elif mutation == 'fanout' and row['task'].endswith('independent_details'):
+                        self.assertFalse(value)
+                    elif mutation is None:
+                        self.assertTrue(value)
                 for r in results:
                     self.assertEqual(r['status'], 'completed')
                     self.assertGreater(r['costs']['spent'], 0)

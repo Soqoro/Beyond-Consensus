@@ -1,6 +1,16 @@
 # Implementation status and handoff
 
-## Current decision: pause for progress review (2026-09-22)
+## Current decision: review while aggregation preflight is pending (2026-09-23)
+
+[September 23 progress report](PROGRESS_REPORT_2026-09-23.md) consolidates the
+latest evidence: matched native tree 0/2 versus SQL text 1/2; naming follow-up
+still 1/2 at higher work; its unsubmitted query failed offline comparison.
+The user reports the new synthetic aggregation preflight is running. Its outcome
+and task-level results are pending. Pause new pilot/native/policy submissions
+for review; preserve the already submitted preflight's results when it finishes.
+No recovery advantage has been demonstrated.
+
+## Historical review checkpoint (2026-09-22)
 
 The user requested review before running the prepared correction comparison.
 [PROGRESS_REPORT_2026-09-22.md](PROGRESS_REPORT_2026-09-22.md) consolidates reported
@@ -848,3 +858,16 @@ Scripted positive, fanout-negative, alias-negative and missing-submission contro
 are harness validation, not model results. No GPU run or cluster submission has
 been performed. See [SQLITE_AGGREGATION_DIAGNOSTIC.md](SQLITE_AGGREGATION_DIAGNOSTIC.md)
 for separate provenance and the staged browser-terminal procedure.
+
+### Aggregation report export routing fix (2026-09-23)
+
+User reported `bc: Unknown tool compatibility probe` during results export.
+`competence-audit` used the legacy four-probe expectation lookup for every task
+with a `probe` field. It now selects expectations by explicit suite metadata,
+and aggregation reports carry a synthetic-only decision without unrelated 4B
+or native eligibility claims. Unknown suites do not infer expectations.
+Regression coverage exports reports from positive, fanout-negative, wrong-alias
+and missing-submission scripted runs. This changes offline reporting only;
+runtime scoring, recorded outcomes and episode ledgers are unchanged. Regenerate
+reports into a fresh directory from the existing run; do not resubmit GPU jobs.
+No aggregation model success count has yet been supplied.

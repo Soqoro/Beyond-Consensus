@@ -63,8 +63,13 @@ def compatibility(candidate, control=None, control_root=None):
     return report
 
 
-def output_diagnostics(probe, content):
-    from ..tasks.sqlite_compatibility import expected
+def output_diagnostics(probe, content, suite="tool_compatibility_v1"):
+    if suite == "aggregation_v1":
+        from ..tasks.sqlite_aggregation import expected
+    elif suite in ("tool_compatibility_v1", "tool_correction_v1"):
+        from ..tasks.sqlite_compatibility import expected
+    else:
+        return {'status': 'unsupported synthetic suite; no expected values inferred'}
     columns, rows = expected(probe)
     if not content:
         return {'values_multiset_match': None, 'ordered_values_match': None, 'column_contract_match': None}
@@ -216,7 +221,8 @@ def audit(run, control_run=None):
         artifacts = state.get('store', {}).get('artifacts', {})
         contents = [artifacts[v]['content'] for v in selected.values() if v in artifacts]
         task = tasks[episode['task_id']]
-        diagnostics = (output_diagnostics(task['metadata']['probe'], contents[0] if contents else None)
+        diagnostics = (output_diagnostics(task['metadata']['probe'], contents[0] if contents else None,
+                                          task['metadata'].get('sqlite_fixture_suite'))
                        if task['metadata'].get('probe') else {'status': 'native private diagnostics not exported'})
         runtime = r.get('provenance', {}).get('backend_runtime', {})
         rows.append({'task': r['task_id'], 'status': r['status'], 'success': r['success'],
@@ -242,6 +248,12 @@ def audit(run, control_run=None):
             'retry_count': sum(e['type']=='prohibited_or_malformed_action' for e in events),
             'prefill_seconds': None})
     passed = sum(r.get('success') is True for r in rows)
+    if manifest["config"].get("sqlite_fixture_suite") == "aggregation_v1":
+        return {"schema": "bc-competence-audit-v1", "model_executed": False, "sql_executed": False,
+            "experiment_id": manifest["experiment_id"], "planned": manifest["planned_episodes"],
+            "successes": passed, "tasks": rows, "decision": "synthetic_aggregation_review_only",
+            "analysis_cpu_seconds": time.process_time()-started,
+            "interpretation": "Two tasks on one synthetic source group; no native eligibility or historical 4B comparison"}
     if manifest["config"].get("sqlite_fixture_suite") == "tool_correction_v1":
         return {"schema": "bc-competence-audit-v1", "model_executed": False, "sql_executed": False,
             "experiment_id": manifest["experiment_id"], "planned": manifest["planned_episodes"],
