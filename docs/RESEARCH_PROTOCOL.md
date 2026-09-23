@@ -392,3 +392,13 @@ its later prompt tokens are charged normally. No terminal answer or reference
 feedback reaches workers. Unexpected seed success blocks the diagnostic.
 The comparison retains both successes and failures and permits no automatic
 expansion. See [SQLITE_CORRECTION_DIAGNOSTIC.md](SQLITE_CORRECTION_DIAGNOSTIC.md).
+
+## Synthetic aggregation diagnostic (2026-09-23)
+
+The opt-in `aggregation_v1` suite tests totals and independent detail counts on
+one frozen synthetic source group, with independently computed terminal Python
+expectations. It has two single/clean seed-0 episodes under Protocol A; it exposes
+no native references or answer queries. The exact bounded config, distinction
+from native 16K runs, and charged explicit-submission workflow are documented in
+[SQLITE_AGGREGATION_DIAGNOSTIC.md](SQLITE_AGGREGATION_DIAGNOSTIC.md). Scripted CPU
+controls establish harness behavior only; model competence remains unmeasured.

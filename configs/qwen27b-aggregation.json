@@ -1,0 +1,38 @@
+{
+  "name": "qwen35-27b-aggregation-v1",
+  "task_count": 2,
+  "task_kind": "sqlite_fixture",
+  "policies": [
+    "single"
+  ],
+  "attacks": [
+    "clean"
+  ],
+  "seeds": [
+    0
+  ],
+  "shards": 1,
+  "model": {
+    "backend": "transformers",
+    "checkpoint": "Qwen/Qwen3.5-27B",
+    "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+    "tokenizer_revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+    "dtype": "bfloat16",
+    "context_limit": 8192,
+    "max_new_tokens": 2048,
+    "thinking": true,
+    "do_sample": false,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "action_constraint": "sqlite-sql-text-v1"
+  },
+  "monitor_id": "data-structure-v1",
+  "max_actions": 12,
+  "sqlite_fixture_suite": "aggregation_v1",
+  "development_profile": "qwen35-27b-aggregation-v1",
+  "budget": {
+    "total": 100000
+  },
+  "sqlite_error_feedback": "generic"
+}

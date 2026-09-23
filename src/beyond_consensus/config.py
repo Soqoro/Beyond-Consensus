@@ -131,26 +131,31 @@ class RunConfig:
                                          "qwen35-27b-native-context16k-actions24") and not long_native27:
             raise BCError("The native 16K profile requires its explicit model and context condition")
         if self.model.checkpoint == "Qwen/Qwen3.5-27B" and not (
-                native27 or self.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1")):
-            raise BCError("27B is opt-in: synthetic compatibility/correction probes or two renewed native solar tasks only")
+                native27 or self.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1", "aggregation_v1")):
+            raise BCError("27B is opt-in: approved synthetic diagnostics or two renewed native solar tasks only")
         expected_actions = 24 if long_native27 and self.development_profile == "qwen35-27b-native-context16k-actions24" else 12
         if self.model.action_constraint != "none" and (
-                (self.sqlite_fixture_suite not in ("tool_compatibility_v1", "tool_correction_v1") and not native27) or self.shards != 1 or
+                (self.sqlite_fixture_suite not in ("tool_compatibility_v1", "tool_correction_v1", "aggregation_v1") and not native27) or self.shards != 1 or
                 self.max_actions != expected_actions or self.budget.total != 100000 or
                 not self.model.thinking or self.model.max_new_tokens != 2048 or
                 (self.model.context_limit != 8192 and not long_native27)):
-            raise BCError("Constrained actions are gated to the bounded four-probe reasoning diagnostic")
-        if self.sqlite_fixture_suite not in ("arithmetic_v1", "tool_compatibility_v1", "tool_correction_v1"):
+            raise BCError("Constrained actions require an approved bounded diagnostic configuration")
+        if self.sqlite_fixture_suite not in ("arithmetic_v1", "tool_compatibility_v1", "tool_correction_v1", "aggregation_v1"):
             raise BCError("Unknown SQLite fixture suite")
-        if self.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1") and (
-                self.task_kind != "sqlite_fixture" or self.task_count != (2 if self.sqlite_fixture_suite == "tool_correction_v1" else 4) or
+        if self.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1", "aggregation_v1") and (
+                self.task_kind != "sqlite_fixture" or self.task_count != (2 if self.sqlite_fixture_suite in ("tool_correction_v1", "aggregation_v1") else 4) or
                 self.policies != ("single",) or self.attacks != ("clean",) or
                 self.seeds != (0,) or self.protocol != "A" or self.operation_measurement or
                 self.organization != "legacy" or self.calibration_file or self.fixed_state_file):
             raise BCError("SQLite diagnostic requires its exact task count, single/clean, seed 0 and Protocol A")
-        if self.sqlite_fixture_suite == "tool_correction_v1" and (self.max_actions != 12 or
+        if self.sqlite_fixture_suite in ("tool_correction_v1", "aggregation_v1") and (self.max_actions != 12 or
                 self.malformed_retries != 2 or self.shards != 1 or self.budget.total != 100000):
-            raise BCError("Correction diagnostic requires 12 actions, two retries, one shard and 100000 work")
+            raise BCError("Correction/aggregation diagnostics require 12 actions, two retries, one shard and 100000 work")
+        if self.sqlite_fixture_suite == "aggregation_v1" and (self.confirmatory or
+                self.development_profile != "qwen35-27b-aggregation-v1" or
+                (self.model.backend != "mock" and (self.model.checkpoint != "Qwen/Qwen3.5-27B" or
+                 self.model.action_constraint != "sqlite-sql-text-v1"))):
+            raise BCError("Aggregation is a separate synthetic development diagnostic")
         if self.organization not in ("legacy", "fixed_isolated", "fixed_linked", "select_boundary"):
             raise BCError("Unknown organization condition")
         if self.organization != "legacy" and (self.policies != ("jit",) or self.protocol != "A" or self.operation_measurement):

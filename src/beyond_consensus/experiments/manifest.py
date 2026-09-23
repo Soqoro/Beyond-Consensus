@@ -69,6 +69,9 @@ def load_tasks(config: RunConfig) -> list[TaskInstance]:
     if config.task_kind == "workflow_fixture":
         return fixtures(config.task_count)
     if config.task_kind == "sqlite_fixture":
+        if config.sqlite_fixture_suite == "aggregation_v1":
+            from ..tasks.sqlite_aggregation import tasks
+            return tasks()
         if config.sqlite_fixture_suite == "tool_correction_v1":
             from ..tasks.sqlite_correction import tasks
             return tasks()

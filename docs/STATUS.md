@@ -814,5 +814,37 @@ an unselected, unbound solar_2 query. It checks recorded creation/execution hash
 replays the unchanged IR through the bounded executor, checks recorded rows, and
 runs the existing reviewed submitted-report comparisons. Invalidated status is
 reported without changing it; no submission, worker feedback or historical score
-write occurs. Replay work remains separate. No candidate correctness result is
-yet available. See [UNSUBMITTED_CANDIDATE_AUDIT.md](UNSUBMITTED_CANDIDATE_AUDIT.md).
+write occurs. Replay work remains separate. The subsequently reported result is
+recorded below. See [UNSUBMITTED_CANDIDATE_AUDIT.md](UNSUBMITTED_CANDIDATE_AUDIT.md).
+
+### Candidate replay failed; public query review (2026-09-23)
+
+The user-reported candidate audit reproduced recorded rows exactly, but both
+exact and native reviewed comparisons failed. Candidate/reference executions
+were `ok`. The artifact remains invalidated, historical success remains false,
+and the run remains 1/2. Replay work 60 is separate from historical work.
+
+[Public query review](SOLAR_QUERY_PUBLIC_AUDIT.md) finds formulas/priority broadly
+consistent with the provided public definitions, but sums occur after joining
+independent maintenance and alert details. This can multiply totals; actual
+multiplicities and the exact mismatch cause remain unmeasured. The first two
+queries also use unsupported simple CASE in sorting; the accepted third uses
+searched CASE. No corrected answer, prompt change, larger-budget run or policy
+campaign is introduced. A distinct synthetic aggregation probe is proposed for
+review, not implemented or executed. Hidden reference contents were not inspected.
+
+### Prepared synthetic aggregation diagnostic (2026-09-23)
+
+On user authorization, implemented `aggregation_v1`: two schema-supplied tasks
+(payment totals; totals plus independent notice counts) on one frozen synthetic
+source group. Unequal detail counts, repeated payment amounts and missing-detail
+cases discriminate naive join aggregation and DISTINCT-based workarounds.
+Expected rows are computed independently in Python at terminal scoring only.
+Explicit submission, standard charged tools, four persistent identities, and
+single/clean Protocol A remain in force. The new opt-in 27B SQL-text config uses
+8192 context, 2048 output, 12 actions, two retries and 100000 work per episode;
+these are bounded synthetic settings, not a matched native comparison.
+Scripted positive, fanout-negative, alias-negative and missing-submission controls
+are harness validation, not model results. No GPU run or cluster submission has
+been performed. See [SQLITE_AGGREGATION_DIAGNOSTIC.md](SQLITE_AGGREGATION_DIAGNOSTIC.md)
+for separate provenance and the staged browser-terminal procedure.
