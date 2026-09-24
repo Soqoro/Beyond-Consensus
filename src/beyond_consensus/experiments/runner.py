@@ -21,6 +21,9 @@ RETRYABLE = {"interrupted", "infrastructure_failed"}
 def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: int | None = None,
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
+    if manifest.get("schema") == "rr-manifest-v1":
+        from .reporecourse import run
+        return run(manifest, output, root, shard=shard, backend=backend, model_lock=model_lock, retry_failures=retry_failures)
     config = validate_manifest(manifest)
     if config.sqlite_fixture_suite in ("tool_compatibility_v1", "tool_correction_v1", "aggregation_v1") and config.model.backend == "mock" and backend is None:
         raise BCError("Tool compatibility requires a real backend or an explicitly injected CPU test double")

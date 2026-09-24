@@ -43,7 +43,8 @@ def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-sche
         'implementation': {name: file_hash(root/name) for name in (
             'scripts/check_action_constraints.py',
             'src/beyond_consensus/models/constrained.py',
-            'src/beyond_consensus/models/action_schema.py', 'src/beyond_consensus/models/transformers_backend.py')}})
+            'src/beyond_consensus/models/action_schema.py', 'src/beyond_consensus/models/transformers_backend.py',
+            *(['src/reporecourse/action_schema.py'] if mode == 'reporecourse-json-v1' else []))}})
 
 
 def require_qualification(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1"):

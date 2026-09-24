@@ -1,0 +1,177 @@
+{
+  "schema": "rr-catalog-v1",
+  "tasks": [
+    {
+      "id": "jaffle-recorded-payments",
+      "pack": "jaffle",
+      "family": "data_product",
+      "grounding": "demo_grounded",
+      "revision": "36bde6cba69d962b83be1d52fc65a0dce1cb4ebb",
+      "source_group": "dbt-labs/jaffle_shop_duckdb",
+      "base_change": "jaffle-recorded-payments-authored-v1",
+      "split": "development",
+      "status": "cpu_qualified_review_pending",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "2c98177e629b62043071b4328f1b476010e84086132c5318d514935a772533c4",
+      "private_sha256": "f5bbed2dd6ec05392c083cfb25f8de85c6841d8351d004b57fabdf4b82bc2e63",
+      "task_version": "0.1.0",
+      "benchmark_version": "0.1.0",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "license_file_inspected_independent_review_pending",
+      "reference_evidence": "qualification/cpu-2026-09-24.json"
+    },
+    {
+      "id": "energy-generation-coverage",
+      "pack": "energy",
+      "family": "data_product",
+      "grounding": "repo_grounded_authored",
+      "revision": "7e387a16f70a510e433f8aac7efeac6faa1e5059",
+      "source_group": "owid/energy-data",
+      "base_change": "energy-generation-coverage-authored-v1",
+      "split": "development",
+      "status": "cpu_qualified_review_pending",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "d475b87ccc62d08ad66010dba634472ccccd2a7b47ef1d0ecf2f4e05f77c5ef6",
+      "private_sha256": "2aa6a2823ad7b60e0775c3bfb026cdad9f558820f908f80678c509d69f7c03d2",
+      "task_version": "0.1.0",
+      "benchmark_version": "0.1.0",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "underlying_source_review_pending",
+      "reference_evidence": "qualification/cpu-2026-09-24.json"
+    },
+    {
+      "id": "github-topics-consumer",
+      "pack": "github",
+      "family": "api_schema",
+      "grounding": "repo_grounded_authored",
+      "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+      "source_group": "github/rest-api-description",
+      "base_change": "github-topics-consumer-authored-v1",
+      "split": "development",
+      "status": "cpu_qualified_review_pending",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "97faeacf683473106d5abb7b41561492d6ece6454abd6cebfeb69970d2894f59",
+      "private_sha256": "e49e7289f97c672b46bdb58ec76af81f404d9b5bdb3f83f1a38f62789cf1fc6c",
+      "task_version": "0.1.0",
+      "benchmark_version": "0.1.0",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "license_file_inspected_independent_review_pending",
+      "reference_evidence": "qualification/cpu-2026-09-24.json"
+    },
+    {
+      "id": "synthetic-stock",
+      "pack": "synthetic",
+      "family": "data_product",
+      "grounding": "synthetic_diagnostic",
+      "revision": null,
+      "source_group": "rr-synthetic-data_product",
+      "base_change": "synthetic-stock-authored-v1",
+      "split": "development",
+      "status": "cpu_qualified_review_pending",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "743f23df2bb21d7085de5ef9a72eeb445f8af5b6cecb56daf6ab522b37079c84",
+      "private_sha256": "0f82178005ec7584a0f7f531387fed4cbee0e053435545c9314cf0bee86d5353",
+      "task_version": "0.1.0",
+      "benchmark_version": "0.1.0",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "benchmark_authored_synthetic",
+      "reference_evidence": "qualification/cpu-2026-09-24.json"
+    },
+    {
+      "id": "synthetic-nullable",
+      "pack": "synthetic",
+      "family": "api_schema",
+      "grounding": "synthetic_diagnostic",
+      "revision": null,
+      "source_group": "rr-synthetic-api_schema",
+      "base_change": "synthetic-nullable-authored-v1",
+      "split": "development",
+      "status": "cpu_qualified_review_pending",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "09720eaeccdfeb0899feb2bc337e8b9052b935e22795be819dcb0ddda6422250",
+      "private_sha256": "203035f5d2cf711e47a6ca744b27526327e4926de191a6824a38cc0f144a6d92",
+      "task_version": "0.1.0",
+      "benchmark_version": "0.1.0",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "benchmark_authored_synthetic",
+      "reference_evidence": "qualification/cpu-2026-09-24.json"
+    }
+  ],
+  "target": {
+    "tasks": 12,
+    "data_product": 6,
+    "api_schema": 6,
+    "reviewed_packs": 4,
+    "non_demo_tasks_minimum": 6
+  }
+}

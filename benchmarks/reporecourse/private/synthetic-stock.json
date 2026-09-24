@@ -1,0 +1,114 @@
+{
+  "schema": "rr-evaluator-v1",
+  "oracle": "inventory",
+  "fixtures": [
+    {},
+    {
+      "tables": {
+        "stock": {
+          "columns": [
+            [
+              "sku",
+              "TEXT"
+            ],
+            [
+              "qty",
+              "INTEGER"
+            ]
+          ],
+          "rows": [
+            [
+              "x",
+              0
+            ],
+            [
+              "z",
+              0
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "organization": "independent",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "stock",
+            "format": "sql",
+            "content": "SELECT sku, qty FROM stock ORDER BY sku",
+            "bindings": {},
+            "obligations": [
+              "stock_report"
+            ]
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "zero",
+            "format": "sql",
+            "content": "SELECT sku FROM stock WHERE qty = 0 ORDER BY sku",
+            "bindings": {},
+            "obligations": [
+              "zero_report"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organization": "shared",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "shared_base",
+            "format": "sql",
+            "content": "SELECT sku, qty FROM stock",
+            "bindings": {},
+            "obligations": []
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "stock",
+            "format": "sql",
+            "content": "SELECT sku, qty FROM shared_base ORDER BY sku",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "stock_report"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "zero",
+            "format": "sql",
+            "content": "SELECT sku FROM shared_base WHERE qty = 0 ORDER BY sku",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "zero_report"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "release": "benchmark-authored evaluator, kept outside worker tools; no native private materials",
+  "independent_review": "pending"
+}

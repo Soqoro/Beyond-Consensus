@@ -1,0 +1,381 @@
+{
+  "schema": "rr-evaluator-v1",
+  "oracle": "topics",
+  "fixtures": [
+    {
+      "cases": [
+        {
+          "obligation": "request",
+          "input": {
+            "names": []
+          },
+          "valid": true
+        },
+        {
+          "obligation": "request",
+          "input": {
+            "names": [
+              "API",
+              "api",
+              "api"
+            ]
+          },
+          "valid": true
+        },
+        {
+          "obligation": "request",
+          "input": {
+            "names": [
+              "x"
+            ],
+            "extra": 7
+          },
+          "valid": true
+        },
+        {
+          "obligation": "request",
+          "input": {},
+          "valid": false
+        },
+        {
+          "obligation": "request",
+          "input": {
+            "names": null
+          },
+          "valid": false
+        },
+        {
+          "obligation": "request",
+          "input": {
+            "names": [
+              3
+            ]
+          },
+          "valid": false
+        },
+        {
+          "obligation": "request",
+          "input": {
+            "names": "x"
+          },
+          "valid": false
+        },
+        {
+          "obligation": "request",
+          "input": [],
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": []
+          },
+          "valid": true
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": [
+              "API",
+              "api",
+              "api"
+            ]
+          },
+          "valid": true
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": [
+              "x"
+            ],
+            "extra": 7
+          },
+          "valid": true
+        },
+        {
+          "obligation": "response",
+          "input": {},
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": null
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": [
+              3
+            ]
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "names": "x"
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": [],
+          "valid": false
+        },
+        {
+          "obligation": "consumer",
+          "input": {
+            "names": []
+          },
+          "valid": true,
+          "output": {
+            "topics": []
+          }
+        },
+        {
+          "obligation": "consumer",
+          "input": {
+            "names": [
+              "API",
+              "api",
+              "api"
+            ],
+            "extra": 5
+          },
+          "valid": true,
+          "output": {
+            "topics": [
+              "API",
+              "api",
+              "api"
+            ]
+          }
+        }
+      ],
+      "composition": [
+        {
+          "names": []
+        },
+        {
+          "names": [
+            "a",
+            "a"
+          ]
+        }
+      ]
+    }
+  ],
+  "witnesses": [
+    {
+      "organization": "independent",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "request",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "required": [
+                "names"
+              ],
+              "properties": {
+                "names": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": true
+            },
+            "bindings": {},
+            "obligations": [
+              "request"
+            ]
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "response",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "required": [
+                "names"
+              ],
+              "properties": {
+                "names": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": true
+            },
+            "bindings": {},
+            "obligations": [
+              "response"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "consumer",
+            "format": "mapping",
+            "content": {
+              "fields": {
+                "topics": {
+                  "path": [
+                    "names"
+                  ],
+                  "missing": "error"
+                }
+              },
+              "output_schema": {
+                "type": "object",
+                "required": [
+                  "topics"
+                ],
+                "properties": {
+                  "topics": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "bindings": {},
+            "obligations": [
+              "consumer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organization": "shared",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "shared_base",
+            "format": "schema",
+            "content": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "bindings": {},
+            "obligations": []
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "request",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "required": [
+                "names"
+              ],
+              "properties": {
+                "names": {
+                  "$ref": "rr:shared_base"
+                }
+              },
+              "additionalProperties": true
+            },
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "request"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "response",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "required": [
+                "names"
+              ],
+              "properties": {
+                "names": {
+                  "$ref": "rr:shared_base"
+                }
+              },
+              "additionalProperties": true
+            },
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "response"
+            ]
+          }
+        },
+        {
+          "worker": "w3",
+          "action": {
+            "tool": "publish",
+            "name": "consumer",
+            "format": "mapping",
+            "content": {
+              "fields": {
+                "topics": {
+                  "path": [
+                    "names"
+                  ],
+                  "missing": "error"
+                }
+              },
+              "output_schema": {
+                "type": "object",
+                "required": [
+                  "topics"
+                ],
+                "properties": {
+                  "topics": {
+                    "$ref": "rr:shared_base"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "consumer"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "release": "benchmark-authored evaluator, kept outside worker tools; no native private materials",
+  "independent_review": "pending"
+}

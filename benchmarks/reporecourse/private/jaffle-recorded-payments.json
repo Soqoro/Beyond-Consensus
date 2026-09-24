@@ -1,0 +1,199 @@
+{
+  "schema": "rr-evaluator-v1",
+  "oracle": "jaffle",
+  "fixtures": [
+    {},
+    {
+      "tables": {
+        "customers": {
+          "columns": [
+            [
+              "id",
+              "INTEGER"
+            ],
+            [
+              "first_name",
+              "TEXT"
+            ],
+            [
+              "last_name",
+              "TEXT"
+            ]
+          ],
+          "rows": [
+            [
+              1,
+              "A",
+              "B"
+            ],
+            [
+              2,
+              "C",
+              "D"
+            ],
+            [
+              3,
+              "E",
+              "F"
+            ]
+          ]
+        },
+        "orders": {
+          "columns": [
+            [
+              "id",
+              "INTEGER"
+            ],
+            [
+              "user_id",
+              "INTEGER"
+            ],
+            [
+              "order_date",
+              "TEXT"
+            ],
+            [
+              "status",
+              "TEXT"
+            ]
+          ],
+          "rows": [
+            [
+              1,
+              1,
+              "2020-01-01",
+              "returned"
+            ],
+            [
+              2,
+              2,
+              "2020-01-01",
+              "completed"
+            ]
+          ]
+        },
+        "payments": {
+          "columns": [
+            [
+              "id",
+              "INTEGER"
+            ],
+            [
+              "order_id",
+              "INTEGER"
+            ],
+            [
+              "payment_method",
+              "TEXT"
+            ],
+            [
+              "amount",
+              "INTEGER"
+            ]
+          ],
+          "rows": [
+            [
+              1,
+              1,
+              "card",
+              100
+            ],
+            [
+              2,
+              1,
+              "card",
+              100
+            ],
+            [
+              3,
+              1,
+              "coupon",
+              0
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "organization": "independent",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "customer",
+            "format": "sql",
+            "content": "SELECT c.id AS customer_id, coalesce(sum(p.amount), 0) / 100.0 AS recorded_dollars, count(p.id) AS payment_records FROM customers c LEFT JOIN orders o ON c.id = o.user_id LEFT JOIN payments p ON o.id = p.order_id GROUP BY c.id ORDER BY c.id",
+            "bindings": {},
+            "obligations": [
+              "customer_summary"
+            ]
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "method",
+            "format": "sql",
+            "content": "SELECT payment_method AS method, sum(amount) / 100.0 AS recorded_dollars, count(id) AS payment_records FROM payments GROUP BY payment_method ORDER BY payment_method",
+            "bindings": {},
+            "obligations": [
+              "method_summary"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organization": "shared",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "shared_base",
+            "format": "sql",
+            "content": "SELECT p.id AS id, p.order_id AS order_id, o.user_id AS customer_id, p.payment_method AS payment_method, p.amount AS amount FROM payments p INNER JOIN orders o ON p.order_id = o.id",
+            "bindings": {},
+            "obligations": []
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "customer",
+            "format": "sql",
+            "content": "SELECT c.id AS customer_id, coalesce(sum(h.amount), 0) / 100.0 AS recorded_dollars, count(h.id) AS payment_records FROM customers c LEFT JOIN shared_base h ON c.id = h.customer_id GROUP BY c.id ORDER BY c.id",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "customer_summary"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "method",
+            "format": "sql",
+            "content": "SELECT payment_method AS method, sum(amount) / 100.0 AS recorded_dollars, count(id) AS payment_records FROM shared_base GROUP BY payment_method ORDER BY payment_method",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "method_summary"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "release": "benchmark-authored evaluator, kept outside worker tools; no native private materials",
+  "independent_review": "pending"
+}

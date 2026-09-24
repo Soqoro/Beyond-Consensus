@@ -1,0 +1,133 @@
+{
+  "id": "github-topics-consumer",
+  "family": "api_schema",
+  "request": "Implement an offline integration for the pinned GitHub PUT /repos/{owner}/{repo}/topics JSON body and 200 topic response. Publish request and response validators plus consumer mapping with output schema. Both payloads are objects requiring names: an array of strings; empty arrays are valid; null, absent names, nonstrings and nonarray names are invalid. Unknown properties are allowed per the pinned OpenAPI default. Map a valid response to exactly {topics: names}, preserving order, duplicates and case; no extra fields. The mapping output schema requires topics array of strings and forbids other fields. The server documentation says names are saved lowercase: this offline consumer does not emulate normalization or verify a server. Request validators validate documented shape, not an invented lexical topic policy. Mapping is only promised on valid response inputs, at most 128 names, bounded payloads. OpenAPI 3.0.3 adaptation: annotations/examples removed, required lists preserved, absent nullable means null forbidden here; no readOnly/writeOnly occur in the selected body/topic schemas. No unreviewed general OpenAPI conversion. This is benchmark-authored client work, not a historical GitHub change.",
+  "required_outputs": [
+    {
+      "id": "request",
+      "format": "schema",
+      "public_inputs": [
+        "topic"
+      ]
+    },
+    {
+      "id": "response",
+      "format": "schema",
+      "public_inputs": [
+        "topic"
+      ]
+    },
+    {
+      "id": "consumer",
+      "format": "mapping",
+      "public_inputs": [
+        "topic"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "topic": {
+      "names": [
+        "api",
+        "tools"
+      ]
+    }
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "request",
+          "worker": "w0",
+          "outputs": [
+            "request"
+          ],
+          "depends": [],
+          "description": "Implement request from original sources."
+        },
+        {
+          "id": "response",
+          "worker": "w1",
+          "outputs": [
+            "response"
+          ],
+          "depends": [],
+          "description": "Implement response from original sources."
+        },
+        {
+          "id": "consumer",
+          "worker": "w2",
+          "outputs": [
+            "consumer"
+          ],
+          "depends": [],
+          "description": "Implement consumer from original sources."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Define a reusable topic-name array schema, preserving empty arrays, order and duplicate string values."
+        },
+        {
+          "id": "request",
+          "worker": "w1",
+          "outputs": [
+            "request"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement request; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "response",
+          "worker": "w2",
+          "outputs": [
+            "response"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement response; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "consumer",
+          "worker": "w3",
+          "outputs": [
+            "consumer"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement consumer; may consume shared_base with exact version binding."
+        }
+      ]
+    },
+    {
+      "id": "grouped",
+      "units": [
+        {
+          "id": "all",
+          "worker": "w0",
+          "outputs": [
+            "request",
+            "response",
+            "consumer"
+          ],
+          "depends": [],
+          "description": "Implement all required outputs together from original sources."
+        }
+      ]
+    }
+  ]
+}

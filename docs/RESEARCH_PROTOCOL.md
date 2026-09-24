@@ -402,3 +402,27 @@ no native references or answer queries. The exact bounded config, distinction
 from native 16K runs, and charged explicit-submission workflow are documented in
 [SQLITE_AGGREGATION_DIAGNOSTIC.md](SQLITE_AGGREGATION_DIAGNOSTIC.md). Scripted CPU
 controls establish harness behavior only; model competence remains unmeasured.
+
+## Additive RepoRecourse prototype (2026-09-24)
+
+On explicit user instruction, RepoRecourse v0.1 adds method-neutral data-product
+and API/schema tasks. This expands the earlier required SQLite/SILO scope for
+this new benchmark only; legacy task/policy/scoring definitions and their gates
+remain unchanged. The benchmark owns requirements, safety, faults, resource
+profiles and terminal scoring. BC finite selection is an optional policy plugin,
+not an evaluator input. See [implementation and runbook](REPORECOURSE_IMPLEMENTATION.md).
+
+New profile `rr-logical-tokens-cpu-v1` counts repeated model input plus generated
+output (including reasoning once), with separate measured CPU limits. Historical
+surrogate work cannot be pooled or reused as calibration. Private terminal scoring
+has a separate cap and cannot feed repairs. F/S equal-total and R equal-remaining
+remain distinct; four identities persist, original sources remain available, and
+observed provenance does not automatically imply incorrectness or regeneration.
+
+Three source-grounded draft tasks plus two synthetic diagnostics passed local
+reference controls. Independent review, underlying energy-provider license review,
+model competence and compatible calibration are unestablished. Only an explicitly
+user-submitted one-task engineering smoke can pass the new submission gate after
+CPU/decoder and hardware qualification. Supplied finite outlines and a charged
+public-only open-planner interface do not constitute measured autonomous planning
+or authorize native policy campaigns. No historical result is resumed or rescored.

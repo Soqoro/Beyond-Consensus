@@ -1,5 +1,10 @@
 # Frozen synthetic aggregation diagnostic
 
+**2026-09-24 status:** completed at 1/2; join duplication confirmed in the
+failed synthetic artifact. See [findings](SQLITE_AGGREGATION_FINDINGS_2026-09-24.md)
+and the [full review](PROGRESS_REPORT_2026-09-24.md). Further runs are paused;
+the commands below are the preserved procedure, not a request to repeat it.
+
 ## Question and limits
 
 Can the frozen 27B model produce correct totals when independent detail tables
@@ -25,7 +30,7 @@ synthetic context/action settings, not the native 16K/24-action condition.
 No document retrieval is needed. The primary action bound is 24 across the suite;
 200000 is a cap, not predicted consumption. Default JSON-tree/native profiles
 are unchanged. No native references, calibration, preparation, attacks or model
-planning are used. The model run remains unexecuted.
+planning are used. The completed model result is linked above.
 
 Scripted CPU controls test correct results, duplicated sums from an extra detail
 join, wrong aliases and missing final submission. They are harness tests only.

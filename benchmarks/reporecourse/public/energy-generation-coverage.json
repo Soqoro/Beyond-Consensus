@@ -1,0 +1,114 @@
+{
+  "id": "energy-generation-coverage",
+  "family": "data_product",
+  "request": "Build reusable Denmark (DNK) and Finland (FIN) electricity-generation and coverage reports for years 2019 through 2022 inclusive. electricity_generation is source-provided terawatt-hours (TWh), not per-capita or consumption. generation_report columns iso_code TEXT, year INTEGER, generation_twh numeric: include only in-range DNK/FIN rows with non-null generation, including genuine zero values. coverage_report columns iso_code TEXT, observed_years INTEGER, missing_generation_years INTEGER: for each selected country count present in-range source rows and how many have null generation. No invented years or imputation; do not include world/other aggregates. Order both reports by iso_code then year where present. Source key (iso_code,year) is unique, year is integer, generation is nonnegative numeric or null, each chosen country has at least one in-range record. Reusable queries are tested on alternate valid inputs with nulls, zeroes, repeated measure values, excluded years and aggregates. Only the stated source columns and bounded snapshot are in scope; publication awaits original-provider license review.",
+  "required_outputs": [
+    {
+      "id": "generation_report",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "year",
+        "generation_twh"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "number"
+      ]
+    },
+    {
+      "id": "coverage_report",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "observed_years",
+        "missing_generation_years"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "default": null
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "generation_report",
+          "worker": "w0",
+          "outputs": [
+            "generation_report"
+          ],
+          "depends": [],
+          "description": "Implement generation_report from original sources."
+        },
+        {
+          "id": "coverage_report",
+          "worker": "w1",
+          "outputs": [
+            "coverage_report"
+          ],
+          "depends": [],
+          "description": "Implement coverage_report from original sources."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Select the declared country/year range without dropping null generation; expose reusable source columns."
+        },
+        {
+          "id": "generation_report",
+          "worker": "w1",
+          "outputs": [
+            "generation_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement generation_report; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "coverage_report",
+          "worker": "w2",
+          "outputs": [
+            "coverage_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement coverage_report; may consume shared_base with exact version binding."
+        }
+      ]
+    },
+    {
+      "id": "grouped",
+      "units": [
+        {
+          "id": "all",
+          "worker": "w0",
+          "outputs": [
+            "generation_report",
+            "coverage_report"
+          ],
+          "depends": [],
+          "description": "Implement all required outputs together from original sources."
+        }
+      ]
+    }
+  ]
+}

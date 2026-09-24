@@ -1,0 +1,114 @@
+{
+  "id": "jaffle-recorded-payments",
+  "family": "data_product",
+  "request": "Build two reusable recorded-payment reports for reconciliation. Source is the fictional Jaffle Shop demo. Required customer_summary: every customers.id exactly once, columns customer_id INTEGER, recorded_dollars numeric, payment_records INTEGER; sum all payment rows attached through orders.user_id, divide cents by 100.0, zero for customers with no payments. Required method_summary: each observed payment_method exactly once with columns method TEXT, recorded_dollars numeric, payment_records INTEGER. Include all recorded amounts and statuses; do NOT infer refunds, order prices, unpaid balances, or revenue recognition. Equal-valued payment records remain distinct. Order outputs ascending by customer_id/method. IDs are non-null unique; payment order IDs and order user IDs exist; amounts are non-null nonnegative integer cents. Promised reusable behavior is tested on small alternate valid inputs including zero/equal payments, returned orders and no-payment customers.",
+  "required_outputs": [
+    {
+      "id": "customer_summary",
+      "format": "sql",
+      "columns": [
+        "customer_id",
+        "recorded_dollars",
+        "payment_records"
+      ],
+      "types": [
+        "integer",
+        "number",
+        "integer"
+      ]
+    },
+    {
+      "id": "method_summary",
+      "format": "sql",
+      "columns": [
+        "method",
+        "recorded_dollars",
+        "payment_records"
+      ],
+      "types": [
+        "string",
+        "number",
+        "integer"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "default": null
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "customer_summary",
+          "worker": "w0",
+          "outputs": [
+            "customer_summary"
+          ],
+          "depends": [],
+          "description": "Implement customer_summary from original sources."
+        },
+        {
+          "id": "method_summary",
+          "worker": "w1",
+          "outputs": [
+            "method_summary"
+          ],
+          "depends": [],
+          "description": "Implement method_summary from original sources."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Produce a reusable payment-row relation with order/customer association; preserve each recorded payment."
+        },
+        {
+          "id": "customer_summary",
+          "worker": "w1",
+          "outputs": [
+            "customer_summary"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement customer_summary; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "method_summary",
+          "worker": "w2",
+          "outputs": [
+            "method_summary"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement method_summary; may consume shared_base with exact version binding."
+        }
+      ]
+    },
+    {
+      "id": "grouped",
+      "units": [
+        {
+          "id": "all",
+          "worker": "w0",
+          "outputs": [
+            "customer_summary",
+            "method_summary"
+          ],
+          "depends": [],
+          "description": "Implement all required outputs together from original sources."
+        }
+      ]
+    }
+  ]
+}

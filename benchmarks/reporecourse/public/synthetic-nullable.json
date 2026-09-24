@@ -1,0 +1,103 @@
+{
+  "id": "synthetic-nullable",
+  "family": "api_schema",
+  "request": "Reusable response validator: object with required id integer and note string OR null; missing note is invalid. Reject unknown fields and boolean id. consumer maps id to key and note to text preserving null, with exactly those output fields and matching required output schema. Mapping only promised on valid responses. Synthetic engineering fixture.",
+  "required_outputs": [
+    {
+      "id": "response",
+      "format": "schema",
+      "public_inputs": [
+        "default"
+      ]
+    },
+    {
+      "id": "consumer",
+      "format": "mapping",
+      "public_inputs": [
+        "default"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "default": {
+      "id": 1,
+      "note": null
+    }
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "response",
+          "worker": "w0",
+          "outputs": [
+            "response"
+          ],
+          "depends": [],
+          "description": "Implement response from original sources."
+        },
+        {
+          "id": "consumer",
+          "worker": "w1",
+          "outputs": [
+            "consumer"
+          ],
+          "depends": [],
+          "description": "Implement consumer from original sources."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Define a reusable nullable string schema for note/text."
+        },
+        {
+          "id": "response",
+          "worker": "w1",
+          "outputs": [
+            "response"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement response; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "consumer",
+          "worker": "w2",
+          "outputs": [
+            "consumer"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement consumer; may consume shared_base with exact version binding."
+        }
+      ]
+    },
+    {
+      "id": "grouped",
+      "units": [
+        {
+          "id": "all",
+          "worker": "w0",
+          "outputs": [
+            "response",
+            "consumer"
+          ],
+          "depends": [],
+          "description": "Implement all required outputs together from original sources."
+        }
+      ]
+    }
+  ]
+}

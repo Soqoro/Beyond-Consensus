@@ -1,0 +1,189 @@
+{
+  "schema": "rr-source-registry-v1",
+  "packs": [
+    {
+      "id": "jaffle",
+      "repository": "dbt-labs/jaffle_shop_duckdb",
+      "revision": "36bde6cba69d962b83be1d52fc65a0dce1cb4ebb",
+      "license": "Apache-2.0",
+      "grounding": "demo_grounded",
+      "license_review": "license_file_inspected_independent_review_pending",
+      "independent_review": "pending",
+      "redistribution": "not_approved_pending_review",
+      "upstream": [
+        {
+          "path": "LICENSE",
+          "bytes": 11357,
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+        },
+        {
+          "path": "README.md",
+          "bytes": 16463,
+          "sha256": "9ad83697962f9e14c69d2623002de4b8e64affc8a559e17f0dabfefac7f3f2a8"
+        },
+        {
+          "path": "models/schema.yml",
+          "bytes": 2367,
+          "sha256": "91819c46a359d707743d20aae0d117d2bbdcac6e74e719de2c4149a97fde4e2d"
+        },
+        {
+          "path": "models/staging/stg_orders.sql",
+          "bytes": 349,
+          "sha256": "afffa9cbc57e5fd2cf5898ebf571d444a62c9d6d7929d8133d30567fb9a2ce97"
+        },
+        {
+          "path": "models/staging/stg_payments.sql",
+          "bytes": 442,
+          "sha256": "eb899938258d1fba27fca716a7c334119912a2f9601282026097a7b6ce8cfcd2"
+        },
+        {
+          "path": "seeds/raw_customers.csv",
+          "bytes": 1302,
+          "sha256": "24579b4b26098d43265376f3c50be8b10faf8e8fd95f5508074f10f76a12671d"
+        },
+        {
+          "path": "seeds/raw_orders.csv",
+          "bytes": 2723,
+          "sha256": "ee6c68d1639ec2b23a4495ec12475e09b8ed4b61e23ab0411ea7ec76648356f7"
+        },
+        {
+          "path": "seeds/raw_payments.csv",
+          "bytes": 2560,
+          "sha256": "03fd407f3135f84456431a923f22fc185a2154079e210c20b690e3ab11687d11"
+        }
+      ],
+      "retained": [
+        {
+          "path": "LICENSE",
+          "bytes": 11357,
+          "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+          "source_id": "LICENSE"
+        },
+        {
+          "path": "README.md",
+          "bytes": 16463,
+          "sha256": "9ad83697962f9e14c69d2623002de4b8e64affc8a559e17f0dabfefac7f3f2a8",
+          "source_id": "README_md"
+        },
+        {
+          "path": "models__schema.yml",
+          "bytes": 2367,
+          "sha256": "91819c46a359d707743d20aae0d117d2bbdcac6e74e719de2c4149a97fde4e2d",
+          "source_id": "models-schema_yml"
+        },
+        {
+          "path": "models__staging__stg_orders.sql",
+          "bytes": 349,
+          "sha256": "afffa9cbc57e5fd2cf5898ebf571d444a62c9d6d7929d8133d30567fb9a2ce97",
+          "source_id": "models-staging-stg_orders_sql"
+        },
+        {
+          "path": "models__staging__stg_payments.sql",
+          "bytes": 442,
+          "sha256": "eb899938258d1fba27fca716a7c334119912a2f9601282026097a7b6ce8cfcd2",
+          "source_id": "models-staging-stg_payments_sql"
+        },
+        {
+          "path": "tables.json",
+          "bytes": 8372,
+          "sha256": "b9e44eda1a8acd87577d638800601c0611ba41044e7d0a6e5655a8f33758a600",
+          "source_id": "tables_json"
+        }
+      ]
+    },
+    {
+      "id": "energy",
+      "repository": "owid/energy-data",
+      "revision": "7e387a16f70a510e433f8aac7efeac6faa1e5059",
+      "license": "OWID CC-BY-4.0; third-party terms require review",
+      "grounding": "repo_grounded_authored",
+      "license_review": "underlying_source_review_pending",
+      "independent_review": "pending",
+      "redistribution": "not_approved_pending_review",
+      "upstream": [
+        {
+          "path": "README.md",
+          "bytes": 14526,
+          "sha256": "ef774a43dc1afad2d3f244b0ba838d88a6ab4e0f9dc0dbedd78827199eb01418"
+        },
+        {
+          "path": "owid-energy-codebook.csv",
+          "bytes": 45793,
+          "sha256": "3cc9b7db0d921496e2988568ce3aee5ed41f50431dd234a0663b5f0a4b2e32bb"
+        },
+        {
+          "path": "owid-energy-data.csv",
+          "bytes": 9229369,
+          "sha256": "266f2e2baad7975351bc9bb4aa061d22b1da9fe4c47d51d2ac6071e01e171f76"
+        }
+      ],
+      "retained": [
+        {
+          "path": "README.md",
+          "bytes": 14526,
+          "sha256": "ef774a43dc1afad2d3f244b0ba838d88a6ab4e0f9dc0dbedd78827199eb01418",
+          "source_id": "README_md"
+        },
+        {
+          "path": "codebook.json",
+          "bytes": 842,
+          "sha256": "1bee0c8572d6954559fc75a2c6937aef1ae96e6915a2b3684cc88aaa8388915d",
+          "source_id": "codebook_json"
+        },
+        {
+          "path": "tables.json",
+          "bytes": 334,
+          "sha256": "f7a333cd595898adb2ce78add2cb7e34c92664d99630eee1d39b40dec6ccb1f8",
+          "source_id": "tables_json"
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "repository": "github/rest-api-description",
+      "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+      "license": "MIT",
+      "grounding": "repo_grounded_authored",
+      "license_review": "license_file_inspected_independent_review_pending",
+      "independent_review": "pending",
+      "redistribution": "not_approved_pending_review",
+      "upstream": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1063,
+          "sha256": "3243761cbac07e6d169a5a2f4e7c25cc544da85248e735df74c3672e055cc87b"
+        },
+        {
+          "path": "README.md",
+          "bytes": 3795,
+          "sha256": "dfb5896f8c1e3763c3f203eb5e40e1fcf2a3a7c3463d16ef1e34085335b213ea"
+        },
+        {
+          "path": "descriptions/api.github.com/api.github.com.json",
+          "bytes": 12964430,
+          "sha256": "b8ca03764f54058ec40e2b61e048a4518ee88e943ac04d393b1757094c895aad"
+        }
+      ],
+      "retained": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1063,
+          "sha256": "3243761cbac07e6d169a5a2f4e7c25cc544da85248e735df74c3672e055cc87b",
+          "source_id": "LICENSE_md"
+        },
+        {
+          "path": "README.md",
+          "bytes": 3795,
+          "sha256": "dfb5896f8c1e3763c3f203eb5e40e1fcf2a3a7c3463d16ef1e34085335b213ea",
+          "source_id": "README_md"
+        },
+        {
+          "path": "topics.json",
+          "bytes": 1605,
+          "sha256": "1fbc4198b6f2a0f9ff9c61b3e076a422cf6ae3c9b90b738cdd46ba27ac517554",
+          "source_id": "topics_json"
+        }
+      ]
+    }
+  ]
+}

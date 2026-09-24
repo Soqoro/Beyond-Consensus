@@ -1,0 +1,462 @@
+{
+  "schema": "rr-cpu-evidence-v1",
+  "date": "2026-09-24",
+  "scope": "Local CPU reference qualification; no GPU, no model competence, no policy ranking",
+  "model_executed": false,
+  "independent_review": "pending",
+  "command": "BC_PYTHON=<pinned CPU environment>/bin/python bash experiments/qualify_reporecourse.sh --local --sources <staged allowlist> --output <new directory>",
+  "implementation_hashes": {
+    "src/reporecourse/__init__.py": "b9cf864c141cc6c97cc539b92cac3b5537b0957c204722cc747c27897334bf9f",
+    "src/reporecourse/action_schema.py": "b4461dca1267bc141abc0c3f7cb950034d71f7fe8eed32f3097bae7d257bcf57",
+    "src/reporecourse/common.py": "961b13c54365d8d02e0f309e9f436a0e8a3c773737a6b8ba79720da835cd244a",
+    "src/reporecourse/engine.py": "b2ef088852c5d5044d69401bc5cd94938a91130d52f8f6061afd9e9df447542d",
+    "src/reporecourse/evaluator.py": "b330b837771b9bdea95c536e0216af5e0b7193caf385b3ab1334aee2dad266be",
+    "src/reporecourse/experiments.py": "c66960c11a5e4a584d22e1b9d6e6bf7ae32160b0366b4f81b95d19f53c260a67",
+    "src/reporecourse/policies.py": "52b16b288c654db3b9f9bd9d1d616cefc0744ca702eb9230a0c3402762deedcf",
+    "src/reporecourse/qualification.py": "37a5bf0230339a68b3c2c9b127379459d03a950396d5516efa93fe039fe53405",
+    "src/reporecourse/recovery.py": "e6cb89ba337425319bb4eca507d6ce3468d724a68ed897238839a9cf7a4fc14e",
+    "src/reporecourse/resources.py": "d1574c3878627e28a16498b59a6d92ee3f510f2a52ff58e06e44bb2e0c3a65bf",
+    "src/reporecourse/runtime.py": "51431090819eeb6a45dc1c20751453238f23a1875689de7dec668c0d327fdb56",
+    "src/reporecourse/schema_runtime.py": "267a24cc04ba6b0f735efc06924b84e646b74262540e8a26464ffaa43b2f7cfb",
+    "src/reporecourse/sources.py": "60db9f1198d277f31d89dfc92898d796bc8f7cef9227d6067d2c6be2a987e010",
+    "src/reporecourse/tasks.py": "ef35029fe59040e7b149018d93bcf73375825285ef1806695efeb2a0d0fae56d",
+    "src/restricted_artifacts/__init__.py": "5ff73326c9fe1db52292e477568361ff705ed44f560c2613ada169307705ba6b",
+    "src/restricted_artifacts/sql_text.py": "61c7620662b6e97396166f018fe0c4f85e93c2c9e7db544994a3e6b9bdbdb729",
+    "src/restricted_artifacts/sqlite_executor.py": "efb35fc81148b3bc7fed3fe9248ee061a4ccdddb69992db71791ac46611bebcd"
+  },
+  "tasks": [
+    {
+      "task": "jaffle-recorded-payments",
+      "task_hash": "2bad7e20d073a543c3189a58e4adce6236016563f4758e8a9452e8dcfdc6268b",
+      "status": "cpu_qualified_review_pending",
+      "negative_controls": [
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "customer_summary"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "customer_summary"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "customer_summary"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "customer_summary"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "method_summary"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "method_summary"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "method_summary"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "method_summary"
+        }
+      ],
+      "source_integrity": true,
+      "reset_repeat_identical": true,
+      "variation": {
+        "costs_measured": false,
+        "organizations": 3,
+        "plans": [
+          {
+            "active_workers": 2,
+            "id": "independent",
+            "key": "31bcf1da4c5319124fc2a21bf168bb2186dd17dfb639ee346c5a1b8ed84a2bf0"
+          },
+          {
+            "active_workers": 3,
+            "id": "shared",
+            "key": "ad8e2c4dcdef38f6b48f5e66355c0e7a1c1ca3863d1f6641eec4bfbfa8ec133b"
+          },
+          {
+            "active_workers": 1,
+            "id": "grouped",
+            "key": "1066c1dee44b2156796fcb1960fc0c4b11c812363f277d24adc7739df67dcd48"
+          }
+        ],
+        "ranking_reversal_required": false
+      },
+      "decomposition_reference_eligible": true,
+      "finite_tests_only": true,
+      "reference_organizations": [
+        {
+          "organization": "independent",
+          "success": true,
+          "bundle_hash": "d6d1dd84fcce4f0fe8954b106347ad73ee124bd0ae23c6bb581dfa3013c011ad"
+        },
+        {
+          "organization": "shared",
+          "success": true,
+          "bundle_hash": "3124426032257de0ea1a07f83325b2c8391a7ecbc0020cf8752a3d284dc7eb39"
+        }
+      ]
+    },
+    {
+      "task": "energy-generation-coverage",
+      "task_hash": "e3528ecd0d8e59e5d2d92b5f1b75e2453f8afffc9ad21550669c9a99cb413bae",
+      "status": "cpu_qualified_review_pending",
+      "negative_controls": [
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "generation_report"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "generation_report"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "generation_report"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "generation_report"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "coverage_report"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "coverage_report"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "coverage_report"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "coverage_report"
+        }
+      ],
+      "source_integrity": true,
+      "reset_repeat_identical": true,
+      "variation": {
+        "costs_measured": false,
+        "organizations": 3,
+        "plans": [
+          {
+            "active_workers": 2,
+            "id": "independent",
+            "key": "9b88d5c32bad1c6b5296a6402ad73cb70e7739df77c3fe4a7e93e40e709139fa"
+          },
+          {
+            "active_workers": 3,
+            "id": "shared",
+            "key": "c84c4a1002a4c2fe76ad7add069cf9e5f17941878711b7efd426bc400c1fce5c"
+          },
+          {
+            "active_workers": 1,
+            "id": "grouped",
+            "key": "948506c8173eb7318c933bafb9da91c7b616ac7e75aa5d2e9f3db9181663153e"
+          }
+        ],
+        "ranking_reversal_required": false
+      },
+      "decomposition_reference_eligible": true,
+      "finite_tests_only": true,
+      "reference_organizations": [
+        {
+          "organization": "independent",
+          "success": true,
+          "bundle_hash": "b6fa7f9e7ba3b27601b7cd2ce75b2dabcaec6746c5924ca67b2ba2c54a250c45"
+        },
+        {
+          "organization": "shared",
+          "success": true,
+          "bundle_hash": "7885bde40ce404564049be51bd1ad4464e078db5555c8135de3e87681892129f"
+        }
+      ]
+    },
+    {
+      "task": "github-topics-consumer",
+      "task_hash": "d219c72999e0d6b6fe661860d48939a35552f78338ef08b7c02ff4c6293a7963",
+      "status": "cpu_qualified_review_pending",
+      "negative_controls": [
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "request"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "request"
+        },
+        {
+          "control": "reject_all",
+          "detected": true,
+          "obligation": "request"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "reject_all",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "consumer"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "consumer"
+        },
+        {
+          "control": "dropped_field",
+          "detected": true,
+          "obligation": "consumer"
+        }
+      ],
+      "source_integrity": true,
+      "reset_repeat_identical": true,
+      "variation": {
+        "costs_measured": false,
+        "organizations": 3,
+        "plans": [
+          {
+            "active_workers": 3,
+            "id": "independent",
+            "key": "2f8c2d4aa135b3abb07ea7eb52f724995021bff90ab1eb2418ae85527a46ed7b"
+          },
+          {
+            "active_workers": 4,
+            "id": "shared",
+            "key": "2144a8d5ad5e83de8a513fdaf6f1ed42ab4cab9b82a97dd73bd8206da24bbc09"
+          },
+          {
+            "active_workers": 1,
+            "id": "grouped",
+            "key": "bafd07f321d63e6d325f46ef9c5fc84a1024f759dc7f9efc75595a0907d27837"
+          }
+        ],
+        "ranking_reversal_required": false
+      },
+      "decomposition_reference_eligible": true,
+      "finite_tests_only": true,
+      "reference_organizations": [
+        {
+          "organization": "independent",
+          "success": true,
+          "bundle_hash": "eed2a36b743dff787fdea3adc6a05c555c95f3890b41c573cdb32bbb5de12579"
+        },
+        {
+          "organization": "shared",
+          "success": true,
+          "bundle_hash": "d0a37dd840624866ef450fba269c6dc5390512d2ac11a620ae0c6f2033f41543"
+        }
+      ]
+    },
+    {
+      "task": "synthetic-stock",
+      "task_hash": "a9defe10bdf8f4f5cf41e07fb15f82c1cfaee066efd04075f4f73106c1e5850d",
+      "status": "cpu_qualified_review_pending",
+      "negative_controls": [
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "stock_report"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "stock_report"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "stock_report"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "stock_report"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "zero_report"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "zero_report"
+        },
+        {
+          "control": "wrong_alias",
+          "detected": true,
+          "obligation": "zero_report"
+        },
+        {
+          "control": "wrong_type",
+          "detected": true,
+          "obligation": "zero_report"
+        }
+      ],
+      "source_integrity": true,
+      "reset_repeat_identical": true,
+      "variation": {
+        "costs_measured": false,
+        "organizations": 3,
+        "plans": [
+          {
+            "active_workers": 2,
+            "id": "independent",
+            "key": "265621c829895420e6d36ae27c431b0f77d36df6989a059331011b4ef0d90aff"
+          },
+          {
+            "active_workers": 3,
+            "id": "shared",
+            "key": "373b89e931934aa73f44fc221cd479416a8aefc9b4677adc76157ec14aa87d9d"
+          },
+          {
+            "active_workers": 1,
+            "id": "grouped",
+            "key": "b6e0a0e5bceaa55402a5572a175626b7e78940f7bd70df84de4c96f687c876ef"
+          }
+        ],
+        "ranking_reversal_required": false
+      },
+      "decomposition_reference_eligible": true,
+      "finite_tests_only": true,
+      "reference_organizations": [
+        {
+          "organization": "independent",
+          "success": true,
+          "bundle_hash": "861b42be58b2c2b811f44114aa7942d0ee4cd29461a354423b16b6e70965a424"
+        },
+        {
+          "organization": "shared",
+          "success": true,
+          "bundle_hash": "f0bceeabe622f63be959a8f93e6f1b7265540073efd6fb2f0af5726de5175c34"
+        }
+      ]
+    },
+    {
+      "task": "synthetic-nullable",
+      "task_hash": "902430cf8268503b31266ae36e8c5dd2db44b917b6183f14dce43246d8985804",
+      "status": "cpu_qualified_review_pending",
+      "negative_controls": [
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "reject_all",
+          "detected": true,
+          "obligation": "response"
+        },
+        {
+          "control": "missing",
+          "detected": true,
+          "obligation": "consumer"
+        },
+        {
+          "control": "semantic_mutation",
+          "detected": true,
+          "obligation": "consumer"
+        },
+        {
+          "control": "dropped_field",
+          "detected": true,
+          "obligation": "consumer"
+        }
+      ],
+      "source_integrity": true,
+      "reset_repeat_identical": true,
+      "variation": {
+        "costs_measured": false,
+        "organizations": 3,
+        "plans": [
+          {
+            "active_workers": 2,
+            "id": "independent",
+            "key": "66747cfbe23cc342d96c58efb7b9a103c614d668695cab796b9bb3446e68ddf5"
+          },
+          {
+            "active_workers": 3,
+            "id": "shared",
+            "key": "385a020b33260b25f55129b511599de1ea2b31d9a5d79250127be7abe300a0a4"
+          },
+          {
+            "active_workers": 1,
+            "id": "grouped",
+            "key": "45cfd6082e74f560f736e07dcc092f39bea03a70c95a06356ceb23d0a8188bbf"
+          }
+        ],
+        "ranking_reversal_required": false
+      },
+      "decomposition_reference_eligible": true,
+      "finite_tests_only": true,
+      "reference_organizations": [
+        {
+          "organization": "independent",
+          "success": true,
+          "bundle_hash": "6c12ea55c50260e558a7d5d32fc012005784f021883b8658abea6d2ac54a0b47"
+        },
+        {
+          "organization": "shared",
+          "success": true,
+          "bundle_hash": "b588e56c90a4144a5fbc206f70d7072e51eee8862452750db72f599726903fab"
+        }
+      ]
+    }
+  ],
+  "runtime_versions": {
+    "jsonschema": "4.25.1",
+    "python": "3.12.7",
+    "referencing": "0.36.2",
+    "sqlglot": "27.28.1"
+  },
+  "compiler_qualification": {
+    "schema": "bc-sql-frontend-qualification-v1",
+    "status": "passed",
+    "model_executed": false,
+    "sql_executed": true,
+    "native_reference_approval": false
+  }
+}

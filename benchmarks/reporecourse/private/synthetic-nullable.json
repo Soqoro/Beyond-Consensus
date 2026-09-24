@@ -1,0 +1,260 @@
+{
+  "schema": "rr-evaluator-v1",
+  "oracle": "nullable",
+  "fixtures": [
+    {
+      "cases": [
+        {
+          "obligation": "response",
+          "input": {
+            "id": 1,
+            "note": null
+          },
+          "valid": true
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "id": 2,
+            "note": "a"
+          },
+          "valid": true
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "id": 1
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "id": true,
+            "note": "a"
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "id": 2,
+            "note": 0
+          },
+          "valid": false
+        },
+        {
+          "obligation": "response",
+          "input": {
+            "id": 3,
+            "note": null,
+            "extra": 1
+          },
+          "valid": false
+        },
+        {
+          "obligation": "consumer",
+          "input": {
+            "id": 1,
+            "note": null
+          },
+          "valid": true,
+          "output": {
+            "key": 1,
+            "text": null
+          }
+        }
+      ],
+      "composition": [
+        {
+          "id": 1,
+          "note": null
+        }
+      ]
+    }
+  ],
+  "witnesses": [
+    {
+      "organization": "independent",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "response",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "note"
+              ],
+              "additionalProperties": false
+            },
+            "bindings": {},
+            "obligations": [
+              "response"
+            ]
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "consumer",
+            "format": "mapping",
+            "content": {
+              "fields": {
+                "key": {
+                  "path": [
+                    "id"
+                  ],
+                  "missing": "error"
+                },
+                "text": {
+                  "path": [
+                    "note"
+                  ],
+                  "missing": "error"
+                }
+              },
+              "output_schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "key",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "bindings": {},
+            "obligations": [
+              "consumer"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organization": "shared",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "shared_base",
+            "format": "schema",
+            "content": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "bindings": {},
+            "obligations": []
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "response",
+            "format": "schema",
+            "content": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "$ref": "rr:shared_base"
+                }
+              },
+              "required": [
+                "id",
+                "note"
+              ],
+              "additionalProperties": false
+            },
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "response"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "consumer",
+            "format": "mapping",
+            "content": {
+              "fields": {
+                "key": {
+                  "path": [
+                    "id"
+                  ],
+                  "missing": "error"
+                },
+                "text": {
+                  "path": [
+                    "note"
+                  ],
+                  "missing": "error"
+                }
+              },
+              "output_schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "$ref": "rr:shared_base"
+                  }
+                },
+                "required": [
+                  "key",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "consumer"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "release": "benchmark-authored evaluator, kept outside worker tools; no native private materials",
+  "independent_review": "pending"
+}

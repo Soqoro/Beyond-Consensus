@@ -119,6 +119,11 @@ def affected(candidate, identity, observed_edges=()):
         hit = expanded
 
 
+def rank_costed(evaluations, mode):
+    """Shared finite objective/tie-break; eligibility is the caller's gate."""
+    return min(evaluations,key=lambda e:(e['objective'] if mode=='recovery' else e['clean'], e['id']))
+
+
 def select(candidates, task, costs, mode, cap, reserve, provenance, *, engineering=False):
     """Exhaustive tiny catalog, same cost rows/scenarios/reserve for all selectors.
 
@@ -156,7 +161,7 @@ def select(candidates, task, costs, mode, cap, reserve, provenance, *, engineeri
         eligible = [e for e in eligible if e['id']==candidates[0]['id']]
     if not eligible:
         raise BCError('No costed feasible candidate')
-    chosen = min(eligible,key=lambda e:(e['objective'] if mode=='recovery' else e['clean'], e['id']))
+    chosen = rank_costed(eligible, mode)
     return {'selected':chosen['id'],'evaluations':evaluations,'reserve':reserve,
             'status':'constructed_engineering_only','preparation':False,'repair_backend':'shared_existing_JIT',
             'cost_provenance':provenance,'search_states':len(candidates)*len(WORKERS)}

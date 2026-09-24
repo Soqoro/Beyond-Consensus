@@ -12,6 +12,9 @@ from .metrics import summarize
 
 
 def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
+    if manifest.get("schema") == "rr-manifest-v1":
+        from reporecourse.experiments import aggregate as rr_aggregate
+        return rr_aggregate(manifest, root)
     config = validate_manifest(manifest)
     rows, statuses = {}, Counter()
     for expected in manifest["episodes"]:

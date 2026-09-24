@@ -135,10 +135,15 @@ def parser() -> argparse.ArgumentParser:
     add_diagnostics(sub)
     from .competence_cli import add_parsers as add_competence
     add_competence(sub)
+    from .reporecourse_cli import add_parsers as add_rr
+    add_rr(sub)
     return p
 
 
 def dispatch(args: argparse.Namespace) -> Any:
+    if args.command.startswith("rr-"):
+        from .reporecourse_cli import dispatch as rr_dispatch
+        return rr_dispatch(args)
     from .competence_cli import COMMANDS as COMPETENCE, dispatch as dispatch_competence
     if args.command in COMPETENCE:
         return dispatch_competence(args)
@@ -340,6 +345,11 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get("schema") == "rr-manifest-v1":
+            from .experiments.reporecourse import preflight as rr_preflight
+            result = rr_preflight(frozen, args.model_lock, ROOT)
+            atomic_json(args.output, result)
+            return result
         config = validate_manifest(frozen)
         if config.model.checkpoint == "Qwen/Qwen3.5-27B":
             current = build_manifest(config, ROOT)

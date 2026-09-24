@@ -131,6 +131,9 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
         bad = ["{}", '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":{}}',
                '{"tool":"run_read_query","permitted_artifact_versions":{},"select_sql":"SELECT 1}',
                '{"tool":"shell","command":"true"}']
+    if mode == "reporecourse-json-v1":
+        from reporecourse.action_schema import controls as rr_controls
+        good, bad = rr_controls()
     closing = tokenizer.convert_tokens_to_ids("</think>")
     for control_index, action in enumerate(good):
         text = json.dumps(action, separators=(",", ":"))
@@ -191,7 +194,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
     parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
-    parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1"), default="sqlite-json-schema-v1")
+    parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1"), default="sqlite-json-schema-v1")
     parser.add_argument("--frontend-report", type=Path)
     args = parser.parse_args()
     if args.qualified_lock and args.qualified_lock.exists():

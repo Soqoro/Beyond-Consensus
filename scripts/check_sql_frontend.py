@@ -25,7 +25,7 @@ def main():
     report={'schema':'bc-sql-frontend-qualification-v1','status':'passed' if result.wasSuccessful() and not result.skipped else 'failed',
             'tests':result.testsRun,'skipped':len(result.skipped),'contract':contract(),
             'implementation_hashes':{name:file_hash(root/name) for name in (
-                'src/beyond_consensus/runtime/sql_text.py','src/beyond_consensus/runtime/sqlite_executor.py','tests/test_sql_text.py')},
+                'src/beyond_consensus/runtime/sql_text.py','src/beyond_consensus/runtime/sqlite_executor.py','tests/test_sql_text.py', 'src/restricted_artifacts/sql_text.py', 'src/restricted_artifacts/sqlite_executor.py')},
             'model_executed':False,'sql_executed':True,'inputs':'synthetic_only',
             'parent_cpu_seconds':time.process_time()-started,'native_reference_approval':False}
     with args.output.open('x') as f:json.dump(report,f,indent=2)

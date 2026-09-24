@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RepoRecourse public task v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "family",
+    "request",
+    "required_outputs",
+    "sources",
+    "tables",
+    "examples",
+    "outlines"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "data_product",
+        "api_schema"
+      ]
+    },
+    "request": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_outputs": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "format"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "format": {
+            "enum": [
+              "sql",
+              "schema",
+              "mapping"
+            ]
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "public_inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "integer",
+                "number",
+                "string"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sources": {
+      "type": "object"
+    },
+    "tables": {
+      "type": "object"
+    },
+    "examples": {
+      "type": "object"
+    },
+    "outlines": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "units"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "units": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8
+          }
+        }
+      }
+    }
+  }
+}

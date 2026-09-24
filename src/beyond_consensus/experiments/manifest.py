@@ -22,7 +22,7 @@ def source_revision(root: Path) -> str:
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True, stderr=subprocess.DEVNULL).strip()
     except (OSError, subprocess.CalledProcessError):
         commit = "uncommitted"
-    files = {str(p.relative_to(root)): file_hash(p) for directory in ("src", "scripts", "experiments", "configs")
+    files = {str(p.relative_to(root)): file_hash(p) for directory in ("src", "scripts", "experiments", "configs", "benchmarks")
              for p in (root / directory).rglob("*") if p.is_file()
              and "__pycache__" not in p.parts and not p.name.endswith(".local.json")}
     files.update({p.name: file_hash(p) for p in [root / "pyproject.toml", *root.glob("requirements*.txt")]
@@ -177,6 +177,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
 
 
 def validate_manifest(data: dict[str, Any]) -> RunConfig:
+    if data.get("schema") == "rr-manifest-v1":
+        from .reporecourse import config_namespace
+        return config_namespace(data)
     if data.get("schema") not in ("bc-manifest-v1", "bc-manifest-v2"):
         raise BCError("Unknown experiment manifest schema")
     config = from_dict(data["config"])

@@ -202,6 +202,13 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    if manifest.get("schema") == "rr-manifest-v1":
+        from reporecourse.experiments import require_run
+        from .reporecourse import verify_inputs
+        require_run(manifest)
+        if digest(model_lock) != manifest.get("model_lock_sha256"):
+            raise BCError("RepoRecourse model lock changed; rebuild manifest")
+        verify_inputs(manifest, existing_snapshot or repo)
     if run_config.model.backend != "transformers":
         raise BCError("GPU submissions require an explicitly resolved Transformers configuration")
     if not run_config.model.revision or not run_config.model.tokenizer_revision:

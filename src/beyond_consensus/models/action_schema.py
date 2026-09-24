@@ -36,6 +36,9 @@ def enum(*values):
 
 
 def action_schema(mode=MODE):
+    if mode == "reporecourse-json-v1":
+        from reporecourse.action_schema import schema
+        return schema()
     if mode not in (MODE, "sqlite-sql-text-v1"):
         raise BCError("Unknown action representation")
     name = {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,62}$"}
@@ -114,6 +117,8 @@ def contract(mode=MODE):
     if mode == "sqlite-sql-text-v1":
         result.update(decoder_schema_sha256=digest(decoder_schema(mode)),
                       sql_string_length_enforcement="runtime-characters-and-utf8-bytes-v1")
+    if mode == "reporecourse-json-v1":
+        result["decoder_charge"] = "measured_cpu_subset_no_token_conversion"
     return result
 
 

@@ -1,14 +1,83 @@
 # Implementation status and handoff
 
-## Current decision: review while aggregation preflight is pending (2026-09-23)
+## RepoRecourse implementation handoff (2026-09-24)
 
-[September 23 progress report](PROGRESS_REPORT_2026-09-23.md) consolidates the
-latest evidence: matched native tree 0/2 versus SQL text 1/2; naming follow-up
-still 1/2 at higher work; its unsubmitted query failed offline comparison.
-The user reports the new synthetic aggregation preflight is running. Its outcome
-and task-level results are pending. Pause new pilot/native/policy submissions
-for review; preserve the already submitted preflight's results when it finishes.
-No recovery advantage has been demonstrated.
+The user authorized a new method-independent benchmark prototype after the
+aggregation review, while keeping the earlier experiments frozen. The
+[implementation report and LOCAL/CLUSTER runbook](REPORECOURSE_IMPLEMENTATION.md)
+is the current handoff. No new GPU experiment, submission, commit or push occurred.
+
+- M0: neutral `reporecourse` runtime/evaluator and shared `restricted_artifacts`
+  SQL core, with legacy adapters and unchanged SQL semantics/surrogate accounting.
+- M1: both CPU families execute; four persistent identities, announced loss,
+  bounded one-shot/persistent artifact sabotage, explicit publication/binding,
+  consumer rebinding/reexecution, checkpoints and equal-remaining fixed states.
+  Persistent compromise and stored primary work survive recovery/replica resumes.
+- M2: three actual pinned source packs (Jaffle demo, OWID energy, GitHub REST),
+  one draft request each, plus two separate synthetic tests. Ten reference
+  executions pass and all 39 missing/semantic controls are detected. Integrity
+  and reset checks pass. Independent review is pending; energy's underlying
+  provider-license review blocks model use. No twelve-task coverage claim.
+- M3: guarded one-task engineering smoke path reuses the model/backend, journal,
+  immutable snapshots and shared Slurm registry. New logical-token/CPU resource
+  profile; no old surrogate B0 reuse. Actual model lock and new grammar/hardware
+  qualifications must be checked on the cluster.
+- M4: solo, delegation/JIT, restart and independent replication CPU paths work.
+  Authored outlines govern real work; the optional BC finite-selection plugin
+  shares objective/tie-break code and gates on compatible measured calibration.
+  Public-only charged open planning has a test backend exercise only. No model
+  planning, measured plan-cost table, B0, competence result or policy advantage.
+
+Prospective manifests were generated locally, without execution: 12 episodes
+for current three-task clean team/solo × two seeds, and 58 for separate finite
+outline clean/loss sensitivity with actual contributing-identity counts. Larger
+runs remain blocked. The balanced 12-task/48-episode qualification target, its
+thresholds, the fourth source pack and independent reviews remain outstanding.
+
+Local verification:
+
+- Standard-library environment: **263 tests: 250 passed, 13 skipped**.
+- Pinned optional CPU environment: **263 tests: 262 passed, one skipped**.
+- After the final artifact-execution provenance correction: the full **28-test
+  RepoRecourse module passed** again with pinned children.
+- `check_shell.py`: **10 shell files passed**; compileall, isolated stdlib CLI
+  help and `git diff --check` passed. Runbook Bash and inline Python syntax passed.
+- Five-pack CPU qualification was rerun on the final neutral implementation;
+  sanitized task/implementation hashes are in
+  [cpu-2026-09-24.json](../benchmarks/reporecourse/qualification/cpu-2026-09-24.json).
+
+Skip details: the real legacy OS-sandbox test
+`test_repository.RealSandboxTests.test_actual_isolation_and_cleanup` requires
+`BC_SANDBOX_TEST_PROFILE` and is skipped in both environments. In the stdlib-only
+environment, these three `test_sql_text.CompilerTests` require optional SQLGlot:
+`test_rejects_and_resource_bounds`, `test_runtime_fail_closed_charges_and_wrong_query`,
+`test_synthetic_semantic_parity`. These nine `test_reporecourse.VerticalTests` need
+the pinned SQLGlot/jsonschema/referencing CPU children:
+`test_all_baselines_clean_and_announced_loss`,
+`test_both_families_witnesses_and_negatives`,
+`test_existing_journal_runner_adapter_with_explicit_test_backend`,
+`test_fixed_state_graph_and_equal_remaining`,
+`test_independent_benchmark_execution_without_bc`,
+`test_replica_checkpoint_preserves_primary_and_resumes`,
+`test_resume_and_latest_bound_not_best`,
+`test_schema_rebind_reuses_program_preserves_exposure`, and
+`test_shared_plan_repair_and_no_forced_regeneration`.
+All twelve dependency-dependent tests ran in the pinned environment. No GPU mock
+is described as hardware preflight; scripted references are not model results.
+
+## Current decision: pause after aggregation findings for review (2026-09-24)
+
+[September 24 full report](PROGRESS_REPORT_2026-09-24.md) consolidates all reported
+results. The synthetic aggregation run completed at 1/2, 11085 work and zero tool
+rejections. Both required artifacts were submitted and passed public integration.
+Basic totals passed; the harder task's stored query joined independent details
+before aggregating, producing exactly the observed inflated sums and counts.
+See [the recorded finding](SQLITE_AGGREGATION_FINDINGS_2026-09-24.md).
+Native solar remains 1/2 in the latest SQL-text condition; this synthetic finding
+does not establish the native mismatch's exact cause. No recovery advantage has
+been demonstrated. Pause new experiments for review; prompts, budgets, scoring
+and historical results remain unchanged. Earlier pending-preflight statements
+below are dated history, superseded by the completed reports.
 
 ## Historical review checkpoint (2026-09-22)
 
@@ -871,3 +940,17 @@ and missing-submission scripted runs. This changes offline reporting only;
 runtime scoring, recorded outcomes and episode ledgers are unchanged. Regenerate
 reports into a fresh directory from the existing run; do not resubmit GPU jobs.
 No aggregation model success count has yet been supplied.
+
+### Completed aggregation model result and artifact inspection (2026-09-24)
+
+Experiment `79d94d4217740a37c4b01c4cf2d12a47fc5689ab3391c5c48f952f181c2b44d1`:
+payments passed (5271 work), independent_details failed (5814); three model calls
+per task, zero rejections, no missing artifacts, reconciled ledgers. Inspection
+of the selected query tree and stored rows confirms independent-detail join
+multiplication in this synthetic case. Team 1 totals/counts are 50/6/3 instead of
+25/2/1; team 2 has 27/6/2 instead of 9/3/1. Missing-detail cases are correct.
+The export did not recover original SQL text; attribution is to the stored
+executable artifact, without an independently checked text-to-IR round trip.
+No native source cardinalities were measured. The read-only inspection used no
+model or SQL, and no historical artifact or score was modified. Full report and
+review pause are linked above.

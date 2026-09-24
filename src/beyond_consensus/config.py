@@ -27,7 +27,7 @@ class ModelConfig:
     action_constraint: str = "none"
 
     def __post_init__(self) -> None:
-        if self.action_constraint not in ("none", "sqlite-json-schema-v1", "sqlite-sql-text-v1"):
+        if self.action_constraint not in ("none", "sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1"):
             raise BCError("Unknown action constraint")
         if self.backend not in ("mock", "transformers"):
             raise BCError("backend must be mock or transformers")
@@ -38,7 +38,7 @@ class ModelConfig:
             if (self.revision != REVISION or self.tokenizer_revision != REVISION or
                     self.dtype != "bfloat16" or not self.thinking or
                     self.context_limit not in (8192, 16384) or self.max_new_tokens != 2048 or
-                    self.action_constraint not in ("sqlite-json-schema-v1", "sqlite-sql-text-v1")):
+                    self.action_constraint not in ("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1")):
                 raise BCError("27B requires the pinned bounded BF16/thinking/constrained competence profile")
         if self.dtype not in ("bfloat16", "float16", "float32"):
             raise BCError("Unsupported dtype; no automatic quantization")

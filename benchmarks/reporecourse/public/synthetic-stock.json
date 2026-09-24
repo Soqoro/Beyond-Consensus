@@ -1,0 +1,135 @@
+{
+  "id": "synthetic-stock",
+  "family": "data_product",
+  "request": "Reusable stock_report(sku TEXT, qty INTEGER) contains every stock row; zero_report(sku TEXT) contains exactly rows with qty=0. Order by sku. Unique non-null sku, nonnegative integer qty. Test-only engineering fixture, not repository evidence.",
+  "required_outputs": [
+    {
+      "id": "stock_report",
+      "format": "sql",
+      "columns": [
+        "sku",
+        "qty"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    },
+    {
+      "id": "zero_report",
+      "format": "sql",
+      "columns": [
+        "sku"
+      ],
+      "types": [
+        "string"
+      ]
+    }
+  ],
+  "tables": {
+    "stock": {
+      "columns": [
+        [
+          "sku",
+          "TEXT"
+        ],
+        [
+          "qty",
+          "INTEGER"
+        ]
+      ],
+      "rows": [
+        [
+          "a",
+          2
+        ],
+        [
+          "b",
+          0
+        ],
+        [
+          "c",
+          3
+        ]
+      ]
+    }
+  },
+  "sources": {},
+  "examples": {
+    "default": null
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "stock_report",
+          "worker": "w0",
+          "outputs": [
+            "stock_report"
+          ],
+          "depends": [],
+          "description": "Implement stock_report from original sources."
+        },
+        {
+          "id": "zero_report",
+          "worker": "w1",
+          "outputs": [
+            "zero_report"
+          ],
+          "depends": [],
+          "description": "Implement zero_report from original sources."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Expose all stock rows as shared_base."
+        },
+        {
+          "id": "stock_report",
+          "worker": "w1",
+          "outputs": [
+            "stock_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement stock_report; may consume shared_base with exact version binding."
+        },
+        {
+          "id": "zero_report",
+          "worker": "w2",
+          "outputs": [
+            "zero_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement zero_report; may consume shared_base with exact version binding."
+        }
+      ]
+    },
+    {
+      "id": "grouped",
+      "units": [
+        {
+          "id": "all",
+          "worker": "w0",
+          "outputs": [
+            "stock_report",
+            "zero_report"
+          ],
+          "depends": [],
+          "description": "Implement all required outputs together from original sources."
+        }
+      ]
+    }
+  ]
+}
