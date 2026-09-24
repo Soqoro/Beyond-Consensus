@@ -1,5 +1,15 @@
 # Implementation status and handoff
 
+## RepoRecourse cluster cleanup correction (2026-09-24)
+
+The first cluster qualification failed during temporary database cleanup on
+shared storage (Directory not empty). Source materialization used SQLite
+transaction context management without explicit connection closure. It now
+closes on success and failure; a regression test retains the connection to
+verify closure without relying on garbage collection. Cluster qualification
+must be repeated with a fresh source snapshot and output directory. Earlier
+CPU evidence remains historical; no new cluster qualification is claimed.
+
 ## RepoRecourse implementation handoff (2026-09-24)
 
 The user authorized a new method-independent benchmark prototype after the

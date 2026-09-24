@@ -28,6 +28,28 @@ def public(name='synthetic-nullable'):return load_task(name,Path('/nonexistent-s
 
 
 class CoreTests(unittest.TestCase):
+    def test_source_connection_closed_on_success_and_failure(self):
+        import sqlite3
+        from reporecourse.runtime import create_database
+        connect = sqlite3.connect
+        for fail in (False, True):
+            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as directory:
+                connection = connect(Path(directory) / 'source.sqlite')
+                tables = {'items': {'columns': [('id', 'INVALID' if fail else 'INTEGER')],
+                                    'rows': [[1]]}}
+                with patch('reporecourse.runtime.sqlite3.connect', return_value=connection):
+                    if fail:
+                        with self.assertRaisesRegex(Rejected, 'source_type'):
+                            create_database(Path(directory) / 'source.sqlite', tables)
+                    else:
+                        create_database(Path(directory) / 'source.sqlite', tables)
+                with self.assertRaises(sqlite3.ProgrammingError):
+                    connection.execute('SELECT 1')
+                if not fail:
+                    with connect(Path(directory) / 'source.sqlite') as check:
+                        self.assertEqual(check.execute('SELECT id FROM items').fetchall(), [(1,)])
+                    check.close()
+
     def test_stdlib_cli_and_policy_independent_imports(self):
         proc=subprocess.run([sys.executable,'-I','-S','scripts/bc.py','--help'],capture_output=True,text=True)
         self.assertEqual(proc.returncode,0,proc.stderr);self.assertIn('rr-demo',proc.stdout)

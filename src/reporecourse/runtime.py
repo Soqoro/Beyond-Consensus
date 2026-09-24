@@ -1,4 +1,5 @@
 """Method-neutral tools, immutable publications and fixed identity interventions."""
+from contextlib import closing
 from copy import deepcopy
 import json
 import random
@@ -15,7 +16,7 @@ WORKERS = ('w0','w1','w2','w3')
 def create_database(path, tables):
     # Harness-only literal table materialization. No upstream SQL/scripts/hooks.
     from restricted_artifacts.sqlite_executor import identifier
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db, db:
         for name,table in tables.items():
             columns=table['columns']
             if any(t not in ('TEXT','INTEGER','REAL') for _,t in columns): raise Rejected('source_type')
