@@ -1,5 +1,19 @@
 # Implementation status and handoff
 
+## RepoRecourse clean GPU baseline reviewed (2026-09-25)
+
+User-supplied corrected smoke b9492f9028928218e190cf0441956d681cecb524b824505d551047f55757a9f9
+passed 1/1 at 29,745 logical tokens and 404.791 CPU seconds. Both required
+Jaffle reports passed; one compiler rejection was corrected within primary
+work. No public alarm or repair occurred. The GPU run therefore does not test
+the fixed finish/repair path or demonstrate recovery effectiveness.
+
+See [baseline evidence and three-episode contributor-loss review plan](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
+The plan is not executable: current code allows one clean smoke only and
+non-smoke review/competence/calibration gates remain closed. No campaign was
+submitted and no gate was relaxed. Historical failed scores remain unchanged.
+
+
 ## RepoRecourse assignment termination correction (2026-09-25)
 
 Cluster smoke 855edc500f48ec01eb9674e48bb6c2b9d7f59caa11fd218f5a41ab35da72bdcb
@@ -7,7 +21,8 @@ completed with 0/1 success, 18,302 logical tokens and approximately 372.72 CPU
 seconds. Both primary queries compiled but produced SQL semantic errors.
 During repair, a worker finish closed the shared episode; the next worker still
 generated an action, rejected as episode_closed. This is a runtime defect,
-not evidence of a recovery-policy effect. Exact SQL errors remain undiagnosed.
+not evidence of a recovery-policy effect. Subsequent static artifact inspection identified nonexistent source column names;
+see the baseline review above. No historical query was repaired or rescored.
 
 The corrected contract makes finish assignment-local. The orchestrator alone
 freezes the episode; completed assignment state is checkpointed with finish.

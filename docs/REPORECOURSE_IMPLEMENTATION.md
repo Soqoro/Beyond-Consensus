@@ -377,3 +377,12 @@ nor freezes the shared bundle; the orchestrator does that after scheduled work.
 The first cluster smoke exposed the former global-finish defect during repair.
 Its 0/1 result is preserved. Fresh qualification and a manifest are required for
 a corrected run; the two primary SQL semantic errors remain to be diagnosed.
+
+### User-reported cluster evidence (2026-09-25)
+
+The corrected Jaffle smoke passed 1/1; both primary artifacts succeeded, with
+one compiler rejection corrected within primary work and no repair stage.
+CPU/decoder and A100-80GB preflight reports were supplied by the user. This
+supersedes the initial handoff's dated 'not run' inventory for these specific
+checks only. Independent review, calibrated B0 and broad competence are still
+unestablished. See [baseline and gated loss plan](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
