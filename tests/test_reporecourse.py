@@ -28,6 +28,65 @@ def public(name='synthetic-nullable'):return load_task(name,Path('/nonexistent-s
 
 
 class CoreTests(unittest.TestCase):
+    def test_worker_finish_preserves_episode_and_other_workers(self):
+        env=Environment(public())
+        try:
+            self.assertEqual(env.action('w0',{'tool':'finish'}),{'assignment_finished':True})
+            self.assertFalse(env.finished)
+            self.assertIsInstance(env.action('w1',{'tool':'list_sources'}),list)
+            self.assertFalse(env.bound)
+            env.finished=True
+            with self.assertRaisesRegex(Rejected,'episode_closed'):
+                env.action('w1',{'tool':'list_sources'})
+        finally:env.close()
+
+    def test_finish_continues_primary_and_repair_and_resumes_locally(self):
+        class Finisher:
+            mode='scripted_cpu'
+            def __init__(self):self.calls=[]
+            def next_action(self,p,u,o,h,r,seed,save):
+                self.calls.append(u['id'])
+                return {'tool':'finish'}
+        p=public();worker=Finisher();saved=[]
+        engine=Engine(p,worker,save=lambda s:saved.append(copy.deepcopy(s)))
+        try:
+            expected=[u['id'] for u in engine.plan['units']]
+            row=engine.run()
+            self.assertEqual(worker.calls,expected+expected)
+            self.assertEqual(row['failures'],[])
+            self.assertEqual(row['obligations_bound'],0)
+            self.assertEqual(set(row['public_alarm']),{r['id'] for r in p['required_outputs']})
+            self.assertTrue(engine.env.finished)
+            self.assertEqual([(e['stage'],e['unit']) for e in row['events'] if e['type']=='unit_end'],
+                             [(stage,u) for stage in ('primary','repair') for u in expected])
+            checkpoint=next(s for s in saved if 'primary:'+expected[0] in s['completed'])
+            other=Finisher();resumed=Engine(p,other)
+            try:
+                resumed.restore(checkpoint)
+                resumed.run()
+                self.assertEqual(other.calls,expected[1:]+expected)
+            finally:resumed.env.close()
+            before=len(worker.calls)
+            engine.unit(engine.plan['units'][0],'w0','after_final')
+            self.assertEqual(len(worker.calls),before)
+        finally:engine.env.close()
+
+    def test_repair_stops_model_calls_after_resource_exhaustion(self):
+        class Exhausted:
+            mode='scripted_cpu'
+            calls=0
+            def next_action(self,*args):
+                self.calls+=1
+                raise Rejected('token_cap')
+        worker=Exhausted();engine=Engine(public(),worker)
+        try:
+            engine.phase='repair'
+            engine.public_alarm=[r['id'] for r in engine.public['required_outputs']]
+            row=engine.run()
+            self.assertEqual(worker.calls,1)
+            self.assertEqual(row['status'],'resource_exhausted')
+        finally:engine.env.close()
+
     def test_source_connection_closed_on_success_and_failure(self):
         import sqlite3
         from reporecourse.runtime import create_database

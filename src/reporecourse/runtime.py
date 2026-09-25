@@ -229,7 +229,9 @@ class Environment:
             if action['checkpoint'] not in self.checkpoints:raise Rejected('checkpoint')
             self.bound=deepcopy(self.checkpoints[action['checkpoint']])
             self.events.append(dict(type='restore',worker=worker));return {'restored':True}
-        self.finished=True;return {'frozen_bundle':deepcopy(self.bound)}
+        # Worker completion is local; only the orchestrator freezes the episode.
+        self.events.append(dict(type='assignment_finished',worker=worker))
+        return {'assignment_finished':True}
 
     def check_public(self):
         results={}

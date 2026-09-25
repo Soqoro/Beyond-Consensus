@@ -1,5 +1,23 @@
 # Implementation status and handoff
 
+## RepoRecourse assignment termination correction (2026-09-25)
+
+Cluster smoke 855edc500f48ec01eb9674e48bb6c2b9d7f59caa11fd218f5a41ab35da72bdcb
+completed with 0/1 success, 18,302 logical tokens and approximately 372.72 CPU
+seconds. Both primary queries compiled but produced SQL semantic errors.
+During repair, a worker finish closed the shared episode; the next worker still
+generated an action, rejected as episode_closed. This is a runtime defect,
+not evidence of a recovery-policy effect. Exact SQL errors remain undiagnosed.
+
+The corrected contract makes finish assignment-local. The orchestrator alone
+freezes the episode; completed assignment state is checkpointed with finish.
+Closed/exhausted engines do not request further unit actions. The public tool
+contract now states this scope. This intentionally changes execution and prompt
+semantics: old snapshots, qualifications and the failed score remain historical;
+use fresh qualification and a new manifest for any prospective comparison.
+No historical result is rescored and no new GPU run is claimed.
+
+
 ## RepoRecourse cluster cleanup correction (2026-09-24)
 
 The first cluster qualification failed during temporary database cleanup on

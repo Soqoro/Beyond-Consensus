@@ -369,3 +369,11 @@ The stdlib environment skips nine RepoRecourse child-dependent tests and three
 legacy SQLGlot tests. Both environments skip the legacy real OS-sandbox integration
 because `BC_SANDBOX_TEST_PROFILE` is not configured; that sandbox is not required
 or claimed by this restricted data path. GPU qualification is separate and unrun.
+
+### Assignment termination correction (2026-09-25)
+
+Worker finish ends only its current assignment. It neither certifies correctness
+nor freezes the shared bundle; the orchestrator does that after scheduled work.
+The first cluster smoke exposed the former global-finish defect during repair.
+Its 0/1 result is preserved. Fresh qualification and a manifest are required for
+a corrected run; the two primary SQL semantic errors remain to be diagnosed.

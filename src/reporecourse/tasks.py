@@ -72,6 +72,7 @@ def tool_contract():
         'schema':'Draft 2020-12 subset: type, properties, required, additionalProperties, items, min/maxItems, enum, const, minimum/maximum, min/maxLength. $ref only rr:<bound helper alias>. No cycles/regex/formats/loaders/custom keywords.',
         'mapping':{'fields':{'output_name':{'path':['input_field'],'missing':'error|omit|null'}},'output_schema':'inline schema or rr reference'},
         'array_mapping':'Use each: <mapping> instead of fields to map at most 128 items. No expressions or callbacks.',
+        'finish':'End only the current assignment, without implying correctness or closing other workers. The orchestrator freezes the final bundle.',
         'publish_and_bind':'atomic explicit; compilation validates safety only; final score uses latest explicitly bound versions',
         'rebind_artifact':'Copy an existing immutable program unchanged with explicitly replaced versions under the SAME helper aliases. Publish-and-bind as a new version. All observed provenance is retained; reexecution/checking is charged separately.',
         'resources':'All generated tokens including reasoning + all input tokens; separate CPU cap; no private score feedback'}

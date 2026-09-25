@@ -47,7 +47,7 @@ class Engine:
 
     def unit(self,unit,worker,tag):
         env=self.env;key=tag+':'+unit['id']
-        if key in self.completed:return
+        if key in self.completed or env.finished or self.status!='completed':return
         env.assignment[worker]=deepcopy(unit)
         before=set(env.artifacts);tokens_before=env.resources.actual_tokens;cpu_before=env.resources.cpu_seconds
         while self.action_counts.get(key,0)<self.max_actions:
@@ -69,7 +69,10 @@ class Engine:
                     cpu=max(0,time.process_time()-started-child_parents)
                     env.resources.reserve_cpu(max(cpu,0.000001));env.resources.reconcile_cpu('tool_parent',max(cpu,0.000001),cpu)
                 self.histories[worker].append({'role':'user','content':json.dumps(result)})
-                if action['tool']=='finish':break
+                if action['tool']=='finish':
+                    # Persist completion with the finish action before the next save.
+                    self.completed.add(key)
+                    break
             except Rejected as exc:
                 code=str(exc);self.failures.append({'unit':unit['id'],'stage':tag,'category':code})
                 self.histories[worker].append({'role':'user','content':json.dumps({'error':code})})
@@ -167,6 +170,7 @@ class Engine:
                     env.bound={};self.view_since=len(env.artifacts)
                     for w in eligible:self.histories[w]=[]
                 for i,u in enumerate(units):
+                    if env.finished or self.status!='completed':break
                     # All inputs/tools still present; select only from four original identities.
                     owner=eligible[i%len(eligible)]
                     if not env.unavailable and owner==u['worker'] and len(eligible)>1:
