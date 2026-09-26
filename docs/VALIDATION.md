@@ -2173,3 +2173,40 @@ An earlier run during editing rejected a changed source hash in a legacy resume
 test. No provenance guard was relaxed; the stable-tree rerun above passed.
 There is no new live scheduler/GPU evidence. Existing uncommitted audit/report
 work was preserved, and no commit or push was made.
+
+## RepoRecourse preflight diagnostic separation (2026-09-26)
+
+The user-supplied H100 preflight for experiment `7426c48eca5dc53075ea3ad4555875475846b4f541fc5a99e0735a7810a8b710`
+produced a complete short publish action but exhausted the 2,048-token output
+cap during the long response. The old shared exception handler could replace
+an executed short SQL result with `failed_probe` when long-response JSON parsing
+failed. The archived summary therefore does not establish short SQL success.
+
+The local reporting correction preserves the short result and records separate
+short and long validation stages. Five mocked regression tests cover independent
+parse/publication/execution failures, preservation of SQL evidence, and rejection
+of wrong or incomplete long actions. Prompts, model settings, budgets, and the
+requirement that both probes pass are unchanged. These tests execute neither a
+model nor SQL.
+
+`python -m unittest discover -s tests -v`: **287 tests in 86.868 seconds,
+272 passed, 15 skipped, zero failures/errors**. `python scripts/check_shell.py`
+validated **10 shell files**. Compileall, stdlib-only CLI help (`-I -S`), and
+`git diff --check` passed. Skipped dependency/runtime checks are not passes.
+No cluster rerun, new task execution, commit, or push was performed for this
+correction; fresh clean and both loss conditions remain blocked by preflight.
+
+### Numbered-records probe revision
+
+The user then authorized proceeding with the probe review. The new versioned
+synthetic prompt has deterministic delimited records and explicit action
+instructions. Two additional tests verify deterministic bounded input packing
+and rejection of insufficient context, using a mock token counter. GPU/tokenizer
+behavior is not established by those tests. The targeted seven tests passed with
+`PYTHONPATH=src`; an initial direct module invocation without the source import
+path failed to import the package and executed no test cases.
+
+Final stable-source suite: **289 tests in 90.059 seconds: 274 passed, 15 skipped,
+zero failures/errors**. Shell checks (10 files), compileall, stdlib CLI help and
+`git diff --check` passed. The prompt revision is not GPU-validated. No budgets,
+reasoning settings, task prompts or exact-action acceptance were relaxed.

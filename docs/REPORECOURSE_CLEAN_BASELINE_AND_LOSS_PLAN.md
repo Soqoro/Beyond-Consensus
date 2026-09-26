@@ -326,3 +326,22 @@ stdlib-only help and diff hygiene passed. Pinned executor and cluster checks
 remain pending as listed in VALIDATION.md. The next user action is review and
 manual commit/push, followed by the CPU qualification section above; no GPU
 condition is ready to run merely because local unit tests passed.
+
+
+## September 26 preflight revision: numbered synthetic records
+
+The historical H100 preflight exhausted 2,048 output tokens during repetitive
+reasoning over repeated padding. Its failed score is retained. The local
+`rr-numbered-records-v2` replacement separates instructions from deterministic
+numbered padding, keeping reasoning, output allowance, context target and exact
+required action unchanged. A pass would qualify this revised diagnostic only;
+neither early EOS nor observed reserved memory establishes worst-case fit.
+
+After reviewing and committing/pushing this revision, repeat the setup and CPU
+qualification above in a **new directory**, then rebuild the exact trio manifest.
+Use the reviewed PH100q configuration if still appropriate for the allocation;
+the example NA100q path above is not a claim that that partition is available.
+Never overwrite the failed preflight or submit its old manifest with new code.
+Review the new preflight's `short_action_probe`, `long_action_probe`,
+`failure_stages` and `long_context_probe` provenance before any fresh_clean run.
+No task episode or GPU retry is launched by this local preparation.

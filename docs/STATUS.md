@@ -1,5 +1,51 @@
 # Implementation status and handoff
 
+## Versioned RepoRecourse long-context probe prepared (2026-09-26)
+
+Following user authorization to proceed, the local preflight now uses
+`rr-numbered-records-v2`: deterministic numbered synthetic records, delimited
+as inert padding, with an explicit fixed list_sources action. Actual rendered
+input is fitted to context_limit minus 2,048 tokens. The 2,048-token output cap,
+model reasoning configuration, short SQL probe, schema probe and exact long
+JSON acceptance remain unchanged. Prompt hash, protocol and target are recorded.
+This is a changed diagnostic prompted by an observed failure, not a demonstrated
+fix for model reasoning or an unbiased comparison to the historical preflight.
+It uses no task/reference data and still does not establish worst-case fit.
+
+No GPU run has tested this revision. Keep the failed H100 report immutable.
+Changed source fingerprints require fresh CPU qualification, a new manifest and
+new snapshot before another GPU preflight; do not reuse the old trio approvals.
+The three task conditions remain unexecuted and blocked until preflight passes.
+
+## Track F cluster CPU pass; H100 preflight blocked (2026-09-26)
+
+User-supplied job 1083031 completed with 51 pinned CPU tests passing (including
+both new real-executor controls), followed by the four compiler tests passing.
+Jaffle/Track F controls, compiler and grammar reports passed for the pushed
+source. Historical import resolved seed 0 and created exact-trio experiment
+7426c48eca5dc53075ea3ad4555875475846b4f541fc5a99e0735a7810a8b710.
+These observations supersede the earlier local-only pending entries for that
+frozen revision, not automatically for subsequent code changes.
+
+Preflight 1083036 used PH100q / NVIDIA H100 PCIe, reporting 85,028,896,768 bytes
+of total device memory. The short probe produced a complete publish action
+(102 output tokens including 63 reasoning tokens, EOS). The long probe used
+14,335 input tokens and all 2,048 output tokens, stopping at length_limit with
+constraint_complete=false and invalid JSON. Its text shows repetitive reasoning;
+reasoning_tokens=null does not mean zero reasoning. Peak reserved device memory
+was 62,539,169,792 bytes. This generation returned without an OOM, but preflight
+failed and worst_case_fit_established remains false. No trio task result follows.
+
+The old preflight handler could replace a successful short SQL result with
+failed_probe when parsing the long response raised. The archived report therefore
+cannot establish the short executor's outcome. A local diagnostic-only correction
+now records short parse/publication/execution and long response failures separately.
+Prompts, model, budgets and required passing checks are unchanged. The historical
+failed report remains unchanged and fresh_clean stays blocked. No repeat job,
+cap increase, model fallback or revised probe is authorized by this correction.
+A future changed-source run requires matching provenance/qualification; do not
+resume this trio with edited code or recycle approvals across changed hashes.
+
 ## Narrow Track F implementation; cluster qualification pending (2026-09-26)
 
 The user authorized local implementation/preparation of exactly fresh_clean,

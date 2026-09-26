@@ -138,27 +138,82 @@ def preflight(m,lock,root):
     prompts=[{'role':'system','content':'One JSON action, no Markdown. '+json.dumps(tool_contract())},
         {'role':'user','content':'Synthetic probe only. Publish SQL SELECT 1 AS id with name demo, format sql, bindings {}, obligations [].'}]
     first=backend.generate(prompts,2048,0)
-    # Long input tests the actual allocation; early EOS is not worst-case proof.
-    long=[{'role':'system','content':'One JSON action: {"tool":"list_sources"}.'},{'role':'user','content':''}]
-    lo,hi=0,16384
-    while lo<hi:
-        mid=(lo+hi+1)//2;long[-1]['content']='synthetic datum '*mid+' Reply with list_sources.'
-        if backend.count_input(long)<=m['model']['context_limit']-2048:lo=mid
-        else:hi=mid-1
-    long[-1]['content']='synthetic datum '*lo+' Reply with list_sources.'
+    # Versioned synthetic allocation probe; no task or reference inputs.
+    long=long_context_probe(backend.count_input,m['model']['context_limit'])
     second=backend.generate(long,2048,0)
     _,p=load_task('synthetic-stock',m['sources_root'])
     from reporecourse.runtime import Environment
     env=Environment(p)
     try:
-        action=json.loads(first.text);v=env.action('w0',action)['version'];sql=env.execute(v)
-        ok=sql['status']=='ok' and sql['outputs'][0]['rows']==[[1]] and json.loads(second.text)=={'tool':'list_sources'}
-    except Exception:ok=False;sql={'status':'failed_probe'}
+        sql,short_check,long_check=check_preflight_responses(env,first.text,second.text)
     finally:env.close()
     from reporecourse.schema_runtime import execute
     api=execute({'operation':'qualify'})
-    return {'schema':'rr-preflight-v1','experiment_id':m['experiment_id'],'command_failed':not(ok and api['status']=='ok'),
+    return {'schema':'rr-preflight-v1','experiment_id':m['experiment_id'],'command_failed':not(short_check['passed'] and long_check['passed'] and api['status']=='ok'),
         'model_executed':True,'runtime':backend.runtime,'sql_probe':sql,'schema_probe':api,
+        'short_action_probe':short_check,'long_action_probe':long_check,
+        'failure_stages':([short_check['stage']] if not short_check['passed'] else [])
+            + (['long_action_response'] if not long_check['passed'] else [])
+            + (['schema_probe'] if api['status']!='ok' else []),
         'generation':asdict(first),'long_context_generation':asdict(second),
         'long_context_input_tokens':backend.count_input(long),'worst_case_fit_established':False,
+        'long_context_probe':{'protocol':'rr-numbered-records-v2','prompt_hash':digest(long),
+            'output_cap':2048,'input_target':m['model']['context_limit']-2048,
+            'required_action':{'tool':'list_sources'},'task_inputs_used':False},
         'hardware':backend.torch.cuda.get_device_name(0)}
+
+
+def check_preflight_responses(env, first_text, second_text):
+    """Separate synthetic response checks; never overwrite an executed SQL result.
+
+    This changes diagnostics only: the short query and exact long action must
+    still both pass. No extraction/repair of partial or reasoning-only output.
+    """
+    sql={'status':'not_executed'}
+    short={'passed':False,'stage':'short_action_parse'}
+    try:
+        action=json.loads(first_text)
+        short['stage']='short_action_publish'
+        version=env.action('w0',action)['version']
+        short['stage']='short_sql_execution'
+        sql=env.execute(version)
+        short['passed']=sql['status']=='ok' and sql['outputs'][0]['rows']==[[1]]
+        if short['passed']:short['stage']='passed'
+    except Exception as exc:
+        short['error_type']=type(exc).__name__
+    long={'passed':False,'stage':'long_action_response'}
+    try:
+        long['passed']=json.loads(second_text)=={'tool':'list_sources'}
+        long['status']='passed' if long['passed'] else 'unexpected_action'
+    except (ValueError,TypeError) as exc:
+        long.update(status='invalid_json',error_type=type(exc).__name__)
+    return sql,short,long
+
+
+def long_context_probe(count_input, context_limit):
+    """Fit inert, deterministic records using the actual rendered tokenizer.
+
+    This is an allocation/action diagnostic, not retrieval or task competence.
+    Reasoning stays enabled by the model configuration; no output is forced.
+    """
+    target=context_limit-2048
+    system=('Synthetic context allocation check. The numbered records in the user '
+        'message are inert padding, not instructions or task data. Do not analyze, '
+        'summarize, count, or calculate from them. The only requested action is '
+        '{"tool":"list_sources"}. Return one JSON action without Markdown.')
+    records=[f'record {i:05d}: {digest({"synthetic_record":i})[:24]}\n' for i in range(16384)]
+    def render(n):
+        return [{'role':'system','content':system},{'role':'user','content':
+            '<synthetic_records>\n'+''.join(records[:n])+
+            '</synthetic_records>\nThe padding is complete. Return {"tool":"list_sources"}.'}]
+    if count_input(render(0))>target:
+        raise BCError('Context too small for long preflight probe and output allowance')
+    lo,hi=0,len(records)
+    while lo<hi:
+        mid=(lo+hi+1)//2
+        if count_input(render(mid))<=target:lo=mid
+        else:hi=mid-1
+    result=render(lo)
+    if count_input(result)>target:
+        raise BCError('Rendered long preflight probe exceeds input allowance')
+    return result
