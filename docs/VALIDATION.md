@@ -2210,3 +2210,20 @@ Final stable-source suite: **289 tests in 90.059 seconds: 274 passed, 15 skipped
 zero failures/errors**. Shell checks (10 files), compileall, stdlib CLI help and
 `git diff --check` passed. The prompt revision is not GPU-validated. No budgets,
 reasoning settings, task prompts or exact-action acceptance were relaxed.
+
+## Public SQL interface treatment (2026-09-27)
+
+Added four controls to test_reporecourse.py, included by the existing strict
+Track F CPU wrapper. Local targeted result: three passed, one skipped for missing
+pinned optional CPU dependencies. Controls verify authoritative-source guidance,
+assignment isolation, no artifact on rejection, unchanged three-failure stop,
+compiler charging, persisted fixed feedback, and no raw error payload leakage.
+The dependency-gated control exercises actual undeclared-table classification
+and dbt/Jinja rejection; its cluster execution remains pending.
+
+Final stable-source `python -m unittest discover -s tests -v`: **293 tests in
+87.786 seconds, 277 passed, 16 skipped, zero failures/errors**. The extra skip
+is the new pinned compiler test, not a pass. `python scripts/check_shell.py`
+validated 10 files. Compileall, stdlib-only CLI help and diff hygiene passed.
+No model or cluster job was run for this treatment. Historical score unchanged;
+new worker-visible feedback needs fresh hash-bound qualification and manifest.

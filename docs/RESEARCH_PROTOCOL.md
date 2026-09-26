@@ -456,3 +456,24 @@ is introduced. Full rules, qualification gaps and sequential browser-terminal
 commands are in [the existing runbook](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
 One active campaign, concurrency one, one frozen snapshot, clean-first review;
 no automatic downstream submissions or terminal-result reruns.
+
+
+### RepoRecourse public SQL interface revision (2026-09-27)
+
+`rr-public-sql-interface-v2` is a development interface treatment following the
+failed fresh clean run, not a recovery-policy intervention. All workers receive
+the same public guidance distinguishing repository source documents from
+materialized tables and exact-bound artifacts. Current assignment outputs are
+repeated. Schema/data reads remain explicit charged tools; observations do not
+inject table rows or private reference solutions. Subsequent model input includes
+and charges the added guidance and rejection feedback.
+
+Compiler failures retain sql_rejected and the existing retry limit. A fixed
+allowlist distinguishes undeclared objects, parse errors, unsupported construction
+or IR, input limits and compiler resource limits. Unknown categories produce a
+generic hint; raw exception strings and candidate correctness are not exposed.
+No automatic SQL repair, template expansion, table alias substitution or relaxed
+execution allowlist is performed. Compiler/parent CPU remains charged normally.
+Changed fingerprints invalidate old approvals. Any later run must use fresh
+qualification and a new manifest; the failed historical clean and unlaunched loss
+conditions are preserved. No policy-effect inference follows from this change.

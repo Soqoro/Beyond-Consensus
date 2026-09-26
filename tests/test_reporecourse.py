@@ -477,3 +477,57 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(m['planned_episodes'],18)
         for e in m['episodes']:
             if e['track']=='F':self.assertIn(e['target'],{u['worker'] for u in e['plan']['units']})
+
+
+class PublicSQLInterfaceTests(unittest.TestCase):
+    def test_observation_guidance_contains_no_table_rows(self):
+        p=public('synthetic-stock');env=Environment(p)
+        try:
+            env.assignment['w0']={'id':'example','outputs':['only_this']}
+            obs=env.observation('w0')
+            self.assertEqual(obs['assigned_outputs'],['only_this'])
+            self.assertEqual(obs['sql_interface']['tables_source'],'tables')
+            self.assertNotIn('rows',obs['sql_interface'])
+            self.assertNotIn('oracle',json.dumps(obs))
+            obs['assigned_outputs'].append('mutated')
+            self.assertEqual(env.assignment['w0']['outputs'],['only_this'])
+        finally:env.close()
+
+    def test_rejection_feedback_charged_persisted_and_no_publication(self):
+        class Worker:
+            def next_action(self,p,u,o,h,r,seed,save):
+                return {'tool':'publish','name':u['outputs'][0],'format':'sql',
+                    'content':'SELECT id FROM nonexistent','bindings':{},'obligations':u['outputs']}
+        engine=Engine(public('synthetic-stock'),Worker())
+        try:
+            report={'status':'rejected','category':'sql_undeclared_object','cpu_seconds':0.01,
+                    'private_error':'DO NOT EXPOSE'}
+            with patch('restricted_artifacts.sql_text.lower',return_value=report):
+                u=engine.plan['units'][0];engine.unit(u,u['worker'],'primary')
+            self.assertEqual(len(engine.failures),3)
+            self.assertFalse(engine.env.artifacts);self.assertFalse(engine.env.bound)
+            history=engine.histories[u['worker']]
+            response=json.loads(history[-1]['content'])
+            self.assertEqual(response['error'],'sql_rejected')
+            self.assertEqual(response['compiler_category'],'sql_undeclared_object')
+            self.assertNotIn('DO NOT EXPOSE',json.dumps(engine.checkpoint()))
+            charges=[e for e in engine.env.resources.events if e.get('category')=='compiler']
+            self.assertEqual(len(charges),3)
+            self.assertTrue(all(e['actual_cpu_seconds']>=0.01 for e in charges))
+            self.assertEqual(sum(e['type']=='compiler_feedback' for e in engine.env.events),3)
+        finally:engine.env.close()
+
+    def test_unknown_feedback_does_not_echo_payload(self):
+        from reporecourse.runtime import compiler_feedback
+        response=compiler_feedback('secret parser payload')
+        self.assertEqual(response['compiler_category'],'sql_rejected')
+        self.assertNotIn('secret',json.dumps(response))
+
+    @unittest.skipUnless(optional(),'pinned optional CPU dependencies unavailable')
+    def test_actual_compiler_distinguishes_undeclared_object(self):
+        from restricted_artifacts.sql_text import lower
+        report=lower('SELECT id FROM absent',{'entries'})
+        self.assertEqual(report['status'],'rejected')
+        self.assertEqual(report['category'],'sql_undeclared_object')
+        malformed=lower("SELECT id FROM {{ ref('entries') }}",{'entries'})
+        self.assertEqual(malformed['status'],'rejected')

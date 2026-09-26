@@ -68,7 +68,7 @@ def tool_contract():
             'read_artifact':['version'],'execute_artifact':['version','input_id'],'check_public':[],
             'bind_output':['obligation','version'],'rebind_artifact':['version','name','bindings','obligations'],'message':['recipient','text'],'checkpoint':[],
             'restore':['checkpoint'],'finish':[]},
-        'sql':'SELECT text lowers to bc-select-tree-v1. Explicit columns/aliases; SELECT subqueries, inner/left/cross joins, searched CASE, group/having/order/limit and allowlisted scalar/aggregate functions. No CTE/window/DDL/DML/wildcard/remote object.',
+        'sql':'Read source tables for executable table/column names. Repository/dbt files are reference documents; dbt models and Jinja templates are not installed or executed. Only runtime tables and explicitly bound artifacts are available. Publish the current assignment outputs. SELECT text lowers to bc-select-tree-v1. Explicit columns/aliases; SELECT subqueries, inner/left/cross joins, searched CASE, group/having/order/limit and allowlisted scalar/aggregate functions. No CTE/window/DDL/DML/wildcard/remote object.',
         'schema':'Draft 2020-12 subset: type, properties, required, additionalProperties, items, min/maxItems, enum, const, minimum/maximum, min/maxLength. $ref only rr:<bound helper alias>. No cycles/regex/formats/loaders/custom keywords.',
         'mapping':{'fields':{'output_name':{'path':['input_field'],'missing':'error|omit|null'}},'output_schema':'inline schema or rr reference'},
         'array_mapping':'Use each: <mapping> instead of fields to map at most 128 items. No expressions or callbacks.',

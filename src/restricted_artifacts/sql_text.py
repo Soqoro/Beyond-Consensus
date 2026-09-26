@@ -240,7 +240,8 @@ if __name__ == '__main__':
     except ImportError:
         report = {'status': 'blocked_prerequisite', 'category': 'pinned_parser_unavailable'}
     except Exception as exc:
-        category = ('sql_parse_rejected' if type(exc).__module__ == 'sqlglot.errors' else
+        category = ('sql_undeclared_object' if type(exc).__name__ == 'SQLRejected' and str(exc) == 'Undeclared database object' else
+                    'sql_parse_rejected' if type(exc).__module__ == 'sqlglot.errors' else
                     'sql_ir_rejected' if type(exc).__name__ == 'SQLRejected' else 'sql_construction_rejected')
         report = {'status': 'rejected', 'category': category}
     report['cpu_seconds'] = time.process_time()-start

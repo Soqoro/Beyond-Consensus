@@ -1,5 +1,34 @@
 # Implementation status and handoff
 
+## Track F fresh clean failed; public SQL interface revision (2026-09-27)
+
+User-supplied revised preflight for experiment
+5bd911ac9ca69bd89fc4017698f95ac605099c4c9b06cde75c8bd4bf3afe8e7f
+passed on H100 PCIe: 14,323 long-input tokens, 377 output tokens, complete action
+at EOS. Worst-case memory fit remains unproven. Fresh clean then completed
+unsuccessfully: 49,219/100,000 tokens, 787.108870858/1,200 CPU seconds, no artifacts
+or bindings, both obligations failed. Eleven compiler rejections and one malformed
+JSON failure occurred across primary/repair. Both loss conditions are unlaunched
+and blocked. No cap exhaustion or contributor-loss recovery result is established.
+
+The uploaded checkpoint extraction recovered all eleven rejected SQL actions.
+Static inspection found ten using undeclared staging/raw table names and one
+using dbt/Jinja syntax. Runtime materialization provides customers, orders and
+payments; repository models are reference documents. Some attempts also target
+the wrong output or use staging column names. This is not an executed compiler
+replay, nor proof of each query's first compiler error.
+
+User-authorized local interface revision `rr-public-sql-interface-v2` repeats
+assigned outputs, points to source tables, and distinguishes repository documents
+from executable runtime tables and bound artifacts. Fixed compiler categories and
+hints are recorded and returned after charged rejection. Raw exceptions, private
+tests and evaluator values are never returned. Existing sql_rejected failure codes,
+three-failure stop, compiler restrictions and resource caps remain unchanged.
+This changes worker-visible behavior and requires a fresh source-bound qualification,
+manifest and matched trio if a later GPU experiment is authorized. Historical
+scores are not changed; the failed clean must not be terminal-retried in search of a pass.
+No new GPU result, job, commit or push accompanies this revision.
+
 ## Versioned RepoRecourse long-context probe prepared (2026-09-26)
 
 Following user authorization to proceed, the local preflight now uses

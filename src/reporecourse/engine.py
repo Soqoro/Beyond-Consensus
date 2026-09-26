@@ -87,7 +87,10 @@ class Engine:
             except Rejected as exc:
                 if env.triggered and self.alarm_resources is None:self.alarm_resources=deepcopy(env.resources.summary())
                 code=str(exc);self.failures.append({'unit':unit['id'],'stage':tag,'category':code})
-                self.histories[worker].append({'role':'user','content':json.dumps({'error':code})})
+                feedback={'error':code}
+                if code=='sql_rejected' and hasattr(exc,'public_feedback'):
+                    feedback.update(exc.public_feedback)
+                self.histories[worker].append({'role':'user','content':json.dumps(feedback)})
                 if code in ('worker_unavailable','token_cap','cpu_cap','context_limit','blocked_prerequisite'):
                     if code in ('token_cap','cpu_cap','context_limit'):self.status='resource_exhausted'
                     elif code=='blocked_prerequisite':self.status='blocked_prerequisite'

@@ -132,7 +132,11 @@ class Environment:
             objects=set(self.public.get('tables',{}))|set(bindings)
             for dep in bindings.values():objects.update(self._closure(dep))
             report=self.cpu('compiler',4,lambda:lower(content,objects))
-            if report['status']!='ok':raise Rejected('sql_rejected')
+            if report['status']!='ok':
+                feedback=compiler_feedback(report.get('category'))
+                self.events.append(dict(type='compiler_feedback',worker=worker,**feedback))
+                error=Rejected('sql_rejected');error.public_feedback=feedback
+                raise error
             content=report['tree'];format='select'
         elif format=='schema':
             from .schema_runtime import resolve
@@ -257,7 +261,15 @@ class Environment:
         return results
 
     def observation(self, worker):
-        return deepcopy(dict(request=self.public['request'],required_outputs=self.public['required_outputs'],
+        assignment=self.assignment.get(worker,{})
+        interface={} if self.public['family']!='data_product' else {
+            'version':'rr-public-sql-interface-v2',
+            'tables_source':'tables',
+            'instruction':'Read source tables for authoritative executable table and column names. '
+                'Repository SQL and dbt files are reference documents, not installed tables or executable templates. '
+                'Only runtime tables and explicitly bound artifact aliases are queryable. '
+                'Implement the current assignment outputs; other required outputs belong to other assignments.'}
+        return deepcopy(dict(sql_interface=interface,assigned_outputs=assignment.get('outputs',[]),request=self.public['request'],required_outputs=self.public['required_outputs'],
             source_ids=sorted(self.public['sources']),examples=self.public['examples'],
             assignment=self.assignment.get(worker),artifacts=[{'version':v,'name':a['name'],'format':a['format']} for v,a in self.artifacts.items()],
             bound=dict(self.bound),messages=deepcopy(self.messages[worker]),unavailable=sorted(self.unavailable),
@@ -275,3 +287,17 @@ class Environment:
         if state['target']!=self.target or state['track']!=self.track:raise Rejected('fault_state_mismatch')
         for k in ('artifacts','bound','events','triggered','fault_track','sabotage','checkpoints','messages','assignment','finished'):setattr(self,k,deepcopy(state[k]))
         self.unavailable |= set(state['unavailable']);self.exposure={k:set(v) for k,v in state['exposure'].items()}
+
+
+def compiler_feedback(category):
+    """Only fixed public categories; never return parser text, queries or tests."""
+    hints={
+        'sql_undeclared_object':'A table is not declared. Read source tables and use runtime table names or explicit artifact bindings.',
+        'sql_parse_rejected':'SQL syntax was rejected. Submit plain supported SELECT SQL, not dbt/Jinja templates.',
+        'sql_ir_rejected':'The query cannot be represented by the approved query tree. Check the public SQL tool contract.',
+        'sql_construction_rejected':'Unsupported SQL construction. Check the public SQL tool contract.',
+        'sql_input_limit':'SQL input exceeds the compiler input limit.',
+        'sql_compiler_limit':'SQL compiler resource limit reached.',
+    }
+    code=category if category in hints else 'sql_rejected'
+    return {'compiler_category':code,'hint':hints.get(code,'SQL rejected. Check the public SQL tool contract and source tables.')}

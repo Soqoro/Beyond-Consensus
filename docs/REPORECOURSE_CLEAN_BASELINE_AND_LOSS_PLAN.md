@@ -345,3 +345,17 @@ Never overwrite the failed preflight or submit its old manifest with new code.
 Review the new preflight's `short_action_probe`, `long_action_probe`,
 `failure_stages` and `long_context_probe` provenance before any fresh_clean run.
 No task episode or GPU retry is launched by this local preparation.
+
+
+## September 27 public SQL interface treatment
+
+The revised numbered-records preflight passed, but its fresh clean episode
+failed with no artifacts. Both loss conditions remain blocked and unlaunched.
+The local rr-public-sql-interface-v2 treatment changes worker guidance and fixed
+compiler feedback following inspection of eleven recorded rejected queries.
+It does not permit a terminal retry of that clean episode. If the treatment is
+reviewed and a new engineering run authorized, use a fresh directory and commit,
+repeat pinned CPU qualification (including PublicSQLInterfaceTests), rebuild the
+matched trio and run its own preflight. Keep all model/cap/settings comparisons
+explicit; a new success would not erase the previous failure or demonstrate
+policy superiority. Do not reuse old reference/compiler approvals or snapshots.
