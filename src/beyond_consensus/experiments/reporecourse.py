@@ -14,7 +14,7 @@ from reporecourse.common import Rejected
 from reporecourse.tasks import load_task,private_task
 from reporecourse.experiments import validate,require_run
 from reporecourse.engine import Engine,ModelWorker
-from reporecourse.resources import Resources
+from reporecourse.resources import Resources,success_at_budget
 from reporecourse.evaluator import evaluate
 
 
@@ -45,6 +45,12 @@ def verify_inputs(m,root):
     from reporecourse.qualification import implementation_hashes
     if m.get('qualification',{}).get('implementation_hashes')!=implementation_hashes():
         raise BCError('RepoRecourse CPU qualification implementation changed')
+    if m.get('experiment_type')=='reporecourse_track_f_engineering_v1':
+        from reporecourse.qualification import runtime_versions
+        from reporecourse.track_f_controls import control_fingerprints,PINS
+        if any(runtime_versions().get(k)!=v for k,v in PINS.items()):raise BCError('Current pinned Track F CPU children required')
+        if m['qualification'].get('runtime_versions')!=runtime_versions() or m['qualification']['track_f_controls'].get('fingerprints')!=control_fingerprints():
+            raise BCError('Track F CPU dependency/control fingerprints changed')
     for card in m['tasks']:
         actual,p=load_task(card['id'],m['sources_root'])
         if actual!=card or digest(p)!=m['public_hashes'][card['id']]:raise BCError('RepoRecourse task/source changed')
@@ -54,7 +60,12 @@ def run(m,output,root,*,shard=None,backend=None,model_lock=None,retry_failures=F
     require_run(m);verify_inputs(m,root)
     if model_lock is not None and digest(read_json(model_lock))!=m['model_lock_sha256']:
         raise BCError('Model lock changed')
-    if shard is not None and shard!=0:raise BCError('RepoRecourse shard out of range')
+    trio=m.get('experiment_type')=='reporecourse_track_f_engineering_v1'
+    if trio:
+        from reporecourse.track_f import select,CONDITIONS
+        if type(shard) is not int or shard not in range(3):raise BCError('Select exactly one Track F shard')
+        select(m,output,CONDITIONS[shard])
+    elif shard is not None and shard!=0:raise BCError('RepoRecourse shard out of range')
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     with directory_lock(output/'.manifest.lock'):
         if (output/'manifest.json').exists() and read_json(output/'manifest.json')!=m:raise BCError('Output provenance mismatch')
@@ -70,6 +81,7 @@ def run(m,output,root,*,shard=None,backend=None,model_lock=None,retry_failures=F
     for s in (signal.SIGINT,signal.SIGTERM):old[s]=signal.signal(s,stop)
     try:
         for e in m['episodes']:
+            if trio and e['shard']!=shard:continue
             journal=EpisodeJournal(output,e['episode_id'])
             with directory_lock(journal.path/'.lock'):
                 result_path=journal.path/'result.json'
@@ -83,12 +95,12 @@ def run(m,output,root,*,shard=None,backend=None,model_lock=None,retry_failures=F
                 attempt=journal.begin(digest(e))
                 def save(state):journal.checkpoint({'manifest_hash':digest(e),'engine':state})
                 engine=Engine(p,ModelWorker(backend,m['model']['context_limit'],m['model']['max_new_tokens']),
-                    policy=e['policy'],plan=e['plan'],track=e['track'],target=e['target'],seed=e['seed'],resources=resources,save=save)
+                    policy=e['policy'],plan=e['plan'],track=e['track'],target=e['target'],seed=e['seed'],resources=resources,save=save,max_actions=m.get('max_actions',24))
                 previous=journal.previous(digest(e))
-                if previous:engine.restore(previous['engine'])
                 try:
+                    if previous:engine.restore(previous['engine'])
                     row=engine.run();row['evaluation']=evaluate(p,private,row['state'])
-                    row['success']=row['evaluation']['success'] is True and engine.env.resources.actual_tokens+engine.env.resources.uncertain_tokens<=engine.env.resources.token_cap and engine.env.resources.cpu_seconds<=engine.env.resources.cpu_cap
+                    row['success']=success_at_budget(row['status'],row['evaluation']['success'],engine.env.resources)
                     if row['evaluation']['status']=='blocked_prerequisite':
                         row['status']='blocked_prerequisite';row['success']=None
                     row['detected_but_unfinished']=bool(row['public_alarm']) and not row['success']
@@ -98,9 +110,16 @@ def run(m,output,root,*,shard=None,backend=None,model_lock=None,retry_failures=F
                     # loop. Unexpected harness interruption is separately retryable.
                     row=dict(status='interrupted' if isinstance(exc,InterruptedError) else 'infrastructure_failed',
                         success=None,resource_profile=engine.env.resources.summary(),track=e['track'],
-                        model_executed=True,error=type(exc).__name__)
+                        model_executed=True,error=type(exc).__name__,error_category=str(exc) if isinstance(exc,Rejected) else 'unexpected_harness_exception',
+                        failures=engine.failures,events=engine.env.events,state=engine.env.state())
+                    import traceback
+                    row['stack_locations']=[{'file':Path(f.filename).name,'line':f.lineno,'function':f.name} for f in traceback.extract_tb(exc.__traceback__)]
                     engine.checkpoint()
                 finally:engine.env.close()
+                import os,socket
+                row['execution_facts']={'hostname':socket.gethostname(),'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
+                    'slurm_array_task_id':os.environ.get('SLURM_ARRAY_TASK_ID'),'runtime':getattr(backend,'runtime',None),
+                    'hardware':backend.torch.cuda.get_device_name(0) if hasattr(backend,'torch') else None}
                 row.update(experiment_id=m['experiment_id'],episode_id=e['episode_id'],attempt_id=attempt,provenance={'manifest_hash':digest(e)})
                 atomic_json(result_path,row);journal.event('attempt_finished',attempt_id=attempt,status=row['status'])
                 rows.append(row)

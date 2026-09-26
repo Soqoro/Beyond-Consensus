@@ -23,11 +23,17 @@ def add_parsers(sub):
             p.add_argument('--policy',choices=('solo','delegation_jit','restart','replication'),default='delegation_jit')
             p.add_argument('--outline',choices=('independent','shared'),default='independent')
             p.add_argument('--track',choices=('clean','F','S'),default='clean');p.add_argument('--target',choices=('w0','w1','w2','w3'))
+        if command=='rr-qualify':p.add_argument('--track-f-controls',action='store_true')
         if command=='rr-manifest':
             p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--model-lock',type=Path)
             p.add_argument('--qualification',type=Path);p.add_argument('--engineering-smoke',action='store_true')
             p.add_argument('--sensitivity',action='store_true')
-        if command=='rr-export':p.add_argument('--run',type=Path,required=True)
+            p.add_argument('--track-f-engineering',action='store_true')
+            p.add_argument('--baseline-run',type=Path)
+            p.add_argument('--baseline-snapshot',type=Path)
+        if command=='rr-export':
+            p.add_argument('--run',type=Path,required=True)
+            p.add_argument('--manifest',type=Path)
 
 
 def dispatch(args):
@@ -40,7 +46,13 @@ def dispatch(args):
         from reporecourse.sources import stage
         result=stage(args.sources,dry_run=command=='rr-source-plan' or args.dry_run,packs=args.packs)
     elif command=='rr-readiness':result=inventory(args.sources)
-    elif command=='rr-qualify':result=qualify(args.task,args.sources)
+    elif command=='rr-qualify':
+        result=qualify(args.task,args.sources)
+        if args.track_f_controls:
+            if args.task!='jaffle-recorded-payments':raise BCError('Track F controls require Jaffle')
+            from reporecourse.track_f_controls import qualify_controls
+            result['track_f_controls']=qualify_controls(args.sources)
+            if result['track_f_controls']['status']!='passed':result['status']='blocked_prerequisite'
     elif command in ('rr-visibility','rr-plans'):
         c,p=load_task(args.task,args.sources)
         if command=='rr-plans':
@@ -74,8 +86,19 @@ def dispatch(args):
         result=build(args.sources,args.tasks,model,source_revision(ROOT),smoke=args.engineering_smoke,
             qualification=load(args.qualification) if args.qualification else None,sensitivity=args.sensitivity,
             model_lock_hash=digest(load(args.model_lock)) if args.model_lock else None)
+        if args.track_f_engineering:
+            if args.engineering_smoke or args.sensitivity or args.tasks!=['jaffle-recorded-payments'] or not all((args.baseline_run,args.baseline_snapshot,args.qualification,args.model_lock)):
+                raise BCError('Exact Track F scope requires historical run/snapshot, qualification and lock')
+            from .experiments.reporecourse_history import resolve
+            from reporecourse.track_f import build as build_trio
+            result=build_trio(result,resolve(args.baseline_run,args.baseline_snapshot))
+            from .experiments.reporecourse import verify_inputs
+            verify_inputs(result,ROOT)
     elif command=='rr-export':
-        m=load(args.run/'manifest.json');result={'aggregate':aggregate(m,args.run),'episodes':[]}
+        m=load(args.manifest or args.run/'manifest.json');result={'aggregate':aggregate(m,args.run),'episodes':[]}
+        if m.get('experiment_type')=='reporecourse_track_f_engineering_v1':
+            from reporecourse.track_f import report
+            result['engineering_trace']=report(m,args.run)
         for e in m['episodes']:
             path=args.run/'episodes'/e['episode_id']/'result.json'
             if path.exists():

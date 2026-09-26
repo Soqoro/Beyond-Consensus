@@ -113,7 +113,13 @@ class Environment:
         handoff=bool(set(obligations)&set(assigned.get('outputs',[]))) or (not assigned.get('outputs') and name==assigned.get('id'))
         if self.fault_track=='F' and worker==self.target and not self.triggered and handoff:
             self.triggered=True;self.unavailable.add(worker);self.alarm_index=len(self.events)
-            self.events.append({'type':'unavailable','worker':worker,'before_publication':True})
+            self.events.append({'type':'unavailable','worker':worker,'before_publication':True,
+                'rule':'first_assigned_publication_v1','unit':assigned.get('id'),
+                'missing_assignments':list(assigned.get('outputs',[])),
+                'announcement':{'worker':worker,'unavailable':True,'assignment':assigned.get('id')},
+                'tokens_before_loss':self.resources.actual_tokens,
+                'cpu_before_loss':self.resources.cpu_seconds,
+                'retained_versions':sorted(self.artifacts)})
             raise Rejected('worker_unavailable')
         original=deepcopy(content)
         if self.fault_track=='S' and worker==self.target and (not self.triggered or self.sabotage=='persistent'):
@@ -163,6 +169,7 @@ class Environment:
 
     def _action(self, worker, action):
         if worker not in WORKERS or self.finished:raise Rejected('episode_closed')
+        self.resources.ensure_dispatch()
         bounded(action)
         if not isinstance(action,dict):raise Rejected('action')
         tool=action.get('tool')
@@ -254,6 +261,7 @@ class Environment:
             source_ids=sorted(self.public['sources']),examples=self.public['examples'],
             assignment=self.assignment.get(worker),artifacts=[{'version':v,'name':a['name'],'format':a['format']} for v,a in self.artifacts.items()],
             bound=dict(self.bound),messages=deepcopy(self.messages[worker]),unavailable=sorted(self.unavailable),
+            announcements=[deepcopy(e['announcement']) for e in self.events if e['type']=='unavailable' and 'announcement' in e],
             remaining_tokens=self.resources.remaining,cpu_remaining=self.resources.cpu_cap-self.resources.cpu_seconds))
 
     def state(self):
@@ -263,6 +271,7 @@ class Environment:
             checkpoints=self.checkpoints,messages=self.messages,assignment=self.assignment,finished=self.finished))
 
     def restore_state(self,state):
+        if not self.unavailable <= set(state['unavailable']):raise Rejected('unavailable_identity_rollback')
         if state['target']!=self.target or state['track']!=self.track:raise Rejected('fault_state_mismatch')
         for k in ('artifacts','bound','events','triggered','fault_track','sabotage','checkpoints','messages','assignment','finished'):setattr(self,k,deepcopy(state[k]))
-        self.unavailable=set(state['unavailable']);self.exposure={k:set(v) for k,v in state['exposure'].items()}
+        self.unavailable |= set(state['unavailable']);self.exposure={k:set(v) for k,v in state['exposure'].items()}

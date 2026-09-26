@@ -1,9 +1,11 @@
 """Logical token totals and independent CPU caps, not BC surrogate units."""
 from dataclasses import dataclass, field
 import time
+import math
 from .common import Rejected
 
 PROFILE = 'rr-logical-tokens-cpu-v1'
+ACCOUNTING = 'rr-admission-reconciliation-v2'
 
 
 @dataclass
@@ -16,16 +18,23 @@ class Resources:
     events: list = field(default_factory=list)
     uncertain_tokens: int = 0
     cpu_reserved: float = 0
+    cpu_pending: list = field(default_factory=list)
+    uncertain_cpu: float = 0
 
     def __post_init__(self):
-        if type(self.token_cap) is not int or self.token_cap < 1 or self.cpu_cap <= 0:
+        if type(self.token_cap) is not int or self.token_cap < 1 or type(self.cpu_cap) not in (int,float) or not math.isfinite(self.cpu_cap) or self.cpu_cap <= 0:
             raise Rejected('resource_profile')
 
     @property
     def remaining(self):
         return self.token_cap-self.actual_tokens-self.uncertain_tokens-sum(a+b for a,b in self.reservations.values())
 
+    def ensure_dispatch(self):
+        if self.remaining <= 0: raise Rejected("token_cap")
+        if self.cpu_seconds+self.cpu_reserved >= self.cpu_cap: raise Rejected("cpu_cap")
+
     def reserve(self, input_tokens, output_cap):
+        self.ensure_dispatch()
         if any(type(x) is not int or x < 0 for x in (input_tokens,output_cap)):
             raise Rejected('usage')
         if input_tokens+output_cap > self.remaining: raise Rejected('token_cap')
@@ -47,20 +56,38 @@ class Resources:
         del self.reservations[key]
 
     def reserve_cpu(self, allowance):
-        if allowance <= 0 or self.cpu_seconds+self.cpu_reserved+allowance > self.cpu_cap:
+        if type(allowance) not in (int,float) or not math.isfinite(allowance) or allowance <= 0:
+            raise Rejected('cpu_usage')
+        self.ensure_dispatch()
+        if self.cpu_seconds+self.cpu_reserved+allowance > self.cpu_cap:
             raise Rejected('cpu_cap')
+        self.cpu_pending.append(allowance)
         self.cpu_reserved += allowance
+        self.events.append(dict(kind='cpu_reservation', allowance=allowance,
+                                semantics='admission_estimate_not_hard_cutoff'))
 
     def reconcile_cpu(self, category, allowance, actual, **measurements):
-        self.cpu_reserved -= allowance
-        # Unknown child usage consumes the allowance conservatively, but remains unknown.
-        self.cpu_seconds += allowance if actual is None else actual
+        if type(allowance) not in (int,float) or not math.isfinite(allowance) or allowance < 0:
+            raise Rejected('cpu_usage')
+        if actual is not None and (type(actual) not in (int,float) or not math.isfinite(actual) or actual < 0):
+            raise Rejected('cpu_usage')
+        if allowance:
+            if allowance not in self.cpu_pending: raise Rejected('cpu_reservation_missing')
+            self.cpu_pending.remove(allowance)
+            self.cpu_reserved = sum(self.cpu_pending)
+        debit=allowance if actual is None else actual
+        if actual is None:self.uncertain_cpu += allowance
+        self.cpu_seconds += debit
         self.events.append(dict(kind='cpu', category=category, actual_cpu_seconds=actual,
-            allowance=allowance, cap_debit=allowance if actual is None else actual, **measurements))
+            allowance=allowance, cap_debit=debit,
+            released_allowance=0 if actual is None else max(0,allowance-actual),
+            estimate_overrun=0 if actual is None or allowance==0 else max(0,actual-allowance),
+            episode_overshoot=max(0,self.cpu_seconds-self.cpu_cap),
+            usage_uncertain=actual is None, **measurements))
         if self.cpu_seconds > self.cpu_cap: raise Rejected('cpu_cap')
 
     def summary(self):
-        return dict(profile=PROFILE, token_cap=self.token_cap, actual_tokens=self.actual_tokens,
+        return dict(profile=PROFILE, accounting_version=ACCOUNTING, cpu_budget_semantics='strict_admission_and_scoring_not_hard_host_cutoff', uncertain_cpu=self.uncertain_cpu, token_cap=self.token_cap, actual_tokens=self.actual_tokens,
             uncertain_tokens=self.uncertain_tokens, reserved_tokens=sum(a+b for a,b in self.reservations.values()),
             remaining_tokens=self.remaining, cpu_cap=self.cpu_cap, cpu_cap_debit=self.cpu_seconds,
             cpu_reserved=self.cpu_reserved, events=self.events,
@@ -78,3 +105,11 @@ class Resources:
                       for e in self.events[event_index:] if e['kind']=='cpu')
         elapsed=max(0,time.process_time()-started-accounted)
         self.reconcile_cpu(category,0,elapsed)
+
+
+def success_at_budget(status, correct, resources):
+    """Correctness is independent; only completed work within both caps passes."""
+    return (status == 'completed' and correct is True
+            and resources.actual_tokens + resources.uncertain_tokens <= resources.token_cap
+            and resources.cpu_seconds <= resources.cpu_cap
+            and not resources.reservations and not resources.cpu_pending)

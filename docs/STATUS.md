@@ -1,5 +1,34 @@
 # Implementation status and handoff
 
+## Narrow Track F implementation; cluster qualification pending (2026-09-26)
+
+The user authorized local implementation/preparation of exactly fresh_clean,
+loss_w0 and loss_w1 on the same Jaffle independent/delegation_jit setting.
+The new gate copies actual historical settings through a verified snapshot/run
+import, binds current CPU controls, and retains pending independent review.
+The existing runner/registry selects one condition at a time and requires reuse
+of the preflight snapshot. Clean failure blocks loss submission. No jobs,
+downloads, commits or pushes were performed during this implementation.
+
+CPU reconciliation now records actual-over-estimate usage, uncertainty and
+overshoot without negative released credits. Exhaustion suppresses further
+actions; over-cap correctness is not success. The 31-second host allowance is
+an admission estimate, not a hard timeout. Permanent worker exclusion, public
+announcements and per-assignment ledgers have additional audit coverage.
+
+See [the single runbook](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md) and
+[validation record](VALIDATION.md). The successful historical manifest/result
+and immutable snapshot are unavailable locally; the actual seed and trio ID
+remain unresolved until cluster import. Pinned real-executor qualification is
+also pending. These gaps block executable preparation, not permission to claim
+that recovery worked. The dated September 25 entries below remain historical.
+
+## Audit before further experiments (2026-09-25)
+
+The user requested a consolidated [progress and audit report](PROGRESS_REPORT_2026-09-25.md)
+before deciding on the proposed contributor-loss exception. That exception is
+not authorized or implemented. No new job or protocol change accompanies this review.
+
 ## RepoRecourse clean GPU baseline reviewed (2026-09-25)
 
 User-supplied corrected smoke b9492f9028928218e190cf0441956d681cecb524b824505d551047f55757a9f9

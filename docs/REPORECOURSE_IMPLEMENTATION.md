@@ -386,3 +386,14 @@ CPU/decoder and A100-80GB preflight reports were supplied by the user. This
 supersedes the initial handoff's dated 'not run' inventory for these specific
 checks only. Independent review, calibrated B0 and broad competence are still
 unestablished. See [baseline and gated loss plan](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
+
+## Track F engineering extension (2026-09-26)
+
+The prior one-clean-smoke gate remains the default. An explicit exact-trio
+exception is now implemented for the user-authorized Jaffle engineering scope.
+It reuses Engine, delegation_jit, restricted compiler/executor, journals,
+snapshots and registry; there is no second runner. Historical input resolution,
+current CPU controls and accounting reconciliation are prerequisites. The
+[updated loss runbook](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md) supersedes the
+September 25 review-only plan. Relevant pinned dependency checks are pending
+locally; no new actual-model or recovery outcome is claimed.

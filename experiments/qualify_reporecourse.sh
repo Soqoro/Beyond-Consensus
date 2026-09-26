@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -13,11 +13,13 @@ output=''
 model_lock=''
 local_run=false
 dry=false
+track_f=false
 while (($#)); do
     case "$1" in
         --help|-h) usage; exit 0 ;;
         --dry-run) dry=true; shift ;;
         --local) local_run=true; shift ;;
+        --track-f-controls) track_f=true; shift ;;
         --sources|--output|--model-lock)
             (($# >= 2)) || { usage >&2; exit 2; }
             case "$1" in
@@ -43,9 +45,30 @@ cd "$repo_root"
 [[ ! -e "$output" ]] || { printf 'Use a fresh output directory.\n' >&2; exit 2; }
 mkdir -p -- "$output"
 "$BC_PYTHON" -I scripts/bc.py rr-readiness --sources "$sources" --output "$output/readiness.json"
-for task in synthetic-stock synthetic-nullable jaffle-recorded-payments energy-generation-coverage github-topics-consumer; do
-    "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" --task "$task" --output "$output/$task.json"
-done
+if "$track_f"; then
+    # Fail on relevant skips; a previous revision's approvals are insufficient.
+    "$BC_PYTHON" - <<'PYTEST'
+import sys, unittest
+sys.path.insert(0, 'src')
+from reporecourse.track_f_controls import PINS
+from reporecourse.qualification import runtime_versions
+actual = runtime_versions()
+if any(actual.get(k) != v for k, v in PINS.items()):
+    raise SystemExit(f"Pinned CPU qualification blocked: required={PINS}, actual={actual}")
+suite = unittest.TestSuite()
+for pattern in ('test_reporecourse.py', 'test_reporecourse_track_f.py', 'test_sql_text.py'):
+    suite.addTests(unittest.defaultTestLoader.discover('tests', pattern=pattern))
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+if not result.wasSuccessful() or result.skipped:
+    raise SystemExit('Track F CPU qualification requires every relevant test to run and pass')
+PYTEST
+    "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" \
+        --task jaffle-recorded-payments --track-f-controls --output "$output/jaffle-recorded-payments.json"
+else
+    for task in synthetic-stock synthetic-nullable jaffle-recorded-payments energy-generation-coverage github-topics-consumer; do
+        "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" --task "$task" --output "$output/$task.json"
+    done
+fi
 "$BC_PYTHON" -I scripts/check_sql_frontend.py --output "$output/compiler.json"
 if [[ -n "$model_lock" ]]; then
     "$BC_PYTHON" -I scripts/check_action_constraints.py \

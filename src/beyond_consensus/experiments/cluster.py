@@ -195,7 +195,7 @@ def sbatch_arguments(config: ClusterConfig, snapshot: Path, output: Path, shards
 
 def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lock: dict[str, Any],
            concurrency: int, *, mode: str = "run", dry_run: bool = False, serialize: bool = False,
-           existing_snapshot: Path | None = None, failed_shards: list[int] | None = None) -> dict[str, Any]:
+           existing_snapshot: Path | None = None, failed_shards: list[int] | None = None, condition: str | None = None) -> dict[str, Any]:
     if os.environ.get("SLURM_JOB_ID"):
         raise BCError("Batch/allocation code cannot submit additional GPU jobs")
     if type(concurrency) is not int or not 1 <= concurrency <= 4:
@@ -230,6 +230,19 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Preflight requires concurrency=1")
     shards = failed_shards if failed_shards is not None else list(range(1 if mode == "preflight" else run_config.shards))
     output = Path(config.output_root) / (manifest["experiment_id"] + ("-preflight" if mode == "preflight" else ""))
+    if manifest.get('experiment_type')=='reporecourse_track_f_engineering_v1':
+        from reporecourse.track_f import select,read_result
+        if concurrency!=1 or serialize:raise BCError('Track F requires concurrency one and explicit sequential review')
+        if mode=='run':
+            if not existing_snapshot:raise BCError('Reuse the preflight snapshot for every Track F condition')
+            selected=select(manifest,output,condition)
+            prior=read_result(manifest,output,manifest['episodes'][selected])
+            if prior and prior['status'] not in ('interrupted','infrastructure_failed'):
+                raise BCError('Terminal Track F episode cannot be repeated')
+            if failed_shards is not None and selected not in failed_shards:raise BCError('Selected condition is not retryable')
+            shards=[selected]
+        elif condition is not None:raise BCError('Preflight has no episode condition')
+    elif condition is not None:raise BCError('Condition selection is only for the exact Track F trio')
     registry_path = registry_root()
     state_path = registry_path / "registry.json"
     def prepare_and_submit() -> dict[str, Any]:
@@ -248,7 +261,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
             argv = sbatch_arguments(config, snapshot, output, shards, concurrency, mode=mode,
                                      dependencies=dependencies, retry=failed_shards is not None)
             return {"dry_run": True, "argv": argv, "output": str(output), "submitted": False,
-                    "snapshot": "requires clean committed checkout at actual submission",
+                    "snapshot": str(existing_snapshot) if existing_snapshot else "requires clean committed checkout at actual submission",
                     "registry": str(state_path)}
         for path in (config.storage_root, config.cache_root, config.snapshot_root, config.output_root):
             Path(path).mkdir(parents=True, exist_ok=True)

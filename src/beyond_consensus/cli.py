@@ -108,10 +108,13 @@ def parser() -> argparse.ArgumentParser:
     submit.add_argument("--mode", choices=("run", "preflight"), default="run")
     submit.add_argument("--dry-run", action="store_true")
     submit.add_argument("--serialize", action="store_true")
+    submit.add_argument("--snapshot", type=Path)
+    submit.add_argument("--condition", choices=("fresh_clean","loss_w0","loss_w1"))
     retry = sub.add_parser("resubmit", help="Resubmit only missing/retryable shards from an unchanged snapshot")
     retry.add_argument("--snapshot", type=Path, required=True)
     retry.add_argument("--concurrency", type=int, default=1)
     retry.add_argument("--dry-run", action="store_true")
+    retry.add_argument("--condition", choices=("fresh_clean","loss_w0","loss_w1"))
     batch = sub.add_parser("batch", help=argparse.SUPPRESS)
     batch.add_argument("--snapshot", type=Path, required=True)
     batch.add_argument("--output", type=Path, required=True)
@@ -329,7 +332,8 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "submit":
         from .experiments.cluster import submit, load_cluster
         return submit(ROOT, load_cluster(args.cluster), read_json(args.manifest), read_json(args.model_lock),
-                      args.concurrency, mode=args.mode, dry_run=args.dry_run, serialize=args.serialize)
+                      args.concurrency, mode=args.mode, dry_run=args.dry_run, serialize=args.serialize,
+                      existing_snapshot=args.snapshot,condition=args.condition)
     if args.command == "resubmit":
         from .experiments.cluster import submit, load_cluster, failed_shard_ids
         config = load_cluster(args.snapshot / "resolved/cluster.json")
@@ -338,7 +342,7 @@ def dispatch(args: argparse.Namespace) -> Any:
         if not shards:
             return {"submitted": False, "reason": "No missing or eligible failed shards"}
         return submit(ROOT, config, manifest, read_json(args.snapshot / "resolved/model-lock.json"), args.concurrency,
-                      dry_run=args.dry_run, existing_snapshot=args.snapshot, failed_shards=shards)
+                      dry_run=args.dry_run, existing_snapshot=args.snapshot, failed_shards=shards,condition=args.condition)
     if args.command == "batch":
         from .experiments.cluster import batch
         return batch(args.snapshot, args.output, args.mode, args.retry)

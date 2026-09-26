@@ -36,19 +36,29 @@ class Engine:
         if state['plan_hash']!=digest(self.plan):raise Rejected('fixed_state_graph_mismatch')
         setup_cpu=self.env.resources.cpu_seconds
         self.env.restore_state(state['environment']);self.env.resources=Resources(**state['resources'])
-        if setup_cpu:
-            self.env.resources.reserve_cpu(setup_cpu);self.env.resources.reconcile_cpu('resume_materialization',setup_cpu,setup_cpu)
-        for key in list(self.env.resources.reservations):self.env.resources.reconcile(key)
-        # A pending CPU allowance represents interrupted uncertain work.
-        if self.env.resources.cpu_reserved:
-            n=self.env.resources.cpu_reserved;self.env.resources.reconcile_cpu('interrupted',n,None)
         for k in ('histories','phase','status','action_counts','failures','original_bundle','replication_disagreements','public_alarm','alarm_resources','view_since','replica_saved'):setattr(self,k,deepcopy(state[k]))
         self.completed=set(state['completed'])
+        for key in list(self.env.resources.reservations):self.env.resources.reconcile(key)
+        # Reconcile every outstanding reservation even when an earlier debit
+        # exhausts the cap. No interrupted work is released as phantom credit.
+        debits=[('resume_materialization',0,setup_cpu)]
+        debits += [('interrupted',n,None) for n in list(self.env.resources.cpu_pending)]
+        for category,allowance,actual in debits:
+            try:self.env.resources.reconcile_cpu(category,allowance,actual)
+            except Rejected as exc:
+                if str(exc)!='cpu_cap':raise
+                self.status='resource_exhausted'
 
     def unit(self,unit,worker,tag):
         env=self.env;key=tag+':'+unit['id']
         if key in self.completed or env.finished or self.status!='completed':return
+        if worker in env.unavailable:
+            env.events.append(dict(type='dispatch_suppressed',worker=worker,unit=unit['id'],stage=tag,reason='worker_unavailable'))
+            return
         env.assignment[worker]=deepcopy(unit)
+        env.events.append(dict(type='assignment_start',worker=worker,unit=unit['id'],stage=tag))
+        if env.triggered and self.alarm_resources is None:self.alarm_resources=env.resources.summary()
+        ledger_start=len(env.resources.events)
         before=set(env.artifacts);tokens_before=env.resources.actual_tokens;cpu_before=env.resources.cpu_seconds
         while self.action_counts.get(key,0)<self.max_actions:
             if unit['outputs'] and all(o in env.bound and env.artifacts[env.bound[o]]['author']==worker for o in unit['outputs']):break
@@ -57,6 +67,7 @@ class Engine:
             observation["artifacts"]=[a for a in observation["artifacts"] if env.artifacts[a["version"]]["sequence"]>=self.view_since]
             self.checkpoint()
             try:
+                env.resources.ensure_dispatch()
                 action=self.worker.next_action(deepcopy(self.public),deepcopy(unit),observation,self.histories[worker],env.resources,self.seed,self.checkpoint)
                 self.action_counts[key]=self.action_counts.get(key,0)+1
                 self.histories[worker].append({'role':'assistant','content':json.dumps(action)})
@@ -67,13 +78,14 @@ class Engine:
                 finally:
                     child_parents=sum(e.get('parent_cpu_seconds',0) for e in env.resources.events[nested_start:] if e['kind']=='cpu')
                     cpu=max(0,time.process_time()-started-child_parents)
-                    env.resources.reserve_cpu(max(cpu,0.000001));env.resources.reconcile_cpu('tool_parent',max(cpu,0.000001),cpu)
+                    env.resources.reconcile_cpu('tool_parent',0,cpu)
                 self.histories[worker].append({'role':'user','content':json.dumps(result)})
                 if action['tool']=='finish':
                     # Persist completion with the finish action before the next save.
                     self.completed.add(key)
                     break
             except Rejected as exc:
+                if env.triggered and self.alarm_resources is None:self.alarm_resources=deepcopy(env.resources.summary())
                 code=str(exc);self.failures.append({'unit':unit['id'],'stage':tag,'category':code})
                 self.histories[worker].append({'role':'user','content':json.dumps({'error':code})})
                 if code in ('worker_unavailable','token_cap','cpu_cap','context_limit','blocked_prerequisite'):
@@ -84,7 +96,8 @@ class Engine:
             finally:self.checkpoint()
             if env.finished:break
         self.completed.add(key)
-        env.events.append({'type':'unit_end','unit':unit['id'],'worker':worker,'stage':tag,'new_versions':sorted(set(env.artifacts)-before),'actual_tokens':env.resources.actual_tokens-tokens_before,'cpu_cap_debit':env.resources.cpu_seconds-cpu_before})
+        env.events.append({'type':'unit_end','unit':unit['id'],'worker':worker,'stage':tag,'new_versions':sorted(set(env.artifacts)-before),'actual_tokens':env.resources.actual_tokens-tokens_before,'cpu_cap_debit':env.resources.cpu_seconds-cpu_before,
+            'resource_events':deepcopy(env.resources.events[ledger_start:])})
         self.checkpoint()
 
     def replicate(self,eligible):
@@ -153,7 +166,7 @@ class Engine:
                     checked=env.check_public()
                     self.public_alarm=[k for k,v in checked.items() if not v]
                     if self.public_alarm:
-                        self.alarm_resources=env.resources.summary()
+                        if self.alarm_resources is None:self.alarm_resources=deepcopy(env.resources.summary())
                         env.events.append({'type':'public_alarm','obligations':self.public_alarm})
                         # Policy quarantine only: stored versions remain readable.
                         for k in self.public_alarm:env.bound.pop(k,None)
@@ -196,7 +209,7 @@ class Engine:
             artifact_executions=sum(e['type']=='artifact_execution' for e in env.events),
             explicit_rebindings=sum(e['type']=='explicit_rebind' for e in env.events),
             prediction_error=None,
-            events=env.events,failures=self.failures,state=env.state(),confirmatory=False)
+            events=env.events,failures=self.failures,state=env.state(),action_counts=self.action_counts,confirmatory=False)
 
 
 class ScriptedWorker:

@@ -426,3 +426,33 @@ user-submitted one-task engineering smoke can pass the new submission gate after
 CPU/decoder and hardware qualification. Supplied finite outlines and a charged
 public-only open-planner interface do not constitute measured autonomous planning
 or authorize native policy campaigns. No historical result is resumed or rescored.
+
+## Narrow RepoRecourse Track F engineering authorization (2026-09-26)
+
+The user's explicit replacement plan authorizes local implementation of
+`reporecourse_track_f_engineering_v1`, not live execution or broader research.
+The exact three-row exception to `require_run` covers fresh_clean, loss_w0 and
+loss_w1 on Jaffle recorded-payments / authored independent / delegation_jit.
+Shared model/settings/seed are imported from the actual verified successful
+historical manifest and snapshot; the historical run is not the matched control.
+Independent review stays pending. Current hash-bound references, negative and
+intervention controls, compiler/decoder checks and actual allocation preflight
+remain required. All broader non-smoke gates remain closed.
+
+The accounting correction `rr-admission-reconciliation-v2` keeps the existing
+logical-token/CPU units and 100,000 / 1,200 per-episode caps. Model-host 31-second
+reservations are admission estimates, not hard execution limits. Actual CPU is
+fully charged even above the estimate; uncertainty, release and overshoot are
+separate, and no subsequent action may start after exhaustion. Over-cap correct
+outputs cannot score success. Terminal evaluation retains its separate ledger.
+Every condition uses the new source identity and a new manifest.
+
+The first valid assigned publication attempt triggers announced permanent loss
+before commit; no hidden scoring determines the timing. Prior committed work
+remains. Only committed versions may be read/executed. Unaffected primary work
+finishes before ordinary public checking and JIT reassignment. No new identity,
+privileged repair, erased obligation, larger allowance or blocked-payload rescue
+is introduced. Full rules, qualification gaps and sequential browser-terminal
+commands are in [the existing runbook](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
+One active campaign, concurrency one, one frozen snapshot, clean-first review;
+no automatic downstream submissions or terminal-result reruns.

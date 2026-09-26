@@ -2105,3 +2105,71 @@ tree/SILO prompts unchanged. Full stdlib suite: **232 tests in 80.466 seconds,
 228 passed and four skips** (optional parser and legacy integration). Nine shell
 checks, compileall, isolated CLI help and diff whitespace checks passed. No new
 GPU/model or native SQL evaluation was run.
+
+## Track F exact-trio qualification (2026-09-26)
+
+This change has no actual-model recovery result. The historical clean manifest,
+result and frozen snapshot are not locally available. The manifest importer
+requires those real paths and checks file inventory, bindings, ownership and
+resolved settings. No guessed seed or executable cluster manifest was saved.
+Scheduler tests use explicitly constructed metadata and mocked scheduler access;
+they establish selection/guard wiring and argument preservation, not site access.
+
+The new CPU tests cover estimate overshoot, no negative credit/double debit,
+uncertain interruption, no post-exhaustion dispatch, persistent unavailability,
+exact three-row allowlisting, historical snapshot tampering, sequential selection,
+all-unlaunched reporting, completed harness-failure classification, over-cap
+scoring, snapshot reuse and wrapper invocation from a different working directory.
+Timing tests establish ledger behavior, not a hard operating-system CPU limit.
+
+### Each skipped test and its gate impact
+
+The original thirteen skips remain; two new real-executor tests are also pending.
+SQLGlot 27.28.1, jsonschema 4.25.1 and referencing 0.36.2 are not available in the
+local Python 3.12 environment. No dependencies were downloaded. The pinned cluster
+CPU wrapper must run the current revision, not reuse the older 262-pass result.
+
+| Test | Requirement / relevance |
+| --- | --- |
+| `test_reporecourse.VerticalTests.test_all_baselines_clean_and_announced_loss` | Three pinned children; includes relevant clean/F runtime behavior. Blocks current child qualification. |
+| `test_reporecourse.VerticalTests.test_both_families_witnesses_and_negatives` | Three pinned children; finite evaluator/negative controls. Blocks current child qualification. |
+| `test_reporecourse.VerticalTests.test_existing_journal_runner_adapter_with_explicit_test_backend` | Three pinned children; existing journal/runner integration. Blocks current child qualification. |
+| `test_reporecourse.VerticalTests.test_fixed_state_graph_and_equal_remaining` | Three pinned children; R is outside this trio, retained regression coverage. Wrapper still requires it. |
+| `test_reporecourse.VerticalTests.test_independent_benchmark_execution_without_bc` | Three pinned children; core/executor import separation. Blocks current child qualification. |
+| `test_reporecourse.VerticalTests.test_replica_checkpoint_preserves_primary_and_resumes` | Three pinned children; replication is outside this trio, retained state regression. Wrapper still requires it. |
+| `test_reporecourse.VerticalTests.test_resume_and_latest_bound_not_best` | Three pinned children; resume and frozen/latest binding correctness. Blocks current child qualification. |
+| `test_reporecourse.VerticalTests.test_schema_rebind_reuses_program_preserves_exposure` | Three pinned children; API-schema family is outside this trio, retained regression. Wrapper still requires it. |
+| `test_reporecourse.VerticalTests.test_shared_plan_repair_and_no_forced_regeneration` | Three pinned children; shared outline is outside this trio, common retention/rebind regression. Wrapper still requires it. |
+| `test_sql_text.CompilerTests.test_rejects_and_resource_bounds` | Pinned SQLGlot; compiler safety path used here. Blocks compiler qualification. |
+| `test_sql_text.CompilerTests.test_runtime_fail_closed_charges_and_wrong_query` | Pinned SQLGlot; compiler/executor charging and errors. Blocks compiler qualification. |
+| `test_sql_text.CompilerTests.test_synthetic_semantic_parity` | Pinned SQLGlot; compiler lowering semantics. Blocks compiler qualification. |
+| `test_repository.RealSandboxTests.test_actual_isolation_and_cleanup` | Explicit legacy OS-sandbox profile. Irrelevant to restricted Jaffle execution; does not block it. |
+| `test_reporecourse_track_f.ExecutorControls.test_both_losses_resume_visibility_wrong_repair` | NEW: three pinned children; actual compiler/executor clean/both targets, before/after resume, visibility, wrong repair, nontrigger, finish continuation. Blocks this trio. |
+| `test_reporecourse_track_f.ExecutorControls.test_actual_journal_runner_three_shards_and_overcap_correctness` | NEW: three pinned children; scripted backend through existing journal runner, real executor/evaluator, all three shards and terminal-result reuse. Blocks this trio. |
+
+The new real-executor unit tests use clearly labelled constructed finite tables;
+they are not staged-source approvals. `rr-qualify --track-f-controls` additionally
+uses the hash-verified Jaffle pack and separate private reference/negative checks.
+It records scripted driver token charges as synthetic, never model measurements.
+The existing wrapper's new `--track-f-controls` mode fails on relevant skips and
+renewed-control failures. Exact CPU allocation and sequential GPU **dry-run**
+commands are in [the single runbook](REPORECOURSE_CLEAN_BASELINE_AND_LOSS_PLAN.md).
+
+Unexecuted here: pinned children, real-source controls, historical-path import,
+model/grammar qualification on the cluster, scheduler/site inspection, GPU
+preflight, fresh clean and both model-driven losses. Each remains explicit;
+no engineering recovery or research claim follows from local unit tests alone.
+
+### Current completed local checks
+
+Stable source-tree run: `python -m unittest discover -s tests -v` ran **282 tests
+in 80.576 seconds: 267 passed, 15 skipped, zero failures/errors**. The skips above
+are not counted as passes. `python scripts/check_shell.py` validated all **10**
+shell files. `python -m compileall -q src tests scripts`, `git diff --check`, and
+`python -I -S scripts/bc.py --help` passed. The new `rr-manifest` and `submit` help
+also work with `-I -S`.
+
+An earlier run during editing rejected a changed source hash in a legacy resume
+test. No provenance guard was relaxed; the stable-tree rerun above passed.
+There is no new live scheduler/GPU evidence. Existing uncommitted audit/report
+work was preserved, and no commit or push was made.
