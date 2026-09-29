@@ -14,6 +14,7 @@ def freeze(engine, alarm):
     body={'schema':'rr-fixed-state-v1','plan':deepcopy(engine.plan),'public_hash':digest(engine.public),
         'primary':engine.checkpoint(),'alarm':deepcopy(alarm),'historical_resources':engine.env.resources.summary(),
         'corruption_state_hash':digest(engine.env.state()),'reference_access':False}
+    if engine.v2 is not None:body['schema']='rr-fixed-state-v2'
     return {**body,'fixed_state_hash':digest(body)}
 
 
@@ -21,7 +22,17 @@ def resume(engine,snapshot,token_allowance,cpu_allowance):
     if snapshot['fixed_state_hash']!=digest({k:v for k,v in snapshot.items() if k!='fixed_state_hash'}):raise Rejected('fixed_state_integrity')
     if digest(engine.plan)!=digest(snapshot['plan']) or digest(engine.public)!=snapshot['public_hash']:
         raise Rejected('fixed_state_graph_mismatch')
-    state=deepcopy(snapshot['primary']);state['environment']['track']='R';state['environment']['finished']=False
+    state=deepcopy(snapshot['primary']);
+    if engine.v2 is not None:
+        if snapshot['schema']!='rr-fixed-state-v2' or engine.v2['lane']!='fixed_plan':raise Rejected('v2_fixed_state_lane')
+        previous=deepcopy(state.get('v2_config',{}));current=deepcopy(engine.v2)
+        for key in ('recovery','threat'):
+            previous.pop(key,None);current.pop(key,None)
+        if previous!=current:raise Rejected('v2_fixed_state_incompatible')
+        state['compatibility']=digest([engine.v2,engine.public,engine.plan])
+        state['v2_config']=deepcopy(engine.v2)
+    elif snapshot['schema']!='rr-fixed-state-v1':raise Rejected('legacy_fixed_state_incompatible')
+    state['environment']['track']='R';state['environment']['finished']=False
     # Preserve historical cost separately. Charge new restoration/materialization
     # to the remaining allowance rather than resetting it after restoration.
     remaining=Resources(token_allowance,cpu_allowance)

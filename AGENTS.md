@@ -10,7 +10,10 @@ behavior. Preserve existing work and record scientific conflicts explicitly.
 - Charge all task-specific computation; keep equal-total (A) and equal-remainder
   diagnostics (B) separate. Method names must not affect the model or evaluator.
 - Keep attacker truth, public monitoring, and hidden evaluation separate.
-- Four persistent worker identities share one frozen model on one allocated GPU.
+- Legacy runs use four persistent worker identities. Opt-in RepoRecourse v0.2
+  uses 2–8 logical identities (including 7) on one frozen model/allocated GPU;
+  pool-specific grammar and memory qualification is required. Physical campaign
+  concurrency remains at most four GPUs, one during qualification.
 - Required evaluation uses restricted SQLite artifacts and the labelled SILO
   recoverable-contributor adaptation. Numeric fixtures remain diagnostics.
 - No generated code or downloaded repository code on the host. Workers use
@@ -44,3 +47,16 @@ Milestones and limitations are tracked in `docs/STATUS.md`.
   planning campaigns and native policy runs remain blocked pending the separate competence,
   legal-variation and compatible-calibration gates. Do not call scripted plans
   measured research results. See docs/SQL_INTERFACE_AND_DECOMPOSITION_PHASE.md.
+
+## RepoRecourse v0.2
+
+- Read `docs/REPORECOURSE_V0_2.md` for the versioned migration and remaining gates.
+- Compare pre-execution planners with the same frozen workers and common public
+  JIT; fixed-plan recovery references remain a separate lane. No controller training.
+- Freeze planning before target selection; charge its actual ledger logically
+  in each end-to-end branch and report physical reuse separately. Track R is
+  equal-remaining only. Never rescore or migrate historical v1 experiments.
+- Author outlines/reference drivers are labelled; no hidden tests/witnesses in
+  planner inputs. Missing qualified tasks, calibration and memory tests stay blocked.
+- CPU reference matrix results do not authorize new variable-pool GPU campaigns
+  or expand the legacy Jaffle clean/F(w0)/F(w1) exception.

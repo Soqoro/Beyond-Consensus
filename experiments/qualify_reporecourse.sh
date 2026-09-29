@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--pool-count N]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -14,11 +14,15 @@ model_lock=''
 local_run=false
 dry=false
 track_f=false
+v2=false
+pool_count=4
 while (($#)); do
     case "$1" in
         --help|-h) usage; exit 0 ;;
         --dry-run) dry=true; shift ;;
         --local) local_run=true; shift ;;
+        --v2-controls) v2=true; shift ;;
+        --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
         --sources|--output|--model-lock)
             (($# >= 2)) || { usage >&2; exit 2; }
@@ -45,6 +49,34 @@ cd "$repo_root"
 [[ ! -e "$output" ]] || { printf 'Use a fresh output directory.\n' >&2; exit 2; }
 mkdir -p -- "$output"
 "$BC_PYTHON" -I scripts/bc.py rr-readiness --sources "$sources" --output "$output/readiness.json"
+if "$v2"; then
+    if "$track_f"; then printf 'Choose v2 controls or legacy Track F, not both.\n' >&2; exit 2; fi
+    [[ "$pool_count" =~ ^[2-8]$ ]] || { printf 'Pool must be 2..8.\n' >&2; exit 2; }
+    PYTHONPATH="$repo_root/src" "$BC_PYTHON" - <<'PYV2'
+import unittest
+from reporecourse.track_f_controls import PINS
+from reporecourse.qualification import runtime_versions
+actual=runtime_versions()
+if any(actual.get(k)!=v for k,v in PINS.items()):raise SystemExit('Pinned CPU dependencies required')
+r=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.discover('tests',pattern='test_reporecourse_v2.py'))
+if not r.wasSuccessful() or r.skipped:raise SystemExit('v2 controls must pass without skips')
+PYV2
+    "$BC_PYTHON" -I scripts/rr_v2.py qualify --sources "$sources" --output "$output/v2-fixtures.json"
+    "$BC_PYTHON" - "$output/v2-fixtures.json" <<'PYCHECK'
+import json,sys
+if json.load(open(sys.argv[1]))['status']!='passed':raise SystemExit('v2 fixture qualification failed')
+PYCHECK
+    if [[ -n "$model_lock" ]]; then
+        for role in json plan; do
+            "$BC_PYTHON" -I scripts/check_action_constraints.py --model-lock "$model_lock" --context-limit 16384 \
+                --action-constraint "reporecourse-$role-v2-pool-$pool_count" \
+                --output "$output/grammar-$role-pool-$pool_count.json" \
+                --qualified-lock "$output/model-lock-$role-pool-$pool_count.json"
+        done
+    fi
+    printf 'v2 CPU controls only; task review, B0, model competence and memory qualification remain pending.\n'
+    exit 0
+fi
 if "$track_f"; then
     # Fail on relevant skips; a previous revision's approvals are insufficient.
     "$BC_PYTHON" - <<'PYTEST'

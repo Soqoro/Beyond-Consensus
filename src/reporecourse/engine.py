@@ -10,17 +10,25 @@ from .resources import Resources
 
 class Engine:
     def __init__(self, public, worker, *, policy='delegation_jit', outline='independent', track='clean',
-                 target=None, seed=0, resources=None, max_actions=24, plan=None, save=None, sabotage='one_shot'):
+                 target=None, seed=0, resources=None, max_actions=24, plan=None, save=None, sabotage='one_shot', v2=None):
         planning_start=time.process_time()
-        self.plan=validate_plan(deepcopy(plan),public) if plan else choose_plan(public,policy,outline)
+        self.v2=deepcopy(v2)
+        self.workers=WORKERS
+        if v2 is not None:
+            from .v2 import worker_registry, validate_work_plan
+            self.workers=worker_registry(v2['pool_size'])
+            if policy not in ('delegation_jit','restart','replication'):raise Rejected('v2_recovery_policy')
+            self.plan=validate_work_plan(deepcopy(plan),public,v2)
+        else:self.plan=validate_plan(deepcopy(plan),public) if plan else choose_plan(public,policy,outline)
         planning_cpu=time.process_time()-planning_start
         self.policy=policy;self.worker=worker;self.public=public;self.max_actions=max_actions
         self.env=Environment(public,resources=resources,track=track,target=target,
-            active=sorted({u['worker'] for u in self.plan['units']}),seed=seed,sabotage=sabotage)
+            active=sorted({u['worker'] for u in self.plan['units']}),seed=seed,sabotage=sabotage,workers=self.workers if v2 is not None else None)
         self.env.resources.reserve_cpu(max(planning_cpu,0.000001))
         self.env.resources.reconcile_cpu('public_plan_selection',max(planning_cpu,0.000001),planning_cpu)
         self.env.events.append({'type':'allocation','plan':deepcopy(self.plan)})
-        self.histories={w:[] for w in WORKERS};self.completed=set();self.phase='primary';self.save=save
+        self.histories={w:[] for w in self.workers};self.completed=set();self.phase='primary';self.save=save
+        self.trajectories=[]
         self.action_counts={};self.seed=seed;self.failures=[];self.status='completed'
         self.original_bundle={};self.replication_disagreements=[];self.historical_resources=None
         self.public_alarm=[];self.alarm_resources=None;self.view_since=0;self.replica_saved=None
@@ -29,10 +37,19 @@ class Engine:
         state=dict(plan_hash=digest(self.plan),environment=self.env.state(),resources=deepcopy(vars(self.env.resources)),
             histories=self.histories,completed=sorted(self.completed),phase=self.phase,status=self.status,action_counts=self.action_counts,
             failures=self.failures,original_bundle=self.original_bundle,replication_disagreements=self.replication_disagreements,public_alarm=self.public_alarm,alarm_resources=self.alarm_resources,view_since=self.view_since,replica_saved=self.replica_saved)
+        if self.v2 is not None:
+            state.update(protocol='rr-engine-v2',compatibility=digest([self.v2,self.public,self.plan]),
+                         trajectories=deepcopy(self.trajectories),v2_config=deepcopy(self.v2),historical_resources=deepcopy(self.historical_resources))
         if self.save:self.save(state)
         return state
 
     def restore(self,state):
+        if self.v2 is not None:
+            if state.get('protocol')!='rr-engine-v2' or state.get('compatibility')!=digest([self.v2,self.public,self.plan]):
+                raise Rejected('v2_resume_incompatible')
+            self.trajectories=deepcopy(state.get('trajectories',[]))
+            self.historical_resources=deepcopy(state.get('historical_resources'))
+        elif state.get('protocol')=='rr-engine-v2':raise Rejected('legacy_resume_incompatible')
         if state['plan_hash']!=digest(self.plan):raise Rejected('fixed_state_graph_mismatch')
         setup_cpu=self.env.resources.cpu_seconds
         self.env.restore_state(state['environment']);self.env.resources=Resources(**state['resources'])
@@ -62,10 +79,14 @@ class Engine:
         before=set(env.artifacts);tokens_before=env.resources.actual_tokens;cpu_before=env.resources.cpu_seconds
         while self.action_counts.get(key,0)<self.max_actions:
             if unit['outputs'] and all(o in env.bound and env.artifacts[env.bound[o]]['author']==worker for o in unit['outputs']):break
-            if not unit['outputs'] and any(a['name']==unit['id'] and a['sequence']>=self.view_since for a in env.artifacts.values()):break
+            if not unit['outputs'] and all(any(a['name']==name and a['sequence']>=self.view_since for a in env.artifacts.values()) for name in (unit['produces'] if self.v2 is not None else [unit['id']])):break
             observation=env.observation(worker)
             observation["artifacts"]=[a for a in observation["artifacts"] if env.artifacts[a["version"]]["sequence"]>=self.view_since]
             self.checkpoint()
+            action=None;result=None
+            usage_start=len(env.resources.events)
+            visible_before=deepcopy(observation)
+            if self.v2 is not None:visible_before['worker_history']=deepcopy(self.histories[worker])
             try:
                 env.resources.ensure_dispatch()
                 action=self.worker.next_action(deepcopy(self.public),deepcopy(unit),observation,self.histories[worker],env.resources,self.seed,self.checkpoint)
@@ -90,13 +111,19 @@ class Engine:
                 feedback={'error':code}
                 if code=='sql_rejected' and hasattr(exc,'public_feedback'):
                     feedback.update(exc.public_feedback)
+                result=feedback
                 self.histories[worker].append({'role':'user','content':json.dumps(feedback)})
                 if code in ('worker_unavailable','token_cap','cpu_cap','context_limit','blocked_prerequisite'):
                     if code in ('token_cap','cpu_cap','context_limit'):self.status='resource_exhausted'
                     elif code=='blocked_prerequisite':self.status='blocked_prerequisite'
                     break
                 if sum(x['unit']==unit['id'] and x['stage']==tag for x in self.failures)>=3:break
-            finally:self.checkpoint()
+            finally:
+                if self.v2 is not None:
+                    self.trajectories.append(dict(actor=worker,stage=tag,unit=unit['id'],
+                        observation=visible_before,action=deepcopy(action),tool_result=deepcopy(result),
+                        costs=deepcopy(env.resources.events[usage_start:]),next_observation=env.observation(worker)))
+                self.checkpoint()
             if env.finished:break
         self.completed.add(key)
         env.events.append({'type':'unit_end','unit':unit['id'],'worker':worker,'stage':tag,'new_versions':sorted(set(env.artifacts)-before),'actual_tokens':env.resources.actual_tokens-tokens_before,'cpu_cap_debit':env.resources.cpu_seconds-cpu_before,
@@ -157,12 +184,14 @@ class Engine:
             for u in self.plan['units']:
                 if env.finished or self.status!='completed':break
                 missing=[d for d in u['depends'] if not any(a['name']==d for a in env.artifacts.values())]
+                if self.v2 is not None:
+                    missing=[v['artifact'] for v in u['consumes'].values() if not any(a['name']==v['artifact'] for a in env.artifacts.values())]
                 if missing:
                     env.events.append({'type':'dependency_deferred','unit':u['id'],'dependencies':missing})
                     continue
                 self.unit(u,u['worker'],'primary')
             if self.policy=='replication' and not env.finished and self.status=='completed':
-                self.replicate([w for w in WORKERS if w not in env.unavailable])
+                self.replicate([w for w in self.workers if w not in env.unavailable])
             self.original_bundle=deepcopy(env.bound)
             if not env.finished and self.status=='completed':
                 try:
@@ -177,27 +206,34 @@ class Engine:
                     self.status='blocked_prerequisite' if str(exc)=='blocked_prerequisite' else 'resource_exhausted'
             self.phase='repair';self.checkpoint()
         if self.phase=='repair' and not env.finished and self.status=='completed':
-            eligible=[w for w in WORKERS if w not in env.unavailable]
+            eligible=[w for w in self.workers if w not in env.unavailable]
             if (env.unavailable or self.public_alarm) and self.policy!='solo':
                 units=self.plan['units'] if self.policy=='restart' else [u for u in self.plan['units'] if
                     (u['outputs'] and any(o not in env.bound for o in u['outputs'])) or
-                    (not u['outputs'] and not any(a['name']==u['id'] for a in env.artifacts.values()))]
+                    (not u['outputs'] and not all(any(a['name']==name for a in env.artifacts.values()) for name in (u['produces'] if self.v2 is not None else [u['id']])))]
                 if self.policy=='restart':
                     env.bound={};self.view_since=len(env.artifacts)
                     for w in eligible:self.histories[w]=[]
                 for i,u in enumerate(units):
                     if env.finished or self.status!='completed':break
-                    # All inputs/tools still present; select only from four original identities.
+                    # All inputs/tools remain present; use only the configured identities.
                     owner=eligible[i%len(eligible)]
                     if not env.unavailable and owner==u['worker'] and len(eligible)>1:
                         owner=eligible[(eligible.index(owner)+1)%len(eligible)]
+                    if self.v2 is not None:
+                        from .v2_recovery import reuse_consumer
+                        if reuse_consumer(self,u,owner):continue
+                        # Same original sources remain available: missing dependencies
+                        # do not prevent a charged worker from directly rebuilding outputs.
+                        if u['outputs'] and any(not any(a['name']==v['artifact'] for a in env.artifacts.values()) for v in u['consumes'].values()):
+                            u={**u,'description':u['description']+' Recovery: dependencies are missing; rebuild terminal outputs from original permitted sources if possible.'}
                     self.unit(u,owner,'repair')
             self.phase='final';self.checkpoint()
         # Freeze before terminal-only private evaluation, even on exhaustion.
         try:env.resources.parent_overhead('runtime_parent_overhead',started,resource_start)
         except Rejected:self.status='resource_exhausted'
         env.finished=True;self.checkpoint()
-        counts={w:sum(e.get('worker')==w and e['type']=='publish' for e in env.events) for w in WORKERS}
+        counts={w:sum(e.get('worker')==w and e['type']=='publish' for e in env.events) for w in self.workers}
         return dict(status=self.status,mode=getattr(self.worker,'mode','scripted_cpu'),model_executed=getattr(self.worker,'mode','')=='model',
             resource_profile=env.resources.summary(),plan=self.plan,organization_key=organization_key(self.plan),
             active_workers=len(env.active),publications_by_worker=counts,track=env.track,

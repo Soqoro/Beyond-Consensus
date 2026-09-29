@@ -25,13 +25,18 @@ def create_database(path, tables):
 
 
 class Environment:
-    def __init__(self, public, resources=None, *, track='clean', target=None, active=WORKERS, seed=0, sabotage='one_shot'):
+    def __init__(self, public, resources=None, *, track='clean', target=None, active=None, seed=0, sabotage='one_shot', workers=None):
+        self.workers=tuple(WORKERS if workers is None else workers)
+        if workers is not None:
+            from .v2 import worker_registry
+            if self.workers!=worker_registry(len(self.workers)):raise Rejected('worker_registry')
+        active=self.workers if active is None else active
         bounded(public,size=1048576,nodes=100000)
-        if track not in ('clean','F','S','R') or not active or set(active)-set(WORKERS): raise Rejected('fault_profile')
+        if track not in ('clean','F','S','R') or not active or set(active)-set(self.workers): raise Rejected('fault_profile')
         if sabotage not in ('one_shot','persistent'):raise Rejected('fault_profile')
         self.public=deepcopy(public); self.resources=resources or Resources()
-        self.artifacts={}; self.bound={}; self.events=[]; self.exposure={w:set() for w in WORKERS}
-        self.messages={w:[] for w in WORKERS}; self.unavailable=set(); self.finished=False
+        self.artifacts={}; self.bound={}; self.events=[]; self.exposure={w:set() for w in self.workers}
+        self.messages={w:[] for w in self.workers}; self.unavailable=set(); self.finished=False
         self.track=track;self.fault_track=track
         self.target=target or random.Random(seed).choice(sorted(set(active)))
         if self.target not in active:raise Rejected('inactive_target')
@@ -172,7 +177,7 @@ class Environment:
             raise Rejected('action_value') from None
 
     def _action(self, worker, action):
-        if worker not in WORKERS or self.finished:raise Rejected('episode_closed')
+        if worker not in self.workers or self.finished:raise Rejected('episode_closed')
         self.resources.ensure_dispatch()
         bounded(action)
         if not isinstance(action,dict):raise Rejected('action')
@@ -228,7 +233,7 @@ class Environment:
         if tool=='check_public':return self.check_public()
         if tool=='message':
             recipient=action['recipient']
-            if recipient not in WORKERS or not isinstance(action['text'],str) or len(action['text'])>4096:raise Rejected('message')
+            if recipient not in self.workers or not isinstance(action['text'],str) or len(action['text'])>4096:raise Rejected('message')
             self.messages[recipient].append({'sender':worker,'text':action['text']})
             self.exposure[recipient].update(self.exposure[worker])
             self.exposure[recipient].update(v for v,a in self.artifacts.items() if a['author']==worker)

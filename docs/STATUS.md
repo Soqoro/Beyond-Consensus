@@ -1,5 +1,27 @@
 # Implementation status and handoff
 
+## RepoRecourse v0.2 local implementation (2026-09-29)
+
+The new [migration/review report](REPORECOURSE_V0_2.md) maps variable pools,
+pre-execution planning, common JIT, frozen-plan branching, task-balanced scores,
+and outcome exports to code. The supplied design file was absent; its companion
+update prompt was used and preserved. No training, GPU generation, cluster jobs,
+downloads, commits or pushes were performed. Legacy scientific history is unchanged.
+
+Local checks: 313 tests, 295 passed and 18 skipped; focused v0.2 20 tests,
+18 passed and two pinned-child skips. Shell checks (10 files), compileall,
+stdlib CLI help and diff checks passed. Optional libraries are absent, and
+explicit qualification returns blocked_prerequisite. See the migration report
+for skip scope and executable reference examples.
+
+The two-family CPU matrix is planned at 56 conditions / 188 reference branches;
+its pinned optional child execution is not qualified locally. New model task
+execution fails closed pending review, competence, B0, grammar and memory gates.
+Inventory remains three source-grounded drafts, two synthetic controls, zero
+independently reviewed source packs. Latest fresh Jaffle clean failure and both
+unlaunched F branches remain the relevant model evidence; earlier clean success
+is not promoted into a v0.2 recovery result.
+
 ## Track F fresh clean failed; public SQL interface revision (2026-09-27)
 
 User-supplied revised preflight for experiment

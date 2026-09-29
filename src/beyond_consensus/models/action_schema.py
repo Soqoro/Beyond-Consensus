@@ -36,6 +36,8 @@ def enum(*values):
 
 
 def action_schema(mode=MODE):
+    from reporecourse.action_schema import V2_MODES, schema_v2
+    if mode in V2_MODES:return schema_v2(mode)
     if mode == "reporecourse-json-v1":
         from reporecourse.action_schema import schema
         return schema()
@@ -117,7 +119,7 @@ def contract(mode=MODE):
     if mode == "sqlite-sql-text-v1":
         result.update(decoder_schema_sha256=digest(decoder_schema(mode)),
                       sql_string_length_enforcement="runtime-characters-and-utf8-bytes-v1")
-    if mode == "reporecourse-json-v1":
+    if mode.startswith("reporecourse-"):
         result["decoder_charge"] = "measured_cpu_subset_no_token_conversion"
     return result
 

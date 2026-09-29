@@ -11,7 +11,11 @@ requires supplied databases and reviewed evaluation material. CooperBench remain
 an optional legacy coding E0 extension with a separate sandbox gate. Fixtures
 are engineering data and cannot establish benchmark or coding findings.
 
-Four identities (`w0`–`w3`) share one frozen backend instance in each episode.
+Legacy runs use four identities (`w0`–`w3`) sharing one frozen backend instance.
+The opt-in RepoRecourse v0.2 protocol supports 2–8 logical identities, separate
+planning lanes, frozen-plan branching and task-balanced reporting; see
+[the migration contract](REPORECOURSE_V0_2.md). Its new GPU gates remain pending.
+This does not reinterpret legacy budgets, manifests or evidence.
 They have isolated contexts and the same permitted source/specification tools.
 Replacement routes use these same identities. Resetting context does not reset
 compromise. The protected deterministic orchestrator sees the full public task;
