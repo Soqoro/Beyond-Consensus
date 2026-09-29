@@ -123,7 +123,12 @@ families × seven pools × four genuinely different organizations, each with cle
 and all meaningful-owner F targets. This count is a plan, not 188 passed tests.
 Independent/shared/grouped alternatives already existed; branch/rejoin adds two
 components feeding both terminal outputs. Private reference actions remain
-labelled reference-only, never worker competence measurements.
+labelled reference-only, never worker competence measurements. Grouped controls
+reuse the independent reference programs explicitly (`reference_program_source`),
+while executing their one-owner grouped plan. The original private fixtures are
+unchanged. Cluster retry 1083811 exposed and stopped at the formerly missing
+grouped-witness lookup; 19 test methods passed but the matrix was not qualified.
+The shared selector now serves both the matrix and standalone demo.
 
 ## Local validation of this update
 
@@ -275,6 +280,12 @@ bash experiments/qualify_reporecourse.sh --v2-controls --pool-count 7 \
   --sources "$BC_STORAGE/datasets/reporecourse-v01" \
   --output "$RR_V2_CLUSTER/cpu" --dry-run
 ```
+
+When submitting the wrapper directly, set `sbatch --chdir` to the frozen
+source root, or pass `--repo-root` explicitly. Slurm spools the batch script;
+its copied script path is not a repository location. Earlier frozen wrappers
+can instead be invoked by an `sbatch --wrap` launcher using their absolute real
+path. Preserve failed output directories and use a fresh retry output.
 
 The same existing wrapper, without `--dry-run`, belongs in a **user-authorized
 CPU allocation** with a frozen source checkout and `BC_PYTHON` exported. Do not

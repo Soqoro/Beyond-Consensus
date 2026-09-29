@@ -89,7 +89,7 @@ def dispatch(a):
         m=v2.resolve_branches(f)
         if a.dry_run:return m
         from .engine import ScriptedWorker
-        private=private_task(a.task);w=v2.fixture_rejoin(public,c)[1] if a.outline=='branch_rejoin' else next(w for w in private['witnesses'] if w['organization']==a.outline)
+        private=private_task(a.task);w=v2.fixture_witness(public,private,c,a.outline)
         rows=[v2.run_branch(m,b['branch_id'],public,private,ScriptedWorker(w)) for b in m['rows']]
         return {'manifest':m,'results':rows,'aggregate':v2.aggregate_v2([m],rows),'status':'reference_controls_completed',
             'evidence':'private reference driver, not planner or worker model competence'}

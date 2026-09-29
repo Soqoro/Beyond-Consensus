@@ -506,3 +506,14 @@ def sanitized_evidence(manifest,results):
             physical_generations=manifest['frozen']['physical_generation_count'],
             resource_summary=Resources(**manifest['frozen']['planning_resources']).summary()),
         raw_actions_exported=False,private_tests_exported=False,model_executed=any(r.get('model_executed') for r in results))
+
+
+def fixture_witness(public, private, config, organization):
+    """Private CPU driver selection; grouped changes ownership, not the programs."""
+    if public['id'] not in ('synthetic-stock','synthetic-nullable'):
+        raise Rejected('synthetic_witness_only')
+    if organization=='branch_rejoin':return fixture_rejoin(public,config)[1]
+    source='independent' if organization=='grouped' else organization
+    witness=next((w for w in private['witnesses'] if w['organization']==source),None)
+    if witness is None:raise Rejected('fixture_witness_unavailable')
+    return {**deepcopy(witness),'organization':organization,'reference_program_source':source}

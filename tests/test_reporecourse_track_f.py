@@ -247,6 +247,30 @@ class HistoricalTests(unittest.TestCase):
             self.assertIn('No model weights or GPU jobs',r.stdout)
             self.assertEqual(list(Path(spool).iterdir()),[])
 
+    def test_cpu_wrapper_copied_script_uses_chdir_or_explicit_root(self):
+        import subprocess
+        import sys
+        wrapper=ROOT.parents[1]/'experiments/qualify_reporecourse.sh'
+        with tempfile.TemporaryDirectory() as directory:
+            base=Path(directory);spool=base/'spool';repo=base/'frozen source'
+            spool.mkdir();(repo/'scripts').mkdir(parents=True);(repo/'src/reporecourse').mkdir(parents=True)
+            copied=spool/'slurm_script';copied.write_text(wrapper.read_text())
+            # Stop at the first interpreter call: no qualification/model work.
+            (repo/'scripts/bc.py').write_text('from pathlib import Path\nprint(Path.cwd())\nraise SystemExit(23)\n')
+            (repo/'scripts/rr_v2.py').touch();(repo/'src/reporecourse/engine.py').touch()
+            env={**os.environ,'BC_PYTHON':sys.executable,'SLURM_JOB_ID':'test-only'}
+            for explicit in (False,True):
+                output=base/('explicit' if explicit else 'chdir')
+                args=['bash',str(copied),'--sources',str(base/'sources'),'--output',str(output),'--v2-controls']
+                if explicit:args+=['--repo-root',str(repo)]
+                result=subprocess.run(args,cwd=spool if explicit else repo,env=env,capture_output=True,text=True)
+                self.assertEqual(result.returncode,23,result.stderr)
+                self.assertEqual(result.stdout.strip(),str(repo))
+            bad=subprocess.run(['bash',str(copied),'--sources','missing','--output',str(base/'bad')],cwd=spool,env=env,capture_output=True,text=True)
+            self.assertEqual(bad.returncode,2)
+            self.assertIn('Invalid repository root',bad.stderr)
+            self.assertFalse((base/'bad').exists())
+
     def test_missing_current_children_block_qualification(self):
         from reporecourse.track_f_controls import qualify_controls
         with patch('reporecourse.track_f_controls.runtime_versions',return_value={}):

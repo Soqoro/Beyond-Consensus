@@ -60,6 +60,27 @@ class Contracts(unittest.TestCase):
         with self.assertRaises(Rejected):v2.validate_work_plan(plan,p,c)
         with self.assertRaises(Rejected):v2.configuration(8,recovery='restart')
 
+    def test_every_fixture_organization_has_explicit_reference_driver(self):
+        for name in ('synthetic-stock','synthetic-nullable'):
+            public=task(name);private=private_task(name);original=copy.deepcopy(private)
+            for pool in range(2,9):
+                config=v2.configuration(pool,lane='fixed_plan')
+                for organization in ('independent','shared','grouped','branch_rejoin'):
+                    driver=v2.fixture_witness(public,private,config,organization)
+                    self.assertEqual(driver['organization'],organization)
+                    covered=[o for row in driver['actions'] for o in row['action']['obligations']]
+                    self.assertCountEqual(covered,[r['id'] for r in public['required_outputs']])
+                    if organization=='grouped':
+                        independent=next(w for w in private['witnesses'] if w['organization']=='independent')
+                        self.assertEqual(driver['actions'],independent['actions'])
+                        self.assertEqual(driver['reference_program_source'],'independent')
+                        plan=v2.authored_plan(public,config,organization)
+                        self.assertEqual(len(plan['units']),1)
+                        self.assertEqual(len({u['worker'] for u in plan['units']}),1)
+            self.assertEqual(private,original)
+            with self.assertRaisesRegex(Rejected,'fixture_witness_unavailable'):
+                v2.fixture_witness(public,private,config,'not-an-organization')
+
     def test_schema_registry_bound_and_no_planner_publication(self):
         from reporecourse.action_schema import schema_v2
         for n in range(2,9):
@@ -211,9 +232,9 @@ class ExecutableFamilies(unittest.TestCase):
                 for outline in ('independent','shared','grouped','branch_rejoin'):
                     p,c,plan,m=prepared(pool,'independent' if outline=='branch_rejoin' else outline,name,lane='fixed_plan',target_rule='all')
                     if outline=='branch_rejoin':
-                        plan,witness=v2.fixture_rejoin(p,c)
+                        plan,_=v2.fixture_rejoin(p,c)
                         m=v2.resolve_branches(v2.freeze(v2.request(p,c),p,plan,Resources(100000,1200),[],'scripted_reference'))
-                    else:witness=next(w for w in private['witnesses'] if w['organization']==outline)
+                    witness=v2.fixture_witness(p,private,c,outline)
                     for b in m['rows']:
                         with self.subTest(task=name,pool=pool,outline=outline,target=b['target']):
                             row=v2.run_branch(m,b['branch_id'],p,private,ScriptedWorker(witness))

@@ -3,11 +3,12 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--pool-count N]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--pool-count N] [--repo-root DIR]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
 }
+repo_root=''
 sources=''
 output=''
 model_lock=''
@@ -24,9 +25,10 @@ while (($#)); do
         --v2-controls) v2=true; shift ;;
         --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
-        --sources|--output|--model-lock)
+        --sources|--output|--model-lock|--repo-root)
             (($# >= 2)) || { usage >&2; exit 2; }
             case "$1" in
+                --repo-root) repo_root="$2" ;;
                 --sources) sources="$2" ;;
                 --output) output="$2" ;;
                 --model-lock) model_lock="$2" ;;
@@ -44,8 +46,20 @@ if ! "$local_run"; then
     : "${SLURM_JOB_ID:?Use a CPU batch allocation, or explicitly --local on a workstation}"
 fi
 : "${BC_PYTHON:?Set BC_PYTHON to the Python 3.12+ environment with pinned optional CPU dependencies}"
-repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# Slurm copies the batch script to its spool. In an allocation use the
+# configured --chdir, never the copied script's parent or submission directory.
+if [[ -z "$repo_root" ]]; then
+    if [[ -n "${SLURM_JOB_ID:-}" ]]; then
+        repo_root="$PWD"
+    else
+        repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+    fi
+fi
 cd "$repo_root"
+repo_root="$PWD"
+for required in scripts/bc.py scripts/rr_v2.py src/reporecourse/engine.py; do
+    [[ -f "$required" ]] || { printf 'Invalid repository root: %s (missing %s). Use --repo-root or sbatch --chdir.\n' "$repo_root" "$required" >&2; exit 2; }
+done
 [[ ! -e "$output" ]] || { printf 'Use a fresh output directory.\n' >&2; exit 2; }
 mkdir -p -- "$output"
 "$BC_PYTHON" -I scripts/bc.py rr-readiness --sources "$sources" --output "$output/readiness.json"

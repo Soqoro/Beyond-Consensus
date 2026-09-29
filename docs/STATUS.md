@@ -1,5 +1,40 @@
 # Implementation status and handoff
 
+## Cluster reference-matrix selection failure (2026-09-29)
+
+User-supplied retry 1083811 reached the qualification tests and failed after
+15 seconds. Nineteen of twenty test methods passed, including real-child
+consumer rebinding. The all-family/all-pool matrix stopped with StopIteration
+while selecting an absent `grouped` private witness. The fixtures contain
+independent and shared reference programs; the grouped organization combines
+the independent outputs under one owner. This was a driver-selection bug, not
+a model result or a completed matrix qualification. The later full matrix step
+was not reached.
+
+The shared fixture-driver selector now explicitly reuses independent reference
+programs for the grouped plan and records that origin; private fixture files,
+terminal obligations and evaluator semantics are unchanged. Both the CLI and
+executor matrix use that selector. A stdlib regression checks all four driver
+organizations, both families and every pool, so missing drivers cannot remain
+hidden behind optional-child skips. Local validation: 315 tests, 297 passed and
+18 skipped; shell checks (10 files), compileall, stdlib CLI help and diff checks
+passed. Pinned real-child qualification is still required on the cluster.
+A fresh frozen source and CPU qualification
+are required; preserve the failed snapshot and reports.
+
+## CPU qualification Slurm spool-path fix (2026-09-29)
+
+User-reported job 1083808 failed after one second (exit 2) before qualification:
+the directly submitted wrapper resolved its repository from Slurm's copied script
+and attempted `/cm/local/apps/slurm/var/spool/scripts/bc.py`. No CPU qualification
+or model result was produced. The wrapper now uses the allocation working
+directory (`sbatch --chdir`) or explicit `--repo-root`; local invocation retains
+script-relative resolution. Missing repository markers fail before output creation.
+A regression executes an actually copied script, including paths with spaces and
+invalid-root handling. Historical failed-job files remain intact. Existing frozen
+snapshots can be retried through a user-submitted launcher that executes the
+original wrapper with bash, with fresh output paths. No job was submitted here.
+
 ## RepoRecourse v0.2 local implementation (2026-09-29)
 
 The new [migration/review report](REPORECOURSE_V0_2.md) maps variable pools,
