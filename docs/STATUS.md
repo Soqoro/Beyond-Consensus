@@ -1,5 +1,41 @@
 # Implementation status and handoff
 
+## Pool-7 observed sequence passed; full-budget stress added (2026-09-30)
+
+User-supplied experiment
+`78419528eb91d65c58517565ad196ff82c7f84f76a1e240c80ce7d4996c6cc79`
+reported `passed_observed_sequence` on one NVIDIA H100 PCIe: all 16 calls
+(seven workers plus planner, twice) passed. Actual tokens were 237,144,
+uncertain tokens zero, wall time 760.892 seconds. Inputs ranged 14,307–14,324;
+outputs 376–618. Every reported peak reservation was 62,136,516,608 bytes
+(about 57.9 GiB). This is user-reported compact evidence, not independently
+retrieved full reports. Early EOS leaves the full-output-length gate unresolved;
+no task competence or task-execution approval follows.
+
+Added opt-in `--full-budget-stress` to the separate preflight manifest command.
+It freezes a new protocol/experiment identity and exercises exact 14,336 input
+plus 2,048 forced inert output tokens at each retained-history visit. The normal
+model generation path, EOS behavior, constraints and qualification fingerprints
+are unchanged. Forced-token output is never interpreted as a worker action.
+Passing requires exact output count, forced-token verification, 2,048 decoder
+steps and an observed 16,383-position cache (the final sampled token is not
+forwarded again). Missing cache evidence fails closed. Unknown generation failure
+stops the sequence and reserves the full call's tokens.
+
+A pass reports `passed_full_budget_geometry`, not universal worst-case fit.
+The probe is synthetic, forced-token, normal decoder not applied; grammar objects
+remain resident but their per-token path is not exercised. Task permission and
+worst-case-fit flags stay false. This complements the normal-decoder observed
+sequence; it does not replace competence, calibration, task review or further
+memory evidence required for a research campaign. No GPU job was submitted,
+model executed locally, source/model artifact downloaded, commit or push made.
+
+
+Local validation for the stress update: full discovery **325 tests, 307 passed,
+18 skipped** (88.446 s); focused preflight suite **10/10 passed**. Shell checks
+(10 files), compileall, stdlib-only CLI help and diff checks passed. GPU shape
+and exact cache telemetry remain unmeasured until the cluster probe runs.
+
 ## V0.2 synthetic context-switch preflight implemented (2026-09-30)
 
 Added a separate preflight-only manifest and dispatch through the existing

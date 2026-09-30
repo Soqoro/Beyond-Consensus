@@ -392,3 +392,58 @@ use the same submit command without `--dry-run`, saving its output to a new
 submission record. Do not use `--mode run`. Preserve any failed report and use a
 new reviewed attempt rather than overwriting it. No GPU result for this probe
 has yet been measured.
+
+
+## Exact full-budget tensor geometry stress
+
+The observed pool-7 sequence subsequently passed on H100 PCIe (16/16 calls,
+237,144 tokens, 760.892 seconds; supplied summary recorded in STATUS.md).
+Every call stopped before 2048 output tokens. Preserve that historical report.
+
+Use `rr-v2-preflight-manifest --full-budget-stress` in a **new** directory for
+the separate `rr-forced-token-full-budget-v1` protocol. Scheduler/registry,
+concurrency-one, lock, source and task-run guards are the same. Pool 7 makes
+16 calls, with exactly 14336 input and 2048 output tokens per successful call:
+262144 total tokens. The synthetic prompt is padded with attended inert token
+IDs to reach the exact input length. A diagnostic-only logits processor forces
+one non-EOS token, minimum/maximum output are both 2048, and EOS/forced-EOS
+termination is disabled for these calls only. No generated text is executed.
+
+Both grammar objects and one frozen model remain resident while identities and
+roles switch; normal grammar masking is not applied to the forced sequence.
+No task generation settings or backend implementation are modified. Fresh caches
+are created per call, retained histories are independently revisited, and
+outputs are not inserted into another history. Exact output IDs/count, processor
+call count and returned cache length must verify; absent cache telemetry cannot
+pass. Timing and all input/output tokens are separately reported as diagnostic
+work. Early stop, OOM, missing evidence or token mismatch cannot establish fit.
+
+`full_budget_geometry_passed: true` establishes the measured tensor dimensions
+under this synthetic intervention only. `worst_case_fit_established: false`
+and `task_execution_allowed: false` remain intentional. Different attention
+content, normal decoder behavior, growing conversations and hardware variants
+are not universally qualified. No real result exists for this new stress probe.
+
+After pushing/pulling, reuse the verified existing worker/planner locks only if
+their fingerprints still pass. Create a fresh directory and manifest:
+
+```bash
+export BC_RR_STRESS="$(mktemp -d "$BC_STORAGE/diagnostics/rr-v2-stress.XXXXXX")"
+(
+set -euo pipefail
+"$BC_PYTHON" scripts/bc.py rr-v2-preflight-manifest \
+  --pool 7 --full-budget-stress \
+  --model-lock "$BC_RR_GRAMMAR/model-lock-json.json" \
+  --planner-lock "$BC_RR_GRAMMAR/model-lock-plan.json" \
+  --output "$BC_RR_STRESS/manifest.json"
+"$BC_PYTHON" scripts/bc.py submit --mode preflight --concurrency 1 \
+  --cluster "$BC_RR_CLUSTER" --manifest "$BC_RR_STRESS/manifest.json" \
+  --model-lock "$BC_RR_GRAMMAR/model-lock-json.json" --dry-run
+)
+```
+
+This block submits nothing. A user-authorized GPU submission uses the same
+command without `--dry-run`, once, with a new submission record. Full-length
+calls take longer than the earlier sequence; retain the reviewed two-hour
+allocation. Do not reuse earlier success as this probe's result or launch task
+runs after a geometry pass.

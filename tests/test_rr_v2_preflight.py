@@ -82,3 +82,65 @@ class ProbeTests(unittest.TestCase):
             m['planner_lock']['weight_hashes'] = 'different'
             with self.assertRaises(BCError): probe.check_locks(m, lock)
         with self.assertRaises(BCError): probe.check_locks(m, {})
+
+
+class StressTests(unittest.TestCase):
+    def test_full_budget_requires_all_geometry_evidence(self):
+        from beyond_consensus.models.rr_memory_stress import verified
+        good = dict(rendered_input_tokens=14336, observed_cache_sequence_length=16383,
+                    forced_token_verified=True, force_mask_calls=2048)
+        self.assertTrue(verified(good, 2048))
+        self.assertFalse(verified(good, 2047))
+        for key in good:
+            bad = dict(good); bad.pop(key)
+            self.assertFalse(verified(bad, 2048))
+        for key, value in [('rendered_input_tokens', 14324),
+                           ('observed_cache_sequence_length', 16382),
+                           ('forced_token_verified', False), ('force_mask_calls', 2047)]:
+            self.assertFalse(verified(dict(good, **{key: value}), 2048))
+
+    def test_stress_sequence_separate_from_normal_generation(self):
+        from beyond_consensus.models.rr_memory_stress import PROTOCOL
+        backend = Backend(); roles = []; prompts = []
+        def generate(b, messages, cap, seed):
+            self.assertIs(b, backend)
+            prompts.append(copy.deepcopy(messages))
+            return Generation('', 2048, None, 1, dict(stress_protocol=PROTOCOL,
+                rendered_input_tokens=14336, observed_cache_sequence_length=16383,
+                forced_token_verified=True, force_mask_calls=2048))
+        with patch('beyond_consensus.models.rr_memory_stress.generate', side_effect=generate):
+            rows = probe.sequence(backend, 7, roles.append, lambda **kw: {}, full_budget_stress=True)
+        self.assertEqual(len(rows), 16)
+        self.assertTrue(all(r['passed'] for r in rows))
+        self.assertEqual(sum(r['input_tokens']+r['output_tokens'] for r in rows), 262144)
+        self.assertEqual(backend.prompts, [])
+        self.assertEqual(prompts[:8], prompts[8:])
+        self.assertEqual(roles.count('plan'), 2)
+        with patch('beyond_consensus.models.rr_memory_stress.generate', side_effect=RuntimeError('OOM')):
+            rows = probe.sequence(backend, 7, roles.append, lambda **kw: {}, full_budget_stress=True)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['uncertain_tokens'], 16384)
+        self.assertFalse(rows[0]['passed'])
+
+    def test_stress_has_new_manifest_identity_and_no_task_permission(self):
+        with patch.object(probe, 'check_locks'), patch.object(probe, 'source_revision', return_value='source'):
+            normal = probe.build(Path('.'), {'a': 1}, {'a': 2}, 7)
+            stress = probe.build(Path('.'), {'a': 1}, {'a': 2}, 7, full_budget_stress=True)
+        self.assertNotEqual(normal['experiment_id'], stress['experiment_id'])
+        self.assertNotEqual(normal['protocol'], stress['protocol'])
+        self.assertFalse(stress['task_execution_allowed'])
+        probe.validate(stress)
+        with self.assertRaises(BCError):
+            probe.check_submission(stress, {}, Path('.'), 'run', 1)
+
+    def test_force_processor_preserves_only_inert_token(self):
+        from beyond_consensus.models.rr_memory_stress import ForceInertToken
+        class Scores:
+            def __init__(self): self.values = [[1, 9, 3], [4, 8, 6]]
+            def fill_(self, value): self.values = [[value]*3 for _ in range(2)]
+            def __setitem__(self, key, value):
+                for row in self.values: row[key[1]] = value
+        scores = Scores(); processor = ForceInertToken(2)
+        self.assertIs(processor(None, scores), scores)
+        self.assertEqual(scores.values, [[float('-inf'), float('-inf'), 0]]*2)
+        self.assertEqual(processor.calls, 1)

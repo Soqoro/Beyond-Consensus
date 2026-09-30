@@ -12,9 +12,10 @@ from .manifest import source_revision
 
 SCHEMA = "rr-v2-preflight-manifest-v1"
 PROTOCOL = "rr-isolated-histories-v1"
+STRESS_PROTOCOL = "rr-forced-token-full-budget-v1"
 
 
-def build(root, worker_lock, planner_lock, pool):
+def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False):
     from ..models.competence import CHECKPOINT, REVISION
     if type(pool) is not int or pool not in range(2, 9):
         raise BCError("Pool must be 2..8")
@@ -22,7 +23,7 @@ def build(root, worker_lock, planner_lock, pool):
         revision=REVISION, tokenizer_revision=REVISION, dtype="bfloat16",
         context_limit=16384, max_new_tokens=2048, thinking=True, do_sample=False,
         action_constraint=f"reporecourse-json-v2-pool-{pool}"))
-    m = dict(schema=SCHEMA, protocol=PROTOCOL, pool=pool, model=model,
+    m = dict(schema=SCHEMA, protocol=STRESS_PROTOCOL if full_budget_stress else PROTOCOL, pool=pool, model=model,
         source_revision=source_revision(root), model_lock_sha256=digest(worker_lock),
         planner_lock=planner_lock, shards=1, episodes=[], planned_episodes=0,
         task_inputs_used=False, task_execution_allowed=False, rounds=2)
@@ -34,7 +35,7 @@ def build(root, worker_lock, planner_lock, pool):
 
 def validate(m):
     body = {k: v for k, v in m.items() if k != "experiment_id"}
-    if (m.get("schema") != SCHEMA or m.get("protocol") != PROTOCOL
+    if (m.get("schema") != SCHEMA or m.get("protocol") not in (PROTOCOL, STRESS_PROTOCOL)
             or digest(body) != m.get("experiment_id")
             or type(m.get("pool")) is not int or m["pool"] not in range(2, 9)
             or m.get("rounds") != 2 or m.get("episodes") != []
@@ -98,7 +99,7 @@ def history(count, identity):
     return messages, expected
 
 
-def sequence(backend, pool, switch, memory):
+def sequence(backend, pool, switch, memory, *, full_budget_stress=False):
     """Injectable for CPU tests; production uses one backend and fresh call caches."""
     identities = [f"w{i}" for i in range(pool)] + ["planner"]
     histories = {i: history(backend.count_input, i) for i in identities}
@@ -110,13 +111,17 @@ def sequence(backend, pool, switch, memory):
             # No other identity's generation enters this prompt. Revisit exactly
             # the same retained history; all re-prefill tokens are charged again.
             before = digest(messages)
-            tokens = backend.count_input(messages)
+            tokens = 14336 if full_budget_stress else backend.count_input(messages)
             row = dict(identity=identity, round=round_index, prompt_hash=before,
                        input_tokens=tokens, output_cap=2048, passed=False)
             start = time.process_time(); wall = time.monotonic()
             memory(reset=True)
             try:
-                g = backend.generate(copy.deepcopy(messages), 2048, 0)
+                if full_budget_stress:
+                    from ..models.rr_memory_stress import generate as stress_generate
+                    g = stress_generate(backend, copy.deepcopy(messages), 2048, 0)
+                else:
+                    g = backend.generate(copy.deepcopy(messages), 2048, 0)
                 row.update(generation=asdict(g), output_tokens=g.output_tokens,
                            uncertain_tokens=0)
                 try:
@@ -125,6 +130,9 @@ def sequence(backend, pool, switch, memory):
                         and g.diagnostics.get("finish_reason") == "eos")
                 except (ValueError, TypeError):
                     pass
+                if full_budget_stress:
+                    from ..models.rr_memory_stress import verified
+                    row["passed"] = verified(g.diagnostics, g.output_tokens)
             except Exception as exc:
                 row.update(error_type=type(exc).__name__, output_tokens=None,
                            uncertain_tokens=tokens + 2048)
@@ -165,11 +173,14 @@ def run(m, lock_path, root):
         return dict(allocated_bytes=cuda.memory_allocated(0), reserved_bytes=cuda.memory_reserved(0),
                     peak_allocated_bytes=cuda.max_memory_allocated(0),
                     peak_reserved_bytes=cuda.max_memory_reserved(0), free_bytes=free, total_bytes=total)
-    rows = sequence(backend, m["pool"], switch, memory)
+    stress = m["protocol"] == STRESS_PROTOCOL
+    rows = sequence(backend, m["pool"], switch, memory, full_budget_stress=stress)
     passed = len(rows) == 2*(m["pool"]+1) and all(r["passed"] for r in rows)
     return dict(schema="rr-v2-context-preflight-v1", experiment_id=m["experiment_id"],
-        status="passed_observed_sequence" if passed else "failed", command_failed=not passed,
+        status=("passed_full_budget_geometry" if stress else "passed_observed_sequence") if passed else "failed", command_failed=not passed,
         model_executed=True, sql_executed=False, task_inputs_used=False,
+        probe_protocol=m["protocol"], full_budget_geometry_passed=passed if stress else None,
+        normal_decoding=not stress, task_competence_measured=False,
         task_execution_allowed=False, worst_case_fit_established=False,
         memory_protocol="one-model-sequential-reprefill-no-cross-worker-cache-v2",
         pool=m["pool"], model_instances=1, runtime=backend.runtime, calls=rows,
@@ -181,4 +192,5 @@ def run(m, lock_path, root):
         actual_tokens=sum(r["input_tokens"]+r["output_tokens"] for r in rows if r["output_tokens"] is not None),
         uncertain_tokens=sum(r["uncertain_tokens"] for r in rows),
         accounting="Separate synthetic qualification; no historical/task ledger changes",
-        limitation="Observed long-input early-EOS sequence only; no full-output-cap or task competence approval")
+        limitation=("Synthetic forced-token tensor geometry only; normal grammar/semantic behavior and universal worst-case fit not established"
+                    if stress else "Observed long-input early-EOS sequence only; no full-output-cap or task competence approval"))
