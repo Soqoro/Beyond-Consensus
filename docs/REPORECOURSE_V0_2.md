@@ -130,6 +130,34 @@ unchanged. Cluster retry 1083811 exposed and stopped at the formerly missing
 grouped-witness lookup; 19 test methods passed but the matrix was not qualified.
 The shared selector now serves both the matrix and standalone demo.
 
+## Subsequent cluster CPU evidence
+
+User-reported job **1083826** completed successfully in **8m08s** at
+`rr-v2.X1E9At`. All **21 test methods passed without skips**, including actual
+restricted children and common consumer rebinding. The separate full fixture
+report returned **passed**, `model_executed: false`. This supersedes the earlier
+cluster driver-selection failure for that frozen revision only. The subsequent supplied compact summary confirms **56 conditions and 188/188
+successful reference branches**, source commit
+`72d8ee01e9e7976e97d8aa8225705443710c9cfc`, all pools 2–8 and all four
+organizations in both fixture families. Evidence remains scripted_reference_only;
+GPU_qualified is false. The full remote report has not been
+independently retrieved here. Local optional dependencies remain absent.
+
+This CPU pass does not supply tokenizer/grammar approval: that job had no
+`--model-lock`. Pool-bound planner and worker grammars, model competence,
+representative context-switch/memory testing, B0 and source-task review remain
+pending. No new GPU job is authorized by these results.
+
+### Subsequent pool-7 grammar evidence
+
+User-reported CPU job **1083832** passed in **2m34s**. Both execution and planner
+grammars passed at **16384** context tokens, with separate qualified locks under
+`rr-v2.X1E9At/grammar-pool7.C22eIe`. `model_executed` is false. Exact qualification
+keys are recorded in STATUS.md. Only pool 7 is covered; no GPU or other-pool
+approval follows. The next implementation gap is a dedicated, guarded synthetic
+context-switch preflight for the v0.2 pool. Current `slurm-dry-run` remains blocked;
+legacy preflight is not a substitute. Task execution and research gates remain.
+
 ## Local validation of this update
 
 - Full unittest discovery: **313 tests, 295 passed, 18 skipped** (76.996 s).
@@ -300,3 +328,67 @@ implemented/satisfied, qualify the pool-specific one-model context-switch path
 on one 80-GB-class GPU, concurrency one, and use one frozen plan with clean plus
 one seeded F target. S stays blocked until its qualification exists. Preserve
 the legacy exact-trio gate; do not relabel it as v0.2 approval or launch a grid.
+
+## Synthetic pool context-switch preflight (2026-09-30)
+
+The additive `bc rr-v2-preflight-manifest` command now freezes a **preflight-only**
+manifest. It contains no tasks or episodes, embeds the separately qualified
+planner lock and binds the worker lock and source revision. Both locks must
+refer to identical staged weights and tokenizer. The existing `bc submit`
+registry/scheduler/snapshot path enforces `--mode preflight --concurrency 1`.
+Task execution, model branch dispatch and the v0.2 campaign gate remain blocked.
+
+One backend/model instance serves N worker histories and one separate planner
+history in two sequential rounds (16 calls for pool 7). Each retained history
+has identity-specific inert numbered records, fitted with the actual tokenizer
+to 14080–14336 input tokens, and requests its own exact synthetic `read_source`
+action. No tool is executed. Each revisit re-prefills the same isolated history;
+no other identity's response is included and no cross-call KV cache is supplied.
+The worker and planner decoder objects switch on that same loaded backend.
+This tests retained-history switching, not growing multi-turn task conversations.
+
+The report includes actual input/output tokens (reasoning is a subset), unknown
+usage reservations on exceptions, per-call process CPU/wall/device timing,
+memory allocation/reservation/peaks, prompt hashes, runtime provenance, and exact
+response/grammar/EOS checks. Unknown generation failure stops the sequence.
+Qualification overhead is separate from historical episode work. No task-specific
+inputs, references, model-generated programs, SQL execution or repair are used.
+A `passed_observed_sequence` report is deliberately narrower than memory approval:
+`worst_case_fit_established` and `task_execution_allowed` remain false. Early EOS
+does not exercise the entire 2048-token output allowance; full-cap memory testing,
+actual worker/planner competence, B0 and task review remain separate gates.
+
+### Browser-terminal preparation after pushing and pulling
+
+Use a clean committed checkout and the existing environment. These commands
+create a fresh manifest and inspect submission only; they submit no GPU job.
+The existing pool-7 locks remain usable only if their qualification fingerprints
+still verify; do not edit locks to bypass a stale qualification.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_RR_GRAMMAR="$BC_STORAGE/diagnostics/rr-v2.X1E9At/grammar-pool7.C22eIe"
+export BC_RR_CONTEXT="$(mktemp -d "$BC_STORAGE/diagnostics/rr-v2-context.XXXXXX")"
+export BC_RR_CONTEXT_LOCK="$BC_RR_GRAMMAR/model-lock-json.json"
+# Use an existing reviewed cluster config for one full A100/H100 80-GB-class GPU.
+: "${BC_RR_CLUSTER:?Set the existing reviewed cluster configuration path}"
+(
+set -euo pipefail
+"$BC_PYTHON" scripts/bc.py rr-v2-preflight-manifest \
+  --pool 7 --model-lock "$BC_RR_CONTEXT_LOCK" \
+  --planner-lock "$BC_RR_GRAMMAR/model-lock-plan.json" \
+  --output "$BC_RR_CONTEXT/manifest.json"
+"$BC_PYTHON" scripts/bc.py submit --mode preflight --concurrency 1 \
+  --cluster "$BC_RR_CLUSTER" --manifest "$BC_RR_CONTEXT/manifest.json" \
+  --model-lock "$BC_RR_CONTEXT_LOCK" --dry-run
+)
+```
+
+After reviewing the dry run and separately authorizing the one-GPU qualification,
+use the same submit command without `--dry-run`, saving its output to a new
+submission record. Do not use `--mode run`. Preserve any failed report and use a
+new reviewed attempt rather than overwriting it. No GPU result for this probe
+has yet been measured.

@@ -21,6 +21,8 @@ RETRYABLE = {"interrupted", "infrastructure_failed"}
 def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: int | None = None,
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
+    if manifest.get("schema") == "rr-v2-preflight-manifest-v1":
+        raise BCError("Synthetic context qualification cannot run task episodes")
     if manifest.get("schema") == "rr-manifest-v1":
         from .reporecourse import run
         return run(manifest, output, root, shard=shard, backend=backend, model_lock=model_lock, retry_failures=retry_failures)

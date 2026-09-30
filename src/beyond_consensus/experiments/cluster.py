@@ -202,6 +202,9 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    if manifest.get("schema") == "rr-v2-preflight-manifest-v1":
+        from .rr_v2_preflight import check_submission
+        check_submission(manifest, model_lock, existing_snapshot or repo, mode, concurrency)
     if manifest.get("schema") == "rr-manifest-v1":
         from reporecourse.experiments import require_run
         from .reporecourse import verify_inputs

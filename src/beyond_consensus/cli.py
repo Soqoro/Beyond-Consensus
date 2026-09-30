@@ -349,6 +349,13 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get("schema") == "rr-v2-preflight-manifest-v1":
+            from .experiments.rr_v2_preflight import run as context_preflight
+            if args.output.exists():
+                raise BCError("Use a fresh preflight report path")
+            result = context_preflight(frozen, args.model_lock, ROOT)
+            atomic_json(args.output, result)
+            return result
         if frozen.get("schema") == "rr-manifest-v1":
             from .experiments.reporecourse import preflight as rr_preflight
             result = rr_preflight(frozen, args.model_lock, ROOT)

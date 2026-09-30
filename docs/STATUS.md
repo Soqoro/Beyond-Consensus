@@ -1,5 +1,78 @@
 # Implementation status and handoff
 
+## V0.2 synthetic context-switch preflight implemented (2026-09-30)
+
+Added a separate preflight-only manifest and dispatch through the existing
+shared registry, scheduler inspection and frozen snapshots. It requires a
+matching pair of pool-specific worker/planner grammar locks over identical
+staged weights/tokenizer, frozen 27B BF16 settings, and concurrency one.
+`run` is explicitly rejected; v0.2 task/campaign gates remain unchanged.
+
+The bounded probe visits every in-pool identity plus a separate planner twice,
+using one model and two decoder grammars. Retained identity-specific synthetic
+histories are token-fitted near the 16K context input boundary. The report
+records actual token usage, unknown reservations on failures, timing, memory,
+provenance and exact response checks. No SQL or task inputs are used. This is
+an observed-sequence diagnostic, not a full-output-cap memory approval or model
+competence test. No GPU result, job submission, download, commit or push occurred.
+Validation: full unittest discovery ran 320 tests (302 passed, 18 skipped);
+the final focused probe suite passed all 6 tests, including the subsequently
+added direct task-run rejection check. Shell checks (10 files), compileall,
+stdlib-only CLI help and diff checks passed. Optional-child/legacy-sandbox
+skips remain limitations, not passes.
+See REPORECOURSE_V0_2.md for the browser-terminal preparation workflow.
+
+
+## Pool-7 tokenizer/grammar qualification passed (user-reported, 2026-09-29)
+
+CPU job 1083832 completed with exit 0 in 2m34s. The supplied summary reports
+both execution (`reporecourse-json-v2-pool-7`) and planner
+(`reporecourse-plan-v2-pool-7`) grammars passing at context limit 16384, with
+`model_executed: false` and separate qualified locks present. Reports reside at
+`/dataset/suaq0001/beyond-consensus/diagnostics/rr-v2.X1E9At/grammar-pool7.C22eIe`.
+
+- Execution qualification key: `cde5c5a65022f3b1bde85ab6a77fa0e7735aae5d1d8d47d3ef0db2c47df8f0be`.
+- Planner qualification key: `d026dc459b09dd3d09e2a9c7bcbdf3a5a9e48044f05efb40b7b27c837d5f80b3`.
+
+This is supplied evidence for the qualified source/tokenizer/schema settings,
+not independent retrieval of the full reports. It covers pool 7 only; other
+pool grammars do not inherit approval. It supersedes the pool-7 grammar-pending
+statement attached to the earlier matrix job, which did not run those checks.
+
+No GPU generation, representative multi-history context switching, model task
+competence, B0 or source-review approval is established. Current v0.2 code still
+blocks model task execution and submission; it does not yet expose a dedicated
+pool context-switch GPU preflight through the guarded scheduler. Preparing that
+bounded synthetic-only probe is the next implementation step, not a command to
+bypass the gate or relabel legacy preflight as pool-7 qualification. No new job,
+commit or push was performed here.
+
+## V0.2 cluster CPU qualification passed (user-reported, 2026-09-29)
+
+Job 1083826 completed with exit 0 in 8m08s, using frozen directory
+`/dataset/suaq0001/beyond-consensus/diagnostics/rr-v2.X1E9At`.
+The supplied log reports all 21 v0.2 test methods passing, without skips, in
+242.275 seconds. This includes both real-child methods previously skipped
+locally: all-family/all-pool clean/loss execution and unchanged-consumer JIT
+rebinding. The subsequent `cpu/v2-fixtures.json` reports `status: passed` and
+`model_executed: false`. The wrapper completed successfully.
+
+This is supplied cluster evidence for the frozen revision, not a local replay
+or independent retrieval of the full JSON report. The subsequent supplied
+compact summary binds source commit `72d8ee01e9e7976e97d8aa8225705443710c9cfc`
+and confirms **56 conditions, 188 branches, 188 successes**. Coverage is both
+synthetic-stock and synthetic-nullable, every pool 2–8, and independent, shared,
+grouped and branch_rejoin. Evidence is `scripted_reference_only`; model execution
+is false and GPU qualification is false. Earlier failed jobs remain historical records.
+No task/private evaluator semantics or scores were changed to obtain this pass.
+
+The evidence is scripted-reference CPU execution, not model planner competence,
+model recovery, a source-task approval, or a GPU memory result. The submitted
+command omitted model-lock qualification, so pool-specific planner/worker
+grammar approval is still pending. Task review, Energy license review, B0,
+model competence and representative context-switch/memory qualification remain
+pending. No additional job, GPU generation, commit or push was performed here.
+
 ## Cluster reference-matrix selection failure (2026-09-29)
 
 User-supplied retry 1083811 reached the qualification tests and failed after

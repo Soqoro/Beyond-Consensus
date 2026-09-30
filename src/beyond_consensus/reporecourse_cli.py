@@ -6,6 +6,11 @@ from .util import BCError
 
 
 def add_parsers(sub):
+    p = sub.add_parser("rr-v2-preflight-manifest", help="Freeze synthetic pool context-switch qualification only")
+    p.add_argument("--pool", type=int, choices=range(2, 9), required=True)
+    p.add_argument("--model-lock", type=Path, required=True)
+    p.add_argument("--planner-lock", type=Path, required=True)
+    p.add_argument("--output", type=Path, required=True)
     for command,helptext in [('rr-source-plan','Inspect pinned allowlist sizes; no download'),('rr-stage','Explicit bounded source staging'),
         ('rr-readiness','Source/task/split readiness; no model'),('rr-qualify','CPU references, mutants, reset and source checks'),
         ('rr-visibility','Audit public interface and separate evaluator binding'),('rr-plans','Inspect executable outlines and effective variation'),
@@ -42,6 +47,12 @@ def dispatch(args):
     from reporecourse.qualification import qualify,inventory,run_reference
     from reporecourse.experiments import build,calibration_plan,aggregate
     command=args.command
+    if command == "rr-v2-preflight-manifest":
+        from .experiments.rr_v2_preflight import build
+        from .cli import ROOT
+        result = build(ROOT, load(args.model_lock), load(args.planner_lock), args.pool)
+        write_new(args.output, result)
+        return {"report": str(args.output), "experiment_id": result["experiment_id"], "model_executed": False, "planned_episodes": 0}
     if command in ('rr-source-plan','rr-stage'):
         from reporecourse.sources import stage
         result=stage(args.sources,dry_run=command=='rr-source-plan' or args.dry_run,packs=args.packs)
