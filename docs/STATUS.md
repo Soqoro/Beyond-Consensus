@@ -1,5 +1,61 @@
 # Implementation status and handoff
 
+## Offline pool-7 provenance verifier implemented (2026-09-30)
+
+`scripts/audit_rr_v2_preflights.py` now checks the two existing preflight run
+directories against their actual runtime-named frozen snapshots. It reads full
+reports and resolved manifests/locks, verifies snapshot inventories and file
+hashes, checks model/tokenizer/grammar/runtime bindings, validates all call
+identities, revisits, actions or stress geometry, memory fields and token totals,
+and compares both runs' declared model/runtime conditions. Missing or inconsistent
+evidence produces a failed audit rather than inferred approval.
+
+The immutable audit output reports source files changed between snapshots and
+input file SHA256 values. Success is deliberately named
+`verified_internal_bindings_review_pending`: scheduler completion, historical
+key regeneration and source-diff review remain explicit limitations. The tool
+never imports frozen source, loads a model, executes SQL, submits a job, changes
+a historical report or grants task permission. It uses Python standard library
+only. Remote records remain unavailable locally; this implementation is not a
+claim that the user's actual reports have already passed the new verifier.
+
+Local verification: 330 tests ran, 312 passed and 18 skipped (83.568 seconds).
+The final focused verifier suite passed 5/5 tests. Shell checks (10 files),
+compileall, stdlib CLI help and diff checks passed.
+
+The next user-run step is the offline command in REPORECOURSE_V0_2.md. Review its
+output before introducing the narrowly scoped synthetic competence exception.
+The previously identified real-model label and persisted-failure work remains
+pending; general model execution gates remain unchanged.
+
+
+## Pool-7 stress result and readiness audit (2026-09-30)
+
+User-supplied experiment
+`b67a0fa3e511f82a1f3120dedd70a3f6a06e34daca2dd9a4bbf8507d855c6939`
+passed full-budget geometry on H100 PCIe: 16/16 calls, each 14336 input plus
+2048 output tokens, cache length 16383, verified forced tokens and 2048 masks.
+Actual tokens 262144, uncertain tokens zero, wall time 2159.126 seconds; peak
+reserved memory 61960355840 bytes (about 57.7 GiB). Normal decoding was false;
+worst-case fit and task permission remain false. This supersedes the earlier
+stress-unmeasured statement for this reported experiment only.
+
+The readiness audit records both successful GPU probes and the remaining gaps
+in REPORECOURSE_V0_2.md. Full remote reports/manifests/snapshots have not been
+retrieved; cross-run source/model/runtime provenance is **not yet verified**.
+Preflight action compliance does not measure worker artifact production or
+planner plan generation. Current code unconditionally blocks v0.2 model tasks;
+no automatic report-to-approval path exists.
+
+Next proposed scope is a separately gated single clean synthetic-stock worker
+competence run with an authored plan, followed only after review by the other
+synthetic family and then public-only planner validation. Engineering caps are
+not B0. Implementing that exception and verifying full probe provenance are
+required before offering a task submission command. General gates, native task
+approval, legacy exceptions and historical results are unchanged. This turn
+performed a documentation/source audit only; no model/SQL run or job submission.
+
+
 ## Pool-7 observed sequence passed; full-budget stress added (2026-09-30)
 
 User-supplied experiment

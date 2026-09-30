@@ -447,3 +447,156 @@ command without `--dry-run`, once, with a new submission record. Full-length
 calls take longer than the earlier sequence; retain the reviewed two-hour
 allocation. Do not reuse earlier success as this probe's result or launch task
 runs after a geometry pass.
+
+
+## Readiness audit after both pool-7 GPU probes (2026-09-30)
+
+### Evidence and conclusion
+
+| Gate | Evidence available in this review | Decision |
+|---|---|---|
+| CPU runtime/reference controls | Supplied 56-condition, 188/188-branch matrix; 21 cluster tests | Reference harness evidence only |
+| Pool-7 worker/planner grammars | Supplied passing reports/keys for 16K context, separate locks | Pool-7 syntax evidence; current/historical binding still needs full records |
+| Normal-decoder retained-history switching | `78419528eb91d65c58517565ad196ff82c7f84f76a1e240c80ce7d4996c6cc79`, 16/16 calls, 237144 tokens, H100 PCIe | Observed sequence passed |
+| Forced full-budget geometry | `b67a0fa3e511f82a1f3120dedd70a3f6a06e34daca2dd9a4bbf8507d855c6939`, 16/16 calls, 262144 tokens, H100 PCIe | Exact synthetic geometry passed |
+| Full provenance across probes | Compact summaries only; full manifests, report runtimes and frozen locks not supplied locally | Pending verification; do not assert the two runs share identical model/runtime bindings |
+| Worker task competence | No v0.2 model task run supplied | Unmeasured |
+| Planner competence | Preflight requested read_source, never submit_plan | Unmeasured |
+| B0/calibration | No compatible measured development set | Uncalibrated |
+| Source-task review/legal variation | Draft tasks and scripted synthetic controls | Native policy campaign blocked |
+
+The supplied stress attachment was read directly. All seven workers and planner,
+in both rounds, report exactly 14336 input tokens, 2048 output tokens, cache
+length 16383, 2048 mask calls, verified inert token and no error. The summary
+reports 262144 actual tokens, zero uncertain tokens, 2159.1261775558814 seconds
+(about 36 minutes), and 61960355840 peak reserved bytes (about 57.7 GiB).
+This is reported allocator reservation, not total device use or a guaranteed
+free-memory margin. The lower reservation than the earlier probe is not an
+optimization result. Both normal and forced probes used one reported model
+instance; no task competence inference follows from their pass counts.
+
+The practical conclusion is that the tested pool-7 sequential architecture and
+full configured token geometry have positive H100 evidence. Another identical
+stress rerun is not the default next step. Universal worst-case proof is not a
+reasonable substitute for measuring actual bounded task behavior; retain OOM,
+context and budget failures explicitly in any future diagnostic.
+
+### Provenance verification still required
+
+The local reviewer has not read the remote full JSON/snapshots. Preserve both
+preflight directories. Collect, for each exact experiment ID above:
+
+1. Full `preflight.json` and its matching `manifest.json` (with original fields).
+2. The snapshot's `snapshot.json`, `resolved/manifest.json`, and
+   `resolved/model-lock.json`; the planner lock is embedded in the manifest.
+3. File SHA256 values, scheduler job/state/exit code, and snapshot verification
+   result. Use actual runtime `snapshot_id`, not a remembered source revision.
+
+Check manifest self-hash, report experiment/manifest/source binding, snapshot
+inventory and resolved-manifest equality, worker-lock digest, planner/worker
+weight and tokenizer identity, qualification keys, actual runtime model settings,
+packages, device, and complete call sequence. Compare normal and stress conditions
+field-by-field, allowing the documented probe intervention and source revision
+changes explicitly. Historical qualification must be checked against its frozen
+source, not relabelled stale merely because current source advanced. Hashes prove
+internal integrity, not independent authenticity. Missing records stay unknown.
+None of this requires model loading, SQL execution or a new GPU job.
+
+### Current implementation constraints
+
+`reporecourse.v2.resolve_branches` always sets `gpu_submission_allowed=False`.
+`run_branch` rejects `worker.mode == 'model'` before execution. Those are literal
+implementation blocks, not dynamic approval checks that become true after a
+preflight report appears. Preflight manifests contain no task episodes and the
+normal runner explicitly rejects them. The new GPU reports are not currently
+consumed by a v0.2 task authorization path.
+
+`PromptedPlanner` and its optional BC bridge can create a frozen public-input
+plan with charged source reads/generation, but the standalone `prompted-plan`
+command has no dedicated shared-registry qualification submission integration.
+Do not invoke it via a hand-written sbatch job to bypass that requirement.
+A successful plan also cannot pass the model-worker task gate. Scripted CPU
+outlines and references must not be presented as generated plans.
+Two implementation details must be addressed by a future exception: after the
+current guard, `run_branch` assigns non-reference execution the label
+`scripted_mock`; merely deleting the guard would therefore mislabel real model
+results. Also, unexpected backend exceptions in the prompted-planner bridge need
+an outer persisted failure/usage record; they must not disappear because no
+frozen-plan file was written. Audit these paths and failure accounting before
+adding any real-model diagnostic runner.
+
+
+### Smallest next competence diagnostic — proposal, not implemented approval
+
+First separate worker competence from planner competence:
+
+1. **Worker stage:** one clean seed-0 episode on `synthetic-stock`, pool 7,
+   fixed authored independent outline, same frozen model/common public JIT.
+   Run once and review. This checks public source reading, valid publication,
+   explicit bindings, execution and both terminal obligations. The supplied
+   outline is labelled authored; no private reference program is supplied.
+2. **Second-family stage, only after review:** one clean seed-0 episode on
+   `synthetic-nullable` under the same bounded profile. Do not automatically
+   queue it behind the first stage. One family passing cannot qualify the other.
+3. **Planner stage, only after worker review:** one public-only generated plan
+   for the already exercised fixture; stop at frozen-plan validation. At most
+   the existing eight planner calls/two revisions; no hidden evaluator feedback,
+   no branch expansion or target selection before freezing. A valid plan is
+   structural evidence only, not successful task execution or planner superiority.
+
+Proposed task caps reuse the declared 100000-token/1200-CPU-second engineering
+profile, 24 actions per existing worker operation, 16K context and 2048 output
+cap. These are **uncalibrated engineering caps**, not B0. Every generation,
+re-prefill, rejection, compiler/executor operation, public check and repair
+remains charged. Hidden evaluation stays terminal with its separate recorded
+ledger. All attempts remain in planned coverage; interruptions and infrastructure
+failures stay explicitly unresolved rather than being converted into semantic
+failures or omitted. Terminal scientific failures are not rerun; eligible retries
+preserve prior/uncertain charges and attempt provenance. Keep original immutable
+reports and frozen snapshots.
+
+This requires an explicit new synthetic-qualification manifest/runner exception
+with exact task/condition hashes, evidence verification, registry concurrency
+one and tests rejecting native tasks, faults, grids and policy comparisons.
+Do not remove the general model block or substitute scripted_worker labels.
+Task review/B0 are campaign gates; requiring already-measured competence/B0 to
+run the sole diagnostic that measures them would be circular. A narrow labelled
+exception must address that distinction explicitly, without calling its caps
+calibration or expanding the legacy Jaffle authorization. It is not implemented
+or authorized by this audit alone. No new GPU execution or policy campaign was
+launched, and no historical score was changed.
+
+
+### Executable offline provenance audit
+
+After pushing/pulling the verifier, run the following in the browser terminal.
+This uses existing small reports and source snapshots only; no GPU allocation,
+model-weight read/download, SQL or scheduler submission is performed. It does
+not import or execute code from historical snapshots. The historical grammar
+keys are linked to the frozen records, not recomputed using today's Python/code.
+The two supplied experiment IDs are explicit inputs; no latest-directory guess
+is used. If either output root differs, locate its recorded submission output
+and change that path rather than copying evidence between experiments.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_RR_AUDIT="$(mktemp -d "$BC_STORAGE/diagnostics/rr-v2-audit.XXXXXX")"
+"$BC_PYTHON" -I scripts/audit_rr_v2_preflights.py \
+  --normal-run "$BC_STORAGE/outputs/qwen27b-na100/78419528eb91d65c58517565ad196ff82c7f84f76a1e240c80ce7d4996c6cc79-preflight" \
+  --stress-run "$BC_STORAGE/outputs/qwen27b-na100/b67a0fa3e511f82a1f3120dedd70a3f6a06e34daca2dd9a4bbf8507d855c6939-preflight" \
+  --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_RR_AUDIT/provenance.json"
+"$BC_PYTHON" -m json.tool "$BC_RR_AUDIT/provenance.json"
+```
+
+A missing file, mismatched report or failed call yields `failed` and exit 2;
+incompatible pair settings yield `binding_mismatch` and exit 2. A consistent
+pair yields `verified_internal_bindings_review_pending`, not a task approval.
+Changed source files are listed for separate inspection and scheduler completion
+is not silently inferred from a JSON success field. Report hashes establish
+internal integrity, not independent authenticity. Preserve failures and export
+the new audit JSON for review; do not rerun GPU probes merely to make provenance
+match. No model competence test is automatically scheduled by this command.
