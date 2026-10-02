@@ -481,3 +481,43 @@ execution allowlist is performed. Compiler/parent CPU remains charged normally.
 Changed fingerprints invalidate old approvals. Any later run must use fresh
 qualification and a new manifest; the failed historical clean and unlaunched loss
 conditions are preserved. No policy-effect inference follows from this change.
+
+
+## Pool-7 single synthetic worker diagnostic (2026-10-02)
+
+The explicit `rr-v2-stock-competence-v1` exception permits exactly one clean
+seed-0 `synthetic-stock` episode with seven persistent logical workers, the
+fixed authored independent outline and the common public JIT. It uses the
+reviewed frozen Qwen3.5-27B BF16 model, 16384 context, 2048 generation cap,
+24 actions per operation, and uncalibrated 100000-token/1200-CPU-second caps.
+This is a worker competence diagnostic, not B0 calibration, generated planning,
+a native task, a recovery comparison, or campaign approval. Independent task
+review remains pending; this explicit synthetic engineering exception measures
+competence without treating already-established competence as a prerequisite.
+
+Creation and execution reverify the exact normal/stress probe pair and frozen
+snapshot inventories, current worker grammar, task/evaluator hashes, complete
+CPU witness and per-obligation negative-control coverage, pinned child packages,
+and source revision. Actual allocation hardware/packages must match the reviewed
+H100 evidence. The prior source diff was reviewed locally; the user confirmed
+both scheduler jobs completed. The immutable offline audit still correctly says
+it did not independently query scheduler completion. Hashes establish internal
+binding, not independent authenticity or universal worst-case memory proof.
+
+All generation/re-prefill and task tool computation uses the existing ledger.
+The public task and authored plan alone enter the worker runtime; private
+witnesses are inspected for qualification coverage and terminal evaluation only.
+Model results are labelled `real_model`, never `scripted_mock`. Missing results,
+load failures and interruptions remain visible with null success; resource
+exhaustion is a failed execution. Terminal evaluation retains its separate ledger.
+Cleanup errors are reported separately and cannot erase an otherwise persisted
+outcome. An abrupt process kill or storage failure can still leave only a durable
+start/checkpoint; aggregate reports it missing rather than inferring a result.
+
+Use shared registry/scheduler submission, run mode, concurrency one. This first
+adapter deliberately blocks every repeat attempt, including infrastructure
+retries, until a separate recovery review can preserve prior charges. This is a
+narrower rule than general eligible-retry support; no fresh-budget replay is
+allowed. General v2 model execution, second-family tasks, faults, planner runs,
+parameter grids and native campaigns remain blocked. No historical result is
+rescored and no job is authorized merely by creating the manifest.

@@ -1,5 +1,32 @@
 # Implementation status and handoff
 
+## Single synthetic competence adapter implemented (2026-10-02)
+
+The pool-7 normal/stress audit supplied by the user reported consistent internal
+bindings. Local review of commits `043b4176` through `c9e627a` confirmed the three
+reported implementation-file changes implement the separate stress probe and
+its CLI option. Documentation and test changes also appear in that Git diff.
+The user confirmed scheduler jobs 1084221 and 1084317 completed; raw completion
+records were not independently retrieved. Historical reports remain unchanged.
+
+Added `rr-v2-competence-manifest` and the exact single-clean `synthetic-stock`
+adapter through shared manifest/run/aggregate/submission dispatch. It requires
+complete CPU controls and current grammar plus the exact audited probe pair,
+checks actual H100 runtime bindings, and rejects wider scopes and repeat attempts.
+Failure persistence retains token/CPU evidence even if checkpoint or cleanup
+fails. The generic v2 model block remains in place. No worker competence result,
+B0 calibration, planner result, second-family approval or campaign permission has
+been established by this implementation. No GPU job, download, commit or push
+was performed. The browser-terminal procedure is in REPORECOURSE_V0_2.md under
+“Single synthetic-stock diagnostic workflow”.
+
+Local verification: the full suite passed (338 tests, 320 passed and 18 skipped,
+82.485 seconds) before the final missing-shard reporting regression was added.
+The final focused diagnostic suite passed 9/9 tests, including that reporting regression.
+Shell checks, compilation, stdlib-only CLI help and diff checks passed. Test
+backends/evidence are labelled fixtures, not model execution results.
+
+
 ## Offline pool-7 provenance verifier implemented (2026-09-30)
 
 `scripts/audit_rr_v2_preflights.py` now checks the two existing preflight run

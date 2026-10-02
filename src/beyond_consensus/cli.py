@@ -349,6 +349,8 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get("schema") == "rr-v2-stock-competence-v1":
+            raise BCError("Competence manifest is run-only; reviewed synthetic preflights are separate evidence")
         if frozen.get("schema") == "rr-v2-preflight-manifest-v1":
             from .experiments.rr_v2_preflight import run as context_preflight
             if args.output.exists():

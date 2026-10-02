@@ -202,6 +202,12 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    if manifest.get("schema") == "rr-v2-stock-competence-v1":
+        from .rr_v2_competence import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError('Single competence attempt requires explicit review; no retry/condition/queued campaign')
+        submission(manifest,existing_snapshot or repo,model_lock,mode,concurrency,
+                   Path(config.output_root)/manifest['experiment_id'])
     if manifest.get("schema") == "rr-v2-preflight-manifest-v1":
         from .rr_v2_preflight import check_submission
         check_submission(manifest, model_lock, existing_snapshot or repo, mode, concurrency)
@@ -321,6 +327,11 @@ def doctor(config: ClusterConfig | None = None) -> dict[str, Any]:
 
 
 def failed_shard_ids(manifest: dict[str, Any], output: Path) -> list[int]:
+    if manifest.get('schema') == 'rr-v2-stock-competence-v1':
+        from .rr_v2_competence import aggregate
+        summary=aggregate(manifest,output)
+        # Preserve missing/interrupted coverage; submit still rejects every retry.
+        return [0] if summary['status'] in ('missing','interrupted','infrastructure_failed') else []
     from .runner import RETRYABLE
     shards = set()
     for episode in manifest["episodes"]:

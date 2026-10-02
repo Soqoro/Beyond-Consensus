@@ -526,7 +526,10 @@ frozen-plan file was written. Audit these paths and failure accounting before
 adding any real-model diagnostic runner.
 
 
-### Smallest next competence diagnostic — proposal, not implemented approval
+### Smallest next competence diagnostic — historical proposal
+
+The 2026-10-02 single-stock adapter below implements only the first worker
+stage. The second-family and planner stages remain proposals, not approvals.
 
 First separate worker competence from planner competence:
 
@@ -600,3 +603,139 @@ is not silently inferred from a JSON success field. Report hashes establish
 internal integrity, not independent authenticity. Preserve failures and export
 the new audit JSON for review; do not rerun GPU probes merely to make provenance
 match. No model competence test is automatically scheduled by this command.
+
+
+## Single synthetic-stock diagnostic workflow (2026-10-02)
+
+This implements only the worker-stage exception proposed above. Use the new
+`rr-v2-competence-manifest` command, followed by shared `submit --mode run`.
+Do not submit a new preflight or use the standalone v2 branch runner. The frozen
+normal/stress pair is reverified offline and the new allocation checks its actual
+runtime against that evidence. A passing run would establish one synthetic
+observation only. Stop for review after this episode.
+
+### 1. After committing/pushing the implementation, prepare the cluster directory
+
+Run in the Beyond-Consensus browser terminal. All paths below are from the
+reported cluster setup. Missing paths stop the block; locate the actual file
+rather than substituting a different model or qualification.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_STOCK="$(mktemp -d "$BC_STORAGE/diagnostics/rr-v2-stock.XXXXXX")"
+export BC_STOCK_LOCK="$BC_STORAGE/diagnostics/rr-v2.X1E9At/grammar-pool7.C22eIe/model-lock-json.json"
+export BC_STOCK_CLUSTER="$BC_STORAGE/diagnostics/reporecourse-track-f.m433Oa/cluster.ph100.json"
+(
+set -euo pipefail
+if test -n "$(git status --porcelain)"; then
+    git status --short
+    printf 'Stop: preserve changes/reports outside the frozen checkout first.\n'
+    exit 1
+fi
+test -s "$BC_STOCK_LOCK"
+test -s "$BC_STOCK_CLUSTER"
+mkdir "$BC_STOCK/source"
+git archive HEAD | tar -xf - -C "$BC_STOCK/source"
+git rev-parse HEAD > "$BC_STOCK/source-commit.txt"
+chmod -R a-w "$BC_STOCK/source"
+"$BC_PYTHON" -I scripts/audit_rr_v2_preflights.py \
+  --normal-run "$BC_STORAGE/outputs/qwen27b-na100/78419528eb91d65c58517565ad196ff82c7f84f76a1e240c80ce7d4996c6cc79-preflight" \
+  --stress-run "$BC_STORAGE/outputs/qwen27b-na100/b67a0fa3e511f82a1f3120dedd70a3f6a06e34daca2dd9a4bbf8507d855c6939-preflight" \
+  --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_STOCK/provenance.json"
+)
+```
+
+### 2. Run current CPU task controls once
+
+This CPU-only allocation executes the fixed trusted reference machinery. It
+loads no model. Explicit positional paths avoid Slurm's spooled-script directory.
+
+```bash
+(
+set -euo pipefail
+set -o noclobber
+cat > "$BC_STOCK/cpu.sh" <<'SH'
+#!/bin/bash
+set -euo pipefail
+cd "$1"
+exec "$2" -I scripts/bc.py rr-qualify \
+  --task synthetic-stock --sources "$3" --output "$4"
+SH
+bash -n "$BC_STOCK/cpu.sh"
+sbatch --parsable --partition=PA100q --nodes=1 --ntasks=1 \
+  --cpus-per-task=4 --mem=32G --time=00:30:00 --job-name=rr-stock-cpu \
+  --chdir="$BC_STOCK/source" \
+  --output="$BC_STOCK/cpu.out" --error="$BC_STOCK/cpu.err" \
+  "$BC_STOCK/cpu.sh" "$BC_STOCK/source" "$BC_PYTHON" \
+  "$BC_STORAGE/datasets/reporecourse-v01" "$BC_STOCK/qualification.json" \
+  > "$BC_STOCK/cpu-job.txt"
+cat "$BC_STOCK/cpu-job.txt"
+)
+```
+
+Wait for this job to finish. Inspect `sacct` and the CPU output/error logs. The
+manifest command checks the full report, including negative controls; a status
+string alone is insufficient. If the worker lock is stale, stop and review the
+changed grammar fingerprint rather than weakening the check.
+
+### 3. Freeze the one-episode manifest and inspect the dry run
+
+```bash
+(
+set -euo pipefail
+cd "$HOME/Beyond-Consensus"
+test "$(git rev-parse HEAD)" = "$(cat "$BC_STOCK/source-commit.txt")"
+"$BC_PYTHON" -I scripts/bc.py rr-v2-competence-manifest \
+  --sources "$BC_STORAGE/datasets/reporecourse-v01" \
+  --model-lock "$BC_STOCK_LOCK" \
+  --qualification "$BC_STOCK/qualification.json" \
+  --preflight-audit "$BC_STOCK/provenance.json" \
+  --output "$BC_STOCK/manifest.json"
+"$BC_PYTHON" -I scripts/bc.py submit --mode run --concurrency 1 \
+  --cluster "$BC_STOCK_CLUSTER" --manifest "$BC_STOCK/manifest.json" \
+  --model-lock "$BC_STOCK_LOCK" --dry-run
+)
+```
+
+Expected: one episode, array `0-0%1`, one GPU in PH100q, the configured 128G host
+memory and two-hour wall limit. Availability is determined by the scheduler;
+these settings are not a claim that resources are currently free.
+
+### 4. Submit once, then collect after scheduler completion
+
+```bash
+(
+set -euo pipefail
+set -o noclobber
+cd "$HOME/Beyond-Consensus"
+"$BC_PYTHON" -I scripts/bc.py submit --mode run --concurrency 1 \
+  --cluster "$BC_STOCK_CLUSTER" --manifest "$BC_STOCK/manifest.json" \
+  --model-lock "$BC_STOCK_LOCK" > "$BC_STOCK/submission.json"
+cat "$BC_STOCK/submission.json"
+)
+```
+
+After that job completes, collect to a fresh file. This does not execute a model
+or SQL, and can report missing coverage without replacing historical results.
+
+```bash
+export BC_STOCK_OUTPUT="$("$BC_PYTHON" -c \
+'import json,sys; print(json.load(open(sys.argv[1]))["output"])' \
+"$BC_STOCK/submission.json")"
+export BC_STOCK_REPORT="$(mktemp "$BC_STOCK/review.XXXXXX.json")"
+"$BC_PYTHON" -I scripts/bc.py aggregate --output "$BC_STOCK_OUTPUT" \
+  > "$BC_STOCK_REPORT"
+"$BC_PYTHON" -m json.tool "$BC_STOCK_REPORT"
+printf 'Review file: %s\n' "$BC_STOCK_REPORT"
+```
+
+Do not launch `synthetic-nullable`, a planner or a fault branch automatically.
+Terminal failures remain terminal. Infrastructure failure/interruption also
+requires explicit recovery review for this first adapter; `resubmit` does not
+silently restart it with a fresh budget. Full journals/trajectories remain under
+the episode output; the compact aggregate includes the terminal evaluation and
+resource ledger, not private witnesses or model histories.
