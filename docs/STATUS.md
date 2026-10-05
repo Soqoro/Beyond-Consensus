@@ -1,5 +1,20 @@
 # Implementation status and handoff
 
+## Pending Slurm array inspection corrected (2026-10-02)
+
+The shared guard now requests `squeue --array` and inspects individual task IDs.
+The user-reported compressed pending ID `1085806_[0-1%1]` was previously passed
+to `scontrol`, which rejected it. Unexpected compressed IDs now fail before
+`scontrol`; unknown GPU usage still blocks submission. Pending GPU tasks from
+other campaigns remain blocking, even when the array concurrency limit is one.
+No registry entries were deleted and no jobs were cancelled/submitted. This
+source change requires a fresh source-bound competence manifest after deployment;
+the existing CPU/grammar evidence may be reused only if its checks still pass.
+
+Validation: 341 tests ran (323 passed, 18 skipped); all 15 cluster tests and
+shell checks passed. No live scheduler access was used in local verification.
+
+
 ## Single synthetic competence adapter implemented (2026-10-02)
 
 The pool-7 normal/stress audit supplied by the user reported consistent internal

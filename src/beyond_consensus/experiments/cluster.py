@@ -81,10 +81,12 @@ def registry_root() -> Path:
 
 
 def active_gpu_jobs() -> dict[str, int]:
-    identifiers = command(["squeue", "--noheader", "--user", getpass.getuser(), "--format=%i"]).splitlines()
+    # Expand pending arrays: compressed IDs such as 123_[0-1%1] are display
+    # expressions, not individual job identifiers accepted by scontrol.
+    identifiers = command(["squeue", "--array", "--noheader", "--user", getpass.getuser(), "--format=%i"]).splitlines()
     jobs = {}
     for identifier in identifiers:
-        if not re.fullmatch(r"[0-9_\[\],%\-]+", identifier):
+        if not re.fullmatch(r"[0-9]+(?:_[0-9]+)?", identifier):
             raise BCError("Unrecognized squeue job ID; cannot establish global GPU usage")
         details = command(["scontrol", "show", "job", "--oneliner", identifier])
         records = re.split(r"(?=JobId=)", details)

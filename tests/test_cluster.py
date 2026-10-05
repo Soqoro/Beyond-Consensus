@@ -23,6 +23,26 @@ def site_config(root):
 
 
 class GuardTests(unittest.TestCase):
+    def test_pending_arrays_expand_and_still_block_unregistered_gpu_jobs(self):
+        inspected=[]
+        def fake(argv):
+            if argv[0]=='squeue':
+                self.assertIn('--array',argv)
+                return '1085806_0\n1085806_1'
+            inspected.append(argv[-1])
+            return 'JobId='+argv[-1]+' JobState=PENDING ReqTRES=cpu=4,gres/gpu=1'
+        with patch.object(cluster,'command',side_effect=fake):
+            self.assertEqual(cluster.active_gpu_jobs(),{'1085806_0':1,'1085806_1':1})
+            with self.assertRaisesRegex(BCError,'Other/unknown GPU jobs'):
+                cluster.guard({'jobs':[]})
+        self.assertEqual(set(inspected),{'1085806_0','1085806_1'})
+
+    def test_unexpanded_array_rejected_before_scontrol(self):
+        with patch.object(cluster,'command',return_value='1085806_[0-1%1]') as command:
+            with self.assertRaisesRegex(BCError,'Unrecognized squeue job ID'):
+                cluster.active_gpu_jobs()
+            self.assertEqual(command.call_count,1)
+
     def test_resource_arguments_and_limit(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
