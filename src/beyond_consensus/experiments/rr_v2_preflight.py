@@ -15,18 +15,26 @@ PROTOCOL = "rr-isolated-histories-v1"
 STRESS_PROTOCOL = "rr-forced-token-full-budget-v1"
 
 
-def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False):
+def grammar(m,role):
+    contract=m.get('execution_contract','adaptive_legacy')
+    if contract not in ('adaptive_legacy','plan_scoped_v1'):raise BCError('Unknown probe execution contract')
+    suffix='scoped-v1' if contract=='plan_scoped_v1' else 'v2'
+    return f'reporecourse-{role}-{suffix}-pool-{m["pool"]}'
+
+
+def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False):
     from ..models.competence import CHECKPOINT, REVISION
     if type(pool) is not int or pool not in range(2, 9):
         raise BCError("Pool must be 2..8")
     model = asdict(ModelConfig(backend="transformers", checkpoint=CHECKPOINT,
         revision=REVISION, tokenizer_revision=REVISION, dtype="bfloat16",
         context_limit=16384, max_new_tokens=2048, thinking=True, do_sample=False,
-        action_constraint=f"reporecourse-json-v2-pool-{pool}"))
+        action_constraint=f"reporecourse-json-{'scoped-v1' if plan_scoped else 'v2'}-pool-{pool}"))
     m = dict(schema=SCHEMA, protocol=STRESS_PROTOCOL if full_budget_stress else PROTOCOL, pool=pool, model=model,
         source_revision=source_revision(root), model_lock_sha256=digest(worker_lock),
         planner_lock=planner_lock, shards=1, episodes=[], planned_episodes=0,
         task_inputs_used=False, task_execution_allowed=False, rounds=2)
+    if plan_scoped:m["execution_contract"]="plan_scoped_v1"
     m["experiment_id"] = digest(m)
     validate(m)
     check_locks(m, worker_lock)
@@ -49,7 +57,7 @@ def validate(m):
             or config.tokenizer_revision != REVISION or config.backend != "transformers"
             or config.dtype != "bfloat16" or not config.thinking or config.do_sample
             or config.context_limit != 16384 or config.max_new_tokens != 2048
-            or config.action_constraint != f'reporecourse-json-v2-pool-{m["pool"]}'):
+            or config.action_constraint != grammar(m,'json')):
         raise BCError("Probe requires the frozen pool-bound 27B BF16 profile")
     return SimpleNamespace(model=config, shards=1, task_kind="rr_v2_preflight")
 
@@ -65,7 +73,7 @@ def check_locks(m, worker):
             raise BCError("Planner and workers must share identical staged weights/tokenizer")
     for role, lock in (("json", worker), ("plan", planner)):
         require_qualification(lock, lock.get("decoder_qualification", {}).get("packages", {}),
-                              16384, f'reporecourse-{role}-v2-pool-{m["pool"]}')
+                              16384, grammar(m,role))
 
 
 def check_submission(m, worker, root, mode, concurrency):
@@ -153,7 +161,7 @@ def run(m, lock_path, root):
     check_submission(m, worker, root, "preflight", 1)
     from ..models.competence import require_qualification, versions
     for role, lock in (("json", worker), ("plan", m["planner_lock"])):
-        require_qualification(lock, versions(), 16384, f'reporecourse-{role}-v2-pool-{m["pool"]}')
+        require_qualification(lock, versions(), 16384, grammar(m,role))
     from ..models.transformers_backend import TransformersBackend
     from ..models.constrained import ActionConstraint
     config = validate(m).model
@@ -161,9 +169,9 @@ def run(m, lock_path, root):
     constraints = {"json": backend.constraint}
     constraints["plan"] = ActionConstraint(backend.tokenizer,
         backend.model.get_output_embeddings().weight.shape[0],
-        backend.generation_tokens["eos_token_id"], f'reporecourse-plan-v2-pool-{m["pool"]}')
+        backend.generation_tokens["eos_token_id"], grammar(m,'plan'))
     def switch(role):
-        backend.config = replace(config, action_constraint=f'reporecourse-{role}-v2-pool-{m["pool"]}')
+        backend.config = replace(config, action_constraint=grammar(m,role))
         backend.constraint = constraints[role]
     def memory(*, reset):
         cuda = backend.torch.cuda

@@ -15,17 +15,19 @@ def reuse_consumer(engine,unit,worker):
 def _reuse_consumer(engine,unit,worker):
     env=engine.env
     if not unit['outputs'] or all(o in env.bound for o in unit['outputs']):return False
-    candidates=[(v,a) for v,a in env.artifacts.items() if a['name'] in unit['outputs'] and a['bindings']]
+    terminal=unit.get('terminal_bindings',{o:o for o in unit['outputs']})
+    candidates=[(v,a) for v,a in env.artifacts.items() if a['name'] in terminal.values() and a['bindings']
+        and (not env.scopes or a.get('producer_unit')==unit['id'])]
     if not candidates:return False
     # One latest public candidate per assignment; never search private correctness.
     version,artifact=max(candidates,key=lambda pair:pair[1]['sequence'])
     bindings={}
     for alias,old in artifact['bindings'].items():
         name=env.artifacts[old]['name']
-        choices=[(v,a) for v,a in env.artifacts.items() if a['name']==name]
+        choices=[(v,a) for v,a in env.artifacts.items() if a['name']==name and (not env.scopes or a.get('producer_unit')==env.artifacts[old].get('producer_unit'))]
         bindings[alias]=max(choices,key=lambda p:p[1]['sequence'])[0]
     if bindings==artifact['bindings']:return False
-    obligations=[o for o in unit['outputs'] if o==artifact['name']]
+    obligations=[o for o in unit['outputs'] if terminal[o]==artifact['name']]
     if not obligations:return False
     action={'tool':'rebind_artifact','version':version,'name':artifact['name'],'bindings':bindings,'obligations':obligations}
     env.assignment[worker]=deepcopy(unit)

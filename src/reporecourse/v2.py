@@ -19,7 +19,8 @@ def worker_registry(n):
 
 def configuration(pool_size=4, mode='adaptive_size', primary_count=None, lane='open',
                   token_cap=100000,cpu_cap=1200,seed=0,threat='F',target_rule='uniform',
-                  recovery='delegation_jit',max_units=24,planner='external_supplied'):
+                  recovery='delegation_jit',max_units=24,planner='external_supplied',*,
+                  planning_lane=None,execution_contract=None,planner_output_cap=2048):
     ident(planner)
     worker_registry(pool_size);Resources(token_cap=token_cap,cpu_cap=cpu_cap)
     if mode not in ('adaptive_size','matched_primary_count'):raise Rejected('count_mode')
@@ -31,17 +32,31 @@ def configuration(pool_size=4, mode='adaptive_size', primary_count=None, lane='o
     if threat=='R' and lane!='fixed_plan':raise Rejected('R_fixed_plan_only')
     if type(max_units) is not int or not 1<=max_units<=24:raise Rejected('unit_cap')
     if type(seed) is not int or seed<0:raise Rejected('seed')
-    return dict(protocol=PROTOCOL,planner=planner,pool_size=pool_size,workers=list(worker_registry(pool_size)),count_mode=mode,
+    result=dict(protocol=PROTOCOL,planner=planner,pool_size=pool_size,workers=list(worker_registry(pool_size)),count_mode=mode,
         primary_count=primary_count,lane=lane,resource={'profile':PROFILE,'token_cap':token_cap,'cpu_cap':cpu_cap},
         threat=threat,target_rule=target_rule,recovery=recovery,monitor='public-shape-execution-v1',
         jit=JIT,scheduler=SCHEDULER,memory_policy=MEMORY,max_units=max_units,max_actions=24,
         planning_calls=8,planning_revisions=2,reserve_rule='none',
         seeds={k:int(digest([seed,k])[:12],16) for k in ('planner','execution','target','attack')})
+    if planning_lane is not None or execution_contract is not None:
+        if planning_lane not in ('open_generated','authored_diagnostic','shared_catalog','fixed_recovery'):raise Rejected('planning_lane')
+        if execution_contract not in ('adaptive_legacy','plan_scoped_v1'):raise Rejected('execution_contract')
+        expected={'open_generated':'open','authored_diagnostic':'open','shared_catalog':'shared_catalog','fixed_recovery':'fixed_plan'}
+        if lane!=expected[planning_lane]:raise Rejected('lane_contract')
+        if type(planner_output_cap) is not int or not 1<=planner_output_cap<=16384:raise Rejected('planner_output_cap')
+        result.update(protocol='rr-open-planning-v1',planning_lane=planning_lane,execution_contract=execution_contract,
+            planner_output_cap=planner_output_cap,plan_bounds='rr-open-bounds-v1',
+            observation_contract='assignment-scoped-v1' if execution_contract=='plan_scoped_v1' else 'adaptive-legacy-v1')
+        if execution_contract=='plan_scoped_v1':
+            from .scope import JIT as scoped_jit
+            result.update(jit=scoped_jit,memory_policy='assignment-local-reprefill-v1')
+    return result
 
 
 def check_config(c):
     rebuilt=configuration(c['pool_size'],c['count_mode'],c['primary_count'],c['lane'],
-        c['resource']['token_cap'],c['resource']['cpu_cap'],0,c['threat'],c['target_rule'],c['recovery'],c['max_units'],c['planner'])
+        c['resource']['token_cap'],c['resource']['cpu_cap'],0,c['threat'],c['target_rule'],c['recovery'],c['max_units'],c['planner'],
+        **({k:c[k] for k in ('planning_lane','execution_contract','planner_output_cap')} if 'execution_contract' in c else {}))
     if set(c)!=set(rebuilt) or any(c[k]!=rebuilt[k] for k in c if k!='seeds'):raise Rejected('v2_config')
     if set(c['seeds'])!=set(rebuilt['seeds']) or any(type(x) is not int or x<0 for x in c['seeds'].values()):raise Rejected('seed_streams')
     return c
@@ -61,7 +76,9 @@ def _validate_work_plan(plan,public,c):
     if not isinstance(units,list) or not 1<=len(units)<=c['max_units']:raise Rejected('unit_cap')
     by={};outputs=[]
     for u in units:
-        if set(u)!={'id','worker','outputs','depends','description','produces','consumes','sources'}:raise Rejected('unit_fields')
+        fields={'id','worker','outputs','depends','description','produces','consumes','sources'}
+        if c.get('protocol')=='rr-open-planning-v1':fields.update(k for k in ('interfaces','terminal_bindings') if k in u)
+        if set(u)!=fields:raise Rejected('unit_fields')
         ident(u['id'])
         if u['id'] in by or u['worker'] not in c['workers']:raise Rejected('unit_owner')
         if not isinstance(u['description'],str) or not 1<=len(u['description'])<=2048:raise Rejected('unit_payload')
@@ -72,7 +89,14 @@ def _validate_work_plan(plan,public,c):
         for name,fmt in u['produces'].items():
             ident(name)
             if fmt not in ('sql','schema','mapping'):raise Rejected('interface_format')
-        if any(u['produces'].get(o)!=required[o] for o in u['outputs']):raise Rejected('output_interface')
+        terminal=u.get('terminal_bindings',{o:o for o in u['outputs']})
+        if not isinstance(terminal,dict) or set(terminal)!=set(u['outputs']):raise Rejected('terminal_mapping')
+        if any(u['produces'].get(terminal[o])!=required[o] for o in u['outputs']):raise Rejected('output_interface')
+        if c.get('protocol')=='rr-open-planning-v1':
+            if 'interfaces' in u and (not isinstance(u['interfaces'],dict) or set(u['interfaces'])!=set(u['produces']) or any(not isinstance(x,str) or not 1<=len(x)<=2048 for x in u['interfaces'].values())):raise Rejected('public_interface')
+            if set(u['produces']) & set(public.get('tables',{})):raise Rejected('artifact_source_collision')
+            if len(u['produces'])>24 or len(u['consumes'])>16:raise Rejected('interface_bound')
+            if len(set(u['outputs']))!=len(u['outputs']):raise Rejected('terminal_coverage')
         by[u['id']]=u;outputs+=u['outputs']
     artifacts=[name for u in units for name in u['produces']]
     if len(artifacts)!=len(set(artifacts)):raise Rejected('ambiguous_artifact_producer')
@@ -92,7 +116,7 @@ def _validate_work_plan(plan,public,c):
     useful={u['id'] for u in units if u['outputs']}
     for k in reversed(ordered):
         if k in useful:useful.update(by[k]['depends'])
-    if useful!=set(by):raise Rejected('unused_unit')
+    if useful!=set(by) and c.get('protocol')!='rr-open-planning-v1':raise Rejected('unused_unit')
     if len({u['worker'] for u in units})!=c['primary_count'] and c['count_mode']=='matched_primary_count':raise Rejected('primary_count')
     # No claim that prose or a helper is semantically nonredundant.
     return {**deepcopy(plan),'units':[deepcopy(by[k]) for k in ordered]}
@@ -134,13 +158,20 @@ def descriptors(plan):
 
 def planner_input(public,c):
     check_config(c)
-    return dict(schema='rr-planner-input-v2',task_id=public['id'],family=public['family'],request=public['request'],
+    result=dict(schema='rr-planner-input-v2',task_id=public['id'],family=public['family'],request=public['request'],
         required_outputs=deepcopy(public['required_outputs']),source_ids=sorted(public['sources']),
         examples=deepcopy(public['examples']),workers=list(c['workers']),count_mode=c['count_mode'],
         primary_count=c['primary_count'],resource=deepcopy(c['resource']),threat=c['threat'],
-        recovery_contract={'id':JIT,'monitor':c['monitor'],'sources_remain_available':True,
+        recovery_contract={'id':c['jit'],'monitor':c['monitor'],'sources_remain_available':True,
             'actions':'read, check, rebind, reexecute, rebuild or bypass through permitted artifact tools'},
         max_units=c['max_units'],scheduler=c['scheduler'],memory_policy=c['memory_policy'])
+    if 'execution_contract' in c:
+        result.pop('examples',None)
+        result.update(execution_contract=c['execution_contract'],supported_artifact_types=['sql','schema','mapping'],
+            planner_output_cap=c['planner_output_cap'],plan_bounds=c['plan_bounds'],
+            source_focus='hints_only_all_original_sources_permitted',
+            units_description_limit=2048,max_plan_bytes=65536,imports='permissions_not_mandatory_reads')
+    return result
 
 
 def request(public,c,model_binding=None):
@@ -187,16 +218,22 @@ class PromptedPlanner:
     def __init__(self,backend,output_cap=2048,evidence_mode='real_model'):
         if evidence_mode not in ('real_model','scripted_mock'):raise Rejected('planner_evidence_mode')
         self.backend=backend;self.output_cap=output_cap;self.evidence_mode=evidence_mode
-    def run(self,req,public):
-        verify_record(req,'request_id');c=req['config'];r=Resources(**{k:c['resource'][k] for k in ('token_cap','cpu_cap')})
+    def run(self,req,public,save=None):
+        verify_record(req,'request_id');c=check_config(req['config']);r=Resources(**{k:c['resource'][k] for k in ('token_cap','cpu_cap')})
+        if c.get('planning_lane') not in (None,'open_generated'):raise Rejected('generated_planner_lane')
+        if c.get('planner_output_cap',self.output_cap)!=self.output_cap:raise Rejected('planner_output_allowance_mismatch')
+        if req['public_hash']!=digest(public):raise Rejected('task_changed')
         system=('Propose a division of labour, not implementations. One JSON action each turn. '
             'Allowed: {"tool":"read_source","name":"source ID"} or {"tool":"submit_plan","plan":...}. '
             'Plan schema rr-work-plan-v2: id, units; each unit has id, worker, outputs, depends, description, '
             'produces (artifact name to sql/schema/mapping), consumes (alias to unit/artifact/format), sources. '
+            'For rr-open-planning-v1 add interfaces (produced artifact name to bounded public interface prose) '
+            'and terminal_bindings (required output ID to produced artifact ID, empty for helpers). '
+            'Invent any bounded acyclic structure, intermediate names and owners. No menu of named outlines. '
             'Cover every terminal output once. No final artifacts or code. Prose is audited, not proof of absence of answers. '
             'Workers use the public restricted SQL/schema/mapping artifact tools.')
         messages=[{'role':'system','content':system},{'role':'user','content':__import__('json').dumps(req['planner_input'])}]
-        events=[];plan={};bad=0
+        events=[];plan={};bad=0;accepted=False;terminal_error=None
         for call in range(c['planning_calls']):
             before=len(r.events);start=time.process_time();key=None;g=None;dispatched=False
             try:
@@ -204,39 +241,66 @@ class PromptedPlanner:
                 count=self.backend.count_input(messages)
                 if count+self.output_cap>getattr(self.backend,'context_limit',getattr(getattr(self.backend,'config',None),'context_limit',16384)):raise Rejected('context_limit')
                 key=r.reserve(count,self.output_cap)
+                if save:save(dict(schema='rr-planner-journal-v1',request_id=req['request_id'],status='generation_pending',
+                    messages=deepcopy(messages),events=deepcopy(events),resources=deepcopy(vars(r)),call=call))
                 dispatched=True
                 g=self.backend.generate(messages,self.output_cap,c['seeds']['planner']+call)
                 r.reconcile(key,g.output_tokens,g.reasoning_tokens,device_seconds=g.device_seconds,
                     generation_wall_seconds=g.diagnostics.get('generation_wall_seconds'))
                 key=None;r.reconcile_cpu('planner_model_host',31,time.process_time()-start)
                 import json
-                a=json.loads(g.text)
+                def pairs(items):
+                    out={}
+                    for k,v in items:
+                        if k in out:raise ValueError('duplicate_key')
+                        out[k]=v
+                    return out
+                a=json.loads(g.text,object_pairs_hook=pairs)
                 if a.get('tool')=='read_source' and set(a)=={'tool','name'}:
                     if a['name'] not in public['sources']:raise Rejected('source_unavailable')
                     reply=deepcopy(public['sources'][a['name']])
                 elif a.get('tool')=='submit_plan' and set(a)=={'tool','plan'}:
                     plan=a['plan'];validate_work_plan(plan,public,c);reply={'accepted':True}
                 else:raise Rejected('planner_action')
-            except (Rejected,ValueError,KeyError,TypeError) as exc:
+            except (Rejected,ValueError,KeyError,TypeError,AttributeError) as exc:
                 if key is not None:r.reconcile(key)
                 if r.cpu_pending:
                     try:r.reconcile_cpu('planner_failed_call_host',31,time.process_time()-start)
                     except Rejected:pass
                 reply={'error':str(exc) if isinstance(exc,Rejected) else 'malformed_plan_action'}
                 bad+=1
+            except BaseException as exc:
+                if key is not None:r.reconcile(key)
+                if r.cpu_pending:
+                    try:r.reconcile_cpu('planner_backend_failure',31,time.process_time()-start)
+                    except Rejected:pass
+                terminal_error=type(exc).__name__
+                reply={'error':'planner_backend_failure'};bad=c['planning_revisions']+1
             try:r.parent_overhead('planner_public_tools',start,before)
             except Rejected:reply={'error':'planning_resource_exhausted'};bad=c['planning_revisions']+1
             events.append(dict(generation_dispatched=dispatched,actor='planner',observation=deepcopy(messages),response=g.text if g is not None else None,
                 feedback=deepcopy(reply),costs=deepcopy(r.events[before:])))
+            if save:save(dict(schema='rr-planner-journal-v1',request_id=req['request_id'],status='call_recorded',
+                messages=deepcopy(messages),events=deepcopy(events),resources=deepcopy(vars(r)),call=call))
             messages += [{'role':'assistant','content':events[-1]['response'] or ''},{'role':'user','content':__import__('json').dumps(reply)}]
-            if reply.get('accepted') if isinstance(reply,dict) else False:break
+            if isinstance(reply,dict) and reply.get('accepted'):
+                accepted=True;break
             if bad>c['planning_revisions'] or r.remaining<=0 or r.cpu_seconds>=r.cpu_cap:break
-        return freeze(req,public,plan,r,events,self.evidence_mode)
+        frozen=freeze(req,public,plan if accepted else {},r,events,self.evidence_mode)
+        if terminal_error:
+            frozen.update(status='planning_infrastructure_failure',error='planner_backend_failure',error_type=terminal_error)
+            frozen['frozen_id']=digest({k:v for k,v in frozen.items() if k!='frozen_id'})
+        if save:save(dict(schema='rr-planner-journal-v1',request_id=req['request_id'],status='finished',frozen=frozen))
+        return frozen
 
 
 def resolve_branches(frozen,incident=None):
     verify_record(frozen,'frozen_id');req=frozen['request'];verify_record(req,'request_id');c=check_config(req['config']);plan=frozen['plan']
-    eligible=sorted({u['worker'] for u in plan['units']}) if plan else []
+    meaningful={u['id'] for u in plan['units'] if u['outputs']} if plan else set()
+    if plan:
+        for u in reversed(plan['units']):
+            if u['id'] in meaningful:meaningful.update(u['depends'])
+    eligible=sorted({u['worker'] for u in plan['units'] if u['id'] in meaningful}) if plan else []
     targets=eligible if c['target_rule']=='all' else [random.Random(c['seeds']['target']).choice(eligible)] if eligible else []
     if c['threat']=='R':
         if incident is None:raise Rejected('R_requires_common_incident')
@@ -251,7 +315,7 @@ def resolve_branches(frozen,incident=None):
         row=dict(frozen_id=frozen['frozen_id'],track=track,target=target,eligible=eligible,
             fault_count=int(track!='clean'),fault_fraction=None if not eligible else int(track!='clean')/len(eligible),
             task_id=req['planner_input']['task_id'],within_track_weight=1/(len(targets) or 1) if track!='clean' else 1,
-            status='planned' if plan else 'invalid_plan',physical_planning_reuse=True)
+            status='planned' if plan else frozen['status'],physical_planning_reuse=True)
         rows.append({**row,'branch_id':digest(row)})
     base=dict(schema='rr-branches-v2',incident_hash=incident['fixed_state_hash'] if incident else None,frozen=frozen,rows=rows,planned_episodes=len(rows),
         cost_estimate={'source':'declared_caps_only','measured':False,'maximum_logical_tokens':len(rows)*c['resource']['token_cap']},
@@ -290,7 +354,7 @@ def run_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=N
     if req['implementation_hashes']!=implementation_hashes():raise Rejected('frozen_runtime_changed')
     if digest(public)!=req['public_hash']:raise Rejected('task_changed')
     branch=next(b for b in manifest['rows'] if b['branch_id']==branch_id)
-    if f['status']!='valid':return dict(branch_id=branch_id,task_id=public['id'],track=branch['track'],status='invalid_plan',success=False,
+    if f['status']!='valid':return dict(branch_id=branch_id,task_id=public['id'],track=branch['track'],status=f['status'],success=False if f['status']=='invalid_plan' else None,
         mode=f['mode'],planning_resources=f['planning_resources'],trajectories=[],provenance=manifest['manifest_id'])
     if getattr(worker,'mode','')=='model':raise Rejected('v2_model_task_review_grammar_memory_qualification_pending')
     # Synthetic/reference/API callers are explicit; production model dispatch stays gated.
@@ -332,6 +396,17 @@ def run_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=N
             identity_usage_scope='historical_and_repair' if branch['track']=='R' else 'end_to_end',
             frozen_plan_descriptors=descriptors(f['plan']),checkpoint={'manifest_id':manifest['manifest_id'],'branch_id':branch_id,
                 'retry_attempt':0 if checkpoint is None else checkpoint.get('retry_attempt',0)+1,'engine':eng.checkpoint()})
+        from .conformance import report
+        row['task_correct']=grade.get('success')
+        row['in_budget']=success_at_budget('completed',True,eng.env.resources)
+        row['execution_contract']=c.get('execution_contract','adaptive_legacy')
+        # Scoped Engine already ran and charged the structural audit. Attach
+        # terminal-only outcomes without repeating its artifact/closure work.
+        if 'conformance' not in row:row['conformance']=report(row)
+        row['conformance'].update(task_correct=row['task_correct'],in_budget=row['in_budget'],execution_status=row['status'])
+        row['contract_conformant']=row['conformance']['contract_conformant']
+        if row['execution_contract']=='plan_scoped_v1' and row['contract_conformant'] is not True:
+            row['success']=False
         return row
     finally:eng.env.close()
 
@@ -340,7 +415,7 @@ def compatibility(manifest):
     c=manifest['frozen']['request']['config'];r=manifest['frozen']['request']
     return {k:digest(v) for k,v in dict(worker=r['model_binding'],jit=c['jit'],monitor=c['monitor'],
         access=r['public_hash'],scheduler=c['scheduler'],scorer='rr-terminal-v1',budgets=c['resource'],
-        runtime=r['implementation_hashes'],pool=c['workers'],memory=c['memory_policy'],reserve=c['reserve_rule']).items()}
+        execution_contract=c.get('execution_contract','adaptive_legacy'),runtime=r['implementation_hashes'],pool=c['workers'],memory=c['memory_policy'],reserve=c['reserve_rule']).items()}
 
 
 def paired_comparison(manifests):
@@ -362,9 +437,9 @@ def aggregate_v2(manifests,results):
             all_ids.add(b['branch_id']);r=indexed.get(b['branch_id'])
             if r and r.get('provenance')!=m['manifest_id']:raise Rejected('result_provenance')
             if r:modes.add(r['mode'])
-            settings=digest([c['resource'],c['monitor'],c['jit'],c['scheduler'],c['reserve_rule'],c['primary_count'],m['frozen']['request']['model_binding'],m['frozen']['request']['implementation_hashes']])
+            settings=digest([c.get('execution_contract','adaptive_legacy'),c.get('planning_lane',c['lane']),c['resource'],c['monitor'],c['jit'],c['scheduler'],c['reserve_rule'],c['primary_count'],m['frozen']['request']['model_binding'],m['frozen']['request']['implementation_hashes']])
             key='/'.join([c['lane'],digest(m['frozen']['planner_identity']),m['frozen']['request']['planner_input']['family'],str(c['pool_size']),c['count_mode'],c['recovery'],settings,b['track']])
-            row={'planner':m['frozen']['planner_identity'],'source_group':m['frozen']['request']['task_metadata']['source_group'],'branch_id':b['branch_id'],'status':r['status'] if r else b['status'] if b['status']=='invalid_plan' else 'missing',
+            row={'planner':m['frozen']['planner_identity'],'source_group':m['frozen']['request']['task_metadata']['source_group'],'branch_id':b['branch_id'],'status':r['status'] if r else b['status'] if b['status']!='planned' else 'missing',
                 'target':b['target'],'weight':b['within_track_weight'],'success':r.get('success') if r else False if b['status']=='invalid_plan' else None,
                 'triggered':r.get('intervention_triggered') if r else None,
                 'obligations':r.get('evaluation',{}).get('obligations') if r else None,
@@ -449,6 +524,9 @@ def training_export(manifest,results,cards,assignments,split,kind='plan_outcomes
         else:records.append({'inputs':None,'targets':labels,'trajectory_unavailable':True})
     return dict(schema='rr-training-'+kind+'-v2',split=split,records=deepcopy(records),
         provenance={'manifest_id':manifest['manifest_id'],'frozen_id':manifest['frozen']['frozen_id']},
+        execution_contract=manifest['frozen']['request']['config'].get('execution_contract','adaptive_legacy'),
+        planning_events=deepcopy(manifest['frozen']['planning_events']),
+        conformance=[deepcopy(r.get('conformance')) for r in results],
         source_group=next(c['source_group'] for c in cards if c['id']==tid),
         modes=sorted({r['mode'] for r in results}),private_tests_exported=False,
         optimal_plan_label=None,training_performed=False)

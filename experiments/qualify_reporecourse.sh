@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--pool-count N] [--repo-root DIR]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--pool-count N] [--repo-root DIR]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -16,6 +16,7 @@ local_run=false
 dry=false
 track_f=false
 v2=false
+scoped=false
 pool_count=4
 while (($#)); do
     case "$1" in
@@ -23,6 +24,7 @@ while (($#)); do
         --dry-run) dry=true; shift ;;
         --local) local_run=true; shift ;;
         --v2-controls) v2=true; shift ;;
+        --scoped-controls) scoped=true; v2=true; shift ;;
         --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
         --sources|--output|--model-lock|--repo-root)
@@ -75,7 +77,21 @@ if any(actual.get(k)!=v for k,v in PINS.items()):raise SystemExit('Pinned CPU de
 r=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.discover('tests',pattern='test_reporecourse_v2.py'))
 if not r.wasSuccessful() or r.skipped:raise SystemExit('v2 controls must pass without skips')
 PYV2
-    "$BC_PYTHON" -I scripts/rr_v2.py qualify --sources "$sources" --output "$output/v2-fixtures.json"
+    extra=()
+    grammar_version=v2
+    if "$scoped"; then
+        PYTHONPATH="$repo_root/src" "$BC_PYTHON" - <<'PYSCOPED'
+import unittest
+suite=unittest.TestSuite()
+for pattern in ('test_reporecourse_scoped.py', 'test_reporecourse.py', 'test_reporecourse_track_f.py', 'test_sql_text.py'):
+    suite.addTests(unittest.defaultTestLoader.discover('tests',pattern=pattern))
+r=unittest.TextTestRunner(verbosity=2).run(suite)
+if not r.wasSuccessful() or r.skipped:raise SystemExit('Scoped controls must pass without skips')
+PYSCOPED
+        extra=(--execution-contract plan_scoped_v1)
+        grammar_version=scoped-v1
+    fi
+    "$BC_PYTHON" -I scripts/rr_v2.py qualify --sources "$sources" --output "$output/v2-fixtures.json" "${extra[@]}"
     "$BC_PYTHON" - "$output/v2-fixtures.json" <<'PYCHECK'
 import json,sys
 if json.load(open(sys.argv[1]))['status']!='passed':raise SystemExit('v2 fixture qualification failed')
@@ -83,7 +99,7 @@ PYCHECK
     if [[ -n "$model_lock" ]]; then
         for role in json plan; do
             "$BC_PYTHON" -I scripts/check_action_constraints.py --model-lock "$model_lock" --context-limit 16384 \
-                --action-constraint "reporecourse-$role-v2-pool-$pool_count" \
+                --action-constraint "reporecourse-$role-$grammar_version-pool-$pool_count" \
                 --output "$output/grammar-$role-pool-$pool_count.json" \
                 --qualified-lock "$output/model-lock-$role-pool-$pool_count.json"
         done

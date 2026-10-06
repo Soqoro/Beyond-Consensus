@@ -39,6 +39,8 @@ def evaluate(public, private, state):
         env=Environment(p,resources=resources)
         try:
             env.artifacts=deepcopy(state['artifacts']);env.bound=frozen
+            if state.get('execution_contract')=='plan_scoped_v1':
+                env.evaluation_scope_state=deepcopy(state)
             if public['family']=='data_product':
                 expected=oracle(private['oracle'],p['tables'])
                 for req in public['required_outputs']:

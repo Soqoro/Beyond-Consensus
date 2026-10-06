@@ -23,7 +23,8 @@ class Engine:
         planning_cpu=time.process_time()-planning_start
         self.policy=policy;self.worker=worker;self.public=public;self.max_actions=max_actions
         self.env=Environment(public,resources=resources,track=track,target=target,
-            active=sorted({u['worker'] for u in self.plan['units']}),seed=seed,sabotage=sabotage,workers=self.workers if v2 is not None else None)
+            active=sorted({u['worker'] for u in self.plan['units']}),seed=seed,sabotage=sabotage,workers=self.workers if v2 is not None else None,
+            execution_contract=v2.get('execution_contract','adaptive_legacy') if v2 else 'adaptive_legacy',plan=self.plan)
         self.env.resources.reserve_cpu(max(planning_cpu,0.000001))
         self.env.resources.reconcile_cpu('public_plan_selection',max(planning_cpu,0.000001),planning_cpu)
         self.env.events.append({'type':'allocation','plan':deepcopy(self.plan)})
@@ -40,6 +41,7 @@ class Engine:
         if self.v2 is not None:
             state.update(protocol='rr-engine-v2',compatibility=digest([self.v2,self.public,self.plan]),
                          trajectories=deepcopy(self.trajectories),v2_config=deepcopy(self.v2),historical_resources=deepcopy(self.historical_resources))
+        if self.env.scopes:state['scope_histories_hash']=digest([self.env.scopes.data['active'],self.histories])
         if self.save:self.save(state)
         return state
 
@@ -51,6 +53,8 @@ class Engine:
             self.historical_resources=deepcopy(state.get('historical_resources'))
         elif state.get('protocol')=='rr-engine-v2':raise Rejected('legacy_resume_incompatible')
         if state['plan_hash']!=digest(self.plan):raise Rejected('fixed_state_graph_mismatch')
+        if self.env.scopes and state.get('scope_histories_hash')!=digest([state['environment']['scope_state']['active'],state['histories']]):
+            raise Rejected('scope_history_mismatch')
         setup_cpu=self.env.resources.cpu_seconds
         self.env.restore_state(state['environment']);self.env.resources=Resources(**state['resources'])
         for k in ('histories','phase','status','action_counts','failures','original_bundle','replication_disagreements','public_alarm','alarm_resources','view_since','replica_saved'):setattr(self,k,deepcopy(state[k]))
@@ -72,6 +76,8 @@ class Engine:
         if worker in env.unavailable:
             env.events.append(dict(type='dispatch_suppressed',worker=worker,unit=unit['id'],stage=tag,reason='worker_unavailable'))
             return
+        if env.scopes and env.scopes.begin(unit,worker,tag):
+            self.histories[worker]=[]
         env.assignment[worker]=deepcopy(unit)
         env.events.append(dict(type='assignment_start',worker=worker,unit=unit['id'],stage=tag))
         if env.triggered and self.alarm_resources is None:self.alarm_resources=env.resources.summary()
@@ -222,6 +228,9 @@ class Engine:
                         owner=eligible[(eligible.index(owner)+1)%len(eligible)]
                     if self.v2 is not None:
                         from .v2_recovery import reuse_consumer
+                        if env.scopes:
+                            if env.scopes.begin(u,owner,'repair'):self.histories[owner]=[]
+                            env.assignment[owner]=deepcopy(u)
                         if reuse_consumer(self,u,owner):continue
                         # Same original sources remain available: missing dependencies
                         # do not prevent a charged worker from directly rebuilding outputs.
@@ -234,7 +243,7 @@ class Engine:
         except Rejected:self.status='resource_exhausted'
         env.finished=True;self.checkpoint()
         counts={w:sum(e.get('worker')==w and e['type']=='publish' for e in env.events) for w in self.workers}
-        return dict(status=self.status,mode=getattr(self.worker,'mode','scripted_cpu'),model_executed=getattr(self.worker,'mode','')=='model',
+        row=dict(status=self.status,mode=getattr(self.worker,'mode','scripted_cpu'),model_executed=getattr(self.worker,'mode','')=='model',
             resource_profile=env.resources.summary(),plan=self.plan,organization_key=organization_key(self.plan),
             active_workers=len(env.active),publications_by_worker=counts,track=env.track,
             protocol='equal_remaining' if env.track=='R' else 'equal_total',target=env.target,
@@ -249,6 +258,20 @@ class Engine:
             explicit_rebindings=sum(e['type']=='explicit_rebind' for e in env.events),
             prediction_error=None,
             events=env.events,failures=self.failures,state=env.state(),action_counts=self.action_counts,confirmatory=False)
+        if env.scopes:
+            from .conformance import report
+            start=time.process_time()
+            row['conformance']=report(row)
+            try:env.resources.reconcile_cpu('contract_report',0,time.process_time()-start)
+            except Rejected:self.status='resource_exhausted';row['status']=self.status
+            self.checkpoint()
+            row['resource_profile']=env.resources.summary()
+            from .resources import success_at_budget
+            row['conformance'].update(in_budget=success_at_budget('completed',True,env.resources),
+                                      execution_status=row['status'])
+            if self.alarm_resources is not None:
+                row['post_alarm_cpu']=env.resources.cpu_seconds-self.alarm_resources['cpu_cap_debit']
+        return row
 
 
 class ScriptedWorker:

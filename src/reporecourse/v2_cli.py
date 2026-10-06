@@ -12,13 +12,16 @@ from .resources import Resources
 
 def main(argv=None):
     p=argparse.ArgumentParser(description='RepoRecourse v0.2 local preparation and reference controls; no automatic GPU jobs')
-    p.add_argument('command',choices=('request','plans','freeze','resolve','demo','qualify','aggregate','export','readiness','compare','b0','slurm-dry-run','select','validate','evidence','prompted-plan'))
+    p.add_argument('command',choices=('request','plans','freeze','resolve','demo','qualify','aggregate','export','readiness','compare','b0','slurm-dry-run','select','validate','evidence','prompted-plan','conformance','open-proposal'))
     p.add_argument('--sources',type=Path,default=Path('/nonexistent-sources'))
     p.add_argument('--task',default='synthetic-stock');p.add_argument('--pool',type=int,default=4)
     p.add_argument('--lane',choices=('open','shared_catalog','fixed_plan'),default='open')
     p.add_argument('--count-mode',choices=('adaptive_size','matched_primary_count'),default='adaptive_size')
     p.add_argument('--primary-count',type=int);p.add_argument('--outline',default='independent',choices=('independent','shared','grouped','branch_rejoin'))
     p.add_argument('--target-rule',choices=('uniform','all'),default='uniform');p.add_argument('--threat',choices=('F','S','R'),default='F')
+    p.add_argument('--planning-lane',choices=('open_generated','authored_diagnostic','shared_catalog','fixed_recovery'))
+    p.add_argument('--execution-contract',choices=('adaptive_legacy','plan_scoped_v1'))
+    p.add_argument('--planner-output-cap',type=int,default=2048)
     p.add_argument('--planner',default='external_supplied',help='Recorded adapter identifier; never a worker prompt')
     p.add_argument('--selector',choices=('first','nominal','recovery'),default='first')
     p.add_argument('--calibration',type=Path)
@@ -37,6 +40,15 @@ def main(argv=None):
 
 
 def dispatch(a):
+    if a.command=='conformance':
+        from .conformance import report
+        raw=load(a.input)
+        rows=raw.get('episodes',[raw])
+        return {'schema':'rr-conformance-export-v1','reports':[report(r) for r in rows],
+            'input_hash':v2.digest(raw),'model_executed':False,'sql_executed':False,'historical_scores_changed':False}
+    if a.command=='open-proposal':
+        from .open_planning import proposal
+        return proposal(load(a.input),load(a.model_lock),a.planner_output_cap)
     if a.command=='validate':
         record=load(a.input)
         keys={'rr-planning-request-v2':'request_id','rr-frozen-planning-v2':'frozen_id','rr-branches-v2':'manifest_id'}
@@ -62,12 +74,14 @@ def dispatch(a):
             'reason':'v0.2 has no approved model campaign; legacy exact-trio gate remains separate'}
     if a.command=='qualify':return qualify_matrix(a)
     card,public=load_task(a.task,a.sources)
-    c=v2.configuration(a.pool,a.count_mode,a.primary_count,a.lane,a.token_cap,a.cpu_cap,a.seed,a.threat,a.target_rule,planner=a.planner)
+    c=v2.configuration(a.pool,a.count_mode,a.primary_count,a.lane,a.token_cap,a.cpu_cap,a.seed,a.threat,a.target_rule,planner=a.planner,**({
+        'planning_lane':a.planning_lane,'execution_contract':a.execution_contract,
+        'planner_output_cap':a.planner_output_cap} if getattr(a,'execution_contract',None) or getattr(a,'planning_lane',None) else {}))
     binding=None
     if a.backend_config or a.model_lock:
         if not a.backend_config or not a.model_lock:raise Rejected('backend_config_and_lock_required')
         from beyond_consensus.models.reporecourse_planner import binding as bind_backend
-        binding=bind_backend(a.backend_config,a.model_lock,a.pool)
+        binding=bind_backend(a.backend_config,a.model_lock,a.pool,c.get('execution_contract','adaptive_legacy'))
     req=v2.request(public,c,binding)
     if a.command=='prompted-plan':
         if not binding:raise Rejected('explicit_backend_config_and_lock_required')
@@ -102,7 +116,7 @@ def qualify_matrix(a):
         _,public=load_task(task,a.sources)
         for pool in range(2,9):
             for outline in ('independent','shared','grouped','branch_rejoin'):
-                c=v2.configuration(pool,lane='fixed_plan',target_rule='all')
+                c=v2.configuration(pool,lane='fixed_plan',target_rule='all',**({'planning_lane':'fixed_recovery','execution_contract':a.execution_contract} if getattr(a,'execution_contract',None) else {}))
                 plan=v2.fixture_rejoin(public,c)[0] if outline=='branch_rejoin' else v2.authored_plan(public,c,outline)
                 conditions.append({'task':task,'pool':pool,'outline':outline,'branches':1+len({u['worker'] for u in plan['units']})})
     if a.dry_run:return {'status':'planned','conditions':conditions,'planned_episodes':sum(r['branches'] for r in conditions),
@@ -114,6 +128,7 @@ def qualify_matrix(a):
     reports=[]
     for row in conditions:
         aa=deepcopy(a);aa.command='demo';aa.task=row['task'];aa.pool=row['pool'];aa.outline=row['outline'];aa.lane='fixed_plan';aa.target_rule='all';aa.count_mode='adaptive_size';aa.primary_count=None;aa.threat='F';aa.seed=0;aa.token_cap=100000;aa.cpu_cap=1200
+        if getattr(a,'execution_contract',None):aa.planning_lane='fixed_recovery'
         report=dispatch(aa)
         reports.append({**row,'successes':sum(r['success'] for r in report['results']),
             'statuses':[r['status'] for r in report['results']], 'results':report['results']})

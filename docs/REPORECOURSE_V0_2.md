@@ -44,7 +44,9 @@ No post-failure learned controller, SFT/RL trainer or simulator was added.
   no fabricated token fee and never dilute target eligibility.
 - The initial graph is an acyclic, terminal-covering graph of at most 24 units.
   Dependencies require matching declared artifact interfaces. Ready units run
-  in lexicographic-ID order. Corrections publish new versions, not a changed DAG.
+  in lexicographic-ID order. Corrections publish new versions without rewriting
+  the frozen plan. Actual bindings can add undeclared edges; see the 2026-10-06
+  declared-versus-realized dependency audit below.
   A helper need not have the same name as its producing unit.
 - Open, shared-catalog, and fixed-plan lanes are distinct. Only fixed-plan
   references can vary restart/replication versus the common JIT. A third-party
@@ -739,3 +741,127 @@ requires explicit recovery review for this first adapter; `resubmit` does not
 silently restart it with a fresh budget. Full journals/trajectories remain under
 the episode output; the compact aggregate includes the terminal evaluation and
 resource ledger, not private witnesses or model histories.
+
+
+## Declared versus realized dependencies: stock trace audit (2026-10-06)
+
+### Evidence and observed outcome
+
+User-supplied aggregate and selected episode trace identify experiment
+`853f0646ce1fab388c6da48b4270297eb763009e5041bd4d081c758c6f7cff06`, episode
+`88b40ff1cd8da4481793f27dfe7c86238c6f9a1f3e279021a85f37097a88e4b1`.
+The export reports raw manifest SHA256
+`a400d136366d1c71583784b9cfc84f80ce8e77706e30746a95ca85bcf3176fc8`
+and result SHA256
+`7bf6f1655d24e723d2ef2cb0359c2aecc4c84af563c0f85f3bb61209562c0cc2`.
+These are supplied identifiers: the full remote files/snapshot were not retrieved
+or independently rehashed in this audit. The selected trace is internally
+consistent with the supplied aggregate. No model or SQL was executed for review.
+
+The one clean synthetic episode completed successfully. Both `stock_report`
+and `zero_report` passed both terminal fixtures (four checks). The pool had
+seven identities, but only w0/w1 were assigned and active; w2–w6 published nothing.
+There were no recorded failures, public alarms, repair actions or explicit
+rebindings. Two artifacts were published, bound, executed and retained.
+Three EOS-completed calls consumed 2951 input plus 600 output tokens = 3551;
+429 reasoning tokens are a subset of the output, not an extra charge. Episode
+CPU was 39.115224506/1200 seconds, tokens 3551/100000; uncertain usage and pending
+reservations were zero. Terminal evaluator CPU was separately recorded as
+0.030292715 seconds. These are one observation under uncalibrated caps, not B0.
+
+| Unit / owner | Declared inputs | Observed action sequence | Tokens |
+|---|---|---|---:|
+| stock_report / w0 | No artifact dependencies | Read tables; publish SELECT sku, qty FROM stock ORDER BY sku | 2212 |
+| zero_report / w1 | No artifact dependencies | Publish SELECT sku FROM stock_report WHERE qty = 0 ORDER BY sku, explicitly binding w0's version | 1339 |
+
+The declared plan has zero artifact edges. The actual graph has one edge:
+`stock_report -> zero_report`. The consumer binds version
+`de4fa2f4ff1b5d1abca7232b7a808dd20c3207f5417b394a3016589fdf939893`;
+the same version is the bound stock output. Its own bound version is
+`f57a666c0fcaa71724ff8b6b29f06b78436e15f4c09de142a427b709d349471e`.
+The consumer's exposure also includes the stock version. Both bound IDs exist
+in the supplied artifact map. No explicit artifact-read call occurred: a binding
+is an execution dependency even when the worker never reads the artifact body.
+
+### Code audit and scientific conflict
+
+`v2.validate_work_plan` checks acyclicity, terminal coverage, owners, interfaces
+and agreement between declared `depends` and `consumes`. `Engine` schedules the
+normalized plan and checks declared artifact availability. Those checks do not
+turn the plan into a runtime access-control list.
+
+`Environment.observation` exposes all existing artifact names, versions and
+formats, plus bound outputs. `publish` checks existence of each bound version,
+compiler safety and artifact closure; it does not compare bindings against the
+assignment's `consumes`. It unions bindings with the worker's recorded exposure.
+`read_artifact`, `execute_artifact`, messages and `bind_output` are also available
+outside the declared consumer list. Source reads check the public source map,
+not the assignment's `sources` subset. These are current permissions, not newly
+introduced behavior. Changing only the publish check would not enforce complete
+information-flow independence. Empty `consumes` is not proof of isolation.
+Automatic metadata visibility is not itself an explicit artifact-read event;
+full observation histories are needed to audit that exposure. An empty recorded
+exposure set cannot establish absence of all cross-worker information.
+
+The earlier wording “Corrections publish new versions, not a changed DAG” is
+accurate for the frozen plan record but incomplete for executed artifact lineage.
+`independent` is an authored plan ID; it cannot certify independent execution.
+Plan-only structural descriptors describe the assigned graph, not the observed
+version graph. Under current semantics, a planner comparison could estimate the
+end-to-end effect of different plans with common adaptive workers; it cannot
+attribute outcomes to enforced graph topology. There is no such measured planner
+comparison in this episode.
+
+### Decision and boundaries for the next phase
+
+Preserve the existing permissive runtime and historical score. Treat the frozen
+plan as the scheduling/assignment specification; distinguish it from both the
+realized version-binding graph and the broader context-exposure graph. This is
+a clarification of current behavior, not a new execution condition or retroactive
+failure criterion. The stock result establishes clean artifact production,
+explicit cross-worker version reuse and finite-test correctness. It does not
+establish source-independent reconstruction, seven-active-worker competence,
+recovery effectiveness or model-generated planning.
+
+Before comparative planner experiments, add an offline, versioned conformance
+report with declared and actual edges, missing/extra edges, primary versus repair
+stages, producer unit/version identities, planned/observed active counts and
+unknown/ambiguous mappings. Use publication events and assignment context to map
+versions to units; names or authors alone can be ambiguous. Track context exposure
+separately from executable bindings. Missing traces remain unknown, not “no drift”.
+This reporting is proposed work, not implemented by the present audit.
+
+If a future study needs an enforced-topology treatment, define it separately:
+primary bindings and cross-worker information access need a reviewed interface
+rule; rejected attempts retain their costs; common repair needs an explicit
+exception that permits version replacement and bypass. Freeze that choice before
+execution, renew relevant controls/manifests, and do not pool it with historical
+permissive runs. Do not silently add strict enforcement to this successful run.
+
+The second-family synthetic-nullable exception and planner stage remain blocked
+pending their own implementation/review. No rerun, new job, source-data change,
+scoring change or campaign expansion was performed by this audit.
+
+
+## Open planning contract update (2026-10-06)
+
+The later user decision selects open-generated bounded topology with an opt-in
+plan-scoped execution contract. This supersedes the earlier proposal-only status
+of automated conformance and scoped mediation, without changing historical
+adaptive behavior or qualifying any new model experiment. The implementation,
+source map, limits and CPU/preflight commands are in
+[OPEN_PLANNING_RUNBOOK.md](OPEN_PLANNING_RUNBOOK.md).
+
+New protocol `rr-open-planning-v1` separates `planning_lane` from
+`execution_contract`. The original validator, prompted planner, Engine, resource
+ledger, common JIT, restricted executors and scheduler remain in use. Generated
+units need not resemble authored organizations. Structural validation permits
+inefficient unused helpers in the new condition, but such units do not become
+meaningful fault targets. Original sources are available everywhere; declared
+artifact edges are optional input permissions.
+
+Scope admission fixes import versions, records fresh assignment contexts and
+mediates all worker-facing artifact and message paths. Recovery changes only
+recorded affected scopes after existing public triggers. New grammar/control
+approvals and model/footprint evidence remain required. Local CPU doubles are
+labelled, and the production open-task entry remains blocked for separate review.

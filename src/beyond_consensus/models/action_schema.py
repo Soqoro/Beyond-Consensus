@@ -119,6 +119,9 @@ def contract(mode=MODE):
     if mode == "sqlite-sql-text-v1":
         result.update(decoder_schema_sha256=digest(decoder_schema(mode)),
                       sql_string_length_enforcement="runtime-characters-and-utf8-bytes-v1")
+    if "-scoped-v1-" in mode:
+        result["execution_contract"]="plan_scoped_v1"
+        result["observation_contract"]="assignment-scoped-v1"
     if mode.startswith("reporecourse-"):
         result["decoder_charge"] = "measured_cpu_subset_no_token_conversion"
     return result

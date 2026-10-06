@@ -1,5 +1,69 @@
 # Implementation status and handoff
 
+## Open planning and assignment scopes implemented locally (2026-10-06)
+
+The user selected open-generated topology as the intended new main condition.
+New explicit planning/execution fields preserve omitted legacy defaults.
+`plan_scoped_v1` mediates assignment observations, original-source access,
+artifact metadata/reads/bindings/execution, schema/mapping registries, messages,
+public-check feedback and scoped checkpoint restoration. Same-owner new units
+start fresh contexts; loss persists. Common JIT admits recorded bounded repair
+overlays without making the initial planner a recovery controller.
+
+The existing prompted planner and model-worker interfaces remain the executable
+adapters. New pool-specific grammars and bounded terminal mappings/interfaces
+support invented units and artifacts. Failed proposals/revisions and backend
+interruptions retain charged evidence; there is no authored fallback. CPU-double
+end-to-end tests do not constitute actual model generation.
+
+The new read-only conformance command reproduced the supplied historical stock
+edge deviation, preserving its valid adaptive success and unknown visibility
+coverage. New scoped results distinguish correctness, budget and conformance.
+Denied attempts are not delivered edges; unused allowed inputs are legal.
+
+Production open-generated GPU task execution remains blocked pending changed
+CPU controls, grammar/observation/output-footprint qualification and explicit
+engineering approval. Existing task exceptions are not expanded. The proposal
+contains one planner sequence, one clean branch and at most one separately
+approved, preselected F branch. No model inference, training, job, commit or
+push was executed for this local update. See OPEN_PLANNING_RUNBOOK.md for the
+implementation map, limitations and frozen-source CPU/preflight dry-run commands.
+The default local environment lacks pinned optional SQL/schema dependencies;
+child execution controls remain pending rather than reported as passed.
+
+Final local validation: 366 tests ran, 345 passed and 21 skipped. Twenty skips
+require the optional pinned SQL/schema CPU dependencies; one is the unrelated
+legacy OS-sandbox integration test requiring its explicit approved profile.
+The new scoped test module has 25 tests: 22 passed, three pinned execution tests
+pending. Shell checks (10 files), compileall, stdlib-only CLI help and diff
+whitespace checks passed. The runbook lists every skipped test and the exact
+user-triggered CPU allocation workflow; no skipped test is counted as qualified.
+
+
+## Stock success reviewed; actual dependency differs from plan (2026-10-06)
+
+Supplied experiment `853f0646ce1fab388c6da48b4270297eb763009e5041bd4d081c758c6f7cff06`
+completed 1/1 clean synthetic-stock episode successfully, with both obligations
+passing four finite checks. Three model calls consumed 3551 tokens and
+39.115224506 CPU seconds; no uncertain usage, failures, alarms or repair was
+recorded. Two of seven available identities acted. This supersedes the earlier
+“worker competence unmeasured” statement for this one task/condition only.
+
+The selected trace reveals one actual binding edge from w0's stock_report to
+w1's zero_report despite the authored plan declaring none. Local code review
+confirms this is permitted by the current runtime. The success stands; it is
+not an independent reconstruction or seven-active-worker result. No generated
+planner, recovery comparison, B0 or native competence result follows.
+
+Decision: preserve historical semantics and distinguish planned scheduling,
+actual artifact bindings and context exposure. The detailed evidence, scientific
+conflict and proposed conformance-report requirements are recorded in
+REPORECOURSE_V0_2.md. This audit changes documentation only; it does not enforce
+a graph, authorize another task or change a historical score. Full remote
+snapshot/result integrity was not independently reverified from the selected
+export. No model, SQL, job submission, commit or push occurred.
+
+
 ## Pending Slurm array inspection corrected (2026-10-02)
 
 The shared guard now requests `squeue --array` and inspects individual task IDs.

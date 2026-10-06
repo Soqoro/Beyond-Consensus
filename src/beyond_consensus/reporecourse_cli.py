@@ -11,6 +11,7 @@ def add_parsers(sub):
         p.add_argument('--'+name,type=Path,required=True)
     p = sub.add_parser("rr-v2-preflight-manifest", help="Freeze synthetic pool context-switch qualification only")
     p.add_argument("--pool", type=int, choices=range(2, 9), required=True)
+    p.add_argument("--plan-scoped", action="store_true", help="New scoped worker/planner grammar qualification only")
     p.add_argument("--full-budget-stress", action="store_true", help="Synthetic forced-token 14336+2048 shape probe; no task decoding")
     p.add_argument("--model-lock", type=Path, required=True)
     p.add_argument("--planner-lock", type=Path, required=True)
@@ -60,7 +61,7 @@ def dispatch(args):
     if command == "rr-v2-preflight-manifest":
         from .experiments.rr_v2_preflight import build
         from .cli import ROOT
-        result = build(ROOT, load(args.model_lock), load(args.planner_lock), args.pool, full_budget_stress=args.full_budget_stress)
+        result = build(ROOT, load(args.model_lock), load(args.planner_lock), args.pool, full_budget_stress=args.full_budget_stress, plan_scoped=args.plan_scoped)
         write_new(args.output, result)
         return {"report": str(args.output), "experiment_id": result["experiment_id"], "model_executed": False, "planned_episodes": 0}
     if command in ('rr-source-plan','rr-stage'):

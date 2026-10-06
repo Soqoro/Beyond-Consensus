@@ -32,7 +32,10 @@ def controls():
          '{"tool":"read_source","tool":"finish","name":"demo"}']
     return good,bad
 
-V2_MODES=tuple(f'reporecourse-{kind}-v2-pool-{n}' for kind in ('json','plan') for n in range(2,9))
+LEGACY_V2_MODES=tuple(f'reporecourse-{kind}-v2-pool-{n}' for kind in ('json','plan') for n in range(2,9))
+
+OPEN_MODES=tuple(f'reporecourse-{kind}-scoped-v1-pool-{n}' for kind in ('json','plan') for n in range(2,9))
+V2_MODES=LEGACY_V2_MODES+OPEN_MODES
 
 
 def schema_v2(mode):
@@ -54,6 +57,10 @@ def schema_v2(mode):
     unit=obj(dict(id=string,worker={'enum':workers},outputs=names,depends=names,description=string,
         produces={'type':'object','additionalProperties':fmt},
         consumes={'type':'object','additionalProperties':obj(dict(unit=string,artifact=string,format=fmt))},sources=names))
+    if mode in OPEN_MODES:
+        unit['properties']['interfaces']={'type':'object','additionalProperties':string}
+        unit['properties']['terminal_bindings']={'type':'object','additionalProperties':string}
+        unit['required']+=['interfaces','terminal_bindings']
     plan=obj({'schema':{'enum':['rr-work-plan-v2']},'id':string,'units':{'type':'array','items':unit,'minItems':1,'maxItems':24}})
     return {'anyOf':[obj({'tool':{'enum':['read_source']},'name':string}),
         obj({'tool':{'enum':['submit_plan']},'plan':plan})]}
@@ -69,5 +76,8 @@ def controls_v2(mode):
             'outputs':['result'],'depends':[],'description':'Implement public requirement.',
             'produces':{'result':'sql'},'consumes':{},'sources':[]}]}}]
         bad=['{}','{"tool":"publish"}']
+    if mode in OPEN_MODES and '-plan-' in mode:
+        good[1]['plan']['units'][0]['interfaces']={'result':'Public output contract.'}
+        good[1]['plan']['units'][0]['terminal_bindings']={'result':'result'}
     bad.append('{"tool":"message","recipient":"w8","text":"invalid"}')
     return good,bad

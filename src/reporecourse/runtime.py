@@ -25,7 +25,14 @@ def create_database(path, tables):
 
 
 class Environment:
-    def __init__(self, public, resources=None, *, track='clean', target=None, active=None, seed=0, sabotage='one_shot', workers=None):
+    def __init__(self, public, resources=None, *, track='clean', target=None, active=None, seed=0, sabotage='one_shot', workers=None, execution_contract='adaptive_legacy', plan=None):
+        self.execution_contract=execution_contract
+        self.scopes=None
+        if execution_contract not in ('adaptive_legacy','plan_scoped_v1'):raise Rejected('execution_contract')
+        if execution_contract=='plan_scoped_v1':
+            from .scope import AssignmentScopes
+            if plan is None:raise Rejected('scope_plan_required')
+            self.scopes=AssignmentScopes(self,plan)
         self.workers=tuple(WORKERS if workers is None else workers)
         if workers is not None:
             from .v2 import worker_registry
@@ -82,6 +89,10 @@ class Environment:
         return aliases
 
     def execute(self, version, value=None):
+        if self.scopes or getattr(self,'evaluation_scope_state',None):
+            from .scope import validate_bundle
+            evidence=self.state() if self.scopes else self.evaluation_scope_state
+            validate_bundle(evidence,roots=[version])
         a=self.artifacts.get(version)
         if not a:raise Rejected('artifact_reference')
         self.events.append({'type':'artifact_execution','version':version})
@@ -102,6 +113,13 @@ class Environment:
         req.update(operation='validate',schema=a['content']) if a['format']=='schema' else req.update(operation='map',program=a['content'])
         return self.cpu('schema_checker',4,lambda:execute(req))
 
+    def resolved_schema(self,version,seen=()):
+        if version in seen or version not in self.artifacts:raise Rejected('artifact_reference')
+        a=self.artifacts[version]
+        if a['format']!='schema':raise Rejected('artifact_format')
+        from .schema_runtime import resolve
+        return resolve(a['content'],{k:self.resolved_schema(v,seen+(version,)) for k,v in a['bindings'].items()})
+
     def publish(self, worker, name, format, content, bindings, obligations):
         ident(name); bounded(content)
         if format not in ('sql','schema','mapping'):raise Rejected('artifact_format')
@@ -114,8 +132,10 @@ class Environment:
             ident(alias)
             if version not in self.artifacts:raise Rejected('artifact_reference')
         if worker in self.unavailable:raise Rejected('worker_unavailable')
+        if self.scopes:
+            self.scopes.authorize(worker,dict(tool='publish',name=name,format=format,content=content,bindings=bindings,obligations=obligations))
         assigned=self.assignment.get(worker,{})
-        handoff=bool(set(obligations)&set(assigned.get('outputs',[]))) or (not assigned.get('outputs') and name==assigned.get('id'))
+        handoff=bool(set(obligations)&set(assigned.get('outputs',[]))) or (not assigned.get('outputs') and (name in assigned.get('produces',{}) if self.scopes else name==assigned.get('id')))
         if self.fault_track=='F' and worker==self.target and not self.triggered and handoff:
             self.triggered=True;self.unavailable.add(worker);self.alarm_index=len(self.events)
             self.events.append({'type':'unavailable','worker':worker,'before_publication':True,
@@ -135,7 +155,8 @@ class Environment:
         if format=='sql':
             from restricted_artifacts.sql_text import lower
             objects=set(self.public.get('tables',{}))|set(bindings)
-            for dep in bindings.values():objects.update(self._closure(dep))
+            if self.scopes is None:
+                for dep in bindings.values():objects.update(self._closure(dep))
             report=self.cpu('compiler',4,lambda:lower(content,objects))
             if report['status']!='ok':
                 feedback=compiler_feedback(report.get('category'))
@@ -145,25 +166,31 @@ class Environment:
             content=report['tree'];format='select'
         elif format=='schema':
             from .schema_runtime import resolve
-            registry={alias:self.artifacts[v]['content'] for alias,v in bindings.items()}
-            for dep in bindings.values():registry.update({alias:self.artifacts[v]['content'] for alias,v in self._closure(dep).items()})
+            registry={alias:self.resolved_schema(v) if self.scopes else self.artifacts[v]['content'] for alias,v in bindings.items()}
+            if self.scopes is None:
+                for dep in bindings.values():registry.update({alias:self.artifacts[v]['content'] for alias,v in self._closure(dep).items()})
             resolve(content,registry)
         else:
             # Validate syntax on publication; actual input-dependent errors stay runtime.
             from .schema_runtime import resolve
             if not isinstance(content,dict) or 'output_schema' not in content:raise Rejected('mapping_contract')
-            resolve(content['output_schema'],{k:self.artifacts[v]['content'] for k,v in bindings.items()})
+            resolve(content['output_schema'],{k:self.resolved_schema(v) if self.scopes else self.artifacts[v]['content'] for k,v in bindings.items()})
         parents=set(bindings.values())|self.exposure[worker]
         record=dict(name=name,author=worker,format=format,content=deepcopy(content),bindings=deepcopy(bindings),
             exposure=sorted(parents),sequence=len(self.artifacts),source_hashes={k:digest(v) for k,v in self.public['sources'].items()})
+        if self.scopes:self.scopes.seal(worker,record)
         version=digest(record)
         # Validate whole closure before atomic publish + bind; rollback on error.
         self.artifacts[version]=record
         try:self._closure(version)
         except BaseException:del self.artifacts[version];raise
+        if self.scopes:
+            self.scopes.published(version)
+            self.scopes.delivery(worker,bindings.values(),'binding')
         self.exposure[worker].update(bindings.values())
         self.bound.update({o:version for o in obligations})
-        self.events.append(dict(type='publish',worker=worker,version=version,obligations=obligations))
+        self.events.append(dict(type='publish',worker=worker,version=version,obligations=obligations,
+            **({k:record[k] for k in ('producer_unit','stage','scope_id')} if self.scopes else {})))
         return {'version':version,'bound':obligations}
 
     def action(self, worker, action):
@@ -188,6 +215,12 @@ class Environment:
             'rebind_artifact':{'version','name','bindings','obligations'},'check_public':set(),'message':{'recipient','text'},'checkpoint':set(),'restore':{'checkpoint'},'finish':set()}
         if tool not in fields or set(action)!=fields[tool]|{'tool'}:raise Rejected('action_fields')
         if worker in self.unavailable:raise Rejected('worker_unavailable')
+        if self.scopes:
+            self.scopes.authorize(worker,action)
+            handled,result=self.scopes.special(worker,action)
+            if handled:return result
+            if tool in ('read_artifact','execute_artifact','rebind_artifact','bind_output'):
+                self.scopes.delivery(worker,[action['version']],tool)
         if tool=='rebind_artifact':
             version=action['version']
             if version not in self.artifacts:raise Rejected('artifact_reference')
@@ -249,9 +282,10 @@ class Environment:
         self.events.append(dict(type='assignment_finished',worker=worker))
         return {'assignment_finished':True}
 
-    def check_public(self):
+    def check_public(self, only=None):
         results={}
         for r in self.public['required_outputs']:
+            if only is not None and r['id'] not in only:continue
             v=self.bound.get(r['id'])
             if v is None:results[r['id']]=False;continue
             checks=[]
@@ -274,22 +308,31 @@ class Environment:
                 'Repository SQL and dbt files are reference documents, not installed tables or executable templates. '
                 'Only runtime tables and explicitly bound artifact aliases are queryable. '
                 'Implement the current assignment outputs; other required outputs belong to other assignments.'}
-        return deepcopy(dict(sql_interface=interface,assigned_outputs=assignment.get('outputs',[]),request=self.public['request'],required_outputs=self.public['required_outputs'],
+        value=deepcopy(dict(sql_interface=interface,assigned_outputs=assignment.get('outputs',[]),request=self.public['request'],required_outputs=self.public['required_outputs'],
             source_ids=sorted(self.public['sources']),examples=self.public['examples'],
             assignment=self.assignment.get(worker),artifacts=[{'version':v,'name':a['name'],'format':a['format']} for v,a in self.artifacts.items()],
             bound=dict(self.bound),messages=deepcopy(self.messages[worker]),unavailable=sorted(self.unavailable),
             announcements=[deepcopy(e['announcement']) for e in self.events if e['type']=='unavailable' and 'announcement' in e],
             remaining_tokens=self.resources.remaining,cpu_remaining=self.resources.cpu_cap-self.resources.cpu_seconds))
+        return self.scopes.observation(worker,value) if self.scopes else value
 
     def state(self):
-        return deepcopy(dict(artifacts=self.artifacts,bound=self.bound,events=self.events,
+        value=deepcopy(dict(artifacts=self.artifacts,bound=self.bound,events=self.events,
             exposure={k:sorted(v) for k,v in self.exposure.items()},unavailable=sorted(self.unavailable),
             triggered=self.triggered,target=self.target,track=self.track,fault_track=self.fault_track,sabotage=self.sabotage,
             checkpoints=self.checkpoints,messages=self.messages,assignment=self.assignment,finished=self.finished))
+        if self.scopes:value.update(execution_contract=self.execution_contract,scope_state=deepcopy(self.scopes.data))
+        return value
 
     def restore_state(self,state):
         if not self.unavailable <= set(state['unavailable']):raise Rejected('unavailable_identity_rollback')
         if state['target']!=self.target or state['track']!=self.track:raise Rejected('fault_state_mismatch')
+        if state.get('execution_contract','adaptive_legacy')!=self.execution_contract:raise Rejected('scope_resume_mismatch')
+        if self.scopes:
+            from .scope import validate_bundle
+            validate_bundle(state)
+            validate_bundle(state,roots=list(state['artifacts']))
+            self.scopes.restore(state['scope_state'])
         for k in ('artifacts','bound','events','triggered','fault_track','sabotage','checkpoints','messages','assignment','finished'):setattr(self,k,deepcopy(state[k]))
         self.unavailable |= set(state['unavailable']);self.exposure={k:set(v) for k,v in state['exposure'].items()}
 

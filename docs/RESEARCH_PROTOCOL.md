@@ -521,3 +521,41 @@ narrower rule than general eligible-retry support; no fresh-budget replay is
 allowed. General v2 model execution, second-family tasks, faults, planner runs,
 parameter grids and native campaigns remain blocked. No historical result is
 rescored and no job is authorized merely by creating the manifest.
+
+
+### Stock diagnostic dependency interpretation (2026-10-06)
+
+The supplied successful stock trace used two active identities from pool seven.
+Although the authored independent plan declared no artifact edges, w1 explicitly
+bound w0's stock report to build its zero report. Current runtime permissions
+allow this: declared interfaces govern plan validation/scheduling, not a closed
+artifact-access boundary. Preserve the successful historical score and label
+both the declared and realized structures. Plan-only descriptors must not be
+presented as observed independence or enforced topology. Context exposure and
+executable version bindings are distinct graphs. See the detailed audit in
+REPORECOURSE_V0_2.md. No runtime enforcement or qualification gate changes follow
+from this documentation update; comparative reporting and any strict-topology
+condition require separate implementation and review.
+
+
+## Opt-in open generation and plan scopes (2026-10-06)
+
+The intended new main condition uses `open_generated` pre-execution planning
+with `plan_scoped_v1` execution. The planner invents the bounded topology and
+intermediate artifacts; authored outlines are diagnostics, not menu options.
+Historical adaptive execution retains its interpretation and scores. New
+configuration/runtime/grammar identities require compatible qualification.
+
+Declared imports grant permissions, not mandatory consumption or semantic
+independence. Direct imports, transitive provenance, metadata/messages/context,
+allowed-unused inputs and denied requests are reported separately. Original
+public sources remain available to every assignment. Same-owner assignments
+start fresh contexts unless grouped as one unit; identity loss is persistent.
+Common JIT alone admits scoped repair overlays on public incident triggers.
+No hidden evaluator outcome changes plans, targets or repair selection.
+
+Correctness, budget, execution status and contract conformance are separate.
+Delivered unauthorized content is retained as a protocol-violation observation,
+not an intended-condition success or an excluded row. Historical deviations
+are descriptive. Unknown visibility stays unknown. See OPEN_PLANNING_RUNBOOK.md
+for implemented surfaces, evidence limits and the unapproved engineering scope.

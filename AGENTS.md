@@ -60,3 +60,22 @@ Milestones and limitations are tracked in `docs/STATUS.md`.
   planner inputs. Missing qualified tasks, calibration and memory tests stay blocked.
 - CPU reference matrix results do not authorize new variable-pool GPU campaigns
   or expand the legacy Jaffle clean/F(w0)/F(w1) exception.
+
+## Open planning and plan scoped execution
+
+- The intended new main condition is `planning_lane=open_generated` with
+  `execution_contract=plan_scoped_v1`. It is opt-in; historical manifests retain
+  adaptive behavior. Authored outlines are diagnostics, not the generator's menu.
+- Read `docs/OPEN_PLANNING_RUNBOOK.md`. Keep planning pre-execution and common
+  workers, public monitoring and JIT across planners. No controller training.
+- Declared imports are permissions, not required reads or proof of independence.
+  Keep correctness, budget, conformance and execution status separate; retain
+  protocol-violation rows. Denied attempts are charged, not delivered edges.
+- Mediate observations, tools, registries, messages and restored assignment
+  histories through `AssignmentScopes`. All task-authorized original sources
+  remain available. New units start fresh contexts without resetting identity loss.
+- Recovery changes only explicitly admitted assignment scopes through recorded
+  common-JIT overlays. Ordinary denied reads do not authorize an overlay.
+- New grammars, observation contracts and runtime hashes require renewed controls.
+  CPU doubles/reference tests are not generated-plan or GPU competence evidence.
+  Existing stock/Jaffle exceptions do not authorize open-generated task execution.

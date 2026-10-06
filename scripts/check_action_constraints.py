@@ -197,7 +197,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
     parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
-    parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1") + tuple(f"reporecourse-{kind}-v2-pool-{n}" for kind in ("json", "plan") for n in range(2,9)), default="sqlite-json-schema-v1")
+    parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1") + __import__("reporecourse.action_schema",fromlist=["V2_MODES"]).V2_MODES, default="sqlite-json-schema-v1")
     parser.add_argument("--frontend-report", type=Path)
     args = parser.parse_args()
     if args.qualified_lock and args.qualified_lock.exists():
