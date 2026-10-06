@@ -1,5 +1,30 @@
 # Implementation status and handoff
 
+## Measured planner-output failure and offline capacity review (2026-10-06)
+
+The user supplied CPU job 1087414, exit 2:0 after 00:03:56, and packet
+`d8b8502e01c6dfccf66f00d3872438e021f409418aa5d355df8eabd95483dfe2`
+from `rr-open-footprint.kjzVxE`. All five actions passed recorded grammar
+acceptance. The 2-/7-/24-unit actions plus one stop measured 189/629/2125 tokens;
+the worker reads measured 12/70. All input reservations fit the existing context.
+The 24-unit serialization exceeded the 2048 output cap by 77 before reasoning.
+The packet correctly reports `failed_cpu_cases`; no model executed. These are
+user-supplied measurements; the full remote packet is not present locally.
+
+Added `scripts/review_rr_planner_capacity.py`, a stdlib-only, read-only review
+of the actual measured packet. It checks recorded integrity, proposal/model and
+grammar bindings, case hashes, counts and historical admission decisions without
+regenerating observations or recomputing historical qualification keys. Default
+candidate planner caps are 2048/3072/4096 with explicitly hypothetical combined
+reasoning/delimiter/formatting reserves of 0/512/1024/2048. Worker cap and context
+remain unchanged. No candidate is selected, no qualification is granted, no
+manifest is produced and no historical evidence is overwritten.
+
+Larger planner caps require separate implementation/qualification review: current
+qualification keys bind output 2048 and the footprint runner enforces that cap.
+Do not edit a manifest/lock to bypass it. See the capacity-review section of
+OPEN_FOOTPRINT_QUALIFICATION.md for the offline command and interpretation.
+
 ## Footprint qualification runner implemented (2026-10-06)
 
 The separately versioned task-free footprint runner now prepares three exact

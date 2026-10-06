@@ -214,3 +214,54 @@ result for this protocol has been obtained locally. The pinned optional stack
 is not available in the local test environment. No GPU submission command is
 provided at this stage. After the CPU review, a separately authorized preflight
 can measure eligible cases; even a complete pass grants no task permissions.
+
+
+## Measured output-cap failure: offline review
+
+The user-supplied packet `d8b8502e01c6dfccf66f00d3872438e021f409418aa5d355df8eabd95483dfe2`
+reports 2125 action-plus-stop tokens for `plan_24`, exceeding 2048 by 77.
+All five grammars and context reservations passed; no model inference occurred.
+The job's exit 2 is a measured case failure, not evidence that the CPU runner
+crashed. Preserve this packet and do not repeat the unchanged measurement.
+
+The new read-only review compares candidate planner output allowances with
+recorded token counts. Default scenarios are **not recommended new settings**:
+
+| Candidate planner cap | Headroom after this 2125-token action | Maximum planner input at context 16384 |
+| --- | ---: | ---: |
+| 2048 | -77 | 14336 |
+| 3072 | 947 | 13312 |
+| 4096 | 1971 | 12288 |
+
+Headroom must accommodate any reasoning, delimiters and serialization differences.
+No such usage has been measured for complete-plan generation. The tool reports
+hypothetical combined reserves of 0, 512, 1024 and 2048; they are not quantiles,
+calibration or predictions. The 24-unit case fits the 1024-reserve arithmetic
+at 4096 but not 3072; it does not fit a 2048 reserve at either candidate. Existing
+approximately 14k-input preflight evidence cannot qualify those larger output
+reservations within a fixed 16k context. Short observed footprint prompts do fit
+those reservation sums; this says nothing about accumulated planning histories.
+
+After pushing/pulling the review script, run on Jupyter without a batch job:
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_CAPACITY="$(mktemp -d "$BC_STORAGE/diagnostics/rr-planner-capacity.XXXXXX")"
+
+"$BC_PYTHON" -I -S scripts/review_rr_planner_capacity.py \
+  --packet "$BC_STORAGE/diagnostics/rr-open-footprint.kjzVxE/cpu-packet.json" \
+  --planner-caps 2048 3072 4096 \
+  --non-action-reserves 0 512 1024 2048 \
+  --output "$BC_CAPACITY/review.json"
+```
+
+This reads the original full packet and emits a fresh report; it runs no tokenizer,
+model, SQL, scheduler command or historical runtime code. It cannot independently
+authenticate the source files or scheduler history. Worker output stays 2048;
+`selected_planner_output_cap` and `measured_reasoning_tokens` remain null.
+A candidate's arithmetic fit never changes `task_execution_allowed` or grants
+GPU submission. Current decoder qualification keys and the synthetic runner bind
+output 2048. A later allowance change needs an explicit versioned contract and
+fresh compatible evidence; manually changing old locks/manifests is invalid.

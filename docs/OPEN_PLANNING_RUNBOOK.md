@@ -2,6 +2,12 @@
 
 ## Current next step
 
+The first measured footprint packet failed because the 24-unit action plus stop
+requires 2125 tokens at a 2048 output cap. Preserve that result. The next command
+is the stdlib-only planner-capacity review documented in the final section of
+[OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md), not an unchanged
+CPU rerun or GPU submission. Candidate-cap arithmetic does not change settings.
+
 The scoped A100 preflight and its full offline audit have been reviewed alongside
 the supplied scheduler completion. The next qualification is specified in
 [OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md): CPU token and
