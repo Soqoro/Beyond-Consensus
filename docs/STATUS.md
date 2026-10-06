@@ -1,5 +1,58 @@
 # Implementation status and handoff
 
+## Footprint qualification runner implemented (2026-10-06)
+
+The separately versioned task-free footprint runner now prepares three exact
+plan-output cases (2/7/24 units) and two observations through the actual scoped
+runtime. It reuses production message construction and the existing constrained
+backend, grammar locks, snapshot and shared-registry submission path. CPU
+measurement is an explicit offline tokenizer/grammar step with no model weights;
+stdlib preparation and CLI help remain available without that optional stack.
+
+The measured packet binds the blocked proposal, model profile, both locks,
+source, cases, prompt hashes and CPU measurements. Oversized or rejected cases
+remain failed and undispatched; no cap enlargement or plan simplification occurs.
+GPU generation is limited to one call per eligible case, at most five calls,
+with exact-response, structural, EOS, token and memory evidence checks. Unknown
+usage remains reserved and stops further dispatch. The task runner rejects this
+new manifest, and all task/campaign/competence/worst-case-fit flags stay false.
+
+CPU doubles exercise negative visibility, over-cap admission, duplicate keys,
+incomplete responses, unknown accounting, input mismatch, immutable bindings and
+preflight-only routing. Actual optional-stack CPU measurement and GPU inference
+remain unperformed. Follow OPEN_FOOTPRINT_QUALIFICATION.md to prepare a fresh CPU
+packet for review before any GPU submission. No jobs, downloads or pushes were
+performed locally.
+
+Final local validation: 378 tests ran, 357 passed and 21 optional dependency/
+integration tests skipped. All 10 shell checks, compileall, stdlib CLI help and
+diff whitespace checks passed. No optional-stack tokenizer measurements or GPU
+results are implied by these local tests.
+
+## Scoped preflight reviewed; next qualification specified (2026-10-06)
+
+The uploaded full single-preflight audit for experiment `c634622159286dcc20ce6424c4f0f5da0cb160d3d40b2dfb29ce861dc11c6d9e`
+reports verified internal bindings, empty errors, and verified snapshot inventory.
+Its source commit matches the supplied passing CPU qualification; its recorded
+Slurm job 1087371/task 0 matches separately supplied COMPLETED/0:0 accounting.
+The reviewed report records 16 calls and 237560 tokens on A100-SXM4-80GB. This
+is an observed synthetic sequence, not full-output-cap or task qualification.
+
+The user generated blocked proposal
+`2b050af79f31234bd9607cdb6244b321145f00069f0ddd72f9300e944cd78388`
+from the actual historical stock manifest and matching lock. Its reported limits
+are 100000 tokens, 1200 CPU seconds, eight planner calls and at most two execution
+branches. Existing records remain immutable; blockers are not automatically
+cleared by attaching the preflight audit.
+
+[OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md) specifies the
+next task-free CPU/GPU qualification for review: three supplied-plan serialization
+cases (2/7/24 units) and two scoped observation cases. Tokenizer measurement and
+negative visibility controls precede at most five GPU calls. Over-cap cases are
+reported, not silently reduced. This specification now has the separate runner described above; it is not a
+measured result or task approval. No jobs or model/SQL executions were
+performed to prepare it. Production open-task execution remains blocked.
+
 ## Scoped reference publication names corrected (2026-10-06)
 
 The supplied CPU job 1087335 failed qualification. Its existing v2 suite passed

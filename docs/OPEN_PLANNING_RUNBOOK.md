@@ -1,5 +1,17 @@
 # Open planning and scoped execution runbook
 
+## Current next step
+
+The scoped A100 preflight and its full offline audit have been reviewed alongside
+the supplied scheduler completion. The next qualification is specified in
+[OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md): CPU token and
+grammar measurements, then a separately approved task-free five-case GPU probe.
+That protocol has a separate task-free runner and CPU packet; it is not the
+existing isolated-history preflight.
+Do not rerun the old preflight to claim planner-output capacity or submit task
+branches from the blocked proposal. The specification records the reviewed
+evidence and exact cases, limits, pass criteria and implementation handoff.
+
 Date: 2026-10-06. Local implementation only. No GPU inference, submission,
 training, commits or pushes were performed. The requested
 `reporecourse_environment_design_v0_2.md` was not found; the supplied October 6

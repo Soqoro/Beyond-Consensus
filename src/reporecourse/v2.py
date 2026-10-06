@@ -213,6 +213,20 @@ def freeze(req,public,plan,resources,events,mode,attempt=0,catalog_info=None):
     return {**base,'frozen_id':digest(base)}
 
 
+def planner_messages(req):
+    """Shared task/qualification rendering; qualification instructions are separate."""
+    system=('Propose a division of labour, not implementations. One JSON action each turn. '
+        'Allowed: {"tool":"read_source","name":"source ID"} or {"tool":"submit_plan","plan":...}. '
+        'Plan schema rr-work-plan-v2: id, units; each unit has id, worker, outputs, depends, description, '
+        'produces (artifact name to sql/schema/mapping), consumes (alias to unit/artifact/format), sources. '
+        'For rr-open-planning-v1 add interfaces (produced artifact name to bounded public interface prose) '
+        'and terminal_bindings (required output ID to produced artifact ID, empty for helpers). '
+        'Invent any bounded acyclic structure, intermediate names and owners. No menu of named outlines. '
+        'Cover every terminal output once. No final artifacts or code. Prose is audited, not proof of absence of answers. '
+        'Workers use the public restricted SQL/schema/mapping artifact tools.')
+    return [{'role':'system','content':system},{'role':'user','content':__import__('json').dumps(req['planner_input'])}]
+
+
 class PromptedPlanner:
     """Frozen backend adapter; bounded public reads/revisions, no execution tools."""
     def __init__(self,backend,output_cap=2048,evidence_mode='real_model'):
@@ -223,16 +237,7 @@ class PromptedPlanner:
         if c.get('planning_lane') not in (None,'open_generated'):raise Rejected('generated_planner_lane')
         if c.get('planner_output_cap',self.output_cap)!=self.output_cap:raise Rejected('planner_output_allowance_mismatch')
         if req['public_hash']!=digest(public):raise Rejected('task_changed')
-        system=('Propose a division of labour, not implementations. One JSON action each turn. '
-            'Allowed: {"tool":"read_source","name":"source ID"} or {"tool":"submit_plan","plan":...}. '
-            'Plan schema rr-work-plan-v2: id, units; each unit has id, worker, outputs, depends, description, '
-            'produces (artifact name to sql/schema/mapping), consumes (alias to unit/artifact/format), sources. '
-            'For rr-open-planning-v1 add interfaces (produced artifact name to bounded public interface prose) '
-            'and terminal_bindings (required output ID to produced artifact ID, empty for helpers). '
-            'Invent any bounded acyclic structure, intermediate names and owners. No menu of named outlines. '
-            'Cover every terminal output once. No final artifacts or code. Prose is audited, not proof of absence of answers. '
-            'Workers use the public restricted SQL/schema/mapping artifact tools.')
-        messages=[{'role':'system','content':system},{'role':'user','content':__import__('json').dumps(req['planner_input'])}]
+        messages=planner_messages(req)
         events=[];plan={};bad=0;accepted=False;terminal_error=None
         for call in range(c['planning_calls']):
             before=len(r.events);start=time.process_time();key=None;g=None;dispatched=False

@@ -6,6 +6,9 @@ from .util import BCError
 
 
 def add_parsers(sub):
+    p = sub.add_parser("rr-open-footprint-manifest", help="Freeze measured task-free footprint qualification only")
+    for name in ("packet", "model-lock", "output"):
+        p.add_argument("--"+name, type=Path, required=True)
     p = sub.add_parser('rr-v2-competence-manifest', help='One synthetic-stock clean worker diagnostic; no campaign')
     for name in ('sources','model-lock','qualification','preflight-audit','output'):
         p.add_argument('--'+name,type=Path,required=True)
@@ -52,6 +55,12 @@ def dispatch(args):
     from reporecourse.qualification import qualify,inventory,run_reference
     from reporecourse.experiments import build,calibration_plan,aggregate
     command=args.command
+    if command == "rr-open-footprint-manifest":
+        from .experiments.rr_open_footprint import build
+        from .cli import ROOT
+        result = build(ROOT, load(args.packet), load(args.model_lock))
+        write_new(args.output, result)
+        return dict(report=str(args.output), experiment_id=result["experiment_id"], planned_episodes=0, model_executed=False)
     if command == 'rr-v2-competence-manifest':
         from .experiments.rr_v2_competence import build
         from .cli import ROOT

@@ -180,6 +180,9 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     if data.get("schema") == "rr-v2-stock-competence-v1":
         from .rr_v2_competence import validate
         return validate(data)
+    if data.get("schema") == "rr-open-footprint-manifest-v1":
+        from .rr_open_footprint import validate
+        return validate(data)
     if data.get("schema") == "rr-v2-preflight-manifest-v1":
         from .rr_v2_preflight import validate
         return validate(data)

@@ -154,9 +154,7 @@ def sequence(backend, pool, switch, memory, *, full_budget_stress=False):
     return rows
 
 
-def run(m, lock_path, root):
-    probe_cpu_start = time.process_time()
-    probe_wall_start = time.monotonic()
+def qualified_backend(m, lock_path, root):
     worker = read_json(lock_path)
     check_submission(m, worker, root, "preflight", 1)
     from ..models.competence import require_qualification, versions
@@ -181,6 +179,14 @@ def run(m, lock_path, root):
         return dict(allocated_bytes=cuda.memory_allocated(0), reserved_bytes=cuda.memory_reserved(0),
                     peak_allocated_bytes=cuda.max_memory_allocated(0),
                     peak_reserved_bytes=cuda.max_memory_reserved(0), free_bytes=free, total_bytes=total)
+    return backend, switch, memory
+
+
+def run(m, lock_path, root):
+    probe_cpu_start = time.process_time()
+    probe_wall_start = time.monotonic()
+    worker = read_json(lock_path)
+    backend, switch, memory = qualified_backend(m, lock_path, root)
     stress = m["protocol"] == STRESS_PROTOCOL
     rows = sequence(backend, m["pool"], switch, memory, full_budget_stress=stress)
     passed = len(rows) == 2*(m["pool"]+1) and all(r["passed"] for r in rows)
