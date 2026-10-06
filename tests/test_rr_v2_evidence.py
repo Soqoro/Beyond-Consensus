@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from beyond_consensus.experiments import rr_v2_preflight as probe
-from beyond_consensus.experiments.rr_v2_evidence import audit
+from beyond_consensus.experiments.rr_v2_evidence import audit, audit_normal
 from beyond_consensus.util import digest, file_hash
 
 
@@ -25,7 +25,8 @@ class EvidenceTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data))
 
-    def make(self, label, stress):
+    def make(self, label, stress, scoped=False, wrong_grammar=False):
+        suffix = 'scoped-v1' if scoped and not wrong_grammar else 'v2'
         locks = {}
         for role in ('json', 'plan'):
             locks[role] = dict(checkpoint='Qwen/Qwen3.5-27B',
@@ -34,12 +35,12 @@ class EvidenceTests(unittest.TestCase):
                 model_path='/test/model', tokenizer_path='/test/tokenizer',
                 metadata_hashes={'config.json': 'fake'}, weight_hashes={'weights': 'fake'},
                 decoder_qualification=dict(status='passed', model_executed=False, sql_executed=False,
-                    context_limit=16384, contract={'mode': f'reporecourse-{role}-v2-pool-7'},
+                    context_limit=16384, contract={'mode': f'reporecourse-{role}-{suffix}-pool-7'},
                     qualification_key=role, packages={'torch': 'test'},
                     effective_generation_tokens={'eos_token_id': [1], 'pad_token_id': 1},
                     thinking_template={'template_hash': 'test'}))
         with patch.object(probe, 'check_locks'), patch.object(probe, 'source_revision', return_value='test-source'):
-            m = probe.build(Path('.'), locks['json'], locks['plan'], 7, full_budget_stress=stress)
+            m = probe.build(Path('.'), locks['json'], locks['plan'], 7, full_budget_stress=stress, plan_scoped=scoped)
         snapshot_id = digest(label); snapshot = self.snapshots/snapshot_id
         self.write(snapshot/'resolved/manifest.json', m)
         self.write(snapshot/'resolved/model-lock.json', locks['json'])
@@ -122,3 +123,22 @@ class EvidenceTests(unittest.TestCase):
     def test_unsafe_snapshot_reference_rejected(self):
         self.mutate(lambda r:r['runtime'].update(snapshot_id='../escape'))
         self.assertEqual(self.check()['status'], 'failed')
+
+
+    def test_single_scoped_sequence_is_not_paired_qualification(self):
+        normal = self.make('scoped', False, scoped=True)
+        result = audit_normal(normal, self.snapshots)
+        self.assertEqual(result['status'], 'verified_internal_bindings_review_pending')
+        self.assertEqual(result['schema'], 'rr-v2-preflight-single-audit-v1')
+        for key in ('task_execution_allowed', 'stress_evidence_verified',
+                    'worst_case_fit_established', 'model_executed', 'sql_executed'):
+            self.assertFalse(result[key])
+        self.assertEqual(len(result['evidence']), 1)
+        self.assertEqual(audit(normal, self.stress, self.snapshots)['status'], 'binding_mismatch')
+
+    def test_single_wrong_grammar_missing_and_stress_reports_fail(self):
+        wrong = self.make('wrong-grammar', False, scoped=True, wrong_grammar=True)
+        self.assertEqual(audit_normal(wrong, self.snapshots)['status'], 'failed')
+        self.assertEqual(audit_normal(self.stress, self.snapshots)['status'], 'failed')
+        (self.normal/'preflight.json').unlink()
+        self.assertEqual(audit_normal(self.normal, self.snapshots)['status'], 'failed')

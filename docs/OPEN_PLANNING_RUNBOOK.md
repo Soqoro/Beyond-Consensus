@@ -296,3 +296,46 @@ After reviewing/pushing the correction, repeat the CPU workflow above with a
 reports intact. Do not rerun its old snapshot or proceed to GPU qualification
 until the new CPU controls and grammar reports pass. Local unit results do not
 substitute for this fresh pinned execution qualification.
+
+
+### Scoped pool-seven preflight: reported result and offline audit
+
+The user supplied a successful CPU qualification from
+`rr-open-fix.T7sJw0`, frozen commit
+`f4c25a0c028cbb2e730f791eff9e753b8335b3fa`: fixtures and both scoped
+grammars passed, with both qualified locks present. The subsequent preflight
+`c634622159286dcc20ce6424c4f0f5da0cb160d3d40b2dfb29ce861dc11c6d9e`
+reported `passed_observed_sequence` on NVIDIA A100-SXM4-80GB: all 16 calls
+(seven workers plus planner, two rounds) passed using one model instance,
+237560 tokens, zero uncertain tokens and 1178.78 seconds wall time.
+These are user-supplied summaries, not independently verified local artifacts.
+Worst-case fit and task execution remain false; this is not task competence.
+
+The offline preflight auditor now derives grammar names from the frozen
+execution contract and supports explicit `--normal-only`. That mode emits
+`rr-v2-preflight-single-audit-v1`, separate from the paired normal/stress audit;
+it cannot replace paired stress evidence or authorize task execution. Frozen
+snapshot, manifest, lock, runtime, call and accounting checks remain required.
+No historical reports, model settings or execution behavior are changed.
+
+After pushing/pulling the auditor update, audit the existing run without
+resubmitting it. Use a fresh output directory:
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_OPEN="$BC_STORAGE/diagnostics/rr-open-fix.T7sJw0"
+export BC_OPEN_AUDIT="$(mktemp -d "$BC_OPEN/provenance.XXXXXX")"
+
+"$BC_PYTHON" -I scripts/audit_rr_v2_preflights.py \
+  --normal-only \
+  --normal-run "$BC_STORAGE/outputs/qwen27b-na100/c634622159286dcc20ce6424c4f0f5da0cb160d3d40b2dfb29ce861dc11c6d9e-preflight" \
+  --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_OPEN_AUDIT/audit.json"
+```
+
+Review the audit and the submission receipt's job ID with `sacct` before
+preparing the next bounded proposal. Scheduler completion is not verified by
+this offline auditor. A passing audit means internal bindings were verified;
+production open-planning tasks remain blocked pending their separate gates.

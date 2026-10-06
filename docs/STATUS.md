@@ -1453,3 +1453,24 @@ executable artifact, without an independently checked text-to-IR round trip.
 No native source cardinalities were measured. The read-only inspection used no
 model or SQL, and no historical artifact or score was modified. Full report and
 review pause are linked above.
+
+
+### Scoped pool-seven preflight: reported result and offline audit
+
+The user supplied a successful CPU qualification from
+`rr-open-fix.T7sJw0`, frozen commit
+`f4c25a0c028cbb2e730f791eff9e753b8335b3fa`: fixtures and both scoped
+grammars passed, with both qualified locks present. The subsequent preflight
+`c634622159286dcc20ce6424c4f0f5da0cb160d3d40b2dfb29ce861dc11c6d9e`
+reported `passed_observed_sequence` on NVIDIA A100-SXM4-80GB: all 16 calls
+(seven workers plus planner, two rounds) passed using one model instance,
+237560 tokens, zero uncertain tokens and 1178.78 seconds wall time.
+These are user-supplied summaries, not independently verified local artifacts.
+Worst-case fit and task execution remain false; this is not task competence.
+
+The offline preflight auditor now derives grammar names from the frozen
+execution contract and supports explicit `--normal-only`. That mode emits
+`rr-v2-preflight-single-audit-v1`, separate from the paired normal/stress audit;
+it cannot replace paired stress evidence or authorize task execution. Frozen
+snapshot, manifest, lock, runtime, call and accounting checks remain required.
+No historical reports, model settings or execution behavior are changed.

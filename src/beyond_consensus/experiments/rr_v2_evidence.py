@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 
 from ..util import BCError, digest, file_hash, read_json
-from .rr_v2_preflight import PROTOCOL, STRESS_PROTOCOL, validate
+from .rr_v2_preflight import PROTOCOL, STRESS_PROTOCOL, grammar, validate
 from .snapshot import verify_snapshot
 
 
@@ -42,7 +42,7 @@ def inspect(run, snapshots, protocol):
     for role, lock in (('json', worker), ('plan', planner)):
         q = lock['decoder_qualification']
         require(q['status'] == 'passed' and q['model_executed'] is False and q['sql_executed'] is False, 'Invalid historical grammar report')
-        require(q['context_limit'] == 16384 and q['contract']['mode'] == f'reporecourse-{role}-v2-pool-{manifest["pool"]}', 'Grammar scope mismatch')
+        require(q['context_limit'] == 16384 and q['contract']['mode'] == grammar(manifest, role), 'Grammar scope mismatch')
         require(q['qualification_key'] == report['qualification_keys'][role], 'Grammar key mismatch')
         for name, version in runtime['dependencies'].items():
             require(q['packages'].get(name) == version, 'Runtime/grammar dependency mismatch: '+name)
@@ -128,5 +128,29 @@ def audit(normal_run, stress_run, snapshots):
         limitations=['File integrity is not independent authenticity.',
             'Historical grammar keys are linked to frozen locks; not regenerated with current source or Python.',
             'Scheduler completion and changed source files require review.',
+            'No task competence, B0 or campaign approval is conferred.'],
+        analysis_cpu_seconds=time.process_time()-start)
+
+
+def audit_normal(normal_run, snapshots):
+    """Inspect one observed sequence; never substitute for paired stress evidence."""
+    start = time.process_time()
+    evidence = []; errors = []
+    try:
+        row = dict(role='normal', **inspect(normal_run, snapshots, PROTOCOL))
+        row.pop('implementation')
+        evidence.append(row)
+    except (BCError, OSError, ValueError, KeyError, IndexError, TypeError, AttributeError) as exc:
+        errors.append({'role': 'normal', 'error': str(exc)})
+    return dict(schema='rr-v2-preflight-single-audit-v1',
+        status='failed' if errors else 'verified_internal_bindings_review_pending',
+        model_executed=False, sql_executed=False, historical_scores_changed=False,
+        task_execution_allowed=False, worst_case_fit_established=False,
+        stress_evidence_verified=False, evidence=evidence, errors=errors,
+        scheduler_completion_verified=False, historical_grammar_key_recomputed=False,
+        limitations=['Observed normal sequence only; no paired full-budget stress evidence.',
+            'File integrity is not independent authenticity.',
+            'Historical grammar keys are linked to frozen locks, not regenerated.',
+            'Scheduler completion requires separate review.',
             'No task competence, B0 or campaign approval is conferred.'],
         analysis_cpu_seconds=time.process_time()-start)
