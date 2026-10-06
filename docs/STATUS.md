@@ -1,5 +1,29 @@
 # Implementation status and handoff
 
+## Scoped reference publication names corrected (2026-10-06)
+
+The supplied CPU job 1087335 failed qualification. Its existing v2 suite passed
+21 tests; the combined scoped/regression suite reported 12 failing subcases,
+all synthetic-stock independent/shared/grouped cases for pools 2 and 8, clean
+and F. The reference actions published `stock` and `zero`, while scoped authored
+plans declared `stock_report` and `zero_report`. The `scope_denied` results were
+correct enforcement of that mismatch, not evidence of model failure.
+
+The scoped synthetic reference driver now aligns publication names and symbolic
+version references with its authored terminal mapping. SQL/schema/mapping
+programs, private fixture files, legacy adaptive drivers, scope authorization and
+historical scores are unchanged. This is reference-driver bookkeeping, not a
+worker action rewrite or permission relaxation. New stdlib regression checks
+cover both fixtures, four outlines and every pool 2–8, plus actual admission of
+the stock actions and rejection of undeclared names.
+
+Local validation: 368 tests ran, 347 passed and 21 dependency/integration tests
+skipped; shell checks, compileall, stdlib CLI help and diff checks passed.
+The reproduced admission failure now passes locally, but pinned child execution
+still requires a fresh cluster CPU qualification. Preserve the failed directory
+`rr-open.xpK6b4` and job logs; do not overwrite or label that run qualified.
+No GPU inference, job submission, commit or push was performed for this fix.
+
 ## Open planning and assignment scopes implemented locally (2026-10-06)
 
 The user selected open-generated topology as the intended new main condition.

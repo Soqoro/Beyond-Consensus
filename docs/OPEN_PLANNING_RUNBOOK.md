@@ -237,8 +237,9 @@ required; F has an additional clean-conformance review and approval gate.
 
 ## Local verification and unresolved integration tests
 
-Final local run: **366 tests, 345 passed, 21 skipped**. The scoped module has
-25 tests, 22 passed and three skipped. All 10 shell files passed the repository
+Latest local run after the reference-name correction: **368 tests, 347 passed,
+21 skipped**. The scoped module has 27 tests, 24 passed and three skipped.
+All 10 shell files passed the repository
 shell checker; compileall, `git diff --check`, and both CLI help commands under
 `python -I -S` passed. These are implementation checks, not qualification of new
 model planning, scoped task competence, or a larger memory footprint.
@@ -279,3 +280,19 @@ qualification remain pending. The injected-backend vertical slice is implemented
 but its actual SQL execution test also awaits those pinned dependencies. M3 is
 a blocked, hash-bound engineering proposal and synthetic preflight dry run;
 there is no approved production open-planning task dispatcher in this update.
+
+### CPU job 1087335: reference-driver correction
+
+The supplied failed cluster run reached actual pinned execution tests. Twelve
+synthetic-stock subcases rejected the reference driver's `stock`/`zero`
+publication names because the scoped authored plans declared
+`stock_report`/`zero_report`. The correction changes only the new scoped
+reference driver's publication names and symbolic version references; programs,
+legacy drivers and runtime permission checks are preserved. A stdlib regression
+now catches this mismatch even where compiler integration tests must skip.
+
+After reviewing/pushing the correction, repeat the CPU workflow above with a
+**new** `BC_OPEN` directory and frozen source. Keep `rr-open.xpK6b4` and its failed
+reports intact. Do not rerun its old snapshot or proceed to GPU qualification
+until the new CPU controls and grammar reports pass. Local unit results do not
+substitute for this fresh pinned execution qualification.

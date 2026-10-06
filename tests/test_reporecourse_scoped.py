@@ -86,6 +86,42 @@ class ScopedTests(unittest.TestCase):
         # Safe schema reuse is allowed by old runtime, with explicit binding.
         e.action(w,pub(v['outputs'][0],{'fields':{},'output_schema':{'$ref':'rr:peer'}}, {'peer':version},fmt='mapping',outputs=v['outputs']))
 
+    def test_scoped_reference_names_match_every_authored_contract_without_changing_programs(self):
+        for task in ('synthetic-stock','synthetic-nullable'):
+            private=private_task(task);original=deepcopy(private)
+            for pool in range(2,9):
+                for outline in ('independent','shared','grouped','branch_rejoin'):
+                    with self.subTest(task=task,pool=pool,outline=outline):
+                        p,c,_=prepared(task,pool)
+                        plan=v2.fixture_rejoin(p,c)[0] if outline=='branch_rejoin' else v2.authored_plan(p,c,outline)
+                        driver=v2.fixture_witness(p,private,c,outline)
+                        declarations={name:(u,fmt) for u in plan['units'] for name,fmt in u['produces'].items()}
+                        actions=[r['action'] for r in driver['actions']]
+                        self.assertEqual({a['name'] for a in actions},set(declarations))
+                        for action in actions:
+                            unit,fmt=declarations[action['name']]
+                            self.assertEqual(action['format'],fmt)
+                            for output in action['obligations']:
+                                self.assertIn(output,unit['outputs'])
+                                self.assertEqual(action['name'],unit.get('terminal_bindings',{}).get(output,output))
+                            for value in action['bindings'].values():
+                                if value.startswith('@'):self.assertIn(value[1:],declarations)
+                        if outline!='branch_rejoin':
+                            legacy=v2.fixture_witness(p,private,v2.configuration(pool),outline)
+                            self.assertEqual([a['content'] for a in actions],[r['action']['content'] for r in legacy['actions']])
+                            source='independent' if outline=='grouped' else outline
+                            self.assertEqual(legacy['actions'],next(w['actions'] for w in private['witnesses'] if w['organization']==source))
+            self.assertEqual(private,original)
+
+    def test_stock_reference_is_admitted_but_undeclared_name_still_denied(self):
+        e,p,c,plan=self.env(task='synthetic-stock')
+        driver=v2.fixture_witness(p,private_task('synthetic-stock'),c,'independent')
+        for unit,row in zip(plan['units'],driver['actions']):
+            w=self.begin(e,unit);action=row['action']
+            e.scopes.authorize(w,action)
+            bad=deepcopy(action);bad['name']='undeclared_name'
+            with self.assertRaisesRegex(Rejected,'scope_denied'):e.scopes.authorize(w,bad)
+
     def test_messages_checkpoint_and_restore_scoped(self):
         e,p,c,plan=self.env();u,v=plan['units'];w=self.begin(e,u)
         cp=e.action(w,{'tool':'checkpoint'})['checkpoint']

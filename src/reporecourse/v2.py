@@ -594,4 +594,23 @@ def fixture_witness(public, private, config, organization):
     source='independent' if organization=='grouped' else organization
     witness=next((w for w in private['witnesses'] if w['organization']==source),None)
     if witness is None:raise Rejected('fixture_witness_unavailable')
-    return {**deepcopy(witness),'organization':organization,'reference_program_source':source}
+    result={**deepcopy(witness),'organization':organization,'reference_program_source':source}
+    if config.get('execution_contract')=='plan_scoped_v1':
+        # Historical drivers may bind an output under a different artifact
+        # name (stock -> stock_report). Only the new diagnostic driver adopts
+        # its authored plan's explicit publication contract. No worker program,
+        # stored witness, legacy behavior or scope permission is rewritten.
+        plan=authored_plan(public,config,organization)
+        terminal={o:u.get('terminal_bindings',{}).get(o,o) for u in plan['units'] for o in u['outputs']}
+        renames={}
+        for row in result['actions']:
+            action=row['action']
+            names={terminal[o] for o in action['obligations']}
+            if len(names)>1:raise Rejected('fixture_publication_contract')
+            if names:renames[action['name']]=next(iter(names))
+        for row in result['actions']:
+            action=row['action'];action['name']=renames.get(action['name'],action['name'])
+            action['bindings']={alias:'@'+renames.get(value[1:],value[1:]) if value.startswith('@') else value
+                                for alias,value in action['bindings'].items()}
+        result['reference_publication_contract']='authored-plan-scoped-v1'
+    return result
