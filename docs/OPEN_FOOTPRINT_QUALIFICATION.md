@@ -29,7 +29,7 @@ was never performed. That evidence must be linked and reviewed against the
 implementation used by this new qualification. Do not edit the old proposal or
 audit to clear blockers.
 
-## Frozen settings
+## Original v1 frozen settings
 
 - Qwen/Qwen3.5-27B, revision/tokenizer
   `fc05daec18b0a78c049392ed2e771dde82bdf654`, BF16, thinking enabled,
@@ -262,6 +262,76 @@ model, SQL, scheduler command or historical runtime code. It cannot independentl
 authenticate the source files or scheduler history. Worker output stays 2048;
 `selected_planner_output_cap` and `measured_reasoning_tokens` remain null.
 A candidate's arithmetic fit never changes `task_execution_allowed` or grants
-GPU submission. Current decoder qualification keys and the synthetic runner bind
-output 2048. A later allowance change needs an explicit versioned contract and
-fresh compatible evidence; manually changing old locks/manifests is invalid.
+GPU submission. The original v1 contract binds output 2048. The later v2 condition
+below requires fresh compatible evidence; manually changing old locks/manifests
+is invalid.
+
+
+## Planner-4096 condition v2
+
+The user authorized this separate engineering qualification after reviewing the
+2048/3072/4096 comparison. It does not change a production task setting or edit the
+blocked proposal. The proposal supplies the unchanged worker/model baseline; the
+new hash-bound profile records the explicit planner-only output change.
+
+| Setting | Worker | Planner |
+| --- | ---: | ---: |
+| Output cap, including reasoning | 2048 | 4096 |
+| Maximum rendered input | 14336 | 12288 |
+| Total context | 16384 | 16384 |
+
+Protocol is `rr-open-footprint-planner4096-v2`; CPU packet, manifest and GPU report
+use `rr-open-footprint-{cpu,manifest,report}-v2`. The embedded role-cap profile is
+`rr-open-footprint-profile-v2`, which cannot run through the older isolated-history
+probe. Defaults remain v1/2048. All five original cases remain, with planner input
+metadata reflecting its 4096 cap. Plans, expected actions, worker scopes and
+visibility controls are unchanged. Re-render and measure all prompts; do not copy
+old counts. No automatic retries or smaller-plan substitutions are added.
+
+Qualification keys include the actual output allowance. `check_action_constraints.py`
+accepts `--output-cap 4096` only for the scoped pool-seven planner with context
+16384. Script/backend changes invalidate the old current-source keys, so renew
+**both** worker-2048 and planner-4096 locks. Historical locks remain intact.
+The runtime loads one frozen model, then switches grammar and output allowance
+by role. Unknown usage reserves the appropriate input-plus-output allowance and
+stops further dispatch. Every fresh CPU case must pass before a v2 GPU manifest
+can be built or submitted. Even a GPU pass is observed-case evidence only;
+worst-case fit, autonomous planning competence and task permission remain false.
+
+### CPU commands inside a frozen-source batch allocation
+
+Use a new diagnostics directory and a clean committed source worktree, following
+the browser-terminal workflow. Set `BC_CAP4096` to that directory, with the frozen
+checkout in `source`, `BC_BASE_LOCK` to the staged 27B base model lock, and
+`BC_PROPOSAL` to the existing blocked proposal. Run this block **inside the CPU
+batch allocation**, using the explicit Python path. Do not submit this source
+block itself as a Slurm script using relative paths.
+
+```bash
+set -euo pipefail
+cd "$BC_CAP4096/source"
+mkdir "$BC_CAP4096/cpu"
+
+"$BC_PYTHON" -I scripts/check_action_constraints.py \
+  --model-lock "$BC_BASE_LOCK" --context-limit 16384 --output-cap 2048 \
+  --action-constraint reporecourse-json-scoped-v1-pool-7 \
+  --output "$BC_CAP4096/cpu/worker-grammar.json" \
+  --qualified-lock "$BC_CAP4096/cpu/worker-lock.json"
+
+"$BC_PYTHON" -I scripts/check_action_constraints.py \
+  --model-lock "$BC_BASE_LOCK" --context-limit 16384 --output-cap 4096 \
+  --action-constraint reporecourse-plan-scoped-v1-pool-7 \
+  --output "$BC_CAP4096/cpu/planner-grammar.json" \
+  --qualified-lock "$BC_CAP4096/cpu/planner-lock.json"
+
+"$BC_PYTHON" -I scripts/prepare_rr_open_footprint.py \
+  --proposal "$BC_PROPOSAL" \
+  --model-lock "$BC_CAP4096/cpu/worker-lock.json" \
+  --planner-lock "$BC_CAP4096/cpu/planner-lock.json" \
+  --planner-output-cap 4096 --measure \
+  --output "$BC_CAP4096/cpu/footprint.json"
+```
+
+Stop for review of the CPU report and scheduler completion. No GPU submission
+command is included here. The optional stack is absent locally, so local doubles
+test boundaries and accounting without claiming fresh tokenizer or model results.

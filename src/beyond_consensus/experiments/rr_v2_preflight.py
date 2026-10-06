@@ -12,6 +12,9 @@ from .manifest import source_revision
 
 SCHEMA = "rr-v2-preflight-manifest-v1"
 PROTOCOL = "rr-isolated-histories-v1"
+FOOTPRINT_PROFILE = "rr-open-footprint-profile-v2"
+FOOTPRINT_PROTOCOL = "rr-open-footprint-planner4096-v2"
+
 STRESS_PROTOCOL = "rr-forced-token-full-budget-v1"
 
 
@@ -22,8 +25,12 @@ def grammar(m,role):
     return f'reporecourse-{role}-{suffix}-pool-{m["pool"]}'
 
 
-def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False):
+def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False, planner_output_cap=2048):
     from ..models.competence import CHECKPOINT, REVISION
+    if type(planner_output_cap) is not int or planner_output_cap not in (2048, 4096):
+        raise BCError("Unsupported planner output cap")
+    if planner_output_cap == 4096 and (pool != 7 or not plan_scoped or full_budget_stress):
+        raise BCError("Planner 4096 requires separate scoped pool-7 footprint qualification")
     if type(pool) is not int or pool not in range(2, 9):
         raise BCError("Pool must be 2..8")
     model = asdict(ModelConfig(backend="transformers", checkpoint=CHECKPOINT,
@@ -35,6 +42,9 @@ def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, pl
         planner_lock=planner_lock, shards=1, episodes=[], planned_episodes=0,
         task_inputs_used=False, task_execution_allowed=False, rounds=2)
     if plan_scoped:m["execution_contract"]="plan_scoped_v1"
+    if planner_output_cap == 4096:
+        m.update(schema=FOOTPRINT_PROFILE, protocol=FOOTPRINT_PROTOCOL,
+                 planner_output_cap=4096)
     m["experiment_id"] = digest(m)
     validate(m)
     check_locks(m, worker_lock)
@@ -43,7 +53,13 @@ def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, pl
 
 def validate(m):
     body = {k: v for k, v in m.items() if k != "experiment_id"}
-    if (m.get("schema") != SCHEMA or m.get("protocol") not in (PROTOCOL, STRESS_PROTOCOL)
+    special = m.get('schema') == FOOTPRINT_PROFILE
+    version_valid = (m.get('protocol') == FOOTPRINT_PROTOCOL and
+                     type(m.get('planner_output_cap')) is int and m['planner_output_cap'] == 4096 and m.get('pool') == 7 and
+                     m.get('execution_contract') == 'plan_scoped_v1') if special else (
+        m.get('schema') == SCHEMA and m.get('protocol') in (PROTOCOL, STRESS_PROTOCOL) and
+        'planner_output_cap' not in m)
+    if (not version_valid
             or digest(body) != m.get("experiment_id")
             or type(m.get("pool")) is not int or m["pool"] not in range(2, 9)
             or m.get("rounds") != 2 or m.get("episodes") != []
@@ -62,6 +78,12 @@ def validate(m):
     return SimpleNamespace(model=config, shards=1, task_kind="rr_v2_preflight")
 
 
+def output_cap(m, role):
+    if role not in ('json', 'plan'):
+        raise BCError('Unknown qualification role')
+    return m.get('planner_output_cap', 2048) if role == 'plan' else 2048
+
+
 def check_locks(m, worker):
     from ..models.competence import require_qualification
     if digest(worker) != m["model_lock_sha256"]:
@@ -73,7 +95,7 @@ def check_locks(m, worker):
             raise BCError("Planner and workers must share identical staged weights/tokenizer")
     for role, lock in (("json", worker), ("plan", planner)):
         require_qualification(lock, lock.get("decoder_qualification", {}).get("packages", {}),
-                              16384, grammar(m,role))
+                              16384, grammar(m,role), output_cap(m, role))
 
 
 def check_submission(m, worker, root, mode, concurrency):
@@ -159,7 +181,7 @@ def qualified_backend(m, lock_path, root):
     check_submission(m, worker, root, "preflight", 1)
     from ..models.competence import require_qualification, versions
     for role, lock in (("json", worker), ("plan", m["planner_lock"])):
-        require_qualification(lock, versions(), 16384, grammar(m,role))
+        require_qualification(lock, versions(), 16384, grammar(m,role), output_cap(m, role))
     from ..models.transformers_backend import TransformersBackend
     from ..models.constrained import ActionConstraint
     config = validate(m).model
@@ -169,7 +191,7 @@ def qualified_backend(m, lock_path, root):
         backend.model.get_output_embeddings().weight.shape[0],
         backend.generation_tokens["eos_token_id"], grammar(m,'plan'))
     def switch(role):
-        backend.config = replace(config, action_constraint=grammar(m,role))
+        backend.config = replace(config, action_constraint=grammar(m,role), max_new_tokens=output_cap(m, role))
         backend.constraint = constraints[role]
     def memory(*, reset):
         cuda = backend.torch.cuda
@@ -183,6 +205,8 @@ def qualified_backend(m, lock_path, root):
 
 
 def run(m, lock_path, root):
+    if m.get('schema') != SCHEMA:
+        raise BCError('Separate footprint profiles require the footprint runner')
     probe_cpu_start = time.process_time()
     probe_wall_start = time.monotonic()
     worker = read_json(lock_path)

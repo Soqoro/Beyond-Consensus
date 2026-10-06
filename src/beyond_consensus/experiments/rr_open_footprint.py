@@ -15,6 +15,9 @@ from reporecourse.common import Rejected
 SCHEMA = 'rr-open-footprint-manifest-v1'
 PACKET = 'rr-open-footprint-cpu-v1'
 PROTOCOL = 'rr-open-footprint-five-cases-v1'
+SCHEMA_V2 = 'rr-open-footprint-manifest-v2'
+PACKET_V2 = 'rr-open-footprint-cpu-v2'
+PROTOCOL_V2 = base.FOOTPRINT_PROTOCOL
 CASE_IDS = ('plan_02', 'plan_07', 'plan_24', 'scope_empty', 'scope_imports16')
 FLAGS = dict(task_execution_allowed=False, campaign_allowed=False,
              task_competence_measured=False, autonomous_planning_competence_measured=False,
@@ -33,8 +36,9 @@ def public_contract():
         required_outputs=[{'id': 'probe_result', 'format': 'schema'}], examples=[])
 
 
-def config():
-    return v2.configuration(7, planning_lane='open_generated', execution_contract='plan_scoped_v1')
+def config(planner_output_cap=2048):
+    return v2.configuration(7, planning_lane='open_generated', execution_contract='plan_scoped_v1',
+                            planner_output_cap=planner_output_cap)
 
 
 def unit(i, terminal=False):
@@ -67,9 +71,9 @@ def case(name, role, messages, expected, **extra):
                 expected=expected, expected_hash=digest(expected), **extra)
 
 
-def cases():
+def cases(planner_output_cap=2048):
     """Use actual scoped observations and publications, no database or execution."""
-    public = public_contract(); c = config(); result = []
+    public = public_contract(); c = config(planner_output_cap); result = []
     for n in (2, 7, 24):
         p = plan(n)
         v2.validate_work_plan(p, public, c)
@@ -130,12 +134,13 @@ def proposal_check(proposal, model):
     require(proposal['planner_config']['model'] == expected, 'Proposal planner model differs')
 
 
-def prepare(root, proposal, worker, planner, measure=None):
+def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap=2048):
     start = time.process_time()
-    frozen = base.build(root, worker, planner, 7, plan_scoped=True)
+    frozen = base.build(root, worker, planner, 7, plan_scoped=True, planner_output_cap=planner_output_cap)
     proposal_check(proposal, frozen['model'])
-    rows = cases()
+    rows = cases(planner_output_cap)
     for row in rows:
+        cap = base.output_cap(frozen, row['role'])
         text = json.dumps(row['expected'], separators=(',', ':'))
         row['measurement'] = dict(input_tokens=None, action_tokens=None, action_plus_stop_tokens=None,
             grammar_accepted=None, utf8_bytes=len(text.encode()), status='unmeasured', dispatch_allowed=False)
@@ -144,11 +149,12 @@ def prepare(root, proposal, worker, planner, measure=None):
             i, a = values['input_tokens'], values['action_tokens']
             require(type(i) is int and i > 0 and type(a) is int and a > 0, 'Invalid tokenizer measurement')
             status = ('grammar_rejected' if values['grammar_accepted'] is not True else
-                      'output_representation_exceeds_cap' if a+1 > 2048 else
-                      'input_reservation_exceeds_context' if i+2048 > 16384 else 'passed')
+                      'output_representation_exceeds_cap' if a+1 > cap else
+                      'input_reservation_exceeds_context' if i+cap > 16384 else 'passed')
             row['measurement'].update(values, action_plus_stop_tokens=a+1, status=status,
                                       dispatch_allowed=status == 'passed')
-    report = dict(schema=PACKET, protocol=PROTOCOL, source_revision=frozen['source_revision'],
+    report = dict(schema=PACKET_V2 if planner_output_cap == 4096 else PACKET,
+        protocol=PROTOCOL_V2 if planner_output_cap == 4096 else PROTOCOL, source_revision=frozen['source_revision'],
         proposal=proposal, base_manifest=frozen, public=public_contract(), cases=rows,
         model_executed=False, sql_executed=False, task_inputs_used=False,
         status='prepared_unmeasured' if measure is None else
@@ -159,7 +165,8 @@ def prepare(root, proposal, worker, planner, measure=None):
 
 
 def validate_packet(packet, measured=False):
-    require(packet.get('schema') == PACKET and packet.get('protocol') == PROTOCOL and
+    special = packet.get('schema') == PACKET_V2
+    require((packet.get('schema'), packet.get('protocol')) in ((PACKET, PROTOCOL), (PACKET_V2, PROTOCOL_V2)) and
         packet.get('packet_id') == digest({k:v for k,v in packet.items() if k != 'packet_id'}), 'CPU packet integrity mismatch')
     require(packet.get('model_executed') is False and packet.get('sql_executed') is False and
             packet.get('task_inputs_used') is False, 'CPU packet evidence scope mismatch')
@@ -167,19 +174,22 @@ def validate_packet(packet, measured=False):
         require(packet.get(k) is value, 'CPU packet changed permission')
     require(packet['public'] == public_contract(), 'Synthetic public contract changed')
     base.validate(packet['base_manifest'])
+    require(packet['base_manifest']['schema'] == (base.FOOTPRINT_PROFILE if special else base.SCHEMA),
+            'Footprint profile/version mismatch')
+    planner_cap = base.output_cap(packet['base_manifest'], 'plan')
     require(packet['base_manifest'].get('execution_contract') == 'plan_scoped_v1' and
             packet['base_manifest']['pool'] == 7 and packet['source_revision'] == packet['base_manifest']['source_revision'], 'Packet scope mismatch')
     proposal_check(packet['proposal'], packet['base_manifest']['model'])
-    regenerated = cases()
+    regenerated = cases(planner_cap)
     require([r['id'] for r in packet['cases']] == list(CASE_IDS), 'Incomplete/changed case coverage')
     for index, row in enumerate(packet['cases']):
         require(row['prompt_hash'] == digest(row['messages']) and row['expected_hash'] == digest(row['expected']), 'Case hash mismatch')
         require(row['role'] == ('plan' if index < 3 else 'json'), 'Case grammar mismatch')
         if index < 3:
             expected = {'tool':'submit_plan','plan':plan((2,7,24)[index])}
-            v2.validate_work_plan(row['expected']['plan'], public_contract(), config())
+            v2.validate_work_plan(row['expected']['plan'], public_contract(), config(planner_cap))
             require(row['expected'] == expected, 'Authored plan changed')
-            messages = v2.planner_messages({'planner_input':v2.planner_input(public_contract(),config())})
+            messages = v2.planner_messages({'planner_input':v2.planner_input(public_contract(),config(planner_cap))})
         else:
             o = row['observation']; visible = row['visible_versions']
             expected_observation = deepcopy(regenerated[index]['observation'])
@@ -203,14 +213,15 @@ def validate_packet(packet, measured=False):
             messages = worker_messages(o, [])
         messages.append({'role':'user','content':instruction(row['expected'])})
         require(messages == row['messages'], 'Rendered messages changed')
+        cap = base.output_cap(packet['base_manifest'], row['role'])
         m = row['measurement']
         if measured:
             require(type(m['input_tokens']) is int and m['input_tokens'] > 0 and
                     type(m['action_tokens']) is int and m['action_tokens'] > 0 and
                     m['action_plus_stop_tokens'] == m['action_tokens']+1, 'Unmeasured CPU case')
             status = ('grammar_rejected' if m['grammar_accepted'] is not True else
-                      'output_representation_exceeds_cap' if m['action_plus_stop_tokens'] > 2048 else
-                      'input_reservation_exceeds_context' if m['input_tokens']+2048 > 16384 else 'passed')
+                      'output_representation_exceeds_cap' if m['action_plus_stop_tokens'] > cap else
+                      'input_reservation_exceeds_context' if m['input_tokens']+cap > 16384 else 'passed')
             require(m['status'] == status and m['dispatch_allowed'] == (status == 'passed'), 'Invalid admission decision')
 
 
@@ -228,11 +239,15 @@ def measurement_binding(packet):
 def build(root, packet, worker):
     validate_packet(packet, measured=True)
     require(packet.get('model_executed') is False and packet.get('sql_executed') is False, 'Invalid CPU evidence scope')
+    if packet['schema'] == PACKET_V2:
+        require(all(r['measurement']['dispatch_allowed'] for r in packet['cases']),
+                'Planner-4096 footprint requires all fresh CPU cases to pass')
     require(packet['source_revision'] == source_revision(root), 'Source changed since CPU preparation')
     m = deepcopy(packet['base_manifest'])
     base.check_submission(m, worker, root, 'preflight', 1)
     measurement_binding(packet)
-    m.update(schema=SCHEMA, protocol=PROTOCOL, rounds=1, cpu_packet=packet)
+    m.update(schema=SCHEMA_V2 if packet['schema'] == PACKET_V2 else SCHEMA,
+             protocol=packet['protocol'], rounds=1, cpu_packet=packet)
     m['experiment_id'] = digest({k:v for k,v in m.items() if k != 'experiment_id'})
     validate(m)
     check_submission(m, worker, root, 'preflight', 1)
@@ -240,11 +255,15 @@ def build(root, packet, worker):
 
 
 def validate(m):
-    require(m.get('schema') == SCHEMA and m.get('protocol') == PROTOCOL and
+    require((m.get('schema'), m.get('protocol')) in ((SCHEMA, PROTOCOL), (SCHEMA_V2, PROTOCOL_V2)) and
             m.get('experiment_id') == digest({k:v for k,v in m.items() if k != 'experiment_id'}), 'Footprint manifest integrity mismatch')
     packet = m['cpu_packet']; validate_packet(packet, measured=True)
+    if packet['schema'] == PACKET_V2:
+        require(all(r['measurement']['dispatch_allowed'] for r in packet['cases']),
+                'Planner-4096 footprint requires all fresh CPU cases to pass')
     measurement_binding(packet)
-    expected = deepcopy(packet['base_manifest']); expected.update(schema=SCHEMA, protocol=PROTOCOL, rounds=1, cpu_packet=packet)
+    expected = deepcopy(packet['base_manifest']); expected.update(schema=SCHEMA_V2 if packet['schema'] == PACKET_V2 else SCHEMA,
+        protocol=packet['protocol'], rounds=1, cpu_packet=packet)
     expected['experiment_id'] = digest({k:v for k,v in expected.items() if k != 'experiment_id'})
     require(m == expected, 'Footprint/base binding mismatch')
     return base.validate(packet['base_manifest'])
@@ -272,8 +291,9 @@ def sequence(packet, backend, switch, memory):
     validate_packet(packet, measured=True)
     rows = []
     for case_row in packet['cases']:
+        cap = base.output_cap(packet['base_manifest'], case_row['role'])
         row = dict(id=case_row['id'], passed=False, dispatched=False,
-                   input_tokens=case_row['measurement']['input_tokens'], output_tokens=0, uncertain_tokens=0)
+                   output_cap=cap, input_tokens=case_row['measurement']['input_tokens'], output_tokens=0, uncertain_tokens=0)
         rows.append(row)
         if not case_row['measurement']['dispatch_allowed']:
             row['status'] = case_row['measurement']['status']; continue
@@ -285,13 +305,13 @@ def sequence(packet, backend, switch, memory):
             if hasattr(backend, 'encode'):
                 ids = backend.encode(case_row['messages'])['input_ids'][0].tolist()
                 require(digest(ids) == case_row['measurement']['rendered_input_ids_hash'], 'Rendered token IDs changed')
-            require(actual_input == row['input_tokens'] and actual_input+2048 <= 16384, 'Runtime prompt count mismatch')
+            require(actual_input == row['input_tokens'] and actual_input+cap <= 16384, 'Runtime prompt count mismatch')
             memory(reset=True)
             row['dispatched'] = True
             stage = 'generation'
-            generated = backend.generate(deepcopy(case_row['messages']), 2048, 0)
+            generated = backend.generate(deepcopy(case_row['messages']), cap, 0)
             stage = 'accounting'
-            require(type(generated.output_tokens) is int and 0 < generated.output_tokens <= 2048, 'Invalid output accounting')
+            require(type(generated.output_tokens) is int and 0 < generated.output_tokens <= cap, 'Invalid output accounting')
             row.update(generation=asdict(generated), output_tokens=generated.output_tokens)
             d = generated.diagnostics
             require(d.get('rendered_input_tokens') == actual_input, 'Generation input accounting mismatch')
@@ -301,13 +321,13 @@ def sequence(packet, backend, switch, memory):
             stage = 'response_validation'
             action = parse(generated.text)
             if case_row['role'] == 'plan':
-                v2.validate_work_plan(action['plan'], public_contract(), config())
+                v2.validate_work_plan(action['plan'], public_contract(), config(base.output_cap(packet['base_manifest'], 'plan')))
             row['passed'] = (action == case_row['expected'] and d.get('constraint_complete') is True and d.get('finish_reason') == 'eos')
             row['status'] = 'passed' if row['passed'] else 'response_failed'
         except Exception as exc:
             row.update(status='error', error_type=type(exc).__name__, failure_stage=stage)
             if row['dispatched'] and (stage == 'accounting' or generated is None or not row['output_tokens']):
-                row['uncertain_tokens'] = row['input_tokens']+2048
+                row['uncertain_tokens'] = row['input_tokens']+cap
         finally:
             row.update(process_cpu_seconds=time.process_time()-start, wall_seconds=time.monotonic()-wall,
                        memory=memory(reset=False))
@@ -323,9 +343,11 @@ def sequence(packet, backend, switch, memory):
     return rows
 
 
-def measure_cpu(root, proposal, worker, planner):
+def measure_cpu(root, proposal, worker, planner, *, planner_output_cap=2048):
     """Optional offline CPU tokenizer/grammar stack; never load model weights."""
     start = time.process_time(); wall = time.monotonic()
+    from ..models.competence import check_output_allowance
+    check_output_allowance(16384, 'reporecourse-plan-scoped-v1-pool-7', planner_output_cap)
     import os
     require(bool(os.environ.get('SLURM_JOB_ID')), 'Tokenizer measurement requires a CPU batch allocation')
     for lock in (worker, planner):
@@ -344,7 +366,7 @@ def measure_cpu(root, proposal, worker, planner):
     constraints = {}
     for role, lock in (('json', worker), ('plan', planner)):
         mode = f'reporecourse-{role}-scoped-v1-pool-7'
-        require_qualification(lock, packages, 16384, mode)
+        require_qualification(lock, packages, 16384, mode, planner_output_cap if role == 'plan' else 2048)
         q = lock['decoder_qualification']
         require(template['template_hash'] == q['thinking_template']['template_hash'], 'Tokenizer template changed')
         require(q['vocab_size'] == vocab, 'Qualified vocabulary changed')
@@ -360,7 +382,7 @@ def measure_cpu(root, proposal, worker, planner):
                                                 return_dict=True, enable_thinking=True)
         return dict(input_tokens=len(encoded['input_ids']), action_tokens=len(ids),
                     grammar_accepted=accepted, rendered_input_ids_hash=digest(encoded['input_ids']))
-    report = prepare(root, proposal, worker, planner, measure)
+    report = prepare(root, proposal, worker, planner, measure, planner_output_cap=planner_output_cap)
     report.update(measurement_runtime=dict(packages=packages, template=template, worker_lock_sha256=digest(worker),
         qualification_keys={role:lock['decoder_qualification']['qualification_key']
                             for role,lock in (('json',worker),('plan',planner))}),
@@ -380,7 +402,8 @@ def run(m, lock_path, root):
     backend, switch, memory = base.qualified_backend(packet['base_manifest'], lock_path, root)
     rows = sequence(packet, backend, switch, memory)
     passed = len(rows) == 5 and all(r['passed'] for r in rows)
-    return dict(schema='rr-open-footprint-report-v1', protocol=PROTOCOL, experiment_id=m['experiment_id'],
+    return dict(schema='rr-open-footprint-report-v2' if packet['schema'] == PACKET_V2 else 'rr-open-footprint-report-v1',
+        protocol=packet['protocol'], role_output_caps={r:base.output_cap(packet['base_manifest'], r) for r in ('json','plan')}, experiment_id=m['experiment_id'],
         manifest_hash=digest(m), source_revision=m['source_revision'], packet_id=packet['packet_id'],
         proposal_id=packet['proposal']['proposal_id'], status='passed_observed_cases' if passed else 'failed',
         command_failed=not passed, model_executed=any(r['dispatched'] for r in rows), sql_executed=False,

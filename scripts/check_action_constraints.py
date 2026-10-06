@@ -69,7 +69,9 @@ def synthetic_probe_trees():
     }
 
 
-def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
+def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1", output_cap=2048):
+    from beyond_consensus.models.competence import check_output_allowance
+    check_output_allowance(context_limit, mode, output_cap)
     start = time.process_time()
     wall_start = time.monotonic()
     lock = read_json(lock_path)
@@ -180,7 +182,7 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1"):
     if any(torch.isfinite(masked[0,token]).item() for token in eos):
         raise BCError("EOS is allowed before the action is complete")
     return {"schema": "bc-action-constraint-check-v1", "status": "passed",
-        "qualification_key": qualification_key(lock, packages, context_limit, mode), "context_limit": context_limit, "packages": packages,
+        "qualification_key": qualification_key(lock, packages, context_limit, mode, output_cap), "output_cap": output_cap, "context_limit": context_limit, "packages": packages,
         "effective_generation_tokens": tokens, "vocab_size": vocab,
         "rendered_prompt_hash": digest(rendered), "prompt_supplies_thinking_opener": True,
         "native_tool_template_injected": False, "wall_seconds": time.monotonic()-wall_start,
@@ -196,6 +198,7 @@ def main():
     parser.add_argument("--model-lock", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
+    parser.add_argument("--output-cap", type=int, choices=(2048, 4096), default=2048)
     parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
     parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1") + __import__("reporecourse.action_schema",fromlist=["V2_MODES"]).V2_MODES, default="sqlite-json-schema-v1")
     parser.add_argument("--frontend-report", type=Path)
@@ -211,7 +214,7 @@ def main():
         from beyond_consensus.runtime.sql_text import require_qualification
         frontend_report = read_json(args.frontend_report)
         require_qualification({"sql_frontend_qualification": frontend_report})
-    result = check(args.model_lock, args.context_limit, args.action_constraint)
+    result = check(args.model_lock, args.context_limit, args.action_constraint, args.output_cap)
     with args.output.open("x") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")

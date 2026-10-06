@@ -32,14 +32,22 @@ def versions():
     return {p: importlib.metadata.version(p) for p in PACKAGES}
 
 
-def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1"):
+def check_output_allowance(context_limit, mode, output_cap):
     if context_limit not in (8192, 16384):
         raise BCError("Unsupported qualification context")
+    if type(output_cap) is not int or (output_cap != 2048 and not (
+            output_cap == 4096 and context_limit == 16384 and
+            mode == 'reporecourse-plan-scoped-v1-pool-7')):
+        raise BCError("Output 4096 is reserved for the scoped pool-7 planner qualification")
+
+
+def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1", output_cap=2048):
+    check_output_allowance(context_limit, mode, output_cap)
     root = Path(__file__).resolve().parents[3]
     return digest({'checkpoint': lock['checkpoint'], 'revision': lock['revision'],
         'tokenizer_revision': lock['tokenizer_revision'], 'metadata': lock['metadata_hashes'],
         'packages': packages, 'python': list(sys.version_info[:3]), 'contract': contract(mode),
-        'settings': {'thinking': True, 'output': 2048, 'total_context': context_limit},
+        'settings': {'thinking': True, 'output': output_cap, 'total_context': context_limit},
         'implementation': {name: file_hash(root/name) for name in (
             'scripts/check_action_constraints.py',
             'src/beyond_consensus/models/constrained.py',
@@ -47,9 +55,9 @@ def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-sche
             *(['src/reporecourse/action_schema.py'] if mode.startswith('reporecourse-') else []))}})
 
 
-def require_qualification(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1"):
+def require_qualification(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1", output_cap=2048):
     report = lock.get('decoder_qualification', {})
-    if (report.get('status') != 'passed' or report.get('qualification_key') != qualification_key(lock, packages, context_limit, mode)
+    if (report.get('status') != 'passed' or report.get('qualification_key') != qualification_key(lock, packages, context_limit, mode, output_cap)
             or report.get('model_executed') is not False or report.get('sql_executed') is not False):
         raise BCError('27B requires a current model-specific CPU qualification bound into a NEW model lock')
     return report

@@ -1,5 +1,37 @@
 # Implementation status and handoff
 
+## Separate planner-4096 qualification implemented (2026-10-06)
+
+Following the user's capacity review and instruction to proceed, the new
+`rr-open-footprint-planner4096-v2` condition is implemented for **task-free
+qualification only**. Worker output remains 2048, planner output is 4096 including
+reasoning, and total context remains 16384. The planner input reservation is
+therefore 12288; workers retain 14336. The original blocked task proposal and
+historical 2048-cap evidence remain unchanged.
+
+CPU preparation selects it explicitly with `--planner-output-cap 4096`.
+Decoder qualification now binds the requested output cap, permitting 4096 only
+for the scoped pool-seven planner at context 16384. Renew both worker and planner
+locks against the changed source; do not relabel old evidence. New CPU packet,
+embedded profile, GPU manifest and report versions keep this condition separate.
+Every CPU case must pass before a v2 GPU manifest is accepted. Runtime role
+switching, admission, generation limits and uncertain-use reservations use the
+same role caps. Task execution and campaign permission remain false.
+
+The supplied offline review at `rr-planner-capacity.3mtNKv/review.json` leaves
+1971 hypothetical tokens beyond the recorded 2125-token action at cap 4096.
+That arithmetic is not measured reasoning headroom or a GPU result. Fresh CPU
+measurement and then separately authorized synthetic GPU qualification remain
+pending. See [OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md#planner-4096-condition-v2)
+for the new CPU workflow. No cluster jobs, downloads or pushes were performed.
+
+Local validation: 388 tests ran, 367 passed and 21 optional-dependency tests
+were skipped. All 10 shell checks passed, both modified scripts retained
+stdlib-only help, and `git diff --check` passed. The six new tests cover cap-bound
+locks, version separation, role-specific limits, conservative unknown usage and
+blocked task/legacy routes. These are CPU doubles, not measured model results.
+
+
 ## Measured planner-output failure and offline capacity review (2026-10-06)
 
 The user supplied CPU job 1087414, exit 2:0 after 00:03:56, and packet
@@ -20,8 +52,8 @@ reasoning/delimiter/formatting reserves of 0/512/1024/2048. Worker cap and conte
 remain unchanged. No candidate is selected, no qualification is granted, no
 manifest is produced and no historical evidence is overwritten.
 
-Larger planner caps require separate implementation/qualification review: current
-qualification keys bind output 2048 and the footprint runner enforces that cap.
+At that review stage, qualification keys and the footprint runner bound output
+2048. The separate implementation above now supports fresh planner-4096 qualification.
 Do not edit a manifest/lock to bypass it. See the capacity-review section of
 OPEN_FOOTPRINT_QUALIFICATION.md for the offline command and interpretation.
 
