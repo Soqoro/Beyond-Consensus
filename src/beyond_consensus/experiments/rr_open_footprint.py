@@ -210,8 +210,11 @@ def validate_packet(packet, measured=False):
                 require(row['expected'] == {'tool':'read_artifact','version':o['execution_scope']['imports']['input_00']}, 'Wrong version read')
             else:
                 require(row['expected'] == {'tool':'read_source','name':'probe_source'}, 'Wrong source read')
-            messages = worker_messages(o, [])
-        messages.append({'role':'user','content':instruction(row['expected'])})
+            # write_new sorts dictionary keys on disk. Reconstruct the original
+            # insertion order, retaining the measured CPU balance, so validation
+            # checks the exact prepared prompt rather than a reordered rendering.
+            messages = worker_messages(expected_observation, [])
+        messages.append({'role':'user','content':instruction(regenerated[index]['expected'])})
         require(messages == row['messages'], 'Rendered messages changed')
         cap = base.output_cap(packet['base_manifest'], row['role'])
         m = row['measurement']

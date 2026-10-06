@@ -335,3 +335,20 @@ mkdir "$BC_CAP4096/cpu"
 Stop for review of the CPU report and scheduler completion. No GPU submission
 command is included here. The optional stack is absent locally, so local doubles
 test boundaries and accounting without claiming fresh tokenizer or model results.
+
+
+### Save/reload validation correction
+
+The first user-supplied v2 packet (`rr-planner4096.FPYa0M`) passed CPU cases but
+manifest creation exposed a JSON key-order bug. The writer sorts object keys;
+validation previously regenerated text from the reordered loaded objects.
+Validation now reconstructs the original deterministic action/observation order,
+retains the recorded CPU balance, and still requires byte-identical message
+strings. Preparation, production prompt rendering and caps are unchanged.
+
+Preserve that packet as evidence. After updating the source, prepare and measure
+a new packet in a fresh directory; source binding intentionally prevents passing
+the old packet off as a new-source measurement. The decoder-lock implementation
+hashes are unchanged by this correction, so current compatible worker/planner
+locks can be reused without hand edits. No GPU submission occurred in the failed
+manifest-creation block.

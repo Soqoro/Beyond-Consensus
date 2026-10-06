@@ -1,5 +1,6 @@
 """CPU doubles for the separate planner-output qualification, not GPU evidence."""
 import copy
+import tempfile
 from pathlib import Path
 import sys
 import unittest
@@ -23,6 +24,27 @@ class PlannerCapacityTests(unittest.TestCase):
         p['measurement_runtime'] = old['measurement_runtime']
         helper.seal(p, 'packet_id')
         return helper, p, lock
+
+    def test_saved_packet_and_manifest_round_trip_preserve_measured_messages(self):
+        from reporecourse.common import write_new, load
+        for packet, lock in (prior.FootprintTests().packet(), self.packet()[1:]):
+            with self.subTest(schema=packet['schema']), tempfile.TemporaryDirectory() as temp:
+                path=Path(temp)/'packet.json'
+                write_new(path, packet)
+                saved=load(path)
+                f.validate_packet(saved, measured=True)
+                self.assertEqual([r['messages'] for r in saved['cases']],
+                                 [r['messages'] for r in packet['cases']])
+                with patch.object(f.base,'check_submission'), patch.object(f,'source_revision',return_value='test-source'):
+                    manifest=f.build(Path('.'),saved,lock)
+                dest=Path(temp)/'manifest.json'
+                write_new(dest,manifest)
+                f.validate(load(dest))
+                # Hash-consistent text changes must still fail exact validation.
+                saved['cases'][0]['messages'][-1]['content']+=' '
+                saved['cases'][0]['prompt_hash']=digest(saved['cases'][0]['messages'])
+                prior.FootprintTests().seal(saved,'packet_id')
+                with self.assertRaises(BCError):f.validate_packet(saved,measured=True)
 
     def test_separate_version_and_role_caps(self):
         h,p,_ = self.packet()

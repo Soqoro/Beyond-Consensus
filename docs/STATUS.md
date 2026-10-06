@@ -1,5 +1,34 @@
 # Implementation status and handoff
 
+## Footprint save/reload validation fix (2026-10-06)
+
+The user supplied `rr-planner4096.FPYa0M` CPU results: both grammar locks passed
+(worker 2048, planner 4096, context 16384), and all five cases passed. Packet
+`9fe43ab0c56417e3a8fd928943847651dbdc16f03cdda10f6d8b0c3a4086a42e`
+records action-plus-stop counts 189/629/2125/12/70 and rendered input counts
+749/1189/2685/968/3859. No model executed and task permission remained false.
+These are supplied remote results, not locally reproduced tokenizer measurements.
+
+GPU manifest creation then failed with `Rendered messages changed`. Locally
+reproduced using a CPU double packet saved with the actual sorted-key JSON writer:
+validation rendered the reloaded expected action and observation dictionaries in
+their new key order, disagreeing with the original measured message strings.
+Validation now reconstructs the deterministic original order from the existing
+case builders, preserving the recorded CPU balance. Exact text/hash validation
+remains in place; production prompts and token caps are unchanged. The regression
+covers actual write/load of both packet versions, manifest write/load, and
+rejection of a rehashed message alteration.
+
+Keep the remote packet and locks unchanged. New source-bound CPU measurement is
+required before building a GPU manifest from the fixed checkout. This fix does
+not change decoder qualification-key inputs; existing locks may be reused only
+if current validation accepts them. No manual source/hash edits or historical
+migration, GPU submission, or task execution are authorized by this fix.
+
+Local validation: 389 tests ran, 368 passed, 21 optional-dependency skips; all
+10 shell checks and `git diff --check` passed. No new remote measurement was run.
+
+
 ## Separate planner-4096 qualification implemented (2026-10-06)
 
 Following the user's capacity review and instruction to proceed, the new
