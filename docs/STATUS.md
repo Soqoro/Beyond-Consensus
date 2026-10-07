@@ -1,5 +1,34 @@
 # Implementation status and handoff
 
+## Planner role configuration admission fix (2026-10-07)
+
+User-supplied preflight `ee87ca8cf98aede3a2b148d5c92718716105b003c114309f07b7e07f3936fc9c`
+(job 1088113_0, FAILED 1:0, elapsed 00:04:14) reports all three planner cases
+undispatched with `BCError` at runtime admission. Both worker cases passed:
+968+84 tokens for scope_empty and 3859+178 for scope_imports16; total 5089,
+uncertain tokens zero, one loaded model. No planner generation occurred, so this
+is not evidence about ability to finish a plan at cap 4096. Overall qualification
+failed and task permission remains false. These are user-supplied GPU results.
+
+Locally reproduced the planner switch: `dataclasses.replace` invoked the shared
+27B ModelConfig validator, whose older hardcoded 2048 requirement rejected the
+already separately qualified planner-4096 setting. Previous tests mocked the
+switch instead of exercising it. ModelConfig now uses the existing output
+qualification rule: only scoped pool-seven planning at context 16384 admits
+4096; worker/other-profile output allowances remain unchanged. Manifest validation
+and backend initialization now construct the real planner config before loading
+weights. A new CPU-double integration test exercises the actual backend role
+switch through all five cases, alongside forbidden-cap/context/mode controls.
+
+Preserve the failed report and its costs. The fixed source requires a new CPU
+packet and manifest before a separately reviewed GPU attempt. Existing grammar
+locks remain subject to current key checks; no decoder-key inputs changed in this
+fix. Historical results are not rescored, and no cluster jobs were submitted.
+
+Local verification: 391 tests ran, 370 passed and 21 optional-dependency tests
+were skipped; all 10 shell checks, stdlib-only CLI help and diff checks passed.
+
+
 ## Footprint save/reload validation fix (2026-10-06)
 
 The user supplied `rr-planner4096.FPYa0M` CPU results: both grammar locks passed

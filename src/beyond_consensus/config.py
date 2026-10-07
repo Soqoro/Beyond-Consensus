@@ -35,10 +35,11 @@ class ModelConfig:
         if self.checkpoint not in ("Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-27B", "google/gemma-3-12b-it"):
             raise BCError("Checkpoint has no reviewed loader; add and verify it explicitly")
         if self.checkpoint == "Qwen/Qwen3.5-27B":
-            from .models.competence import REVISION
+            from .models.competence import REVISION, check_output_allowance
+            check_output_allowance(self.context_limit, self.action_constraint, self.max_new_tokens)
             if (self.revision != REVISION or self.tokenizer_revision != REVISION or
                     self.dtype != "bfloat16" or not self.thinking or
-                    self.context_limit not in (8192, 16384) or self.max_new_tokens != 2048 or
+                    self.context_limit not in (8192, 16384) or
                     self.action_constraint not in V2_MODES and self.action_constraint not in ("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1")):
                 raise BCError("27B requires the pinned bounded BF16/thinking/constrained competence profile")
         if self.dtype not in ("bfloat16", "float16", "float32"):

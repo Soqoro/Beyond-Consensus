@@ -1,6 +1,8 @@
 """CPU doubles for the separate planner-output qualification, not GPU evidence."""
 import copy
 import tempfile
+from dataclasses import replace
+from types import SimpleNamespace
 from pathlib import Path
 import sys
 import unittest
@@ -45,6 +47,45 @@ class PlannerCapacityTests(unittest.TestCase):
                 saved['cases'][0]['prompt_hash']=digest(saved['cases'][0]['messages'])
                 prior.FootprintTests().seal(saved,'packet_id')
                 with self.assertRaises(BCError):f.validate_packet(saved,measured=True)
+
+    def test_real_backend_role_switch_dispatches_planner_then_worker(self):
+        from beyond_consensus.models import transformers_backend, constrained
+        h,p,lock=self.packet()
+        backend=h.backend(p)
+        backend.constraint=object()
+        backend.tokenizer=object()
+        backend.generation_tokens={'eos_token_id':[1]}
+        backend.model=SimpleNamespace(get_output_embeddings=lambda:SimpleNamespace(weight=SimpleNamespace(shape=(100,))))
+        seen=[];generate=backend.generate
+        def checked_generate(messages, cap, seed):
+            self.assertEqual(backend.config.max_new_tokens,cap)
+            seen.append((backend.config.action_constraint,cap))
+            return generate(messages,cap,seed)
+        backend.generate=checked_generate
+        with patch.object(f.base,'read_json',return_value=lock), \
+             patch.object(f.base,'check_submission'), \
+             patch('beyond_consensus.models.competence.versions',return_value={}), \
+             patch('beyond_consensus.models.competence.require_qualification'), \
+             patch.object(transformers_backend,'TransformersBackend',return_value=backend) as loader, \
+             patch.object(constrained,'ActionConstraint',return_value=object()):
+            actual,switch,_=f.base.qualified_backend(p['base_manifest'],Path('/cpu-double'),Path('.'))
+            rows=f.sequence(p,actual,switch,h.memory)
+        loader.assert_called_once()
+        self.assertTrue(all(row['passed'] for row in rows))
+        self.assertEqual([cap for _,cap in seen],[4096]*3+[2048]*2)
+        self.assertTrue(all('plan-scoped' in mode for mode,_ in seen[:3]))
+        self.assertTrue(all('json-scoped' in mode for mode,_ in seen[3:]))
+
+    def test_model_config_rejects_unqualified_cap_combinations(self):
+        _,p,_=self.packet()
+        worker=f.base.validate(p['base_manifest']).model
+        planner=replace(worker,action_constraint='reporecourse-plan-scoped-v1-pool-7',max_new_tokens=4096)
+        self.assertEqual(planner.max_new_tokens,4096)
+        for changes in ({'max_new_tokens':4096},
+                        {'max_new_tokens':3072},
+                        {'max_new_tokens':4096,'action_constraint':'reporecourse-plan-scoped-v1-pool-6'},
+                        {'max_new_tokens':4096,'action_constraint':planner.action_constraint,'context_limit':8192}):
+            with self.assertRaises(BCError):replace(worker,**changes)
 
     def test_separate_version_and_role_caps(self):
         h,p,_ = self.packet()

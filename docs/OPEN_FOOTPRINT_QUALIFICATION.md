@@ -352,3 +352,20 @@ the old packet off as a new-source measurement. The decoder-lock implementation
 hashes are unchanged by this correction, so current compatible worker/planner
 locks can be reused without hand edits. No GPU submission occurred in the failed
 manifest-creation block.
+
+
+### Planner role configuration correction (2026-10-07)
+
+The first supplied GPU report for v2 passed both worker cases but dispatched none
+of the three planner cases. An older ModelConfig restriction rejected the 4096
+planner config during role switching. This is a software admission failure, not
+measured planner truncation or incorrect generation. Preserve experiment
+`ee87ca8cf98aede3a2b148d5c92718716105b003c114309f07b7e07f3936fc9c`
+and its 5089 observed tokens separately.
+
+The shared config now uses the same narrow allowance rule as grammar
+qualification. Manifest validation constructs the planner config, and the backend
+prepares both role configs before loading weights. Tests exercise the real switch
+with a CPU model double. Worker output, grammar schema and production prompts are
+unchanged. A fresh source-bound CPU packet/manifest is required; old compatible
+grammar locks may pass current checks. No automatic GPU retry is introduced.

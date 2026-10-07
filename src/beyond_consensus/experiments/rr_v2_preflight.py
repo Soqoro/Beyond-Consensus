@@ -75,6 +75,9 @@ def validate(m):
             or config.context_limit != 16384 or config.max_new_tokens != 2048
             or config.action_constraint != grammar(m,'json')):
         raise BCError("Probe requires the frozen pool-bound 27B BF16 profile")
+    # Validate the actual planner config before submission or model loading,
+    # not only when the first planner case switches the shared backend's role.
+    replace(config, action_constraint=grammar(m, 'plan'), max_new_tokens=output_cap(m, 'plan'))
     return SimpleNamespace(model=config, shards=1, task_kind="rr_v2_preflight")
 
 
@@ -185,13 +188,15 @@ def qualified_backend(m, lock_path, root):
     from ..models.transformers_backend import TransformersBackend
     from ..models.constrained import ActionConstraint
     config = validate(m).model
-    backend = TransformersBackend(config, lock_path)
+    role_configs = {role: replace(config, action_constraint=grammar(m, role),
+                                  max_new_tokens=output_cap(m, role)) for role in ('json', 'plan')}
+    backend = TransformersBackend(role_configs['json'], lock_path)
     constraints = {"json": backend.constraint}
     constraints["plan"] = ActionConstraint(backend.tokenizer,
         backend.model.get_output_embeddings().weight.shape[0],
         backend.generation_tokens["eos_token_id"], grammar(m,'plan'))
     def switch(role):
-        backend.config = replace(config, action_constraint=grammar(m,role), max_new_tokens=output_cap(m, role))
+        backend.config = role_configs[role]
         backend.constraint = constraints[role]
     def memory(*, reset):
         cuda = backend.torch.cuda
