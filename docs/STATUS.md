@@ -1,5 +1,64 @@
 # Implementation status and handoff
 
+## Clean-only open adapter implemented; fresh controls and approval pending (2026-10-07)
+
+Implemented a separate clean-only proposal/approval/runner path for the documented
+synthetic-stock engineering scope. It reuses the qualified shared backend,
+PromptedPlanner, scoped Engine, Resources and terminal evaluator. The generic
+v2 GPU campaign gate and historical manifests remain unchanged. No task run or
+approval receipt has been created.
+
+A read-only v3 auditor checks actual saved reports and snapshot inventory.
+Preparation binds that audit, current source and role locks, stock controls,
+complete scoped reference controls, and new adapter tests. Dispatch requires an
+attributed receipt for the exact proposal and limitations. Fault branches,
+repeated attempts, injected production backends and queued campaigns are denied.
+Planning costs carry into the one clean branch; journals retain invalid plans
+and uncertain usage. The legacy environment's mandatory active identity is
+supplied deterministically as an inert clean value, not sampled as a fault target.
+
+The supplied uploaded v3 report passes the new report-level checks locally;
+its remote filesystem inventory still needs the new audit on the cluster.
+The pinned restricted-SQL integration control is unavailable locally and remains
+a required no-skip CPU-cluster check. No GPU jobs, downloads or pushes occurred.
+See [the preparation interface](OPEN_PLANNING_RUNBOOK.md#clean-adapter-implementation-and-preparation-interface).
+
+Local validation: 404 tests ran, 382 passed and 22 optional-dependency tests
+were skipped. The new adapter module ran 10 controls: nine passed and the
+pinned restricted-SQL integration control was skipped. All 10 shell checks,
+stdlib-only CLI help and diff checks passed. Cluster adapter qualification
+requires all 10 controls to pass without skips.
+
+
+
+## Planner-6144 observed pass and clean-only proposal review (2026-10-07)
+
+The supplied full v3 export for experiment
+`2c87a3340e7d3e47542c64191528ecc0e9cacfc2cd393756d1c26e325eb79c21`
+reports all five footprint cases passed on one A100-SXM4-80GB/model instance:
+15398 logical tokens, zero uncertain tokens, 672.1919073 seconds wall time.
+Plan_24 completed with 4377 output tokens, including 2252 reported reasoning
+tokens, under planner cap 6144. Worker output stayed 2048. Supplied scheduler
+text reports 1088148_0 COMPLETED 0:0. This supersedes the pending-observation
+status below without changing the historical failed probes.
+
+Local review of the uploaded evidence passed 68 internal checks; 134 local
+implementation files matched uploaded snapshot hashes. Remote files and
+scheduler state were not independently accessed. Authored reproduction success
+is not autonomous planning competence, worst-case memory qualification or task
+permission. No model/SQL execution or historical rescoring occurred locally.
+
+The [runbook clean-only proposal](OPEN_PLANNING_RUNBOOK.md#clean-only-engineering-proposal-2026-10-07)
+records the results, limitations and a bounded next review scope: synthetic-stock,
+seven identities, one planning sequence, at most one clean branch, shared
+100000-token/1200-CPU engineering caps, planner6144/worker2048. Zero fault branches
+are proposed. This is documentation only: the old proposal builder is unchanged,
+a clean-only execution gate remains to be implemented/reviewed, and task
+execution remains blocked. CPU/source compatibility, exact role locks, task
+provenance, prompt admission and explicit clean engineering approval remain
+required. No jobs, downloads, commits or pushes were performed.
+
+
 ## Observed 4096 truncation and separate planner-6144 qualification (2026-10-07)
 
 The user supplied GPU report for experiment

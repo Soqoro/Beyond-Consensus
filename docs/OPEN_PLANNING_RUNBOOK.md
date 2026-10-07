@@ -1,25 +1,15 @@
 # Open planning and scoped execution runbook
 
-## Current next step
+## Current next step (2026-10-07)
 
-The 4096-token GPU footprint probe passed four cases and truncated the 24-unit
-plan. Preserve experiment `04377ebf…` as a failed qualification. The user authorized
-a separate planner-6144 qualification; worker output remains 2048 and context
-16384. Renew both grammar locks and measure all five cases against the new v3
-profile before reviewing a new GPU submission. See
-[the v3 workflow](OPEN_FOOTPRINT_QUALIFICATION.md#planner-6144-condition-v3).
-The planner input ceiling is 10240; no historical 14k-input evidence qualifies
-this new reservation. Production task execution remains blocked.
-
-The scoped A100 preflight and its full offline audit have been reviewed alongside
-the supplied scheduler completion. The next qualification is specified in
-[OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md): CPU token and
-grammar measurements, then a separately approved task-free five-case GPU probe.
-That protocol has a separate task-free runner and CPU packet; it is not the
-existing isolated-history preflight.
-Do not rerun the old preflight to claim planner-output capacity or submit task
-branches from the blocked proposal. The specification records the reviewed
-evidence and exact cases, limits, pass criteria and implementation handoff.
+The planner-6144 footprint passed all five observed GPU cases. The supplied
+export was reviewed for internal consistency; this does not qualify autonomous
+planning or authorize task execution. Preserve the failed 2048/4096 conditions
+and the successful v3 report as separate evidence. The next reviewable scope is
+[one clean engineering trial](#clean-only-engineering-proposal-2026-10-07).
+The clean-only adapter below is implemented; it requires fresh CPU adapter controls
+and a separately reviewed, manifest-bound approval receipt. No task-dispatch
+permission has been issued.
 
 Date: 2026-10-06. Local implementation only. No GPU inference, submission,
 training, commits or pushes were performed. The requested
@@ -360,3 +350,162 @@ Review the audit and the submission receipt's job ID with `sacct` before
 preparing the next bounded proposal. Scheduler completion is not verified by
 this offline auditor. A passing audit means internal bindings were verified;
 production open-planning tasks remain blocked pending their separate gates.
+
+
+## Clean-only engineering proposal (2026-10-07)
+
+**Status: proposed, blocked, not an executable manifest or approval.** This
+narrows the next proposed scope to one clean synthetic-stock branch. It does not
+modify the earlier immutable proposal
+`2b050af79f31234bd9607cdb6244b321145f00069f0ddd72f9300e944cd78388`,
+whose conditional F branch and 2048-token planner setting remain historical.
+The existing proposal builder still emits that older scope; its output must not
+be used as the clean-only manifest described here.
+
+### Evidence reviewed
+
+The uploaded v3 export binds experiment
+`2c87a3340e7d3e47542c64191528ecc0e9cacfc2cd393756d1c26e325eb79c21`,
+CPU packet
+`b0d2d7c31348ad24e9d1ee746ed77c7aeff8802dfc6a7b3d483dacce595bfc83`,
+and source commit `bb27c7c96491a08fdd4a0d0128dc002bc46a39e9`.
+Supplied scheduler evidence reports job 1088148_0 COMPLETED, exit 0:0.
+The runtime reports one NVIDIA A100-SXM4-80GB and one loaded model instance.
+
+| Case | Input tokens | Output tokens | Reported reasoning tokens | Result |
+| --- | ---: | ---: | ---: | --- |
+| plan_02 | 749 | 470 | 281 | passed |
+| plan_07 | 1189 | 815 | 186 | passed |
+| plan_24 | 2685 | 4377 | 2252 | passed |
+| scope_empty | 969 | 84 | 72 | passed |
+| scope_imports16 | 3859 | 201 | 131 | passed |
+
+All five ended at EOS with complete constrained actions. Total usage was 15398
+logical tokens, zero uncertain tokens, and 672.1919073 seconds wall time.
+Plan_24 used 2125 output tokens beyond reported reasoning, matching the measured
+action-plus-stop size, with 1767 tokens below the 6144 cap. These are observed
+responses to authored reproduction cases, not autonomous task decomposition.
+
+The local review checked 68 internal consistency conditions across the uploaded
+manifest, packet, locks, qualification reports, snapshot metadata, generations
+and accounting. All passed. The 134 local implementation files listed under
+src/scripts/experiments also matched the uploaded snapshot hashes. The reviewer
+did not access the remote filesystem or scheduler: embedded contents and claimed
+remote file hashes do not independently prove remote file authenticity or a
+complete remote snapshot inventory. No model or SQL was executed by this review.
+`worst_case_fit_established` and `task_execution_allowed` remain false.
+
+### Proposed frozen scope
+
+| Setting | Proposed value |
+| --- | --- |
+| Purpose | One development engineering check of autonomous planning plus clean execution |
+| Task | synthetic-stock only; public hash `3778abbd6ff3234eb22c9f42aa34108c2065a80496529d702d198ecb9bc1167c` |
+| Historical settings source | Actual resolved stock experiment `853f0646ce1fab388c6da48b4270297eb763009e5041bd4d081c758c6f7cff06`, embedded in the reviewed proposal |
+| Model/tokenizer revision | Qwen/Qwen3.5-27B, `fc05daec18b0a78c049392ed2e771dde82bdf654`, BF16, thinking enabled, deterministic decoding |
+| Logical pool / physical allocation | w0–w6; one shared model on one allocated GPU; concurrency one |
+| Planning / execution | open_generated / plan_scoped_v1; assignment-local histories; common public scoped JIT |
+| Context / output reservation | 16384 context; worker 2048 output (maximum input 14336); planner 6144 output (maximum input 10240) |
+| Planning bound | One planning sequence, at most eight calls including public reads; at most two structural revisions within that bound |
+| Plan bound | 1–24 units under the existing validator; no authored fallback or hidden answer selection |
+| Worker action bound | 24, inherited from the resolved proposal |
+| Total branch budget | 100000 logical tokens and 1200 CPU cap units, including planning and execution; uncalibrated engineering caps, not B0 |
+| Execution branches | At most one fresh clean branch; zero F, S, or R branches |
+| Seeds | Preserve recorded streams: planner 75663671558091; execution 80114559081572. Preserve provenance of unused target/attack streams without selecting a fault target. |
+| Success criterion | Valid frozen plan, conformant scoped execution, all obligations passed by the terminal evaluator within the shared caps |
+
+Charge every planner read, generation, validation and structural retry through
+the existing ledger. Deduct actual planning usage from the same clean branch
+budget before execution, and report physical usage separately without double
+charging it. Do not restart the budget at plan freeze. Invalid planning, exhausted
+resources, context rejection and task failure must be retained as outcomes; no
+best-of selection or automatic rerun. Per-call admission must reserve the full
+role output allowance. The five observed prompts do not establish the maximum
+input/output memory envelope.
+
+Public monitoring alone drives repairs. Hidden evaluation is terminal and must
+not select a plan, feed revisions, or authorize an automatic fault branch.
+A successful trial would establish one observed synthetic clean outcome, not
+benchmark competence, calibrated efficiency, recovery benefit or generalization.
+
+### Remaining gates and implementation handoff
+
+| Gate | Current evidence / required action |
+| --- | --- |
+| Scoped CPU execution | Earlier supplied controls passed; bind the actual task/public material and current execution implementation to applicable controls. Renew controls for changes; do not infer compatibility from a preflight summary. |
+| Role grammar | Worker-2048 and planner-6144 qualifications passed in the reviewed packet. Validate exact keys, packages, templates, model locks and source compatibility for the proposed runner. |
+| Observed footprint | Five v3 cases passed. Preserve the separate earlier long-input evidence and its geometry; no worst-case-memory claim or automatic transfer across hardware/contracts. |
+| Task provenance/review | Synthetic task remains labelled cpu_qualified_review_pending. Record its qualification and unresolved independent review explicitly; any engineering exception must be narrowly approved, not relabelled as general task qualification. |
+| Executable task gate | Implemented below with a manifest-bound approval receipt and fresh adapter controls. Unapproved dispatch, fault branches, incompatible evidence, and repeated attempts are rejected. |
+| Task prompt admission | Bind actual public planner/worker inputs and check role context reservations; qualification reproduction prompts are not measurements of task prompts. Fail closed on overflow. |
+| Explicit approval | Obtain approval of the concrete clean-only manifest, evidence and remaining engineering limitations after preparation. This document is not that approval. |
+| Calibration and research | B0, autonomous competence and general campaign qualification remain unmeasured. The proposed trial cannot unlock policy comparisons, other tasks, training or fault campaigns. |
+
+Prepare that implementation and its review packet before requesting final run
+approval. Keep source changes, newly required qualifications and historical
+observations separate. Neither the legacy clean/F exception nor the v3 task-free
+preflight grants permission for this new trial.
+
+
+### Clean adapter implementation and preparation interface
+
+`rr_open_review` audits saved v3 manifest/report/lock files and the full local
+snapshot inventory without executing historical code. It checks the five
+responses, role keys/caps, rendered-input bindings, generation contracts,
+accounting and memory observations. A passing audit still requires review of
+scheduler completion and authenticity. It cannot grant approval.
+
+`rr_open_clean` prepares a distinct `rr-open-clean-manifest-v1`, initially with
+`approval: null` and `task_execution_allowed: false`. It binds the historical
+proposal, audited footprint, current source, actual task/evaluator hashes, stock
+controls, scoped reference matrix, new adapter tests and both role locks. The
+existing worker/planner model and execution files must match the observed
+footprint snapshot. Changes to those contracts require renewed qualification;
+this adapter does not automatically bless a changed runtime. Added adapter and
+routing code is separately source-bound and covered by fresh controls.
+
+Preparation commands, after freezing the reviewed source and setting paths:
+
+```text
+python scripts/bc.py rr-open-footprint-audit --run RUN --snapshots SNAPSHOTS --output AUDIT
+python scripts/check_rr_open_clean.py --output ADAPTER_CONTROLS
+python scripts/bc.py rr-open-clean-manifest --sources SOURCES --model-lock WORKER_LOCK --planner-lock PLANNER_LOCK --qualification STOCK_CONTROLS --scoped-fixtures SCOPED_MATRIX --adapter-controls ADAPTER_CONTROLS --footprint-audit AUDIT --output PROPOSAL
+```
+
+These are interfaces, not copy/paste path substitutions or job submissions.
+Run CPU execution controls in the normal CPU allocation using the pinned
+optional dependencies. `check_rr_open_clean.py` rejects skipped tests, including
+the real restricted-SQL child integration test. It records source, implementation
+hashes and runtime versions. Existing stock controls and the complete scoped
+reference matrix are also required; adapter tests do not replace them.
+
+The proposal command prints a **pending** approval template. Review the proposal,
+exact evidence, scheduler completion and accepted limitations before creating
+an approval receipt. The receipt must name the reviewer and review time, exact
+proposal/source/evidence hashes, one clean branch, zero faults, and all listed
+engineering limitations. It is an attributed local decision record, not a
+cryptographic attestation of who signed it. No command fills in approval on the
+user's behalf. Only after explicit approval may `rr-open-clean-approve` bind that
+receipt into a new manifest; the original proposal stays immutable. Normal
+`bc.py submit --mode run --concurrency 1` then applies the shared scheduler and
+registry gates. No private submission path is added.
+
+The allocation runner loads one shared model and switches its qualified planner
+and worker role configurations. It freezes one planning sequence, preserves its
+journal and charges its ledger once into the clean execution budget. Invalid
+plans and interrupted/uncertain generations remain recorded outcomes. There is
+no call to the generic fault-branch resolver, no resampling and no resume/retry
+of a started attempt. A start marker is written before loading weights.
+
+Compatibility detail: the legacy Environment requires an active identity even
+for a clean run. The adapter supplies the first frozen plan owner as an inert
+value, preventing random target selection, and labels it separately in the
+record. The track remains clean and the experimental target is null; no fault
+is scheduled. This preserves the qualified core runtime instead of changing its
+historical clean/F semantics.
+
+The terminal evaluator remains private. Success additionally requires observed
+scoped conformance and completion within both shared resource caps. Task
+journals can contain generated artifacts and evaluation details: keep them
+outside Git. Aggregation preserves missing/invalid/infrastructure outcomes and
+does not present the run as a recovery or policy comparison.

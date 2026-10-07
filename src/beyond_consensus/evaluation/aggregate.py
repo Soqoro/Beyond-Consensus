@@ -12,6 +12,9 @@ from .metrics import summarize
 
 
 def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
+    if manifest.get("schema") == "rr-open-clean-manifest-v1":
+        from ..experiments.rr_open_clean import aggregate as clean_summary
+        return clean_summary(manifest, root)
     if manifest.get("schema") == "rr-v2-stock-competence-v1":
         from ..experiments.rr_v2_competence import aggregate as competence_summary
         return competence_summary(manifest,root)

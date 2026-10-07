@@ -21,6 +21,10 @@ RETRYABLE = {"interrupted", "infrastructure_failed"}
 def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: int | None = None,
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
+    if manifest.get("schema") == "rr-open-clean-manifest-v1":
+        if backend is not None: raise BCError("Open clean runner cannot use an injected backend")
+        from .rr_open_clean import run
+        return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)
     if manifest.get("schema") == "rr-v2-stock-competence-v1":
         if backend is not None:raise BCError("Competence diagnostic cannot use an injected backend")
         from .rr_v2_competence import run

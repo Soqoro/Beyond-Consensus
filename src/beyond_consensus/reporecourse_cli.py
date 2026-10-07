@@ -6,6 +6,15 @@ from .util import BCError
 
 
 def add_parsers(sub):
+    p = sub.add_parser('rr-open-footprint-audit', help='Read-only v3 file/snapshot audit; no task approval')
+    for name in ('run', 'snapshots', 'output'):
+        p.add_argument('--'+name, type=Path, required=True)
+    p = sub.add_parser('rr-open-clean-manifest', help='Prepare one blocked clean-only proposal; no model execution')
+    for name in ('sources', 'model-lock', 'planner-lock', 'qualification', 'scoped-fixtures', 'adapter-controls', 'footprint-audit', 'output'):
+        p.add_argument('--'+name, type=Path, required=True)
+    p = sub.add_parser('rr-open-clean-approve', help='Bind an externally reviewed approval receipt to a prepared clean proposal')
+    for name in ('manifest', 'approval', 'output'):
+        p.add_argument('--'+name, type=Path, required=True)
     p = sub.add_parser("rr-open-footprint-manifest", help="Freeze measured task-free footprint qualification only")
     for name in ("packet", "model-lock", "output"):
         p.add_argument("--"+name, type=Path, required=True)
@@ -55,6 +64,24 @@ def dispatch(args):
     from reporecourse.qualification import qualify,inventory,run_reference
     from reporecourse.experiments import build,calibration_plan,aggregate
     command=args.command
+    if command == 'rr-open-footprint-audit':
+        from .experiments.rr_open_review import inspect
+        result = inspect(args.run, args.snapshots)
+        write_new(args.output, result)
+        return dict(report=str(args.output), status=result['status'], model_executed=False)
+    if command == 'rr-open-clean-manifest':
+        from .experiments.rr_open_clean import build, approval_template
+        from .cli import ROOT
+        result = build(ROOT, args.sources, load(args.model_lock), load(args.planner_lock),
+                       load(args.qualification), load(args.scoped_fixtures), load(args.adapter_controls), load(args.footprint_audit))
+        write_new(args.output, result)
+        return dict(report=str(args.output), experiment_id=result['experiment_id'],
+                    task_execution_allowed=False, model_executed=False, approval_template=approval_template(result))
+    if command == 'rr-open-clean-approve':
+        from .experiments.rr_open_clean import authorize
+        result = authorize(load(args.manifest), load(args.approval))
+        write_new(args.output, result)
+        return dict(report=str(args.output), experiment_id=result['experiment_id'], model_executed=False, submitted=False)
     if command == "rr-open-footprint-manifest":
         from .experiments.rr_open_footprint import build
         from .cli import ROOT

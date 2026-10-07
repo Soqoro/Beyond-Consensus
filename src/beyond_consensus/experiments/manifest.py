@@ -177,6 +177,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
 
 
 def validate_manifest(data: dict[str, Any]) -> RunConfig:
+    if data.get("schema") == "rr-open-clean-manifest-v1":
+        from .rr_open_clean import validate
+        return validate(data)
     if data.get("schema") == "rr-v2-stock-competence-v1":
         from .rr_v2_competence import validate
         return validate(data)
