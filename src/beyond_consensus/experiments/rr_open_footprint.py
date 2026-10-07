@@ -18,6 +18,23 @@ PROTOCOL = 'rr-open-footprint-five-cases-v1'
 SCHEMA_V2 = 'rr-open-footprint-manifest-v2'
 PACKET_V2 = 'rr-open-footprint-cpu-v2'
 PROTOCOL_V2 = base.FOOTPRINT_PROTOCOL
+SCHEMA_V3 = 'rr-open-footprint-manifest-v3'
+PACKET_V3 = 'rr-open-footprint-cpu-v3'
+PROTOCOL_V3 = base.FOOTPRINT_PROTOCOL_V3
+VERSIONS = {
+    2048: (PACKET, SCHEMA, PROTOCOL, base.SCHEMA, 'rr-open-footprint-report-v1'),
+    4096: (PACKET_V2, SCHEMA_V2, PROTOCOL_V2, base.FOOTPRINT_PROFILE, 'rr-open-footprint-report-v2'),
+    6144: (PACKET_V3, SCHEMA_V3, PROTOCOL_V3, base.FOOTPRINT_PROFILE_V3, 'rr-open-footprint-report-v3'),
+}
+
+
+def packet_version(packet):
+    for version in VERSIONS.values():
+        if (packet.get('schema'), packet.get('protocol')) == (version[0], version[2]):
+            return version
+    raise BCError('Unknown footprint CPU packet version')
+
+
 CASE_IDS = ('plan_02', 'plan_07', 'plan_24', 'scope_empty', 'scope_imports16')
 FLAGS = dict(task_execution_allowed=False, campaign_allowed=False,
              task_competence_measured=False, autonomous_planning_competence_measured=False,
@@ -153,8 +170,8 @@ def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap
                       'input_reservation_exceeds_context' if i+cap > 16384 else 'passed')
             row['measurement'].update(values, action_plus_stop_tokens=a+1, status=status,
                                       dispatch_allowed=status == 'passed')
-    report = dict(schema=PACKET_V2 if planner_output_cap == 4096 else PACKET,
-        protocol=PROTOCOL_V2 if planner_output_cap == 4096 else PROTOCOL, source_revision=frozen['source_revision'],
+    version = VERSIONS[planner_output_cap]
+    report = dict(schema=version[0], protocol=version[2], source_revision=frozen['source_revision'],
         proposal=proposal, base_manifest=frozen, public=public_contract(), cases=rows,
         model_executed=False, sql_executed=False, task_inputs_used=False,
         status='prepared_unmeasured' if measure is None else
@@ -165,16 +182,15 @@ def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap
 
 
 def validate_packet(packet, measured=False):
-    special = packet.get('schema') == PACKET_V2
-    require((packet.get('schema'), packet.get('protocol')) in ((PACKET, PROTOCOL), (PACKET_V2, PROTOCOL_V2)) and
-        packet.get('packet_id') == digest({k:v for k,v in packet.items() if k != 'packet_id'}), 'CPU packet integrity mismatch')
+    version = packet_version(packet)
+    require(packet.get('packet_id') == digest({k:v for k,v in packet.items() if k != 'packet_id'}), 'CPU packet integrity mismatch')
     require(packet.get('model_executed') is False and packet.get('sql_executed') is False and
             packet.get('task_inputs_used') is False, 'CPU packet evidence scope mismatch')
     for k, value in FLAGS.items():
         require(packet.get(k) is value, 'CPU packet changed permission')
     require(packet['public'] == public_contract(), 'Synthetic public contract changed')
     base.validate(packet['base_manifest'])
-    require(packet['base_manifest']['schema'] == (base.FOOTPRINT_PROFILE if special else base.SCHEMA),
+    require(packet['base_manifest']['schema'] == version[3],
             'Footprint profile/version mismatch')
     planner_cap = base.output_cap(packet['base_manifest'], 'plan')
     require(packet['base_manifest'].get('execution_contract') == 'plan_scoped_v1' and
@@ -242,14 +258,14 @@ def measurement_binding(packet):
 def build(root, packet, worker):
     validate_packet(packet, measured=True)
     require(packet.get('model_executed') is False and packet.get('sql_executed') is False, 'Invalid CPU evidence scope')
-    if packet['schema'] == PACKET_V2:
+    if packet['schema'] != PACKET:
         require(all(r['measurement']['dispatch_allowed'] for r in packet['cases']),
-                'Planner-4096 footprint requires all fresh CPU cases to pass')
+                'Revised footprint requires all fresh CPU cases to pass')
     require(packet['source_revision'] == source_revision(root), 'Source changed since CPU preparation')
     m = deepcopy(packet['base_manifest'])
     base.check_submission(m, worker, root, 'preflight', 1)
     measurement_binding(packet)
-    m.update(schema=SCHEMA_V2 if packet['schema'] == PACKET_V2 else SCHEMA,
+    m.update(schema=packet_version(packet)[1],
              protocol=packet['protocol'], rounds=1, cpu_packet=packet)
     m['experiment_id'] = digest({k:v for k,v in m.items() if k != 'experiment_id'})
     validate(m)
@@ -258,14 +274,14 @@ def build(root, packet, worker):
 
 
 def validate(m):
-    require((m.get('schema'), m.get('protocol')) in ((SCHEMA, PROTOCOL), (SCHEMA_V2, PROTOCOL_V2)) and
+    require((m.get('schema'), m.get('protocol')) in {(v[1], v[2]) for v in VERSIONS.values()} and
             m.get('experiment_id') == digest({k:v for k,v in m.items() if k != 'experiment_id'}), 'Footprint manifest integrity mismatch')
     packet = m['cpu_packet']; validate_packet(packet, measured=True)
-    if packet['schema'] == PACKET_V2:
+    if packet['schema'] != PACKET:
         require(all(r['measurement']['dispatch_allowed'] for r in packet['cases']),
-                'Planner-4096 footprint requires all fresh CPU cases to pass')
+                'Revised footprint requires all fresh CPU cases to pass')
     measurement_binding(packet)
-    expected = deepcopy(packet['base_manifest']); expected.update(schema=SCHEMA_V2 if packet['schema'] == PACKET_V2 else SCHEMA,
+    expected = deepcopy(packet['base_manifest']); expected.update(schema=packet_version(packet)[1],
         protocol=packet['protocol'], rounds=1, cpu_packet=packet)
     expected['experiment_id'] = digest({k:v for k,v in expected.items() if k != 'experiment_id'})
     require(m == expected, 'Footprint/base binding mismatch')
@@ -405,7 +421,7 @@ def run(m, lock_path, root):
     backend, switch, memory = base.qualified_backend(packet['base_manifest'], lock_path, root)
     rows = sequence(packet, backend, switch, memory)
     passed = len(rows) == 5 and all(r['passed'] for r in rows)
-    return dict(schema='rr-open-footprint-report-v2' if packet['schema'] == PACKET_V2 else 'rr-open-footprint-report-v1',
+    return dict(schema=packet_version(packet)[4],
         protocol=packet['protocol'], role_output_caps={r:base.output_cap(packet['base_manifest'], r) for r in ('json','plan')}, experiment_id=m['experiment_id'],
         manifest_hash=digest(m), source_revision=m['source_revision'], packet_id=packet['packet_id'],
         proposal_id=packet['proposal']['proposal_id'], status='passed_observed_cases' if passed else 'failed',

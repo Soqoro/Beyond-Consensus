@@ -351,7 +351,7 @@ def dispatch(args: argparse.Namespace) -> Any:
         frozen = read_json(args.manifest)
         if frozen.get("schema") == "rr-v2-stock-competence-v1":
             raise BCError("Competence manifest is run-only; reviewed synthetic preflights are separate evidence")
-        if frozen.get("schema") in ("rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2"):
+        if frozen.get("schema") in ("rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2", "rr-open-footprint-manifest-v3"):
             from .experiments.rr_open_footprint import run as footprint_preflight
             if args.output.exists():
                 raise BCError("Use a fresh preflight report path")

@@ -369,3 +369,77 @@ prepares both role configs before loading weights. Tests exercise the real switc
 with a CPU model double. Worker output, grammar schema and production prompts are
 unchanged. A fresh source-bound CPU packet/manifest is required; old compatible
 grammar locks may pass current checks. No automatic GPU retry is introduced.
+
+
+## Planner-6144 condition v3
+
+The user-supplied v2 GPU experiment `04377ebface2dc0da6b011232018d46fc0d751aa4c0e401297c1b0a78d54a127`
+passed plan_02, plan_07 and both scope cases. Plan_24 used all 4096 output tokens,
+reported 2253 reasoning tokens, and ended with incomplete JSON and length_limit.
+Total charged usage was 15244, with no uncertain usage. This is an observed
+capacity failure after successful dispatch. Preserve it as a failed qualification.
+
+The separately authorized candidate is protocol `rr-open-footprint-planner6144-v3`.
+Its CPU packet, embedded profile, manifest and report all use v3 schemas. No v2
+report, lock or manifest is relabelled. Defaults stay at the original 2048 setting.
+
+| Setting | Worker | Planner |
+| --- | ---: | ---: |
+| Output cap including reasoning | 2048 | 6144 |
+| Maximum rendered input | 14336 | 10240 |
+| Total context | 16384 | 16384 |
+
+The same five authored cases remain unchanged in coverage. Planner input metadata
+now reports cap 6144 and must be freshly tokenized. Worker scopes, expected actions,
+model weights, thinking policy, grammar semantics and task budgets are unchanged.
+The 2125-token serialization would leave 4019 tokens of non-action headroom; this
+is arithmetic, not measured reasoning usage at the new cap. No finite headroom
+claim guarantees complete generation or full-budget memory fit.
+
+Both roles need fresh grammar locks because check_action_constraints.py changed.
+The planner lock binds output 6144 specifically, scoped pool seven, context 16384.
+Worker or 4096-cap locks cannot qualify it. All five CPU cases must pass before
+v3 manifest creation. Shared registry, one-GPU preflight, conservative accounting,
+no retries and task-execution rejection continue to apply. Review CPU evidence
+before a separately authorized GPU submission; no task/campaign gate is cleared.
+
+### CPU block for a new frozen-source allocation
+
+After pushing/pulling, create a fresh directory `BC_CAP6144` with a clean frozen
+worktree in `source`. Keep `BC_BASE_LOCK` pointing to the staged base 27B lock and
+`BC_PROPOSAL` pointing to the unchanged blocked proposal. Inside a CPU Slurm job:
+
+```bash
+set -euo pipefail
+cd "$BC_CAP6144/source"
+mkdir "$BC_CAP6144/cpu"
+
+"$BC_PYTHON" -m unittest discover -s tests -p 'test_rr_planner_4096.py' -v
+
+"$BC_PYTHON" -I scripts/check_action_constraints.py \
+  --model-lock "$BC_BASE_LOCK" --context-limit 16384 --output-cap 2048 \
+  --action-constraint reporecourse-json-scoped-v1-pool-7 \
+  --output "$BC_CAP6144/cpu/worker-grammar.json" \
+  --qualified-lock "$BC_CAP6144/cpu/worker-lock.json"
+
+"$BC_PYTHON" -I scripts/check_action_constraints.py \
+  --model-lock "$BC_BASE_LOCK" --context-limit 16384 --output-cap 6144 \
+  --action-constraint reporecourse-plan-scoped-v1-pool-7 \
+  --output "$BC_CAP6144/cpu/planner-grammar.json" \
+  --qualified-lock "$BC_CAP6144/cpu/planner-lock.json"
+
+"$BC_PYTHON" -I scripts/prepare_rr_open_footprint.py \
+  --proposal "$BC_PROPOSAL" \
+  --model-lock "$BC_CAP6144/cpu/worker-lock.json" \
+  --planner-lock "$BC_CAP6144/cpu/planner-lock.json" \
+  --planner-output-cap 6144 --measure \
+  --output "$BC_CAP6144/cpu/footprint.json"
+
+"$BC_PYTHON" -I scripts/bc.py rr-open-footprint-manifest \
+  --packet "$BC_CAP6144/cpu/footprint.json" \
+  --model-lock "$BC_CAP6144/cpu/worker-lock.json" \
+  --output "$BC_CAP6144/manifest.json"
+```
+
+This block creates no GPU job. Local CPU doubles test the implementation; fresh
+cluster tokenizer, model and memory evidence for v3 remain unmeasured.

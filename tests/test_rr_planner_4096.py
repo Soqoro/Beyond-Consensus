@@ -15,14 +15,14 @@ from beyond_consensus.util import BCError, digest
 
 
 class PlannerCapacityTests(unittest.TestCase):
-    def packet(self):
+    def packet(self, planner_output_cap=4096):
         helper = prior.FootprintTests()
         old, lock = helper.packet()
         def measure(row, text):
             return dict(input_tokens=300, action_tokens=2124 if row['role']=='plan' else 11,
                         grammar_accepted=True, rendered_input_ids_hash='fake')
         with patch.object(f.base, 'check_locks'), patch.object(f.base, 'source_revision', return_value='test-source'):
-            p = f.prepare(Path('.'), old['proposal'], lock, lock, measure, planner_output_cap=4096)
+            p = f.prepare(Path('.'), old['proposal'], lock, lock, measure, planner_output_cap=planner_output_cap)
         p['measurement_runtime'] = old['measurement_runtime']
         helper.seal(p, 'packet_id')
         return helper, p, lock
@@ -49,8 +49,13 @@ class PlannerCapacityTests(unittest.TestCase):
                 with self.assertRaises(BCError):f.validate_packet(saved,measured=True)
 
     def test_real_backend_role_switch_dispatches_planner_then_worker(self):
+        for cap in (4096, 6144):
+            with self.subTest(planner_output_cap=cap):
+                self.check_backend_role_switch(cap)
+
+    def check_backend_role_switch(self, planner_output_cap):
         from beyond_consensus.models import transformers_backend, constrained
-        h,p,lock=self.packet()
+        h,p,lock=self.packet(planner_output_cap)
         backend=h.backend(p)
         backend.constraint=object()
         backend.tokenizer=object()
@@ -72,7 +77,7 @@ class PlannerCapacityTests(unittest.TestCase):
             rows=f.sequence(p,actual,switch,h.memory)
         loader.assert_called_once()
         self.assertTrue(all(row['passed'] for row in rows))
-        self.assertEqual([cap for _,cap in seen],[4096]*3+[2048]*2)
+        self.assertEqual([cap for _,cap in seen],[planner_output_cap]*3+[2048]*2)
         self.assertTrue(all('plan-scoped' in mode for mode,_ in seen[:3]))
         self.assertTrue(all('json-scoped' in mode for mode,_ in seen[3:]))
 
@@ -86,6 +91,60 @@ class PlannerCapacityTests(unittest.TestCase):
                         {'max_new_tokens':4096,'action_constraint':'reporecourse-plan-scoped-v1-pool-6'},
                         {'max_new_tokens':4096,'action_constraint':planner.action_constraint,'context_limit':8192}):
             with self.assertRaises(BCError):replace(worker,**changes)
+
+    def test_6144_persisted_versions_routing_and_input_boundary(self):
+        from reporecourse.common import write_new, load
+        from beyond_consensus.experiments.manifest import validate_manifest
+        h,p,lock=self.packet(6144)
+        self.assertEqual((p['schema'],p['protocol']), (f.PACKET_V3,f.PROTOCOL_V3))
+        self.assertEqual(p['base_manifest']['model']['max_new_tokens'],2048)
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'packet.json';write_new(path,p);p=load(path)
+            f.validate_packet(p,measured=True)
+            with patch.object(f.base,'check_submission'),patch.object(f,'source_revision',return_value='test-source'):
+                m=f.build(Path('.'),p,lock)
+            path=Path(temp)/'manifest.json';write_new(path,m);m=load(path)
+            validate_manifest(m)
+            self.assertEqual(m['schema'],f.SCHEMA_V3)
+            from beyond_consensus.experiments.runner import run_manifest
+            with self.assertRaises(BCError):run_manifest(m,Path(temp),Path('.'))
+        m=p['cases'][0]['measurement'];m['input_tokens']=10240;h.seal(p,'packet_id')
+        f.validate_packet(p,measured=True)
+        m['input_tokens']=10241;h.seal(p,'packet_id')
+        with self.assertRaises(BCError):f.validate_packet(p,measured=True)
+        # A rehashed cap change cannot turn a v2 profile into a v3 one.
+        _,p,_=self.packet()
+        p['base_manifest']['planner_output_cap']=6144
+        h.seal(p['base_manifest'],'experiment_id');h.seal(p,'packet_id')
+        with self.assertRaises(BCError):f.validate_packet(p,measured=True)
+
+    def test_6144_qualifications_do_not_reuse_old_caps_or_worker_roles(self):
+        mode='reporecourse-plan-scoped-v1-pool-7'
+        lock=dict(checkpoint='test',revision='test',tokenizer_revision='test',metadata_hashes={})
+        keys={cap:qualification_key(lock,{},16384,mode,cap) for cap in (2048,4096,6144)}
+        self.assertEqual(len(set(keys.values())),3)
+        lock['decoder_qualification']=dict(status='passed',qualification_key=keys[4096],model_executed=False,sql_executed=False)
+        with self.assertRaises(BCError):require_qualification(lock,{},16384,mode,6144)
+        lock['decoder_qualification']['qualification_key']=keys[6144]
+        require_qualification(lock,{},16384,mode,6144)
+        _,p,_=self.packet(6144);worker=f.base.validate(p['base_manifest']).model
+        for changes in ({'max_new_tokens':6144},
+                        {'max_new_tokens':6144,'action_constraint':mode,'context_limit':8192},
+                        {'max_new_tokens':6144,'action_constraint':'reporecourse-plan-scoped-v1-pool-6'}):
+            with self.assertRaises(BCError):replace(worker,**changes)
+
+    def test_6144_unknown_usage_and_failed_cpu_case_block(self):
+        h,p,lock=self.packet(6144);backend=h.backend(p)
+        def broken(*args):raise RuntimeError('CPU double')
+        backend.generate=broken
+        rows=f.sequence(p,backend,lambda role:None,h.memory)
+        self.assertEqual(rows[0]['uncertain_tokens'],300+6144)
+        self.assertTrue(all(not r['dispatched'] for r in rows[1:]))
+        m=p['cases'][0]['measurement']
+        m.update(action_tokens=6144,action_plus_stop_tokens=6145,status='output_representation_exceeds_cap',dispatch_allowed=False)
+        p['status']='failed_cpu_cases';h.seal(p,'packet_id')
+        f.validate_packet(p,measured=True)
+        with self.assertRaises(BCError):f.build(Path('.'),p,lock)
 
     def test_separate_version_and_role_caps(self):
         h,p,_ = self.packet()

@@ -1,5 +1,42 @@
 # Implementation status and handoff
 
+## Observed 4096 truncation and separate planner-6144 qualification (2026-10-07)
+
+The user supplied GPU report for experiment
+`04377ebface2dc0da6b011232018d46fc0d751aa4c0e401297c1b0a78d54a127`
+dispatched all five cases on one model. Plan_02 and plan_07 passed (305/815 output,
+116/186 reported reasoning tokens). Plan_24 reached the 4096 output limit, with
+2253 reported reasoning tokens and incomplete constrained JSON. Its 1843 remaining
+output tokens were below the CPU-measured 2125-token complete action plus stop.
+Both scope cases passed (84/493 output tokens). Total usage was 15244 tokens,
+uncertain zero, wall time 669.8313 seconds; overall qualification failed. These
+are supplied remote observations, not local model measurements. Preserve them;
+no historical score or report is changed. Task permission remains false.
+
+The user authorized implementation of a separate 6144-token planner qualification.
+Protocol `rr-open-footprint-planner6144-v3` has separate v3 CPU packet, profile,
+manifest and report identities. Worker output stays 2048, total context 16384,
+and planner maximum input is now 10240. The same five cases, no retries, unchanged
+model weights/grammar semantics and no task execution are retained. This is an
+engineering capacity probe, not resource calibration or an autonomous-planning
+competence result. Observed 4096 truncation motivates the new candidate but does
+not establish that 6144 will suffice or that its full context geometry fits.
+
+Fresh worker-2048 and planner-6144 grammar locks and CPU measurements are required:
+the qualification script changed, so prior current-source keys are invalid.
+Caps remain role-bound in configuration, manifest validation, backend switching,
+generation/admission and uncertain accounting. V1/v2 defaults/identities remain
+available without migrating their observations. CPU controls include real role
+switching at both larger caps, saved packet/manifest round trips, cap/key isolation,
+10240-input boundary and failed-CPU/task-route rejection. No model execution,
+cluster job, download, commit or push was performed here. See the v3 section in
+[OPEN_FOOTPRINT_QUALIFICATION.md](OPEN_FOOTPRINT_QUALIFICATION.md#planner-6144-condition-v3).
+
+Local verification: 394 tests ran, 373 passed and 21 optional-dependency tests
+were skipped. All 10 shell checks, stdlib-only CLI help and diff checks passed.
+Fresh v3 tokenizer measurements and GPU inference remain unperformed.
+
+
 ## Planner role configuration admission fix (2026-10-07)
 
 User-supplied preflight `ee87ca8cf98aede3a2b148d5c92718716105b003c114309f07b7e07f3936fc9c`

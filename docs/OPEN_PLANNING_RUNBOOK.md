@@ -2,13 +2,14 @@
 
 ## Current next step
 
-The supplied capacity review has been inspected. The user authorized a separate
-planner-4096 qualification condition; worker output stays 2048 and context 16384.
-The next step is fresh CPU worker/planner grammar locks and all five footprint
-measurements using the new version. See
-[the v2 CPU workflow](OPEN_FOOTPRINT_QUALIFICATION.md#planner-4096-condition-v2).
-Preserve the original 2048-cap failure. No GPU or task submission is authorized
-by the implementation or by arithmetic fit alone.
+The 4096-token GPU footprint probe passed four cases and truncated the 24-unit
+plan. Preserve experiment `04377ebf…` as a failed qualification. The user authorized
+a separate planner-6144 qualification; worker output remains 2048 and context
+16384. Renew both grammar locks and measure all five cases against the new v3
+profile before reviewing a new GPU submission. See
+[the v3 workflow](OPEN_FOOTPRINT_QUALIFICATION.md#planner-6144-condition-v3).
+The planner input ceiling is 10240; no historical 14k-input evidence qualifies
+this new reservation. Production task execution remains blocked.
 
 The scoped A100 preflight and its full offline audit have been reviewed alongside
 the supplied scheduler completion. The next qualification is specified in

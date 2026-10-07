@@ -198,7 +198,7 @@ def main():
     parser.add_argument("--model-lock", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--qualified-lock", type=Path, help="Write a new lock embedding this qualification")
-    parser.add_argument("--output-cap", type=int, choices=(2048, 4096), default=2048)
+    parser.add_argument("--output-cap", type=int, choices=(2048, 4096, 6144), default=2048)
     parser.add_argument("--context-limit", type=int, choices=(8192, 16384), default=8192)
     parser.add_argument("--action-constraint", choices=("sqlite-json-schema-v1", "sqlite-sql-text-v1", "reporecourse-json-v1") + __import__("reporecourse.action_schema",fromlist=["V2_MODES"]).V2_MODES, default="sqlite-json-schema-v1")
     parser.add_argument("--frontend-report", type=Path)

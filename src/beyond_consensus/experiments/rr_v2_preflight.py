@@ -15,6 +15,13 @@ PROTOCOL = "rr-isolated-histories-v1"
 FOOTPRINT_PROFILE = "rr-open-footprint-profile-v2"
 FOOTPRINT_PROTOCOL = "rr-open-footprint-planner4096-v2"
 
+FOOTPRINT_PROFILE_V3 = "rr-open-footprint-profile-v3"
+FOOTPRINT_PROTOCOL_V3 = "rr-open-footprint-planner6144-v3"
+FOOTPRINT_PROFILES = {
+    4096: (FOOTPRINT_PROFILE, FOOTPRINT_PROTOCOL),
+    6144: (FOOTPRINT_PROFILE_V3, FOOTPRINT_PROTOCOL_V3),
+}
+
 STRESS_PROTOCOL = "rr-forced-token-full-budget-v1"
 
 
@@ -27,10 +34,10 @@ def grammar(m,role):
 
 def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False, planner_output_cap=2048):
     from ..models.competence import CHECKPOINT, REVISION
-    if type(planner_output_cap) is not int or planner_output_cap not in (2048, 4096):
+    if type(planner_output_cap) is not int or planner_output_cap not in (2048, *FOOTPRINT_PROFILES):
         raise BCError("Unsupported planner output cap")
-    if planner_output_cap == 4096 and (pool != 7 or not plan_scoped or full_budget_stress):
-        raise BCError("Planner 4096 requires separate scoped pool-7 footprint qualification")
+    if planner_output_cap != 2048 and (pool != 7 or not plan_scoped or full_budget_stress):
+        raise BCError("Larger planner caps require separate scoped pool-7 footprint qualification")
     if type(pool) is not int or pool not in range(2, 9):
         raise BCError("Pool must be 2..8")
     model = asdict(ModelConfig(backend="transformers", checkpoint=CHECKPOINT,
@@ -42,9 +49,10 @@ def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, pl
         planner_lock=planner_lock, shards=1, episodes=[], planned_episodes=0,
         task_inputs_used=False, task_execution_allowed=False, rounds=2)
     if plan_scoped:m["execution_contract"]="plan_scoped_v1"
-    if planner_output_cap == 4096:
-        m.update(schema=FOOTPRINT_PROFILE, protocol=FOOTPRINT_PROTOCOL,
-                 planner_output_cap=4096)
+    if planner_output_cap in FOOTPRINT_PROFILES:
+        profile_schema, profile_protocol = FOOTPRINT_PROFILES[planner_output_cap]
+        m.update(schema=profile_schema, protocol=profile_protocol,
+                 planner_output_cap=planner_output_cap)
     m["experiment_id"] = digest(m)
     validate(m)
     check_locks(m, worker_lock)
@@ -53,9 +61,9 @@ def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, pl
 
 def validate(m):
     body = {k: v for k, v in m.items() if k != "experiment_id"}
-    special = m.get('schema') == FOOTPRINT_PROFILE
-    version_valid = (m.get('protocol') == FOOTPRINT_PROTOCOL and
-                     type(m.get('planner_output_cap')) is int and m['planner_output_cap'] == 4096 and m.get('pool') == 7 and
+    special = m.get('schema') in {profile[0] for profile in FOOTPRINT_PROFILES.values()}
+    version_valid = (type(m.get('planner_output_cap')) is int and
+                     FOOTPRINT_PROFILES.get(m['planner_output_cap']) == (m.get('schema'), m.get('protocol')) and m.get('pool') == 7 and
                      m.get('execution_contract') == 'plan_scoped_v1') if special else (
         m.get('schema') == SCHEMA and m.get('protocol') in (PROTOCOL, STRESS_PROTOCOL) and
         'planner_output_cap' not in m)

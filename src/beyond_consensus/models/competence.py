@@ -36,9 +36,9 @@ def check_output_allowance(context_limit, mode, output_cap):
     if context_limit not in (8192, 16384):
         raise BCError("Unsupported qualification context")
     if type(output_cap) is not int or (output_cap != 2048 and not (
-            output_cap == 4096 and context_limit == 16384 and
+            output_cap in (4096, 6144) and context_limit == 16384 and
             mode == 'reporecourse-plan-scoped-v1-pool-7')):
-        raise BCError("Output 4096 is reserved for the scoped pool-7 planner qualification")
+        raise BCError("Outputs 4096/6144 are reserved for the scoped pool-7 planner qualification")
 
 
 def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-schema-v1", output_cap=2048):

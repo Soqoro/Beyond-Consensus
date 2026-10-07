@@ -210,7 +210,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
             raise BCError('Single competence attempt requires explicit review; no retry/condition/queued campaign')
         submission(manifest,existing_snapshot or repo,model_lock,mode,concurrency,
                    Path(config.output_root)/manifest['experiment_id'])
-    if manifest.get("schema") in ("rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2"):
+    if manifest.get("schema") in ("rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2", "rr-open-footprint-manifest-v3"):
         from .rr_open_footprint import check_submission
         if serialize or failed_shards is not None or condition is not None:
             raise BCError("Footprint qualification does not support retries or queued campaigns")

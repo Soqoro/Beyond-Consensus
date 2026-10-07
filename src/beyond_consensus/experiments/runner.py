@@ -25,7 +25,7 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
         if backend is not None:raise BCError("Competence diagnostic cannot use an injected backend")
         from .rr_v2_competence import run
         return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)
-    if manifest.get("schema") in ("rr-v2-preflight-manifest-v1", "rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2"):
+    if manifest.get("schema") in ("rr-v2-preflight-manifest-v1", "rr-open-footprint-manifest-v1", "rr-open-footprint-manifest-v2", "rr-open-footprint-manifest-v3"):
         raise BCError("Synthetic context qualification cannot run task episodes")
     if manifest.get("schema") == "rr-manifest-v1":
         from .reporecourse import run
