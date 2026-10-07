@@ -525,3 +525,168 @@ adapter controls without skips and write a fresh adapter report and proposal.
 Existing stock/scoped controls and role locks may be reused only if the builder's
 current implementation, package and qualification-key checks pass. This fix
 changes no worker/decoder contract and does not itself require a new GPU probe.
+
+
+## Audited clean result and proposed conditional F diagnostic (2026-10-07)
+
+Initial proposal status: **no fault execution approved**. The separate adapter
+implementation is described below. The existing clean-only approval cannot
+authorize this diagnostic.
+
+### Evidence reviewed
+
+The uploaded clean-run evidence identifies experiment
+`1517216133b6dfbf131f56f3cf2d63821ef0992ed4f528f037256830b830e291`,
+episode `b54c592475e6065a320f0ada4af8f71927560eb0f5170a6945204358d4e5238b`.
+The user reported Slurm job 1088508_0 completed 0:0 in 7:29. Local read-only
+inspection found matching frozen-plan/plan hashes, agreement between saved
+execution and final records, exact artifact bindings, and consistent ledgers.
+The full remote manifest was not supplied: its projection and reported file
+hashes do not establish independent filesystem authenticity.
+
+The planner's first four-unit proposal was rejected with `output` feedback;
+its second proposal was accepted. Both calls remain charged. The frozen plan
+has u0/w0 publish stock_report, then u1/w1 consume that exact version to publish
+zero_report. Two of seven available identities were active. Both obligations
+passed the recorded finite terminal checks. There were no execution failures,
+public alarms, recovery overlays or unknown conformance surfaces. Recomputing
+conformance from the saved result agrees, apart from list ordering and the
+expected task_correct transition from null before evaluation to true afterward.
+No model or SQL was executed in this audit; historical records remain unchanged.
+
+| Charged work | Planning | Remaining task execution/overhead | Total |
+| --- | ---: | ---: | ---: |
+| Model calls | 2 | 3 | 5 |
+| Tokens | 3005 | 4471 | 7476 |
+| CPU seconds | 110.594050202 | 97.417104024 | 208.011154226 |
+
+The total caps were 100000 tokens and 1200 CPU seconds. Reservations and uncertain
+usage were zero. Terminal evaluation has a separate ledger. This is one clean
+synthetic engineering success, not general competence, B0 or recovery evidence.
+
+### Concrete proposed scope
+
+Prepare a new, explicitly labelled **conditional-on-observed-plan Track F
+engineering diagnostic**, with exactly two branches:
+
+| Branch | Permanent loss target | Trigger |
+| --- | --- | --- |
+| loss_w0 | w0, owner of u0 | Existing first assigned publication handoff, before commit |
+| loss_w1 | w1, owner of u1 | Existing first assigned publication handoff, before commit |
+
+Use frozen plan ID
+`f1830e07a9fdc84416164b1cc0163998e0de5ca227f07a18a631b6f78bf0ff1f`
+and plan hash
+`7b39725077587c94ab5978505429d118b4fab701e6284e52d50ec4b13a98ded7`.
+Enumerate both meaningful owners, with within-diagnostic weight 1/2 each. Idle
+w2–w6 are not initial fault targets. They remain the existing identities available
+to common scoped JIT. No planner rerun, hand-edited plan, supplied solution,
+additional identity, fault S/R, alternate policy, task or parameter sweep.
+
+Each branch starts with fresh execution state plus the exact frozen planning
+ledger: 3005 tokens and 110.594050202 CPU seconds. Its total caps stay 100000 and
+1200, leaving 96995 tokens and 1089.405949798 CPU seconds before execution.
+All new primary, checking, repair and integration work is charged. Do not import
+clean artifacts, worker histories, evaluator answers or a post-incident state.
+Planning is logically charged in each branch and physical reuse is separate.
+This is equal-total Track F, not equal-remaining Track R. Failed, interrupted,
+non-triggered and nonconformant outcomes remain visible; no automatic retries.
+
+Preserve model revision, role caps (worker 2048/planner 6144), pool seven, 16384
+context, public task, evaluator, worker instructions, execution seed, 24-action
+limit and common scoped JIT. Loss occurs through the existing public runtime
+trigger without consulting terminal correctness. Previously committed versions
+survive under the existing rules; the blocked publication is never rescued.
+
+### Scientific conflict and required implementation
+
+The historical frozen request specifies target_rule=uniform. Enumerating both
+owners is a **new diagnostic selection rule**, not a historical resolution of
+that request. Do not edit/reseal the old request or call generic resolve_branches
+and relabel its output. A separate adapter must bind the unchanged historical
+frozen record and an explicit new all-owner selection rule. The generic resolver
+also adds a clean row; this proposal does not authorize that additional run.
+
+The historical clean result selected this plan for follow-up. It is a descriptive
+anchor, not a fresh matched control or an unbiased planner sample. Report the
+new outcomes individually as conditional recovery observations. Do not turn the
+two rows into a general ASR estimate, planner comparison or recovery-policy effect.
+If source/hardware changes affect behavior, record them and block any equivalence
+claim; a fresh matched experiment would require another reviewed proposal.
+
+Before seeking execution approval:
+
+1. Audit the actual full historical manifest, frozen record, saved execution and
+   snapshot inventory on the cluster; bind their hashes and scheduler receipt.
+2. Implement a separate bounded proposal/approval/runner path. Keep clean-only
+   guards and generic campaign gates unchanged. Reject changed plans, targets,
+   inputs, ledgers, role settings and repeat attempts.
+3. Add no-skip CPU controls for both losses, pre-commit timing, persistent loss,
+   surviving artifacts, scope overlays, ledger inheritance, interrupted usage,
+   no evaluator feedback and preservation of all branch outcomes.
+4. Compare current execution/model contracts with qualified evidence. Renew
+   affected CPU/grammar/footprint qualification where compatibility is unproven;
+   do not infer universal memory fit from the earlier observed probes.
+5. Produce a concrete hash-bound two-branch manifest and approval template that
+   accepts synthetic review pending, uncalibrated caps, observed-only memory
+   qualification and selection conditional on this successful clean plan.
+6. Obtain separate explicit approval, then use the shared registry/scheduler
+   workflow at concurrency one. This document is not a submission instruction.
+
+The present update records the audit and proposal only. No source behavior,
+qualification status, historical score, manifest, approval or GPU job is changed.
+
+### Conditional F adapter implementation and preparation interface
+
+The separate `rr-open-fault-manifest-v1` adapter now implements this proposal.
+Its CLI prepares two target-bound shards only; it does not invoke the generic
+branch resolver, modify the old uniform request, regenerate planning, or add a
+clean row. The current clean-only adapter and its approval schema are unchanged.
+A fresh clean *qualification proposal* is reused as a container for current task,
+scoped matrix, grammar, footprint and adapter controls; do not approve or run
+that qualification proposal as a new clean attempt.
+
+Preparation interfaces (paths are placeholders, not submission commands):
+
+```text
+python scripts/check_rr_open_clean.py --output CLEAN_ADAPTER_CONTROLS
+python scripts/check_rr_open_fault.py --output FAULT_ADAPTER_CONTROLS
+python scripts/bc.py rr-open-clean-manifest --sources SOURCES --model-lock WORKER_LOCK --planner-lock PLANNER_LOCK --qualification STOCK_CONTROLS --scoped-fixtures SCOPED_MATRIX --adapter-controls CLEAN_ADAPTER_CONTROLS --footprint-audit FOOTPRINT_AUDIT --output CURRENT_QUALIFICATION_PROPOSAL
+python scripts/bc.py rr-open-fault-manifest --clean-proposal CURRENT_QUALIFICATION_PROPOSAL --model-lock WORKER_LOCK --history-run HISTORICAL_CLEAN_OUTPUT --snapshots SNAPSHOT_ROOT --receipt HISTORICAL_RUN_SUBMISSION --controls FAULT_ADAPTER_CONTROLS --output FAULT_PROPOSAL
+```
+
+Run both control scripts in the pinned CPU allocation from a verified source
+checkout. The fault suite includes actual scoped Engine/ModelWorker/SQL execution
+with a deterministic CPU backend double for both targets. It is not model
+competence evidence. Qualification requires all ten fault controls, plus all
+current clean controls, to pass without skips. Added routing files change adapter
+fingerprints, so the old adapter report cannot be reused. Existing task/matrix,
+role locks and footprint evidence can be reused only when all current binding,
+package and execution-contract checks pass.
+
+The history reader checks the original approved full clean manifest, frozen
+planning journal, execution record, successful final result, planning prefix,
+resource totals, conformance, snapshot inventory, resolved model/cluster and
+submission receipt. It reads no historical code as an executable module.
+Historical scheduler completion is still a human review item; a receipt and
+internally consistent files are not an independent authenticity attestation.
+
+A new `rr-open-fault-approval-v1` receipt binds exact proposal, source, evidence,
+limitations and targets. `rr-open-fault-approve --manifest FAULT_PROPOSAL
+--approval REVIEWED_RECEIPT --output APPROVED_FAULT_MANIFEST` only writes a new
+approved record; it does not submit. The separate approval must be obtained
+from the user after reviewing the actual proposal and current CPU evidence.
+
+After that approval, the normal shared `submit --mode run --concurrency 1`
+workflow schedules shards 0/1. The runner rechecks evidence in the allocation,
+requires the same observed hardware/packages as the clean run, loads one model
+per allocation, and switches only to the qualified worker role. Per-episode
+start markers precede loading; duplicate/retry submissions and injected backends
+are rejected. Each branch starts fresh from the inherited planning ledger, with
+no clean artifacts or histories. Interrupted usage and construction failures
+remain recorded. Terminal evaluation has no return edge to worker execution.
+
+Aggregation preserves each target, its weight, missing/interrupted/failed result,
+and recorded intervention status rather than pooling into a general attack
+success metric. Neither this implementation nor a passing CPU report authorizes
+GPU execution. No new model result has been obtained locally.

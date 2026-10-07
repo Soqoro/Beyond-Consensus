@@ -559,3 +559,21 @@ Delivered unauthorized content is retained as a protocol-violation observation,
 not an intended-condition success or an excluded row. Historical deviations
 are descriptive. Unknown visibility stays unknown. See OPEN_PLANNING_RUNBOOK.md
 for implemented surfaces, evidence limits and the unapproved engineering scope.
+
+
+## Conditional open-plan Track F engineering adapter (2026-10-07)
+
+The separately gated `rr-open-fault-manifest-v1` follows one successful synthetic
+open clean plan with two prospective F targets, w0 and w1. Historical planning,
+its uniform target rule, and its clean score remain immutable. All-owner selection
+is an explicit new conditional diagnostic, not a retroactive interpretation of
+the old request or a planner-policy comparison. Each fresh execution branch
+inherits the full actual planning ledger under equal-total caps. Physical
+planning reuse is labelled separately; no clean artifact/state or hidden feedback
+is supplied. No Track R, additional task, policy or automatic retry is included.
+
+Current compatible qualifications, full historical file/snapshot checks and an
+exact separately reviewed approval receipt are required before shared-registry
+submission. CPU doubles and optional restricted-SQL controls are implementation
+evidence only. No new fault execution is authorized by this protocol update.
+See the conditional F section of OPEN_PLANNING_RUNBOOK.md for scope and limits.

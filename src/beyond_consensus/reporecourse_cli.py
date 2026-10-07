@@ -6,6 +6,12 @@ from .util import BCError
 
 
 def add_parsers(sub):
+    p = sub.add_parser('rr-open-fault-manifest', help='Prepare two conditional F branches; no execution approval')
+    for name in ('clean-proposal', 'model-lock', 'history-run', 'snapshots', 'receipt', 'controls', 'output'):
+        p.add_argument('--'+name, type=Path, required=True)
+    p = sub.add_parser('rr-open-fault-approve', help='Bind separate reviewed two-branch F approval')
+    for name in ('manifest', 'approval', 'output'):
+        p.add_argument('--'+name, type=Path, required=True)
     p = sub.add_parser('rr-open-footprint-audit', help='Read-only v3 file/snapshot audit; no task approval')
     for name in ('run', 'snapshots', 'output'):
         p.add_argument('--'+name, type=Path, required=True)
@@ -64,6 +70,21 @@ def dispatch(args):
     from reporecourse.qualification import qualify,inventory,run_reference
     from reporecourse.experiments import build,calibration_plan,aggregate
     command=args.command
+    if command == 'rr-open-fault-manifest':
+        from .experiments import rr_open_fault as fault
+        from .experiments.rr_open_clean import load_control_record
+        from .cli import ROOT
+        result = fault.build(ROOT, load_control_record(args.clean_proposal), load(args.model_lock),
+                             args.history_run, args.snapshots, args.receipt, load(args.controls))
+        write_new(args.output, result)
+        return dict(report=str(args.output), experiment_id=result['experiment_id'], planned_episodes=2,
+                    task_execution_allowed=False, model_executed=False, approval_template=fault.approval_template(result))
+    if command == 'rr-open-fault-approve':
+        from .experiments import rr_open_fault as fault
+        from .experiments.rr_open_clean import load_control_record
+        result = fault.authorize(load_control_record(args.manifest), load(args.approval))
+        write_new(args.output, result)
+        return dict(report=str(args.output), experiment_id=result['experiment_id'], model_executed=False, submitted=False)
     if command == 'rr-open-footprint-audit':
         from .experiments.rr_open_review import inspect
         result = inspect(args.run, args.snapshots)

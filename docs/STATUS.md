@@ -1,5 +1,48 @@
 # Implementation status and handoff
 
+## Conditional open-plan F adapter implemented; qualification pending (2026-10-07)
+
+Added a separate two-shard conditional F proposal/approval/runner for the audited
+stock plan. It preserves the historical uniform request, records explicit
+all-owner selection, inherits planning charges into each fresh branch, and
+permits no clean rerun or planner generation. A full saved-file/snapshot audit,
+current qualification container, fault controls and new attributed approval are
+required. Clean-only and generic campaign gates remain unchanged.
+
+The shared registry/scheduler routes this manifest at concurrency one. Runtime
+checks retain exact target, source, hardware and model binding; start markers
+block retries. Aggregate keeps missing and interrupted rows visible. Ten fault
+controls cover exact approval, record integrity, ledger accounting, interruptions,
+routing, and both losses through the actual restricted-SQL engine with a CPU
+backend double. The optional SQL control remains unavailable in the local base
+environment; the cluster control script requires it without skips.
+
+See [preparation interfaces](OPEN_PLANNING_RUNBOOK.md#conditional-f-adapter-implementation-and-preparation-interface).
+No approval receipt, experiment manifest, model run or cluster submission was
+created. Local validation: 416 tests ran, 393 passed and 23 optional-dependency
+tests were skipped. The fault suite ran ten controls: nine passed and its pinned
+SQL integration control was skipped. All ten shell checks, stdlib-only fault CLI
+help and diff checks passed. Cluster qualification requires zero skips.
+
+
+## Open clean success audited; conditional F proposal pending (2026-10-07)
+
+The supplied experiment `1517216133b6…` completed one conformant synthetic-stock
+clean episode successfully. Read-only record checks confirm the frozen plan,
+exact dependency bindings and charged planning prefix: 7476 total tokens and
+208.011154226 CPU seconds, including two planner calls (3005 tokens). Two of
+seven workers were active; both terminal obligations passed. Full remote
+manifest/snapshot authenticity remains outside the uploaded projection audit.
+
+A [concrete conditional F proposal](OPEN_PLANNING_RUNBOOK.md#audited-clean-result-and-proposed-conditional-f-diagnostic-2026-10-07)
+now specifies loss_w0 and loss_w1 from that unchanged frozen plan, with original
+planning charges in each fresh branch. It explicitly separates all-owner
+selection from the historical uniform rule and preserves the old clean result.
+This is documentation only. The separate adapter, current controls, full evidence
+binding and final explicit approval remain required; no fault run is authorized.
+Earlier pending-clean entries below are historical and superseded by this result.
+
+
 ## Clean proposal qualification-record loader fix (2026-10-07)
 
 Supplied CPU job 1088269 failed at proposal preparation with `bc: file_size`

@@ -204,6 +204,12 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    if manifest.get("schema") == "rr-open-fault-manifest-v1":
+        from .rr_open_fault import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError("Conditional fault attempts have no retry, condition or queued campaign")
+        submission(manifest,existing_snapshot or repo,model_lock,mode,concurrency,
+                   Path(config.output_root)/manifest["experiment_id"])
     if manifest.get("schema") == "rr-open-clean-manifest-v1":
         from .rr_open_clean import submission
         if serialize or failed_shards is not None or condition is not None:
