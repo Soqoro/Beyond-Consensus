@@ -1,5 +1,31 @@
 # Implementation status and handoff
 
+## Clean proposal qualification-record loader fix (2026-10-07)
+
+Supplied CPU job 1088269 failed at proposal preparation with `bc: file_size`
+after reaching both grammar qualifications; the displayed 83-test scoped suite
+passed. The generic RepoRecourse loader has a 2 MiB limit. The full scoped
+reference matrix is the likely oversized argument; the supplied log does not
+include per-file byte counts. Locally reproduced the same failure with a saved
+record larger than 2 MiB.
+
+The clean CLI now uses a separate operator-record loader for the complete scoped
+matrix and its embedded proposal during approval. It caps reads at 128 MiB,
+structure at four million nodes and depth 64, rejects duplicate keys/nonfinite
+values, and retains all subsequent qualification, hash and scope checks. Worker,
+planner, tool and general RepoRecourse input limits remain unchanged. Controls
+exercise the actual prepare/approval CLI paths above 2 MiB and rejected bounds.
+
+Preserve `rr-open-clean-retry.uGqN7j` and job 1088269. Reuse completed qualification
+files subject to existing implementation/key/runtime checks. Run the new adapter
+CPU controls on the updated source and prepare a fresh proposal; do not repeat
+GPU qualification or overwrite the failed run's evidence. Task approval remains
+pending. No jobs or model execution occurred locally.
+
+Local verification: 406 tests ran, 384 passed and 22 optional-dependency tests
+were skipped. All 10 shell checks, stdlib-only CLI help and diff checks passed.
+
+
 ## Clean-only open adapter implemented; fresh controls and approval pending (2026-10-07)
 
 Implemented a separate clean-only proposal/approval/runner path for the documented

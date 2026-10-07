@@ -509,3 +509,19 @@ scoped conformance and completion within both shared resource caps. Task
 journals can contain generated artifacts and evaluation details: keep them
 outside Git. Aggregation preserves missing/invalid/infrastructure outcomes and
 does not present the run as a recovery or policy comparison.
+
+
+### Recovery from `bc: file_size` during clean preparation
+
+The full scoped matrix can exceed the general 2 MiB input limit. Clean preparation
+and approval now read operator-owned matrix/proposal files through a separate
+bounded 128 MiB loader (depth 64, four million nodes); duplicate keys and nonfinite
+values remain invalid. General task/tool input limits are unchanged. Keep the
+full matrix; do not truncate results to fit the old loader.
+
+For supplied job 1088269, preserve the completed files in
+`rr-open-clean-retry.uGqN7j`. After updating the checkout, run all 12 current
+adapter controls without skips and write a fresh adapter report and proposal.
+Existing stock/scoped controls and role locks may be reused only if the builder's
+current implementation, package and qualification-key checks pass. This fix
+changes no worker/decoder contract and does not itself require a new GPU probe.

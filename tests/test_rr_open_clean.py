@@ -39,6 +39,41 @@ def approved():
 
 
 class Boundaries(unittest.TestCase):
+    def test_large_saved_controls_and_proposal_use_separate_loader(self):
+        from reporecourse.common import load, write_new, Rejected
+        from beyond_consensus.reporecourse_cli import dispatch
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);large={'padding':'x'*(2097152+1)}
+            path=root/'matrix.json';write_new(path,large)
+            with self.assertRaises(Rejected):load(path)
+            self.assertEqual(clean.load_control_record(path),large)
+            small=root/'small.json';write_new(small,{})
+            args=SimpleNamespace(command='rr-open-clean-manifest',sources=root,model_lock=small,planner_lock=small,
+                qualification=small,scoped_fixtures=path,adapter_controls=small,footprint_audit=small,output=root/'prepared.json')
+            with patch.object(clean,'build',return_value={'experiment_id':'CPU-double'}) as builder,patch.object(clean,'approval_template',return_value={}):
+                dispatch(args)
+            self.assertEqual(builder.call_args.args[5],large)
+            m=candidate();m.update(large);clean.seal(m)
+            proposed=root/'proposal.json';write_new(proposed,m)
+            receipt=clean.approval_template(m);receipt.update(decision='approved',reviewer='CPU double',reviewed_at='test')
+            approval=root/'approval.json';write_new(approval,receipt)
+            output=root/'approved.json'
+            dispatch(SimpleNamespace(command='rr-open-clean-approve',manifest=proposed,approval=approval,output=output))
+            clean.validate(clean.load_control_record(output))
+
+    def test_control_record_bounds_duplicates_and_nonfinite_stay_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'record.json'
+            for raw in ('{"a":1,"a":2}', '{"a":NaN}', '[]', '{"a":Infinity}'):
+                path.write_text(raw)
+                with self.subTest(raw=raw),self.assertRaises(BCError):clean.load_control_record(path)
+            path.write_text('{"a":"'+'x'*100+'"}')
+            with patch.object(clean,'CONTROL_RECORD_BYTES',50),self.assertRaises(BCError):clean.load_control_record(path)
+            path.write_text('{"a":{"b":{"c":0}}}')
+            with patch.object(clean,'CONTROL_RECORD_DEPTH',1),self.assertRaises(BCError):clean.load_control_record(path)
+            path.write_text('{"a":[0,1,2,3]}')
+            with patch.object(clean,'CONTROL_RECORD_NODES',3),self.assertRaises(BCError):clean.load_control_record(path)
+
     def test_approval_is_specific_and_cannot_expand_scope(self):
         m=candidate();clean.validate(m)
         receipt=clean.approval_template(m)

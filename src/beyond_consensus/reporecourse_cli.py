@@ -70,16 +70,16 @@ def dispatch(args):
         write_new(args.output, result)
         return dict(report=str(args.output), status=result['status'], model_executed=False)
     if command == 'rr-open-clean-manifest':
-        from .experiments.rr_open_clean import build, approval_template
+        from .experiments.rr_open_clean import build, approval_template, load_control_record
         from .cli import ROOT
         result = build(ROOT, args.sources, load(args.model_lock), load(args.planner_lock),
-                       load(args.qualification), load(args.scoped_fixtures), load(args.adapter_controls), load(args.footprint_audit))
+                       load(args.qualification), load_control_record(args.scoped_fixtures), load(args.adapter_controls), load(args.footprint_audit))
         write_new(args.output, result)
         return dict(report=str(args.output), experiment_id=result['experiment_id'],
                     task_execution_allowed=False, model_executed=False, approval_template=approval_template(result))
     if command == 'rr-open-clean-approve':
-        from .experiments.rr_open_clean import authorize
-        result = authorize(load(args.manifest), load(args.approval))
+        from .experiments.rr_open_clean import authorize, load_control_record
+        result = authorize(load_control_record(args.manifest), load(args.approval))
         write_new(args.output, result)
         return dict(report=str(args.output), experiment_id=result['experiment_id'], model_executed=False, submitted=False)
     if command == "rr-open-footprint-manifest":

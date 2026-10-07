@@ -2,6 +2,7 @@
 from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
+import json
 import signal
 import time
 
@@ -30,6 +31,33 @@ CONTROL_FILES = (
     'src/beyond_consensus/cli.py',
     'tests/test_rr_open_clean.py', 'scripts/check_rr_open_clean.py',
 )
+
+
+# Trusted operator-owned CPU matrices and proposals can contain all 188 branch
+# traces. This is NOT an input allowance for planner/worker actions or tools.
+CONTROL_RECORD_BYTES = 128 * 1024 * 1024
+CONTROL_RECORD_NODES = 4_000_000
+CONTROL_RECORD_DEPTH = 64
+
+
+def load_control_record(path):
+    from reporecourse.common import bounded
+    with Path(path).open('rb') as handle:
+        raw = handle.read(CONTROL_RECORD_BYTES + 1)
+    if len(raw) > CONTROL_RECORD_BYTES:
+        raise BCError('Qualification record exceeds the 128 MiB limit')
+    def pairs(items):
+        out = {}
+        for key, value in items:
+            if key in out: raise BCError('Duplicate qualification record key')
+            out[key] = value
+        return out
+    try:
+        record = json.loads(raw, object_pairs_hook=pairs)
+        if not isinstance(record, dict): raise BCError('Qualification record must be an object')
+        return bounded(record, size=CONTROL_RECORD_BYTES, depth=CONTROL_RECORD_DEPTH, nodes=CONTROL_RECORD_NODES)
+    except (ValueError, RecursionError) as exc:
+        raise BCError('Invalid qualification record: '+str(exc)) from exc
 
 
 def control_hashes(root):
@@ -147,7 +175,7 @@ def verify(m, root, worker):
     review.require(controls.get('schema') == 'rr-open-clean-controls-v1' and controls.get('status') == 'passed' and
         controls.get('source_revision') == m['source_revision'] and controls.get('implementation_hashes') == control_hashes(root) and
         controls.get('runtime_versions') == versions and controls.get('skipped') == controls.get('errors') == controls.get('failures') == 0 and
-        type(controls.get('tests')) is int and controls['tests'] >= 10 and controls.get('model_executed') is False,
+        type(controls.get('tests')) is int and controls['tests'] >= 12 and controls.get('model_executed') is False,
         'Current clean adapter CPU controls must pass without skips')
     review.require(q.get('task') == 'synthetic-stock' and q.get('task_hash') == digest(card) and
         q.get('status') == 'cpu_qualified_review_pending' and q.get('source_integrity') is True and
