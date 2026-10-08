@@ -1,0 +1,201 @@
+{
+  "id": "energy-single-indicator-release",
+  "family": "data_product",
+  "request": "Prepare a five-output electricity-generation release from the pinned retained energy table. Only iso_code, year and electricity_generation are available; generation is TWh. Select DNK/FIN and 2019 through 2022 inclusive. generation_report: iso_code, year, generation_twh for non-null selected measurements, retaining real zero. window_summary: iso_code, measured_years, total_twh; count and sum available selected measurements, use zero if none. This is an observed-years total, not a four-year estimate or average. coverage_report: iso_code, observed_years, measured_years, missing_years; missing means present source row with null generation, not an absent calendar year. exclusions: iso_code, year, reason for all excluded source rows; precedence other country -> country, outside window -> year, selected null -> missing. field_contract: one row field_name=generation_twh, unit=TWh, null_policy=omitted, aggregation=observed_years_sum. Sort by iso_code/year where applicable and field_name for the contract. Counts/year integers, codes/reasons/contract text strings, generation/totals nonnegative numbers. No rounding/imputation; sum the source numeric values. Unique (iso_code,year); each selected country has at least one in-window row. Nulls permitted only in generation. No other indicators or country aggregates are allowed. Totals/counts/exclusions must reconcile across the same bundle. The field contract is benchmark-authored documentation of these public rules, not source-provider metadata. Provider-license and independent review remain pending. Floating totals are compared with absolute tolerance 1e-9 TWh and relative tolerance 1e-12; integer counts and text remain exact.",
+  "required_outputs": [
+    {
+      "id": "generation_report",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "year",
+        "generation_twh"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "number"
+      ]
+    },
+    {
+      "id": "window_summary",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "measured_years",
+        "total_twh"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "number"
+      ]
+    },
+    {
+      "id": "coverage_report",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "observed_years",
+        "measured_years",
+        "missing_years"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    },
+    {
+      "id": "exclusions",
+      "format": "sql",
+      "columns": [
+        "iso_code",
+        "year",
+        "reason"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    },
+    {
+      "id": "field_contract",
+      "format": "sql",
+      "columns": [
+        "field_name",
+        "unit",
+        "null_policy",
+        "aggregation"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "default": null
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "generation_report",
+          "worker": "w0",
+          "outputs": [
+            "generation_report"
+          ],
+          "depends": [],
+          "description": "Implement generation_report according to the public request."
+        },
+        {
+          "id": "window_summary",
+          "worker": "w1",
+          "outputs": [
+            "window_summary"
+          ],
+          "depends": [],
+          "description": "Implement window_summary according to the public request."
+        },
+        {
+          "id": "coverage_report",
+          "worker": "w2",
+          "outputs": [
+            "coverage_report"
+          ],
+          "depends": [],
+          "description": "Implement coverage_report according to the public request."
+        },
+        {
+          "id": "exclusions",
+          "worker": "w3",
+          "outputs": [
+            "exclusions"
+          ],
+          "depends": [],
+          "description": "Implement exclusions according to the public request."
+        },
+        {
+          "id": "field_contract",
+          "worker": "w4",
+          "outputs": [
+            "field_contract"
+          ],
+          "depends": [],
+          "description": "Implement field_contract according to the public request."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Implement shared_base according to the public request."
+        },
+        {
+          "id": "generation_report",
+          "worker": "w1",
+          "outputs": [
+            "generation_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement generation_report according to the public request."
+        },
+        {
+          "id": "window_summary",
+          "worker": "w2",
+          "outputs": [
+            "window_summary"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement window_summary according to the public request."
+        },
+        {
+          "id": "coverage_report",
+          "worker": "w3",
+          "outputs": [
+            "coverage_report"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement coverage_report according to the public request."
+        },
+        {
+          "id": "exclusions",
+          "worker": "w4",
+          "outputs": [
+            "exclusions"
+          ],
+          "depends": [],
+          "description": "Implement exclusions according to the public request."
+        },
+        {
+          "id": "field_contract",
+          "worker": "w5",
+          "outputs": [
+            "field_contract"
+          ],
+          "depends": [],
+          "description": "Implement field_contract according to the public request."
+        }
+      ]
+    }
+  ]
+}

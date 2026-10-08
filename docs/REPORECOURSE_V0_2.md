@@ -1,5 +1,11 @@
 # RepoRecourse v0.2 migration and review
 
+The additive [2026-10-08 richer-cohort implementation](RICH_COHORT_PILOT.md)
+adds generic prospective scheduling and three implemented source-grounded
+requests plus a blocked fourth candidate. It preserves the existing v2 Engine,
+scopes, common JIT and accounting. New runtime hashes and explicit cohort gates
+apply; historical v1/v2 records and narrow approvals remain unchanged.
+
 Implementation date: 2026-09-29. This is a local software update, not a model
 result or permission to run experiments. The supplied
 `reporecourse_v0_2_codex_update_prompt.md` is preserved unchanged.
@@ -865,3 +871,21 @@ mediates all worker-facing artifact and message paths. Recovery changes only
 recorded affected scopes after existing public triggers. New grammar/control
 approvals and model/footprint evidence remain required. Local CPU doubles are
 labelled, and the production open-task entry remains blocked for separate review.
+
+
+## Open clean and conditional recovery milestone (2026-10-08)
+
+The audited synthetic-stock open clean experiment `1517216133b6…` succeeded;
+subsequent separately approved conditional F experiment `f6066eca22da…` recovered
+successfully after either meaningful owner loss. Full uploaded traces support
+conformance, exact version lineage, public-triggered scope changes and inherited
+planning charges. These are model observations on one selected successful plan,
+not scripted reference results or general campaign qualification. All raw
+historical records remain unchanged. See the detailed audit and proposed
+prospective clean/F design in [the open-planning runbook](OPEN_PLANNING_RUNBOOK.md#completed-conditional-recovery-audit-2026-10-08).
+
+The proposed fresh comparison resolves its all-owner schedule after freezing a
+new plan and before inspecting clean correctness. It needs a distinct adapter,
+current compatible qualification and explicit approval; neither existing narrow
+adapter authorizes it. Comparing recovery policies or scientific planners remains
+a separate question with task, calibration and design gates outstanding.

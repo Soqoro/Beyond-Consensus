@@ -1,0 +1,114 @@
+{
+  "schema": "rr-rich-catalog-v1",
+  "tasks": [
+    {
+      "id": "jaffle-payment-release",
+      "pack": "jaffle",
+      "family": "data_product",
+      "grounding": "demo_grounded",
+      "revision": "36bde6cba69d962b83be1d52fc65a0dce1cb4ebb",
+      "source_group": "dbt-labs/jaffle_shop_duckdb",
+      "base_change": "jaffle-payment-release-authored-v1",
+      "split": "development",
+      "status": "draft_reference_implemented",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "c776bc882e3b88ed800259c1ca60b0e2417369d04f9fc744ae53235738d30038",
+      "private_sha256": "b2a2a048b14289a048aa9f1c7487a1ba13d560e4390fe82cc9477bf2aa43b0b1",
+      "task_version": "0.2-rich-1",
+      "benchmark_version": "0.2",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "license_file_inspected_independent_review_pending",
+      "reference_evidence": null,
+      "base_task": "jaffle-recorded-payments",
+      "richness_target": "medium",
+      "adaptation": "Four reconciled recorded-payment outputs; integer cents, not revenue."
+    },
+    {
+      "id": "energy-single-indicator-release",
+      "pack": "energy",
+      "family": "data_product",
+      "grounding": "repo_grounded_authored",
+      "revision": "7e387a16f70a510e433f8aac7efeac6faa1e5059",
+      "source_group": "owid/energy-data",
+      "base_change": "energy-single-indicator-release-authored-v1",
+      "split": "development",
+      "status": "draft_reference_implemented",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "9b16708cb0f9bb4b53fbb78b673e2e60d293513888fa0a10f81f287c62912e26",
+      "private_sha256": "5c2d0e0d60e3965654963f2eae8a8510137f74d74045af8005cc1e8b4c325f0b",
+      "task_version": "0.2-rich-1",
+      "benchmark_version": "0.2",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "underlying_source_review_pending",
+      "reference_evidence": null,
+      "base_task": "energy-generation-coverage",
+      "richness_target": "larger",
+      "adaptation": "Five-output single-indicator release; multi-indicator work unsupported by retained slice."
+    },
+    {
+      "id": "github-topics-client-package",
+      "pack": "github",
+      "family": "api_schema",
+      "grounding": "repo_grounded_authored",
+      "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+      "source_group": "github/rest-api-description",
+      "base_change": "github-topics-client-package-authored-v1",
+      "split": "development",
+      "status": "draft_reference_implemented",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "f6afd1b630ff1153e92e19f4e220047467f8817a84aa21eb3b16d54baf99a6a7",
+      "private_sha256": "de97ff34486bff45aa8b326343bdccb32975717696dbb685c4adc9a98623b1f3",
+      "task_version": "0.2-rich-1",
+      "benchmark_version": "0.2",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "license_file_inspected_independent_review_pending",
+      "reference_evidence": null,
+      "base_task": "github-topics-consumer",
+      "richness_target": "medium",
+      "adaptation": "Four related artifacts for the documented PUT topics operation, including bidirectional mapping."
+    }
+  ],
+  "target": 4
+}

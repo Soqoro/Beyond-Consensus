@@ -1,0 +1,28 @@
+{
+  "id": "github-multioperation-integration",
+  "family": "api_schema",
+  "richness_target": "larger",
+  "grounding": "repo_grounded_authored",
+  "source_group": "github/rest-api-description",
+  "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+  "task_version": "draft-unexecutable-1",
+  "status": "blocked_source_slice",
+  "required_outputs_proposed": [
+    "operation_a_request",
+    "operation_a_response",
+    "operation_a_mapping",
+    "operation_b_parameters",
+    "operation_b_response",
+    "operation_b_mapping"
+  ],
+  "outputs_finalized": false,
+  "reference_organizations": [],
+  "cpu_qualified": false,
+  "independent_review": "pending",
+  "blockers": [
+    "Retained topics.json contains only PUT topics plus topic schema/example; no second operation dependency closure is staged.",
+    "Do not invent another request body or duplicate topics artifacts to reach six outputs.",
+    "A pinned additional operation and full bounded dependency closure require separate source/rights review before authoring its exact request and two references."
+  ],
+  "source_pack_count_increment": 0
+}

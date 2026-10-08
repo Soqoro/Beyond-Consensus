@@ -1,0 +1,171 @@
+{
+  "id": "jaffle-payment-release",
+  "family": "data_product",
+  "request": "Produce four compatible recorded-payment reports from the pinned Jaffle demo tables. Integer cents are the source unit: keep all sums in cents, with no rounding or conversion. Include every recorded payment regardless of order status; equal-valued distinct records count separately. order_payments: one row per order including unpaid orders; order_id, customer_id, amount_cents (zero if no payments), payment_count. customer_summary: one row per customer including customers without orders; customer_id, amount_cents, payment_count, order_count including unpaid orders. method_summary: one row per observed payment method; payment_method, amount_cents, payment_count. reconciliation: one row per customer; customer_id, paid_orders (at least one payment), unpaid_orders (none), recorded_cents (all payments across their orders). All IDs/counts/amounts are integers; method names strings. Sort by the first column ascending. Inputs have unique integer primary IDs, nonnegative integer payment amounts, non-null method strings, and valid payment-to-order and order-to-customer foreign keys. Empty tables are permitted; no nonexistent customers/methods are invented. Reports must agree on payment counts, customer/order coverage and monetary totals. No refund, profit, balance-due or amount-owed interpretation is supported. Alternate valid fixtures test reusable implementations. All original sources remain accessible; any organization and any number of available identities may produce the outputs.",
+  "required_outputs": [
+    {
+      "id": "order_payments",
+      "format": "sql",
+      "columns": [
+        "order_id",
+        "customer_id",
+        "amount_cents",
+        "payment_count"
+      ],
+      "types": [
+        "integer",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    },
+    {
+      "id": "customer_summary",
+      "format": "sql",
+      "columns": [
+        "customer_id",
+        "amount_cents",
+        "payment_count",
+        "order_count"
+      ],
+      "types": [
+        "integer",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    },
+    {
+      "id": "method_summary",
+      "format": "sql",
+      "columns": [
+        "payment_method",
+        "amount_cents",
+        "payment_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer"
+      ]
+    },
+    {
+      "id": "reconciliation",
+      "format": "sql",
+      "columns": [
+        "customer_id",
+        "paid_orders",
+        "unpaid_orders",
+        "recorded_cents"
+      ],
+      "types": [
+        "integer",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "default": null
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "order_payments",
+          "worker": "w0",
+          "outputs": [
+            "order_payments"
+          ],
+          "depends": [],
+          "description": "Implement order_payments according to the public request."
+        },
+        {
+          "id": "customer_summary",
+          "worker": "w1",
+          "outputs": [
+            "customer_summary"
+          ],
+          "depends": [],
+          "description": "Implement customer_summary according to the public request."
+        },
+        {
+          "id": "method_summary",
+          "worker": "w2",
+          "outputs": [
+            "method_summary"
+          ],
+          "depends": [],
+          "description": "Implement method_summary according to the public request."
+        },
+        {
+          "id": "reconciliation",
+          "worker": "w3",
+          "outputs": [
+            "reconciliation"
+          ],
+          "depends": [],
+          "description": "Implement reconciliation according to the public request."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "shared_base",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Implement shared_base according to the public request."
+        },
+        {
+          "id": "order_payments",
+          "worker": "w1",
+          "outputs": [
+            "order_payments"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement order_payments according to the public request."
+        },
+        {
+          "id": "customer_summary",
+          "worker": "w2",
+          "outputs": [
+            "customer_summary"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement customer_summary according to the public request."
+        },
+        {
+          "id": "method_summary",
+          "worker": "w3",
+          "outputs": [
+            "method_summary"
+          ],
+          "depends": [],
+          "description": "Implement method_summary according to the public request."
+        },
+        {
+          "id": "reconciliation",
+          "worker": "w4",
+          "outputs": [
+            "reconciliation"
+          ],
+          "depends": [
+            "shared_base"
+          ],
+          "description": "Implement reconciliation according to the public request."
+        }
+      ]
+    }
+  ]
+}

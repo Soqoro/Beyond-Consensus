@@ -7,6 +7,9 @@ from .resources import Resources
 
 
 def oracle(kind,tables):
+    if kind in ('rich_jaffle','rich_energy'):
+        from .rich_tasks import expected
+        return expected(kind,tables)
     def records(name):
         t=tables[name];return [dict(zip([x[0] for x in t['columns']],r)) for r in t['rows']]
     if kind=='jaffle':
@@ -38,6 +41,7 @@ def evaluate(public, private, state):
         if 'tables' in fixture:p['tables']=fixture['tables']
         env=Environment(p,resources=resources)
         try:
+            actual_bundle={}
             env.artifacts=deepcopy(state['artifacts']);env.bound=frozen
             if state.get('execution_contract')=='plan_scoped_v1':
                 env.evaluation_scope_state=deepcopy(state)
@@ -50,12 +54,23 @@ def evaluate(public, private, state):
                     except Rejected as e:
                         if str(e)=='blocked_prerequisite':return {'status':'blocked_prerequisite','success':None}
                         out={'status':'rejected'}
-                    ok=out['status']=='ok' and out['outputs'][0]['columns']==req['columns'] and out['outputs'][0]['rows']==expected[key]
+                    rows_match=out.get('status')=='ok' and out['outputs'][0]['rows']==expected[key]
+                    if private['oracle']=='rich_energy' and out.get('status')=='ok':
+                        from .rich_tasks import energy_rows_match
+                        rows_match=energy_rows_match(out['outputs'][0]['rows'],expected[key],req['types'])
+                    ok=out['status']=='ok' and out['outputs'][0]['columns']==req['columns'] and rows_match
+                    if out.get('status')=='ok':actual_bundle[key]=out['outputs'][0]['rows']
                     if ok:
                         allowed={'integer':(int,),'number':(int,float),'string':(str,)}
                         ok=all(len(row)==len(req['types']) and all(type(v) in allowed[t] for v,t in zip(row,req['types'])) for row in out['outputs'][0]['rows'])
                     per[key]&=ok
                     reports.append({'obligation':key,'passed':ok})
+                if private.get('composition_kind'):
+                    from .rich_tasks import consistent
+                    agree=consistent(private['composition_kind'],actual_bundle)
+                    reports.append({'cross_output_consistency':True,'passed':agree})
+                    if not agree:
+                        for key in per:per[key]=False
             else:
                 for case in fixture['cases']:
                     key=case['obligation'];v=frozen.get(key)
@@ -72,6 +87,20 @@ def evaluate(public, private, state):
                     if not all(k in frozen for k in ('response','consumer')):per['consumer']=False;continue
                     r=env.execute(frozen['response'],value);m=env.execute(frozen['consumer'],value)
                     per['consumer'] &= r.get('valid') is True and m.get('valid') is True
+                for names in fixture.get('round_trip',[]):
+                    ok=False
+                    if all(k in frozen for k in ('request','response','consumer','outbound')):
+                        try:
+                            response=env.execute(frozen['response'],{'names':names})
+                            inbound=env.execute(frozen['consumer'],{'names':names})
+                            outbound=env.execute(frozen['outbound'],inbound.get('output'))
+                            body=outbound.get('output')
+                            valid=env.execute(frozen['request'],body)
+                            ok=response.get('valid') is True and inbound.get('valid') is True and outbound.get('valid') is True and valid.get('valid') is True and body=={'names':names}
+                        except Rejected:pass
+                    reports.append({'cross_output_round_trip':True,'passed':ok})
+                    if not ok:
+                        for key in per:per[key]=False
         finally:env.close()
     try:resources.parent_overhead('terminal_evaluator_parent',start,0)
     except Rejected:

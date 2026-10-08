@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--pool-count N] [--repo-root DIR]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--pool-count N] [--repo-root DIR]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -17,6 +17,7 @@ dry=false
 track_f=false
 v2=false
 scoped=false
+cohort=false
 pool_count=4
 while (($#)); do
     case "$1" in
@@ -25,6 +26,7 @@ while (($#)); do
         --local) local_run=true; shift ;;
         --v2-controls) v2=true; shift ;;
         --scoped-controls) scoped=true; v2=true; shift ;;
+        --cohort-controls) cohort=true; shift ;;
         --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
         --sources|--output|--model-lock|--repo-root)
@@ -65,6 +67,41 @@ done
 [[ ! -e "$output" ]] || { printf 'Use a fresh output directory.\n' >&2; exit 2; }
 mkdir -p -- "$output"
 "$BC_PYTHON" -I scripts/bc.py rr-readiness --sources "$sources" --output "$output/readiness.json"
+if "$cohort"; then
+    if "$v2" || "$track_f"; then printf 'Use cohort controls as a separate qualification.\n' >&2; exit 2; fi
+    "$BC_PYTHON" -I scripts/check_rr_cohort.py --output "$output/cohort-controls.json"
+    "$BC_PYTHON" -I scripts/bc.py rr-rich-inventory --sources "$sources" --output "$output/rich-inventory.json"
+    "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" --task synthetic-stock --output "$output/synthetic-stock.json"
+    # Missing source packs are explicit blockers; never create surrogate staged data.
+    PYTHONPATH="$repo_root/src" "$BC_PYTHON" - "$sources" "$output" <<'PYRICH'
+import sys
+from pathlib import Path
+from reporecourse.rich_tasks import qualify
+from reporecourse.common import write_new, Rejected
+for task in ('jaffle-payment-release','energy-single-indicator-release','github-topics-client-package'):
+    try:report=qualify(task,sys.argv[1])
+    except (Rejected,OSError) as exc:report=dict(task=task,status='blocked_prerequisite',reason=str(exc),model_executed=False)
+    write_new(Path(sys.argv[2])/(task+'.json'),report)
+    if report['status']=='failed':raise SystemExit('Rich reference controls failed: '+task)
+PYRICH
+    if [[ -n "$model_lock" ]]; then
+        for role in worker planner; do
+            mode=json; cap=2048
+            if [[ "$role" == planner ]]; then mode=plan; cap=6144; fi
+            "$BC_PYTHON" -I scripts/check_action_constraints.py --model-lock "$model_lock" \
+                --context-limit 16384 --output-cap "$cap" --action-constraint "reporecourse-$mode-scoped-v1-pool-7" \
+                --output "$output/$role-grammar.json" --qualified-lock "$output/$role-lock.json"
+        done
+        for task in synthetic-stock jaffle-payment-release energy-single-indicator-release github-topics-client-package; do
+            if "$BC_PYTHON" -c 'import json,sys; sys.exit(json.load(open(sys.argv[1])).get("status")!="cpu_qualified_review_pending")' "$output/$task.json"; then
+                "$BC_PYTHON" -I scripts/bc.py rr-cohort-footprint --task "$task" --sources "$sources" \
+                    --model-lock "$output/worker-lock.json" --output "$output/$task-footprint.json"
+            fi
+        done
+    fi
+    printf 'Prospective CPU preparation complete. Source/review/rights/GPU footprint and explicit cohort approval remain separate gates.\n'
+    exit 0
+fi
 if "$v2"; then
     if "$track_f"; then printf 'Choose v2 controls or legacy Track F, not both.\n' >&2; exit 2; fi
     [[ "$pool_count" =~ ^[2-8]$ ]] || { printf 'Pool must be 2..8.\n' >&2; exit 2; }

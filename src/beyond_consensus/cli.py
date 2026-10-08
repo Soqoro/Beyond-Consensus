@@ -349,6 +349,8 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get('schema') == 'rr-cohort-manifest-v1':
+            raise BCError('Prospective cohort is run-only; preflight evidence is separate')
         if frozen.get("schema") == "rr-open-fault-manifest-v1":
             raise BCError("Conditional fault manifests are run-only")
         if frozen.get("schema") == "rr-open-clean-manifest-v1":

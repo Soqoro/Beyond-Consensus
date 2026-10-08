@@ -1,0 +1,263 @@
+{
+  "schema": "rr-evaluator-v1",
+  "oracle": "rich_energy",
+  "fixtures": [
+    {},
+    {
+      "tables": {
+        "energy": {
+          "columns": [
+            [
+              "iso_code",
+              "TEXT"
+            ],
+            [
+              "year",
+              "INTEGER"
+            ],
+            [
+              "electricity_generation",
+              "REAL"
+            ]
+          ],
+          "rows": [
+            [
+              "DNK",
+              2018,
+              999
+            ],
+            [
+              "DNK",
+              2019,
+              null
+            ],
+            [
+              "DNK",
+              2022,
+              0
+            ],
+            [
+              "FIN",
+              2019,
+              5
+            ],
+            [
+              "FIN",
+              2020,
+              5
+            ],
+            [
+              "FIN",
+              2023,
+              99
+            ],
+            [
+              "OWID_WRL",
+              2020,
+              9000
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "tables": {
+        "energy": {
+          "columns": [
+            [
+              "iso_code",
+              "TEXT"
+            ],
+            [
+              "year",
+              "INTEGER"
+            ],
+            [
+              "electricity_generation",
+              "REAL"
+            ]
+          ],
+          "rows": [
+            [
+              "DNK",
+              2019,
+              null
+            ],
+            [
+              "FIN",
+              2020,
+              null
+            ],
+            [
+              "OWID_WRL",
+              2021,
+              4.0
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "organization": "independent",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "generation_report",
+            "format": "sql",
+            "content": "SELECT iso_code,year,electricity_generation AS generation_twh FROM energy WHERE (iso_code='DNK' OR iso_code='FIN') AND year>=2019 AND year<=2022 AND electricity_generation IS NOT NULL ORDER BY iso_code,year",
+            "bindings": {},
+            "obligations": [
+              "generation_report"
+            ]
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "window_summary",
+            "format": "sql",
+            "content": "SELECT iso_code,count(electricity_generation) AS measured_years,coalesce(sum(electricity_generation),0) AS total_twh FROM energy WHERE (iso_code='DNK' OR iso_code='FIN') AND year>=2019 AND year<=2022 GROUP BY iso_code ORDER BY iso_code",
+            "bindings": {},
+            "obligations": [
+              "window_summary"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "coverage_report",
+            "format": "sql",
+            "content": "SELECT iso_code,count(year) AS observed_years,count(electricity_generation) AS measured_years,sum(CASE WHEN electricity_generation IS NULL THEN 1 ELSE 0 END) AS missing_years FROM energy WHERE (iso_code='DNK' OR iso_code='FIN') AND year>=2019 AND year<=2022 GROUP BY iso_code ORDER BY iso_code",
+            "bindings": {},
+            "obligations": [
+              "coverage_report"
+            ]
+          }
+        },
+        {
+          "worker": "w3",
+          "action": {
+            "tool": "publish",
+            "name": "exclusions",
+            "format": "sql",
+            "content": "SELECT iso_code,year,CASE WHEN iso_code!='DNK' AND iso_code!='FIN' THEN 'country' WHEN year<2019 OR year>2022 THEN 'year' ELSE 'missing' END AS reason FROM energy WHERE iso_code!='DNK' AND iso_code!='FIN' OR year<2019 OR year>2022 OR electricity_generation IS NULL ORDER BY iso_code,year",
+            "bindings": {},
+            "obligations": [
+              "exclusions"
+            ]
+          }
+        },
+        {
+          "worker": "w4",
+          "action": {
+            "tool": "publish",
+            "name": "field_contract",
+            "format": "sql",
+            "content": "SELECT 'generation_twh' AS field_name,'TWh' AS unit,'omitted' AS null_policy,'observed_years_sum' AS aggregation",
+            "bindings": {},
+            "obligations": [
+              "field_contract"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organization": "shared",
+      "actions": [
+        {
+          "worker": "w0",
+          "action": {
+            "tool": "publish",
+            "name": "shared_base",
+            "format": "sql",
+            "content": "SELECT iso_code,year,electricity_generation FROM energy WHERE (iso_code='DNK' OR iso_code='FIN') AND year>=2019 AND year<=2022",
+            "bindings": {},
+            "obligations": []
+          }
+        },
+        {
+          "worker": "w1",
+          "action": {
+            "tool": "publish",
+            "name": "generation_report",
+            "format": "sql",
+            "content": "SELECT iso_code,year,electricity_generation AS generation_twh FROM shared_base WHERE 1=1 AND electricity_generation IS NOT NULL ORDER BY iso_code,year",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "generation_report"
+            ]
+          }
+        },
+        {
+          "worker": "w2",
+          "action": {
+            "tool": "publish",
+            "name": "window_summary",
+            "format": "sql",
+            "content": "SELECT iso_code,count(electricity_generation) AS measured_years,coalesce(sum(electricity_generation),0) AS total_twh FROM shared_base WHERE 1=1 GROUP BY iso_code ORDER BY iso_code",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "window_summary"
+            ]
+          }
+        },
+        {
+          "worker": "w3",
+          "action": {
+            "tool": "publish",
+            "name": "coverage_report",
+            "format": "sql",
+            "content": "SELECT iso_code,count(year) AS observed_years,count(electricity_generation) AS measured_years,sum(CASE WHEN electricity_generation IS NULL THEN 1 ELSE 0 END) AS missing_years FROM shared_base WHERE 1=1 GROUP BY iso_code ORDER BY iso_code",
+            "bindings": {
+              "shared_base": "@shared_base"
+            },
+            "obligations": [
+              "coverage_report"
+            ]
+          }
+        },
+        {
+          "worker": "w4",
+          "action": {
+            "tool": "publish",
+            "name": "exclusions",
+            "format": "sql",
+            "content": "SELECT iso_code,year,CASE WHEN iso_code!='DNK' AND iso_code!='FIN' THEN 'country' WHEN year<2019 OR year>2022 THEN 'year' ELSE 'missing' END AS reason FROM energy WHERE iso_code!='DNK' AND iso_code!='FIN' OR year<2019 OR year>2022 OR electricity_generation IS NULL ORDER BY iso_code,year",
+            "bindings": {},
+            "obligations": [
+              "exclusions"
+            ]
+          }
+        },
+        {
+          "worker": "w5",
+          "action": {
+            "tool": "publish",
+            "name": "field_contract",
+            "format": "sql",
+            "content": "SELECT 'generation_twh' AS field_name,'TWh' AS unit,'omitted' AS null_policy,'observed_years_sum' AS aggregation",
+            "bindings": {},
+            "obligations": [
+              "field_contract"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "release": "benchmark-authored evaluator, kept outside worker tools; no native private materials",
+  "independent_review": "pending",
+  "composition_kind": "rich_energy"
+}

@@ -1,5 +1,14 @@
 # Open planning and scoped execution runbook
 
+## Prospective cohort handoff (2026-10-08)
+
+[RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md) is the current local implementation
+and command handoff: prospective stock check first, then a separately reviewed
+two-planner rich-task pilot. Three cards have executable references; the fourth
+API candidate is blocked. Fresh evidence and manifest-scoped authorization are
+required. The dated steps below retain the history of the narrower clean and
+conditional-fault exceptions; they do not authorize the new cohort.
+
 ## Current next step (2026-10-07)
 
 The planner-6144 footprint passed all five observed GPU cases. The supplied
@@ -690,3 +699,163 @@ Aggregation preserves each target, its weight, missing/interrupted/failed result
 and recorded intervention status rather than pooling into a general attack
 success metric. Neither this implementation nor a passing CPU report authorizes
 GPU execution. No new model result has been obtained locally.
+
+## Completed conditional recovery audit (2026-10-08)
+
+Uploaded audit text SHA256 (as received, not the original cluster file):
+`ebc46f692cdab29c3bb391ad9c6de0378ef8b3379e1e9f96378e2d8bc46f4460`.
+Raw traces remain outside Git.
+
+Approved fault experiment:
+`f6066eca22dacf05927d4eda364d6702be202fd08408c7619cae4633c97a75ab`.
+Proposal: `1489575d0ee3a03794dca242670f0b70f960870532ca835095f4695a19852774`.
+The supplied scheduler export records 1088628_0 and 1088628_1 completed 0:0,
+in 6:33 and 6:46 respectively. CPU job 1088580 completed 0:0; the supplied
+qualification summaries report all 12 clean and 10 fault controls passed without
+skips, including the restricted-SQL integration control. Worker/planner grammar
+qualified at 2048/6144 output tokens and 16384 context. Those are reported
+cluster observations, distinct from local optional-dependency skips.
+
+Both F branches completed successfully and conformantly on synthetic-stock.
+Each triggered exactly one permanent loss before the targeted publication
+committed. Neither lost identity was assigned or published afterward. Recovery
+scopes reference recorded public alarms. Frozen-plan hashes, exact version
+bindings, saved execution records and token/CPU ledger sums were internally
+consistent. Recomputed conformance agreed apart from list ordering and the
+expected pre-evaluation task_correct=null versus post-evaluation true.
+
+| Target | Observed recovery | Preserved work | Tokens | Charged CPU seconds |
+| --- | --- | --- | ---: | ---: |
+| w0 | w1 reconstructed stock_report; w2 produced zero_report bound to the reconstructed stock version | No artifact existed before loss | 9949 | 232.298667658 |
+| w1 | w0 repaired zero_report in a fresh assignment context | Original stock_report retained unchanged | 10802 | 245.374443477 |
+
+For loss of w1, the repair worker read the retained stock artifact but published
+a zero_report query over the original stock table with no executable artifact
+binding. Declared imports are permissions, so this is conformant. Distinguish
+retained-artifact reading/context exposure from executable version reuse; do not
+claim that both repairs executed through the retained producer artifact.
+
+Each branch inherited the original 3005-token / 110.594050202-CPU-second planning
+ledger exactly once, then made five new model calls. Physical planning reuse was
+explicit; no planning rerun occurred. Total caps remained 100000 tokens and 1200
+CPU seconds. Uncertain usage and outstanding reservations were zero. Both
+obligations passed both recorded terminal fixtures (four checks per branch),
+with evaluator work separate and no terminal feedback to workers.
+
+The uploaded export includes full branch records but omits the large qualification
+subtree of the manifest. Local review establishes internal consistency, not
+independent remote-file authenticity or reconstruction of the complete manifest
+hash. The scheduler output is user-supplied evidence, not a local scheduler query.
+No SQL/model was executed during this audit, and no historical score was changed.
+
+Milestone: one successful model-generated clean plan followed by two successful
+conditional F recovery observations. This establishes a narrow engineering path.
+Selection occurred after clean success; it does not establish an unbiased
+recovery rate, planner superiority, calibrated efficiency or a policy effect.
+The previous clean-only and fault approvals have been consumed by their exact
+attempts and grant no new run permission.
+
+## Proposed prospective matched clean/F check (2026-10-08)
+
+Status: **design for review, not implemented or approved for execution**.
+The next bounded comparison should remove selection on clean success before
+introducing a competing planner. It compares fresh clean and F outcomes for one
+freshly generated plan under the same frozen workers and common public JIT.
+It is an engineering check of prospective branching, not a research campaign.
+
+### Prespecified scope
+
+- One planning sequence on synthetic-stock, seed index 1, using the existing
+  deterministic seed-stream derivation recorded in the request. This seed is a
+  proposed fixed design choice, not a selected successful seed or a measurement.
+- Open-generated, adaptive-size planning; seven existing identities; unchanged
+  plan_scoped_v1 mediation, original-source permissions and common scoped JIT.
+- Qwen3.5-27B revision fc05daec18b0a78c049392ed2e771dde82bdf654, BF16,
+  do_sample=false, thinking enabled, context 16384; planner output 6144 and
+  worker output 2048. Keep current eight planning calls, two structural revisions,
+  24-unit bound and 24 actions per operation, subject to compatible qualification.
+- Choose target_rule=all in the NEW request before any generation. Freeze and
+  validate the plan before deriving all meaningful owner targets. Do not modify
+  an old uniform request, force the prior two-unit graph, or target idle workers.
+- One clean branch plus one F branch per eligible owner. Pool seven gives a
+  maximum of eight execution branches; actual count follows the frozen plan.
+  This upper bound must be visible in the proposal and explicitly approved.
+- First assigned publication loss before commit, persistent identity loss,
+  existing public checking and recovery overlays. No S, R, policy switch,
+  additional task, training, prompt tuning, or automatic retry.
+
+### Matching and execution order
+
+Freeze source, public/private task hashes, model, role locks, prompts, execution
+settings and applicable qualification before the planning sequence. Bind the
+resolved plan, planning journal/ledger and target list into durable branch
+records. Both clean and loss runs start from original sources with empty artifact
+stores and fresh histories; no clean checkpoint, answer or evaluator output is
+an execution input for another branch. Planning is reused physically only.
+
+Generate the entire branch schedule before evaluating clean success. Run clean
+first, then eligible targets in sorted identity order, at concurrency one on the
+same qualified hardware type and runtime. The clean score must not decide which
+fault branches exist or run. Structural validity/admission failure is a recorded
+planning outcome, not a reason to sample another plan until one succeeds.
+Stop on infrastructure or provenance failures for explicit review and retain
+unexecuted rows as missing; do not filter them from the report. An ordinary
+completed clean failure is not an infrastructure stop or a target-selection gate.
+
+A valid plan with K meaningful owners produces 1+K rows. If no valid plan is
+obtained within the single planning sequence, retain its actual planning charges
+and invalid/infrastructure status, with zero execution branches and no invented
+fault targets. Report that planning outcome alongside the prespecified sequence
+count; do not report an empty executed subset as successful.
+
+### Budget and reporting
+
+Use the same uncalibrated 100000-token/1200-CPU-second total cap for every branch.
+Clone the fresh actual planning ledger into each branch; all subsequent primary,
+public check, recovery and integration work reduces that remaining allowance.
+Report physical planner work once, its logical replication count, and each
+branch's ledger separately. Maximum aggregate logical allowance is 800000 tokens
+and 9600 charged CPU seconds for eight branches; these are caps, not predictions
+of measured physical or wall cost. Terminal evaluator charges remain separate.
+
+Prespecify a table with planning status, K, clean success/conformance, target,
+trigger status, F success/conformance, all obligations, replacement identities,
+retained versions, direct bindings versus read exposure, total and post-alarm
+resources, uncertainty, missingness and infrastructure outcomes. Never-triggered
+F rows keep their reason and target denominator. Report fault outcomes whether
+or not clean succeeds; any clean-success-conditioned summary must be separately
+labelled and must not replace the all-outcome table. No episode-independent CI
+or population-level recovery rate follows from this one-task/one-plan check.
+
+Historical clean/F observations remain a separate development series. Their
+cost differences are not matched treatment effects. This new check would compare
+loss versus no loss under common recovery; it would not estimate recovery benefit
+against no recovery, nor compare pre-execution planners.
+
+### Required gates and later scientific comparison
+
+The existing clean adapter permits one clean row and the conditional fault adapter
+requires the historical successful plan. Neither implements this prospective
+protocol. Do not relax their gates or splice manifests to approximate it.
+A separately reviewed adapter must support durable planning-before-branching,
+predeclared all-target resolution without clean-score filtering, inheritance of
+fresh planning charges, complete outcome retention and interrupted planning.
+Renew affected no-skip CPU, grammar, observation and memory qualifications;
+observed footprint qualification is not a universal fit guarantee.
+
+Before any submission, prepare an immutable proposal binding source/evidence,
+seed, one planning sequence, branch upper bound, unchanged caps and limitations,
+then obtain separate explicit approval. The actual plan/targets are necessarily
+unknown before generation; the approved protocol must bind how their derived
+records are created and checked rather than allow discretionary post-result
+changes. No approval or scheduler job is created by this design document.
+
+For a later scientific planner comparison, first specify two concrete
+pre-execution planners, their public inputs/objectives and equal charged planning
+allowances, while keeping workers, monitor and JIT common. Require qualified
+independent task groups, prespecified splits and compatible calibration. Distinct
+plans can have different meaningful owner counts: average targets within each
+plan/task before task-level comparison; do not pool branch counts as independent
+samples. A no-recovery/restart comparison would be a separate fixed-plan lane,
+not an unannounced replacement of the intended planner comparison. None of these
+broader gates is resolved by the present synthetic successes.

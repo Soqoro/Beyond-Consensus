@@ -26,14 +26,17 @@ def catalog(root=ROOT):
 
 
 def load_task(task_id, sources, root=ROOT):
+    if root == ROOT and (ROOT/'rich'/'public'/(task_id+'.json')).is_file():
+        return load_task(task_id, sources, ROOT/'rich')
     cat=catalog(root)
     card=next((x for x in cat['tasks'] if x['id']==task_id),None)
     if card is None:raise Rejected('unknown_task')
     public=load(Path(root)/'public'/(task_id+'.json'))
     if set(public) != {'id','family','request','required_outputs','sources','tables','examples','outlines'}:
         raise Rejected('public_fields')
-    if len(public['required_outputs']) not in (2,3):raise Rejected('required_outputs')
-    registry=load(Path(root)/'source_registry.json')
+    allowed = range(2,7) if Path(root) == ROOT/'rich' else (2,3)
+    if len(public['required_outputs']) not in allowed:raise Rejected('required_outputs')
+    registry=load((ROOT if Path(root) == ROOT/'rich' else Path(root))/'source_registry.json')
     if card['grounding']!='synthetic_diagnostic':
         pack=next(x for x in registry['packs'] if x['id']==card['pack'])
         if pack['revision']!=card['revision'] or pack['repository']!=card['source_group']:
@@ -53,6 +56,8 @@ def load_task(task_id, sources, root=ROOT):
 
 
 def private_task(task_id, root=ROOT):
+    if root == ROOT and (ROOT/'rich'/'private'/(task_id+'.json')).is_file():
+        return private_task(task_id, ROOT/'rich')
     catalog(root)
     value=load(Path(root)/'private'/(task_id+'.json'))
     if not value.get('witnesses') or not value.get('fixtures') or not value.get('oracle'):

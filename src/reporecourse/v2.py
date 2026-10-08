@@ -177,7 +177,10 @@ def planner_input(public,c):
 def request(public,c,model_binding=None):
     from .qualification import implementation_hashes
     from .tasks import catalog
-    card=next((t for t in catalog()['tasks'] if t['id']==public['id']),{})
+    from .tasks import ROOT
+    cards=catalog()['tasks']
+    if (ROOT/'rich'/'catalog.json').is_file():cards=cards+catalog(ROOT/'rich')['tasks']
+    card=next((t for t in cards if t['id']==public['id']),{})
     metadata={k:card.get(k) for k in ('source_group','base_change','grounding','independent_review','license_review')}
     inputs=planner_input(public,c)
     base=dict(schema='rr-planning-request-v2',config=deepcopy(c),public_hash=digest(public),
@@ -349,6 +352,11 @@ def shared_catalog(req,public,plans,resources,*,source='authored',selector='firs
 
 
 def run_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=None,incident=None):
+    if getattr(worker,'mode','')=='model':raise Rejected('v2_model_task_review_grammar_memory_qualification_pending')
+    return _execute_branch(manifest,branch_id,public,private,worker,save=save,checkpoint=checkpoint,incident=incident)
+
+
+def _execute_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=None,incident=None):
     """Use the existing ledger, engine, immutable artifacts and terminal evaluator."""
     from .engine import Engine
     from .evaluator import evaluate
@@ -361,13 +369,14 @@ def run_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=N
     branch=next(b for b in manifest['rows'] if b['branch_id']==branch_id)
     if f['status']!='valid':return dict(branch_id=branch_id,task_id=public['id'],track=branch['track'],status=f['status'],success=False if f['status']=='invalid_plan' else None,
         mode=f['mode'],planning_resources=f['planning_resources'],trajectories=[],provenance=manifest['manifest_id'])
-    if getattr(worker,'mode','')=='model':raise Rejected('v2_model_task_review_grammar_memory_qualification_pending')
-    # Synthetic/reference/API callers are explicit; production model dispatch stays gated.
+    # Internal execution primitive. Real-model callers must pass the cohort
+    # adapter's source/evidence/approval/allocation gates before reaching here.
     resources=Resources(**deepcopy(f['planning_resources']))
     cap=c['resource']
     if resources.token_cap!=cap['token_cap'] or resources.cpu_cap!=cap['cpu_cap']:raise Rejected('planning_budget')
-    expected_mode='scripted_reference' if getattr(worker,'mode','')=='scripted_reference' else 'scripted_mock'
+    expected_mode={'scripted_reference':'scripted_reference','model':'real_model'}.get(getattr(worker,'mode',''),'scripted_mock')
     target=branch['target'] or branch['eligible'][0]
+    execution_started=time.process_time();execution_event_start=len(resources.events)
     eng=Engine(public,worker,policy=c['recovery'],plan=f['plan'],track=branch['track'],target=target,
         seed=c['seeds']['execution'],resources=resources,max_actions=c['max_actions'],save=save,v2=c,
         sabotage='persistent' if branch['track']=='S' else 'one_shot')
@@ -382,7 +391,13 @@ def run_branch(manifest,branch_id,public,private,worker,*,save=None,checkpoint=N
             if checkpoint.get('branch_id')!=branch_id or checkpoint.get('manifest_id')!=manifest['manifest_id']:raise Rejected('branch_resume_mismatch')
             eng.restore(checkpoint['engine'])
         if save is not None:eng.save=lambda state:save({'manifest_id':manifest['manifest_id'],'branch_id':branch_id,'engine':state})
-        row=eng.run();grade=evaluate(public,private,row['state'])
+        try:row=eng.run()
+        finally:
+            try:resources.parent_overhead('branch_execution_parent',execution_started,execution_event_start)
+            finally:
+                if save is not None:eng.checkpoint()
+        row['resource_profile']=resources.summary()
+        grade=evaluate(public,private,row['state'])
         actual={w:dict(primary=False,total=False,tokens=0,cpu=0,assignments=[]) for w in c['workers']}
         for t in eng.trajectories:
             if t['action'] is None and not t['costs']:continue

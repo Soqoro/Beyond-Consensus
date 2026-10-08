@@ -1,5 +1,53 @@
 # Implementation status and handoff
 
+## Prospective cohort and richer task implementation (2026-10-08)
+
+The next local implementation now supplies a generic prospectively frozen
+cohort adapter, three executable richer task cards with two private reference
+organizations each, and a truthful blocked fourth API candidate. It reuses the
+existing scoped Engine, resource ledger, common JIT, evaluator and shared
+Slurm registry. The stock all-owner protocol check and matched requirement-level
+versus prompted-open pilot are prepared scopes, not executed experiments.
+
+Wrong clean semantic outcomes retain the declared fault branches; invalid
+planning retains configuration coverage without invented worker episodes.
+Runtime/integrity/accounting failures pause remaining coverage. Task reviews,
+energy provider rights, current CPU/tokenizer/GPU evidence and exact cohort
+approvals are enforced separately. Historical approvals do not expand.
+
+See [RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md) for current validation, source
+pins, remaining blockers, files and exact browser-terminal commands. It
+supersedes the adapter-pending statement in the historical entry below.
+No GPU runs, Slurm submissions, model downloads, commits, pushes or training
+were performed in this implementation.
+
+## Conditional F milestone audited; prospective comparison proposed (2026-10-08)
+
+User-supplied full branch traces for experiment
+`f6066eca22dacf05927d4eda364d6702be202fd08408c7619cae4633c97a75ab`
+show both intended losses triggered and both branches completed successfully,
+conformantly and within 100000-token/1200-CPU caps. Loss w0 used 9949 tokens /
+232.298667658 CPU seconds; loss w1 used 10802 / 245.374443477. Each included the
+original planning ledger once. Local read-only checks confirmed timing, lost
+identity persistence, public-triggered scope overlays, version bindings, journal
+agreement and accounting. No model/SQL was executed in this audit.
+
+After w0 loss, w1 reconstructed stock and w2 consumed its exact version. After
+w1 loss, w0 retained/read the stock artifact but repaired zero_report directly
+from the original table; this is source-based repair, not executable artifact
+reuse. The supplied scheduler export shows both 1088628 array tasks completed
+0:0. CPU job 1088580 reported all 12 clean and 10 fault controls passed without
+skips; this supersedes the earlier cluster-qualification-pending status below.
+
+The [audit and prospective matched design](OPEN_PLANNING_RUNBOOK.md#completed-conditional-recovery-audit-2026-10-08)
+keep these conditional observations separate from any fresh matched experiment.
+The proposed next diagnostic freezes one new plan, then schedules clean plus all
+meaningful-owner losses regardless of clean correctness (at most eight branches).
+No new adapter, approval, run, calibration or broader campaign is supplied by
+this documentation update. Full manifest/remote authenticity is not established
+by the uploaded projection. Earlier entries describe their historical stage.
+
+
 ## Conditional open-plan F adapter implemented; qualification pending (2026-10-07)
 
 Added a separate two-shard conditional F proposal/approval/runner for the audited

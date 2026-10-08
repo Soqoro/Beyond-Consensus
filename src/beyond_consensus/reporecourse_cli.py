@@ -6,6 +6,23 @@ from .util import BCError
 
 
 def add_parsers(sub):
+    p=sub.add_parser('rr-rich-inventory',help='Three executable rich cards and one blocked candidate')
+    p.add_argument('--sources',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p=sub.add_parser('rr-rich-qualify',help='Restricted CPU reference and mutant qualification')
+    p.add_argument('--sources',type=Path,required=True);p.add_argument('--task',required=True);p.add_argument('--output',type=Path,required=True)
+    p=sub.add_parser('rr-cohort-manifest',help='Commit prospective stock or matched rich cohort; no execution')
+    p.add_argument('--lane',choices=('stock_protocol','rich_pilot'),required=True)
+    p.add_argument('--sources',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    for name in ('model-lock','planner-lock','evidence'):p.add_argument('--'+name,type=Path)
+    p=sub.add_parser('rr-cohort-review',help='Read-only blockers and approval template')
+    p.add_argument('--manifest',type=Path,required=True);p.add_argument('--model-lock',type=Path);p.add_argument('--output',type=Path,required=True)
+    p=sub.add_parser('rr-cohort-approve',help='Bind attributed cohort approval after all task gates')
+    for name in ('manifest','model-lock','approval','output'):p.add_argument('--'+name,type=Path,required=True)
+    p=sub.add_parser('rr-cohort-export',help='All outcomes and trajectories; public inputs separate from labels')
+    p.add_argument('--run',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p=sub.add_parser('rr-cohort-footprint',help='Offline CPU tokenizer on public task prompts only')
+    p.add_argument('--task',required=True)
+    for name in ('sources','model-lock','output'):p.add_argument('--'+name,type=Path,required=True)
     p = sub.add_parser('rr-open-fault-manifest', help='Prepare two conditional F branches; no execution approval')
     for name in ('clean-proposal', 'model-lock', 'history-run', 'snapshots', 'receipt', 'controls', 'output'):
         p.add_argument('--'+name, type=Path, required=True)
@@ -70,6 +87,28 @@ def dispatch(args):
     from reporecourse.qualification import qualify,inventory,run_reference
     from reporecourse.experiments import build,calibration_plan,aggregate
     command=args.command
+    if command in ('rr-rich-inventory','rr-rich-qualify'):
+        from reporecourse import rich_tasks
+        result=rich_tasks.inventory(args.sources) if command=='rr-rich-inventory' else rich_tasks.qualify(args.task,args.sources)
+        write_new(args.output,result)
+        return dict(report=str(args.output),status=result.get('status','written'),model_executed=False)
+    if command.startswith('rr-cohort-'):
+        from .experiments import rr_cohort as co
+        from .experiments.rr_open_clean import load_control_record
+        from .cli import ROOT
+        if command=='rr-cohort-manifest':
+            if bool(args.model_lock)!=bool(args.planner_lock):raise BCError('Both role locks required together')
+            result=co.build(ROOT,args.sources,args.lane,worker=load(args.model_lock) if args.model_lock else None,
+                planner=load(args.planner_lock) if args.planner_lock else None,evidence=load_control_record(args.evidence) if args.evidence else None)
+        elif command=='rr-cohort-review':
+            m=load_control_record(args.manifest)
+            result=dict(experiment_id=m['experiment_id'],blockers=co.blockers(m,ROOT,load(args.model_lock) if args.model_lock else None),
+                approval_template=co.approval_template(m),task_execution_allowed=False)
+        elif command=='rr-cohort-approve':result=co.authorize(load_control_record(args.manifest),load(args.approval),ROOT,load(args.model_lock))
+        elif command=='rr-cohort-footprint':result=co.measure_prompts(args.task,args.sources,load(args.model_lock))
+        else:result=co.export(args.run)
+        write_new(args.output,result)
+        return dict(report=str(args.output),experiment_id=result.get('experiment_id'),model_executed=False,submitted=False)
     if command == 'rr-open-fault-manifest':
         from .experiments import rr_open_fault as fault
         from .experiments.rr_open_clean import load_control_record
