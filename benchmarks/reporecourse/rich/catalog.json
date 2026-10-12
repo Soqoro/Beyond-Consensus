@@ -108,6 +108,42 @@
       "base_task": "github-topics-consumer",
       "richness_target": "medium",
       "adaptation": "Four related artifacts for the documented PUT topics operation, including bidirectional mapping."
+    },
+    {
+      "id": "github-multioperation-integration",
+      "pack": "github-metadata",
+      "family": "api_schema",
+      "grounding": "repo_grounded_authored",
+      "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+      "source_group": "github/rest-api-description",
+      "base_change": "github-multioperation-integration-authored-v2",
+      "split": "development",
+      "status": "draft_reference_implemented",
+      "independent_review": "pending",
+      "source_semantics": "documented_public_contract",
+      "public_sha256": "44811d31ffcf3bd248c224bc64442b169fb366beaf3b6b1801b6d162dc0721af",
+      "private_sha256": "19dce49269b1f5744a5fe8e25b89bd49ad5ce5779cf350c619093ccea12e0a6e",
+      "task_version": "0.2-rich-2",
+      "benchmark_version": "0.2",
+      "resource_profiles": [
+        "rr-logical-tokens-cpu-v1"
+      ],
+      "fault_profiles": [
+        "F-first-assigned-handoff-v1",
+        "S-safe-artifact-v1",
+        "R-fixed-state-v1"
+      ],
+      "runtime": "reporecourse.runtime.Environment",
+      "evaluator": "reporecourse.evaluator.evaluate",
+      "review_record": {
+        "status": "pending",
+        "independent_reviewer": null
+      },
+      "license_review": "license_file_inspected_independent_review_pending",
+      "reference_evidence": null,
+      "base_task": "github-topics-client-package",
+      "richness_target": "moderate",
+      "adaptation": "Offline topics/language metadata integration; five outputs with array and arbitrary-key integer-object semantics."
     }
   ],
   "target": 4

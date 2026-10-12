@@ -1,5 +1,58 @@
 # Implementation status and handoff
 
+Latest consolidated audit: [PROGRESS_REPORT_2026-10-11.md](PROGRESS_REPORT_2026-10-11.md).
+
+## Four executable richer tasks; comparison blocked on reviews (2026-10-12)
+
+The existing cohort runner now has four executable candidates. The new
+`github-multioperation-integration` version `0.2-rich-2` combines the inspected
+pinned PUT topics and GET languages payloads into five useful offline outputs.
+Two reference organizations execute; the three earlier task versions and the
+completed October 11 stock run remain unchanged. The old blocked draft remains
+historical. Four tasks represent three source repositories, not four.
+
+CPU controls now mutate copies of one bound submission and republish wrong
+semantics with valid receipts. Missing outputs cannot be rescued. Additive
+reporting distinguishes reads and executable bindings, retains invalid/unrun
+clean/F conditions, and reports all-run costs and per-source/task/track results.
+The prior cohort provenance-route correction is preserved. Runtime worker,
+planner, grammar, scope and resource contracts are unchanged; exact compatible
+task-free GPU evidence can be reused while affected CPU controls are renewed.
+
+Current local validation: 455 standard-library tests, 426 passed / 29 skipped;
+109 pinned cohort controls passed with zero skips. The fourth task passed 41
+checks per reference organization and 13 destructive controls. Topics passed
+22 checks per organization / 10 controls; Jaffle 20 / 8 on verified staged
+sources. Energy references pass on authored fixtures locally; renewed staged
+Energy qualification and task-tokenizer footprints must run on the cluster.
+Compiler/shell/stdlib help checks and the precise optional-test evidence are
+recorded in [RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md).
+
+No jobs were submitted from this local session. The proposed rich cohort remains
+**8 task/planner configurations, 16 conditions, all unrun**. Missing independent
+task/rights receipts (plus Energy provider review) block the entire cohort; no
+review waiver, smaller subset or stock rerun is authorized. User authorization
+for this bounded phase will be bound to its exact approved manifest after gates
+pass. The current runbook supplies the frozen-source CPU wrapper, lock reuse,
+review templates, dry run, finite concurrency-one submission, interruption
+handling and public/private exports. No trained adapter, B0 or superiority
+result is claimed.
+
+## Prospective stock protocol completed (2026-10-11)
+
+User-supplied cohort export `e10d7ffbe1335f578745c36cbbeb2828d73046d0ed9c51fa672d35a80a31aa72`
+records clean and both prospectively selected owner-loss branches successful,
+conformant and within caps. Tokens: 9120 / 11849 / 12723; CPU debit seconds:
+169.30 / 196.63 / 211.66. One two-unit plan, two active owners, seven available
+identities; two planning calls including one rejected response. This is a
+synthetic protocol milestone, not planner superiority or calibrated robustness.
+
+Generic cohort coverage reporting now uses whole-manifest provenance through
+the cohort reader instead of the legacy per-episode hash. No retry gate, runtime
+score or historical record changed. Richer task review/rights and the fourth
+API candidate remain unresolved. See [RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md)
+for the uploaded evidence hash, branch details and review-readiness table.
+
 ## Prospective cohort and richer task implementation (2026-10-08)
 
 The next local implementation now supplies a generic prospectively frozen

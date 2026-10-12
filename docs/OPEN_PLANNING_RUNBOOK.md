@@ -1,13 +1,13 @@
 # Open planning and scoped execution runbook
 
-## Prospective cohort handoff (2026-10-08)
+## Current prospective cohort handoff (2026-10-12)
 
-[RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md) is the current local implementation
-and command handoff: prospective stock check first, then a separately reviewed
-two-planner rich-task pilot. Three cards have executable references; the fourth
-API candidate is blocked. Fresh evidence and manifest-scoped authorization are
-required. The dated steps below retain the history of the narrower clean and
-conditional-fault exceptions; they do not authorize the new cohort.
+[RICH_COHORT_PILOT.md](RICH_COHORT_PILOT.md) contains the current four-task,
+two-planner handoff. The stock protocol milestone is complete; do not repeat it.
+Four cards now have executable references, while independent task/rights review
+and refreshed cluster task footprints remain prerequisites. The dated steps
+below preserve the earlier clean/conditional-fault history and do not authorize
+additional runs.
 
 ## Current next step (2026-10-07)
 

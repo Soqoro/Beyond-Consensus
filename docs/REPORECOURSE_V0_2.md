@@ -1,10 +1,11 @@
 # RepoRecourse v0.2 migration and review
 
-The additive [2026-10-08 richer-cohort implementation](RICH_COHORT_PILOT.md)
-adds generic prospective scheduling and three implemented source-grounded
-requests plus a blocked fourth candidate. It preserves the existing v2 Engine,
-scopes, common JIT and accounting. New runtime hashes and explicit cohort gates
-apply; historical v1/v2 records and narrow approvals remain unchanged.
+The [October 12 richer-cohort handoff](RICH_COHORT_PILOT.md) completes four
+executable source-grounded requests using the existing v2 Engine, scopes, common
+JIT and accounting. Independent task/rights receipts and refreshed cluster CPU
+footprints still block the 16-condition comparison. The prospective stock
+milestone is complete. Historical v1/v2 records and narrow approvals remain
+unchanged; compatible task-free GPU qualification may be reused.
 
 Implementation date: 2026-09-29. This is a local software update, not a model
 result or permission to run experiments. The supplied

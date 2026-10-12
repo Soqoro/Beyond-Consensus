@@ -51,3 +51,28 @@ passes a registry whose retrieval callback always refuses. No remote/file refs,
 regex/format loaders, plugins or candidate Python are enabled. SQLGlot stays
 27.28.1 and lowers to the existing approved restricted SQLite IR. Source/license
 pins are independent of these tool pins.
+
+## October 12 additional public operation (author inspection, not clearance)
+
+The new `github-metadata` pack uses the same GitHub commit above and retains
+PUT topics plus GET repository languages and their complete local component
+closure. The inspected full specification is 12,964,430 bytes, SHA256
+`b8ca03764f54058ec40e2b61e048a4518ee88e943ac04d393b1757094c895aad`.
+The deterministic 3,839-byte retained JSON has SHA256
+`a0899be4025fc3632482762492ea45fbe95943af5cd57d8a2c19007edefa819d`.
+README and MIT LICENSE.md retain their existing pins. The old topics pack is
+unchanged. The new pack is an additional slice of the **same source group**.
+
+GET languages has required owner/repo path parameters, no request body, and a
+200 response object with arbitrary string keys and integer values. No minimum
+is declared; the offline task does not invent a nonnegative-value constraint.
+Empty objects are allowed; null is not. Error-response dependencies are retained
+for source closure, but the authored success-payload job does not claim to
+validate all live API operations/errors or to implement server behavior.
+
+Inspection was performed by Codex as implementation author on 2026-10-12.
+It is not an independent task review or legal approval. The four-task pilot
+requires attributed source/task-hash-bound rights and independent task receipts.
+Energy's original-provider gate remains unchanged. Source staging and successful
+CPU validation do not supply those receipts. See the current
+[cohort readiness table](../../docs/RICH_COHORT_PILOT.md).

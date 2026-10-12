@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--pool-count N] [--repo-root DIR]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE | --worker-lock FILE --planner-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--rich-only] [--pool-count N] [--repo-root DIR]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -12,6 +12,9 @@ repo_root=''
 sources=''
 output=''
 model_lock=''
+worker_lock=''
+planner_lock=''
+rich_only=false
 local_run=false
 dry=false
 track_f=false
@@ -27,20 +30,29 @@ while (($#)); do
         --v2-controls) v2=true; shift ;;
         --scoped-controls) scoped=true; v2=true; shift ;;
         --cohort-controls) cohort=true; shift ;;
+        --rich-only) rich_only=true; shift ;;
         --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
-        --sources|--output|--model-lock|--repo-root)
+        --sources|--output|--model-lock|--worker-lock|--planner-lock|--repo-root)
             (($# >= 2)) || { usage >&2; exit 2; }
             case "$1" in
                 --repo-root) repo_root="$2" ;;
                 --sources) sources="$2" ;;
                 --output) output="$2" ;;
                 --model-lock) model_lock="$2" ;;
+                --worker-lock) worker_lock="$2" ;;
+                --planner-lock) planner_lock="$2" ;;
             esac
             shift 2 ;;
         *) usage >&2; exit 2 ;;
     esac
 done
+if "$rich_only" && ! "$cohort"; then printf 'Use --rich-only with --cohort-controls.\n' >&2; exit 2; fi
+if [[ -n "$worker_lock$planner_lock" ]]; then
+    if ! "$cohort" || [[ -z "$worker_lock" || -z "$planner_lock" || -n "$model_lock" ]]; then
+        printf 'Role lock reuse requires both locks, cohort controls, and no --model-lock.\n' >&2; exit 2
+    fi
+fi
 if "$dry"; then
     printf 'CPU qualification only: reference alternatives, negatives, compiler; optional model-specific decoder. No model weights or GPU jobs.\n'
     exit 0
@@ -71,19 +83,37 @@ if "$cohort"; then
     if "$v2" || "$track_f"; then printf 'Use cohort controls as a separate qualification.\n' >&2; exit 2; fi
     "$BC_PYTHON" -I scripts/check_rr_cohort.py --output "$output/cohort-controls.json"
     "$BC_PYTHON" -I scripts/bc.py rr-rich-inventory --sources "$sources" --output "$output/rich-inventory.json"
-    "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" --task synthetic-stock --output "$output/synthetic-stock.json"
+    if ! "$rich_only"; then
+        "$BC_PYTHON" -I scripts/bc.py rr-qualify --sources "$sources" --task synthetic-stock --output "$output/synthetic-stock.json"
+    fi
     # Missing source packs are explicit blockers; never create surrogate staged data.
     PYTHONPATH="$repo_root/src" "$BC_PYTHON" - "$sources" "$output" <<'PYRICH'
 import sys
 from pathlib import Path
 from reporecourse.rich_tasks import qualify
 from reporecourse.common import write_new, Rejected
-for task in ('jaffle-payment-release','energy-single-indicator-release','github-topics-client-package'):
+for task in ('jaffle-payment-release','energy-single-indicator-release','github-topics-client-package','github-multioperation-integration'):
     try:report=qualify(task,sys.argv[1])
     except (Rejected,OSError) as exc:report=dict(task=task,status='blocked_prerequisite',reason=str(exc),model_executed=False)
     write_new(Path(sys.argv[2])/(task+'.json'),report)
     if report['status']=='failed':raise SystemExit('Rich reference controls failed: '+task)
 PYRICH
+    if [[ -n "$worker_lock" ]]; then
+        PYTHONPATH="$repo_root/src" "$BC_PYTHON" - "$worker_lock" "$planner_lock" "$output" <<'PYLOCKS'
+import sys, shutil
+from pathlib import Path
+from beyond_consensus.models.competence import require_qualification, versions
+from beyond_consensus.experiments import rr_v2_preflight as profile
+from reporecourse.common import load, write_new, digest
+worker,planner=map(load,sys.argv[1:3]);root=Path.cwd();output=Path(sys.argv[3])
+m=profile.build(root,worker,planner,7,plan_scoped=True,planner_output_cap=6144)
+profile.check_locks(m,worker)
+for role,lock,cap in [('json',worker,2048),('plan',planner,6144)]:
+    require_qualification(lock,versions(),16384,'reporecourse-'+role+'-scoped-v1-pool-7',cap)
+for name,path in [('worker',sys.argv[1]),('planner',sys.argv[2])]:shutil.copyfile(path,output/(name+'-lock.json'))
+write_new(output/'role-lock-reuse.json',dict(status='compatible',worker=digest(worker),planner=digest(planner),model_executed=False))
+PYLOCKS
+    fi
     if [[ -n "$model_lock" ]]; then
         for role in worker planner; do
             mode=json; cap=2048
@@ -92,7 +122,10 @@ PYRICH
                 --context-limit 16384 --output-cap "$cap" --action-constraint "reporecourse-$mode-scoped-v1-pool-7" \
                 --output "$output/$role-grammar.json" --qualified-lock "$output/$role-lock.json"
         done
-        for task in synthetic-stock jaffle-payment-release energy-single-indicator-release github-topics-client-package; do
+    fi
+    if [[ -n "$model_lock$worker_lock" ]]; then
+        for task in synthetic-stock jaffle-payment-release energy-single-indicator-release github-topics-client-package github-multioperation-integration; do
+            if [[ "$task" == synthetic-stock ]] && "$rich_only"; then continue; fi
             if "$BC_PYTHON" -c 'import json,sys; sys.exit(json.load(open(sys.argv[1])).get("status")!="cpu_qualified_review_pending")' "$output/$task.json"; then
                 "$BC_PYTHON" -I scripts/bc.py rr-cohort-footprint --task "$task" --sources "$sources" \
                     --model-lock "$output/worker-lock.json" --output "$output/$task-footprint.json"

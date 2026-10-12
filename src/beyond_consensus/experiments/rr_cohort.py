@@ -26,6 +26,29 @@ LIMITATIONS=['development_requests_not_population_inference','uncalibrated_engin
              'observed_memory_only','no_retry_no_training','persistent_availability_F_not_adaptive_adversary',
              'seed1_deterministic_not_independent_sample']
 
+# These modules are not used to generate or execute the task-free GPU probe.
+# Their changed behavior is qualified by the renewed CPU cohort/task controls.
+# All worker, scope, engine, grammar, backend and resource code stays hash-exact.
+FOOTPRINT_OFFLINE_MODULES={
+    'src/reporecourse/sources.py','src/reporecourse/rich_tasks.py',
+    'src/reporecourse/evaluator.py','src/reporecourse/cohort.py',
+}
+
+
+def footprint_compatibility(root, marker):
+    """Compare only the task-free probe's contract, including added code files."""
+    root=Path(root)
+    prefixes=('src/reporecourse/','src/restricted_artifacts/','src/beyond_consensus/models/')
+    fixed={'src/beyond_consensus/config.py','src/beyond_consensus/experiments/rr_v2_preflight.py',
+           'src/beyond_consensus/experiments/rr_open_footprint.py'}
+    paths={p for p in marker['files'] if p.startswith(prefixes)}|fixed
+    for prefix in prefixes:
+        paths.update(str(p.relative_to(root)) for p in (root/prefix).rglob('*.py'))
+    changed=sorted(p for p in paths if not (root/p).is_file() or file_hash(root/p)!=marker['files'].get(p))
+    return dict(compatible=not (set(changed)-FOOTPRINT_OFFLINE_MODULES),
+        probe_contract_changes=sorted(set(changed)-FOOTPRINT_OFFLINE_MODULES),
+        cpu_controlled_changes=sorted(set(changed)&FOOTPRINT_OFFLINE_MODULES))
+
 
 def control_hashes(root):
     paths=['src/beyond_consensus/experiments/rr_cohort.py','src/beyond_consensus/experiments/cluster.py',
@@ -75,6 +98,16 @@ def approval_template(m):
     return dict(schema='rr-cohort-approval-v1',proposal_id=m['experiment_id'],decision='pending',reviewer=None,reviewed_at=None,
         scope_hash=digest({k:v for k,v in m.items() if k not in ('experiment_id','approval','task_execution_allowed')}),
         maximum_execution_branches=m['maximum_execution_branches'],limitations_accepted=LIMITATIONS)
+
+
+def task_review_templates(m):
+    packs={p['id']:p for p in load(ROOT/'source_registry.json')['packs']}
+    return {task:dict(task_hash=digest(b['card']),source_hash=digest(packs[b['card']['pack']]),
+        scope='this_cohort_only',decision='pending',reviewer=None,reviewer_role=None,
+        reviewed_at=None,evidence=None,independent_review='pending',rights='pending',
+        rights_basis=None,rights_reviewer=None,rights_reviewer_role=None,rights_reviewed_at=None,
+        **({'underlying_providers':'pending'} if b['card']['pack']=='energy' else {}))
+        for task,b in m['task_bindings'].items() if b['card'] and b['card'].get('pack') in packs}
 
 
 def authorize(m,receipt,root,worker):
@@ -147,6 +180,15 @@ def blockers(m,root,worker=None):
                 need(r.get('independent_review')=='pending' and r.get('limitations_accepted')==['independent_review_pending','development_engineering_only'],task+':exception_must_preserve_pending_review')
             else:need(r.get('independent_review')=='approved',task+':independent_review_unresolved')
             need(r.get('rights')=='approved' and bool(r.get('rights_basis')),task+':rights_review_required')
+            if m['lane']=='rich_pilot':
+                # Experiment consent and author self-review are separate from
+                # the independently attributed review required by this pilot.
+                need(r.get('decision')=='approved' and r.get('independent_review')=='approved' and
+                     r.get('reviewer_role')=='independent_reviewer' and bool(r.get('evidence')),
+                     task+':independent_review_receipt_required')
+                need(r.get('source_hash')==digest(next(p for p in load(ROOT/'source_registry.json')['packs'] if p['id']==card['pack'])) and
+                     bool(r.get('rights_reviewer')) and bool(r.get('rights_reviewer_role')) and bool(r.get('rights_reviewed_at')),
+                     task+':attributed_source_rights_receipt_required')
             if card['pack']=='energy':need(r.get('underlying_providers')=='approved',task+':provider_rights_pending')
             # Exact public prompt footprint measured with qualified tokenizer, not guessed from characters.
             footprint=e.get('task_footprints',{}).get(task,{})
@@ -159,6 +201,13 @@ def blockers(m,root,worker=None):
                 b.get('output_cap')==(6144 if a['role']=='plan' else 2048) and type(b.get('input_tokens')) is int and
                 0<b['input_tokens']<=16384-b['output_cap'] and b.get('passed') is True
                 for a,b in zip(expected,measured)),task+':prompt_measurements_incomplete_or_changed')
+            if m['lane']=='rich_pilot':
+                actions=[a['action'] for w in private['witnesses'] for a in w['actions']]
+                sizes=footprint.get('reference_action_measurements',[])
+                need(len(actions)==len(sizes) and all(digest(a)==r.get('action_hash') and
+                    r.get('binding_measurement')=='representative-64-hex-version-v1' and
+                    type(r.get('action_plus_stop_tokens')) is int and 0<r['action_plus_stop_tokens']<=2048
+                    for a,r in zip(actions,sizes)),task+':reference_output_expressibility_required')
         except (Rejected,OSError):errors.append(task+':source_or_card_unavailable')
     audit=e.get('footprint_audit')
     if not audit:errors.append('renewed_gpu_footprint_audit_required')
@@ -167,9 +216,7 @@ def blockers(m,root,worker=None):
             fresh=review.inspect(audit['run'],audit['snapshots']);need(fresh==audit,'footprint_files_changed')
             report=read_json(Path(audit['run'])/'preflight.json');manifest=read_json(Path(audit['run'])/'manifest.json')
             snapshot=Path(audit['snapshots'])/report['runtime']['snapshot_id'];marker=read_json(snapshot/'snapshot.json')
-            critical={p for p in marker['files'] if p.startswith(('src/reporecourse/','src/restricted_artifacts/','src/beyond_consensus/models/'))}
-            critical.update(['src/beyond_consensus/config.py','src/beyond_consensus/experiments/rr_v2_preflight.py','src/beyond_consensus/experiments/rr_open_footprint.py'])
-            need(all(file_hash(Path(root)/p)==marker['files'][p] for p in critical),'execution_contract_changed_renew_gpu_footprint')
+            need(footprint_compatibility(root,marker)['compatible'],'execution_contract_changed_renew_gpu_footprint')
             need(manifest['model']==m['model'],'footprint_model_changed')
             old=read_json(snapshot/'resolved/model-lock.json')
             need(worker is not None and all(worker.get(k)==old.get(k) for k in ('revision','tokenizer_revision','metadata_hashes','weight_hashes')),'footprint_weights_changed')
@@ -195,6 +242,14 @@ def submission(m,root,worker,mode,concurrency,output,shard=None):
                        'Unresolved started configuration: pause remaining cohort, retain evidence')
         if shard is not None and e['shard']!=shard:continue
         review.require(not (ep/'started.json').exists() and not (ep/'result.json').exists(),'Configuration already started: preserve interrupted/unrun evidence; no retry')
+    if shard is not None:
+        for e in m['episodes'][:shard]:
+            path=output/'episodes'/e['episode_id']/'result.json'
+            review.require(path.exists(),'Earlier configuration not terminal: fixed cohort order required')
+            previous=load_control_record(path)
+            review.require(previous.get('provenance',{}).get('manifest_hash')==digest(m) and
+                previous.get('status') in ('completed','invalid_plan'),
+                'Earlier configuration failed integrity/runtime gates; stop cohort')
 
 
 def execute_configuration(m,c,public,private,backend,switch,save):
@@ -358,6 +413,12 @@ def aggregate(m,output):
                    independent_review=card.get('independent_review'))
         public_path=(ROOT/'rich' if row['task'] in RICH_TASKS else ROOT)/'public'/(row['task']+'.json')
         row['required_outputs']=len(load(public_path)['required_outputs']) if public_path.exists() else None
+        row['task_review_receipt']=deepcopy(m['evidence'].get('reviews',{}).get(row['task']))
+    source_summary={}
+    for row in summary['configurations']:
+        source_summary.setdefault(row['source_group'],{}).setdefault(row['planner'],[]).append(row)
+    summary['per_source']={source:{planner:cohort.track_summary(rows) for planner,rows in planners.items()}
+                           for source,planners in source_summary.items()}
     return dict(summary,experiment_id=m['experiment_id'],
                 source_groups={t:b['card']['source_group'] if b['card'] else None for t,b in m['task_bindings'].items()},
                 evidence='real_model_results_or_unrun',confirmatory=False,maximum_execution_branches=m['maximum_execution_branches'])
@@ -409,9 +470,22 @@ def measure_prompts(task,sources,worker):
         cap=6144 if case['role']=='plan' else 2048
         rows.append(dict(id=case['id'],role=case['role'],messages_hash=digest(case['messages']),
             rendered_input_ids_hash=digest(ids),input_tokens=len(ids),output_cap=cap,passed=len(ids)+cap<=16384))
+    import json
+    sizes=[]
+    for w in private_task(task)['witnesses']:
+        for item in w['actions']:
+            action=item['action']
+            measured=deepcopy(action)
+            if 'bindings' in measured:
+                measured['bindings']={k:digest(['footprint-version',k]) for k in measured['bindings']}
+            tokens=len(tokenizer.encode(json.dumps(measured,separators=(',',':')),add_special_tokens=False))+1
+            sizes.append(dict(action_hash=digest(action),action_plus_stop_tokens=tokens,
+                              binding_measurement='representative-64-hex-version-v1'))
     return dict(schema='rr-cohort-public-footprint-v1',task=task,public_hash=digest(public),model_lock_sha256=digest(worker),
         implementation_hashes=implementation_hashes(),template=template,cases=rows,
-        status='passed' if all(r['passed'] for r in rows) else 'failed',model_executed=False,task_sql_executed=False,
+        status='passed' if all(r['passed'] for r in rows) and all(r['action_plus_stop_tokens']<=2048 for r in sizes) else 'failed',
+        reference_action_measurements=sizes,reference_measurement_scope='Evaluator-side serialization only; no solution text exported; representative version IDs; reasoning and worst-case tokenization unmeasured; not a shortest solution.',
+        model_executed=False,task_sql_executed=False,
         sql_executed=public['family']=='data_product',qualification_budget_display={'remaining_tokens':100000,'cpu_remaining':1200},
         task_execution_allowed=False,worst_case_fit_established=False,
         limitation='Initial assignment and one-source observations only; later history can still exhaust context.')
@@ -431,3 +505,19 @@ def export(run):
     return dict(schema='rr-cohort-export-v1',experiment_id=m['experiment_id'],public_planner_inputs=inputs,
         future_outcome_labels=labels,summary=summary,manifest_hash=digest(m),model_executed=False,sql_executed=False,
         historical_scores_changed=False,evidence='read_only_real_run_export_including_failed_and_unrun',training_authorized=False)
+
+
+def public_export(run):
+    """No journals, source bodies, execution state or hidden evaluation records."""
+    private=export(run)
+    summary=deepcopy(private['summary'])
+    for row in summary['configurations']:
+        row.pop('branches',None)
+        row.pop('task_review_receipt',None)
+        for key in ('planning_resources','interrupted_planning_usage'):
+            resources=row.get(key)
+            if resources:resources.pop('events',None)
+    return dict(schema='rr-cohort-public-export-v1',experiment_id=private['experiment_id'],
+        public_planner_inputs=private['public_planner_inputs'],summary=summary,
+        future_labels=True,training_authorized=False,model_executed=False,sql_executed=False,
+        historical_scores_changed=False)

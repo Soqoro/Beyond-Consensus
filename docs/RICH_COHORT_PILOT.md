@@ -1,6 +1,581 @@
 # Prospective richer-task pilot — implementation and review
 
-Date: 2026-10-08. Status: **implemented locally; execution blocked pending evidence and review**.
+Updated: 2026-10-12. Status: **four richer tasks executable; independent task/rights review and refreshed cluster CPU evidence pending**.
+
+## Four-task comparison preparation — 2026-10-12
+
+**Current disposition: implementation complete; cohort execution blocked on genuine
+review receipts and refreshed cluster CPU/task-footprint evidence.** This section
+supersedes the October 8 commands below. The prospective stock milestone is
+complete: do not rerun stock. This session is local-only; no Slurm job, model
+inference, training, commit or push was performed.
+
+### Inventory and author review
+
+Author self-review: Codex, implementation author, 2026-10-12. Scope: the public
+contracts, pinned source slices, bounded interpreter, executable references and
+negative controls. This is **not** an independent review, a rights determination,
+or a signed human receipt. The dated October 11 review is retained as history.
+
+| Task / version | Useful outputs and semantic breadth | Two executable author witnesses | Current evidence and admission |
+| --- | --- | --- | --- |
+| `jaffle-payment-release` / `0.2-rich-1` | Four related data-dependent views: per-order payments, customer totals, method totals, reconciliation. Moderate aggregation breadth; demo data, not real accounting. | Independent 4 units; shared 5 with a per-order relation consumed by three outputs. Artifacts actually differ. | Both pass on verified staged seeds plus authored variants; 8 missing/wrong controls pass. Independent task and rights receipts pending. |
+| `energy-single-indicator-release` / `0.2-rich-1` | Five outputs: generation rows, window totals, coverage, exclusions, constant field contract. Small/moderate single-indicator job; the constant contract is documentation, not a fifth numerical problem. | Independent 5 units; shared 6 with selected-row relation and three consumers. | Both pass on authored fixtures locally. Earlier cluster staged-source success remains historical; renewed same-submission controls must use that staged data. Task, rights and underlying-provider review pending. |
+| `github-topics-client-package` / `0.2-rich-1` | Four outputs: request/response validators and two field-renaming mappings. Small, related array semantics. | Independent 4 units; shared 5 with executable array-schema bindings. | Both pass using pinned topics material, 10 missing/wrong controls pass. Task and rights receipts pending. |
+| `github-multioperation-integration` / `0.2-rich-2` | Five outputs: topics request/response validators, languages response validator, combined repository summary, outbound topics body. Moderate: arrays versus arbitrary-key integer objects; no claim of six-agent difficulty. | Independent 5 units; shared 6, with four actual bindings to one array-schema helper. | Both pass using the new pinned closure, 41 terminal checks per organization, 13 missing/wrong controls. Task and rights receipts pending. |
+
+There are four executable candidates and **three source groups**. Both API cards
+use `github/rest-api-description`. The first three public/private file hashes and
+versions are unchanged. The old `blocked-api-integration.json` is historical;
+it is not a fifth task and is not used as an executable fallback.
+
+For all four, cross-output checks evaluate one explicitly bound submission.
+Destructive tests copy that submission. Wrong semantics are republished through
+the trusted publisher so valid receipts reach the evaluator; a corrupt version
+hash alone is not counted as a semantic mutant. No JIT or worker regeneration
+rescues the controls. Source/reset checks remain separate. Python SQL expectations
+are independent reductions; both organizations still share the restricted
+compiler/executor, and API tests share the bounded interpreter. Correlated
+implementation defects remain possible.
+
+#### Inspected second operation and source closure
+
+At GitHub revision `4377b4f4845badf28d13464dfb3042c6cf0e3a1f`, inspected
+`GET /repos/{owner}/{repo}/languages` alongside `PUT /repos/{owner}/{repo}/topics`.
+Both have required string owner/repo path parameters. GET has **no invented
+request body**. Its 200 response is an object with arbitrary keys and integer
+values; empty objects are allowed, null/string/boolean/nonintegral values fail.
+The pinned schema declares no minimum: the offline validator therefore accepts
+negative integers and integral JSON numbers. It does not enforce unstated live
+server semantics. Topics preserve the existing required `names` array of strings,
+case/order/duplicates, empty arrays and allowed extra schema properties.
+
+The new offline consumer combines both responses as `topics` and `language_bytes`;
+the outbound topics body keeps only `names`. Mapping inputs are bounded to 128
+names and 128 language entries; these bounds are not imposed on the validators.
+Mappings preserve all accepted dictionary entries. Cross-output fixtures cover
+empty and boundary inputs, integer distinctions, missing fields, unrelated fields
+and end-to-end composition. No live API calls or repository scripts execute.
+
+New pack `github-metadata` preserves the old `github` pack. Its two operations
+and complete local component closure are selected by public API paths, never by
+reference answers. Owner/repo parameters, referenced examples, success/error
+schemas and responses are retained. Unsupported/external refs fail staging.
+Only the documented success payloads are the task's validator outputs.
+
+- Upstream specification: 12,964,430 bytes, SHA256
+  `b8ca03764f54058ec40e2b61e048a4518ee88e943ac04d393b1757094c895aad`.
+- New retained closure: 3,839 bytes, SHA256
+  `a0899be4025fc3632482762492ea45fbe95943af5cd57d8a2c19007edefa819d`.
+- Public task file SHA256:
+  `44811d31ffcf3bd248c224bc64442b169fb366beaf3b6b1801b6d162dc0721af`.
+- Complete upstream/retained/license pins are in
+  [source_registry.json](../benchmarks/reporecourse/source_registry.json).
+  Sources staged under `/tmp` locally; no downloaded source data added to Git.
+
+### Readiness and exact remaining actions
+
+| Gate | State | Action / responsible evidence |
+| --- | --- | --- |
+| Fourth task expressible in current artifact language | CPU references pass | Independent reviewer checks the new public contract and negative cases; no language expansion. |
+| Independent task review, all four | **Missing** | Four task-hash-bound receipts with independent reviewer identity/role, date, evidence and `this_cohort_only` scope. CPU success and user experiment consent are insufficient. |
+| Source rights, all four | **Missing** | Source-hash-bound attributed rights reviewer, role, date and documented basis covering each task's adaptation. Two GitHub cards share a source, but each receipt must cover its task. |
+| Energy provider terms | **Missing** | Review retained electricity-generation provenance and applicable original-provider terms. Existing OWID license does not resolve this. See [source attribution](../benchmarks/reporecourse/SOURCES_AND_LICENSES.md). |
+| Current controls and final task footprints | Local controls run; cluster renewal pending | Run the existing CPU wrapper below on all four final cards and pinned staged sources. Measure public prompts plus evaluator-side reference serialization; no private reference text is exported. |
+| Worker/planner grammar | Existing locks reusable if exact compatibility passes | Wrapper checks fingerprints, versions, 7 identities, context and role caps. Does not fabricate new grammar test results. |
+| GPU footprint | Reuse compatible `e923cb…` evidence | Read-only audit and exact probe-contract comparison below. Offline task/evaluator/report changes require CPU controls; worker/engine/scope/grammar/backend/resource changes still block reuse. No automatic extra GPU probe. |
+| Cohort approval | User authorized this bounded phase; exact manifest not frozen yet | Fill exact proposal approval after all blockers resolve. No engineering review waiver is accepted for `rich_pilot`. No repeated per-branch permission. |
+
+### Frozen design and reporting
+
+Task order is Jaffle, Energy, topics, multioperation; within each, requirement-level
+then prompted-open; within each valid plan, clean then its prospectively sampled F.
+Eight configuration shards, concurrency **one**, sixteen scheduled logical
+conditions. A shard refuses to start ahead of an unfinished predecessor. Slurm
+array ordering is not assumed: an out-of-order dispatch stops before generation
+and needs inspection; never automatically resubmit it as a new scientific attempt.
+The first task's four scheduled conditions are the operational checkpoint; no
+extra smoke task or clean-success gate is introduced.
+
+Requirement-level uses public requirements, cyclic assignment over seven workers,
+measured allocation CPU and zero model tokens. Prompted-open has one sequence
+per task, up to eight calls with two structural revisions; no witness menu.
+Both use max 24 units and 24 actions per assignment, the existing public rejection
+feedback, fresh assignment contexts, original-source access, version bindings,
+public monitor and common scoped JIT. Later history overflow still fails rather
+than silently truncating. Worker model, scorer and caps do not change by planner.
+
+Envelope: Qwen3.5-27B revision `fc05daec18b0a78c049392ed2e771dde82bdf654`, BF16,
+thinking on, deterministic decoding, context 16384, worker output 2048 and planner
+output 6144. One frozen model on a full qualified 80-GB-class GPU per shard.
+Seven logical identities; fewer active owners allowed. Each branch has 100000
+logical tokens and 1200 charged CPU seconds. Aggregate cap sums 1.6 million tokens
+and 19200 CPU seconds are not wall/GPU forecasts or calibrated B0.
+
+Seed index 1 uses the existing separate hashed planner/execution/target/attack
+streams. Tasks are an explicitly ordered census, not sampled using a fabricated
+additional task RNG. Task identity is bound into each configuration/request.
+Deterministic decoding does not create independent seed replications. One owner
+is uniformly drawn from the frozen plan's meaningful terminal/ancestor producers
+before clean outcomes; idle identities are excluded. No clean-pass filtering,
+hidden-score targeting, retargeting, or reuse of clean artifacts in F.
+
+Summary retains scheduled clean/F rows for invalid planning (failure with no
+invented target/worker execution), unrun/interrupted rows, all-run costs,
+uncertain/reserved usage, correctness, conformance and cap status separately.
+It reports declared imports, observed reads, saved executable bindings, original
+source use, repair assignments and scope overlays. A binding is not proof of
+causal necessity; an artifact read is not an execution binding.
+`source_only_versions` means no saved executable artifact bindings; constants
+also meet that definition. Source-read events must be consulted separately. Per-source and
+per-task/planner/track completion accompany costs from failures as well as successes.
+Unknown costs stay unknown. Post-alarm costs are a subset of totals. Physical
+planning reuse and per-branch logical planning inheritance remain distinct.
+
+**Current results for the proposed comparison:** all eight task/planner
+configurations, and therefore all sixteen conditions, are unrun. There are no
+new planner costs, F outcomes, success rates or calibration estimates to report.
+The completed stock evidence below remains separate. This preparation resolves
+a missing executable-task/qualification gap, not which planner is better.
+
+### Prospective result ledger (before execution)
+
+| Task | Requirement clean | Requirement F | Prompted clean | Prompted F | New model costs |
+| --- | --- | --- | --- | --- | --- |
+| Jaffle payment release | Unrun | Unrun; target unresolved | Unrun | Unrun; target unresolved | Unmeasured |
+| Energy single indicator | Unrun | Unrun; target unresolved | Unrun | Unrun; target unresolved | Unmeasured |
+| GitHub topics | Unrun | Unrun; target unresolved | Unrun | Unrun; target unresolved | Unmeasured |
+| GitHub multioperation | Unrun | Unrun; target unresolved | Unrun | Unrun; target unresolved | Unmeasured |
+
+Coverage is 0/16 observed, not a 0% success estimate. No invalid plans, budget
+failures, interventions or successful recoveries have yet been observed in this
+cohort. Planning/primary/post-alarm totals and conformance are unknown. The
+permission and review blockers above precede worker execution.
+
+### Local verification record (2026-10-12)
+
+Worktree base: `e9139a401efd900a0a96e08ad1fc0c01dd3f11f3`; changes are
+uncommitted. Existing uncommitted reporting fixes and both October 11 review
+files were preserved. This is not a claim that a later cluster HEAD is current.
+
+| Check | Observed result |
+| --- | --- |
+| `python -m unittest discover -s tests -v` | 455 tests: 426 passed, 29 skipped; no failures/errors. |
+| Pinned `scripts/check_rr_cohort.py` | 109 passed, zero skips/failures/errors on the unchanged final code tree. |
+| Pinned additional runtime/Track F/SQL tests | 56 passed, zero skips. |
+| New richer-task focused suite | 9 passed with pinned dependencies, including valid-receipt semantic mutants. |
+| Final cohort reporting/review focused suite | 30 tests: 29 passed; its one optional execution test is covered by the pinned cohort suite. |
+| `python scripts/check_shell.py` | 10 shell files pass; LF, strict handling, help/dry-run and `bash -n`. |
+| Current runbook blocks | All 9 cluster handoff blocks and the local verification block pass `bash -n`; cluster dispatch is not executed locally. |
+| `python -m compileall -q src tests scripts` | Passed. |
+| `git diff --check` | Passed. |
+| `python -I -S scripts/bc.py --help` | Passed with site packages disabled. |
+
+Pinned child dependencies were SQLGlot 27.28.1, jsonschema 4.25.1 and
+referencing 0.36.2 in `/tmp/bc-rich-cpu`. No model weights or tokenizer are present
+locally. Staged-source qualification ran locally for Jaffle and both GitHub
+cards. Energy source qualification and final tokenizer measurements are explicit
+cluster prerequisites; fixture tests do not substitute for them.
+
+The standard-library skips are listed below. All 28 optional CPU cases were
+subsequently exercised by the pinned cohort or additional suites; the separate
+legacy container/cgroup sandbox test remains skipped without an explicitly
+approved sandbox profile. That legacy sandbox is not required by this data path.
+
+- `test_reporecourse.PublicSQLInterfaceTests.test_actual_compiler_distinguishes_undeclared_object.test_actual_compiler_distinguishes_undeclared_object`
+- `test_reporecourse.VerticalTests.test_all_baselines_clean_and_announced_loss.test_all_baselines_clean_and_announced_loss`
+- `test_reporecourse.VerticalTests.test_both_families_witnesses_and_negatives.test_both_families_witnesses_and_negatives`
+- `test_reporecourse.VerticalTests.test_existing_journal_runner_adapter_with_explicit_test_backend.test_existing_journal_runner_adapter_with_explicit_test_backend`
+- `test_reporecourse.VerticalTests.test_fixed_state_graph_and_equal_remaining.test_fixed_state_graph_and_equal_remaining`
+- `test_reporecourse.VerticalTests.test_independent_benchmark_execution_without_bc.test_independent_benchmark_execution_without_bc`
+- `test_reporecourse.VerticalTests.test_replica_checkpoint_preserves_primary_and_resumes.test_replica_checkpoint_preserves_primary_and_resumes`
+- `test_reporecourse.VerticalTests.test_resume_and_latest_bound_not_best.test_resume_and_latest_bound_not_best`
+- `test_reporecourse.VerticalTests.test_schema_rebind_reuses_program_preserves_exposure.test_schema_rebind_reuses_program_preserves_exposure`
+- `test_reporecourse.VerticalTests.test_shared_plan_repair_and_no_forced_regeneration.test_shared_plan_repair_and_no_forced_regeneration`
+- `test_reporecourse_scoped.ActualExecutionTests.test_both_families_all_topologies_pools_2_and_8_and_loss.test_both_families_all_topologies_pools_2_and_8_and_loss`
+- `test_reporecourse_scoped.ActualExecutionTests.test_generated_plan_to_restricted_execution_through_model_interfaces.test_generated_plan_to_restricted_execution_through_model_interfaces`
+- `test_reporecourse_scoped.ActualExecutionTests.test_stock_old_reuse_denied_corrected_and_wrong_conformant.test_stock_old_reuse_denied_corrected_and_wrong_conformant`
+- `test_reporecourse_track_f.ExecutorControls.test_actual_journal_runner_three_shards_and_overcap_correctness.test_actual_journal_runner_three_shards_and_overcap_correctness`
+- `test_reporecourse_track_f.ExecutorControls.test_both_losses_resume_visibility_wrong_repair.test_both_losses_resume_visibility_wrong_repair`
+- `test_reporecourse_v2.ExecutableFamilies.test_both_families_all_pools_reference_clean_and_loss.test_both_families_all_pools_reference_clean_and_loss`
+- `test_reporecourse_v2.ExecutableFamilies.test_common_jit_rebinds_unchanged_consumer_without_model_call.test_common_jit_rebinds_unchanged_consumer_without_model_call`
+- `test_repository.RealSandboxTests.test_actual_isolation_and_cleanup.test_actual_isolation_and_cleanup`
+- `test_rr_cohort.Prospective.test_both_planners_use_actual_scoped_engine_and_common_repair.test_both_planners_use_actual_scoped_engine_and_common_repair`
+- `test_rr_open_clean.Boundaries.test_actual_scoped_engine_with_shared_model_interface_double.test_actual_scoped_engine_with_shared_model_interface_double`
+- `test_rr_open_fault.Contracts.test_both_faults_real_engine_with_cpu_backend_double.test_both_faults_real_engine_with_cpu_backend_double`
+- `test_rr_rich_tasks.Cards.test_actual_schema_both_extreme_mutants_fail.test_actual_schema_both_extreme_mutants_fail`
+- `test_rr_rich_tasks.Cards.test_both_families_two_real_reference_paths_and_reset.test_both_families_two_real_reference_paths_and_reset`
+- `test_rr_rich_tasks.Cards.test_fault_persistent_loss_and_originals_not_starved.test_fault_persistent_loss_and_originals_not_starved`
+- `test_rr_rich_tasks.Cards.test_missing_output_not_rescued_and_changed_source_rejected.test_missing_output_not_rescued_and_changed_source_rejected`
+- `test_rr_rich_tasks.Cards.test_multioperation_distinct_artifacts_and_same_bundle_mutants.test_multioperation_distinct_artifacts_and_same_bundle_mutants`
+- `test_sql_text.CompilerTests.test_rejects_and_resource_bounds.test_rejects_and_resource_bounds`
+- `test_sql_text.CompilerTests.test_runtime_fail_closed_charges_and_wrong_query.test_runtime_fail_closed_charges_and_wrong_query`
+- `test_sql_text.CompilerTests.test_synthetic_semantic_parity.test_synthetic_semantic_parity`
+
+One intermediate 109-test control run failed `frozen_runtime_changed` because a
+reporting module was edited while its reference matrix was still running. The
+rejection was retained and diagnosed; the final control run was performed with
+code edits stopped. No runtime hash check or resource bound was weakened. A
+standalone additional-test invocation initially omitted `PYTHONPATH=src` and
+failed import; the corrected invocation passed all 56 tests. These are local
+software checks, not scientific attempts or model retries.
+
+Exact local checks (the optional interpreter path refers to this session's
+pinned environment):
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/check_shell.py
+python -m compileall -q src tests scripts
+git diff --check
+python -I -S scripts/bc.py --help
+BC_LOCAL_CONTROLS="$(mktemp -d /tmp/rr-cohort-controls.XXXXXX)"
+/tmp/bc-rich-cpu/bin/python scripts/check_rr_cohort.py \
+  --output "$BC_LOCAL_CONTROLS/controls.json"
+PYTHONPATH=src /tmp/bc-rich-cpu/bin/python -m unittest \
+  tests.test_reporecourse tests.test_reporecourse_track_f tests.test_sql_text -v
+```
+
+Do not change code while the hash-bound controls run. Local JSON evidence and
+logs remain outside Git. A fresh frozen cluster checkout must produce its own
+controls and task-footprint records before approval; local test counts are not
+substitutes for those source-bound receipts.
+
+
+### Current browser-terminal handoff (run in order)
+
+The user reviews and commits/pushes the local diff first. These commands use
+existing staged assets and the existing runner. All reports stay outside Git.
+Do not use the historical stock/submission commands further below.
+
+#### 1. Freeze the pushed source and stage only the new bounded slice
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_RICH="$BC_STORAGE/diagnostics/rr-rich-cohort.5tpWjC"
+export BC_FOUR_SOURCES="$BC_STORAGE/datasets/reporecourse-v01"
+export BC_FOUR_CLUSTER="$HOME/Beyond-Consensus/configs/cluster.qwen27b-na100.local.json"
+export BC_FOUR="$(mktemp -d "$BC_STORAGE/diagnostics/rr-four-task.XXXXXX")"
+(
+set -euo pipefail
+set -o noclobber
+git pull --ff-only
+if test -n "$(git status --porcelain)"; then
+    git status --short
+    printf 'STOP: preserve exports outside Git and review local edits.\n'
+    exit 1
+fi
+test -x "$BC_PYTHON"
+test -s "$BC_RICH/cpu/worker-lock.json"
+test -s "$BC_RICH/cpu/planner-lock.json"
+test -s "$BC_FOUR_CLUSTER"
+git rev-parse HEAD > "$BC_FOUR/source-commit.txt"
+git clone --no-hardlinks "$PWD" "$BC_FOUR/source"
+git -C "$BC_FOUR/source" checkout --detach "$(cat "$BC_FOUR/source-commit.txt")"
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py rr-source-plan --packs github-metadata \
+  --sources "$BC_FOUR_SOURCES" --output "$BC_FOUR/source-plan.json"
+"$BC_PYTHON" -m json.tool "$BC_FOUR/source-plan.json"
+)
+printf 'Keep this directory: %s\n' "$BC_FOUR"
+```
+
+Inspect that the plan contains only the pinned `github-metadata` pack with the
+12,964,430-byte specification plus the bounded README/license. Then:
+
+```bash
+(
+set -euo pipefail
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py rr-stage --packs github-metadata \
+  --sources "$BC_FOUR_SOURCES" --output "$BC_FOUR/source-stage.json"
+)
+```
+
+#### 2. CPU qualification in an allocation, reusing compatible role locks
+
+```bash
+(
+set -euo pipefail
+set -o noclobber
+test -s "$BC_FOUR/source/experiments/qualify_reporecourse.sh"
+sbatch --parsable --partition=PA100q --nodes=1 --ntasks=1 \
+  --cpus-per-task=4 --mem=32G --time=02:00:00 --job-name=rr-four-cpu \
+  --chdir="$BC_FOUR/source" --output="$BC_FOUR/cpu.out" --error="$BC_FOUR/cpu.err" \
+  "$BC_FOUR/source/experiments/qualify_reporecourse.sh" \
+  --repo-root "$BC_FOUR/source" --cohort-controls --rich-only \
+  --sources "$BC_FOUR_SOURCES" --output "$BC_FOUR/cpu" \
+  --worker-lock "$BC_RICH/cpu/worker-lock.json" \
+  --planner-lock "$BC_RICH/cpu/planner-lock.json" > "$BC_FOUR/cpu-job.txt"
+cat "$BC_FOUR/cpu-job.txt"
+)
+```
+
+After completion:
+
+```bash
+sacct -j "$(cut -d';' -f1 "$BC_FOUR/cpu-job.txt")" --format=JobID,State,ExitCode,Elapsed
+tail -n 40 "$BC_FOUR/cpu.err"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+r=Path(os.environ['BC_FOUR'])/'cpu'
+for name in ('cohort-controls','role-lock-reuse','jaffle-payment-release',
+             'energy-single-indicator-release','github-topics-client-package',
+             'github-multioperation-integration'):
+    p=r/(name+'.json')
+    d=json.loads(p.read_text())
+    print(name, d.get('status'))
+    expected='passed' if name=='cohort-controls' else 'compatible' if name=='role-lock-reuse' else 'cpu_qualified_review_pending'
+    if d.get('status')!=expected: raise SystemExit('STOP: CPU prerequisite failed')
+    if name not in ('cohort-controls','role-lock-reuse'):
+        f=json.loads((r/(name+'-footprint.json')).read_text())
+        if f.get('status')!='passed': raise SystemExit('STOP: footprint failed: '+name)
+print('Four technical qualifications present; review receipts remain separate.')
+PY
+```
+
+No automatic cap increase or requalification loop follows a failed footprint.
+The new output measurements use representative full-width version IDs and one
+stop token. They do not prove all reasoning/history/tokenizations fit.
+
+#### 3. Reuse audited task-free GPU evidence; assemble a blocked review packet
+
+```bash
+export BC_FOUR_PREFLIGHT="$BC_STORAGE/outputs/qwen27b-na100/e923cb200f4835deb8457fe14e7bf50ee488b5b8be5d5070819bbaf75954f8e1-preflight"
+(
+set -euo pipefail
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py rr-open-footprint-audit \
+  --run "$BC_FOUR_PREFLIGHT" --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_FOUR/footprint-audit.json"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+r=Path(os.environ['BC_FOUR'])
+tasks=('jaffle-payment-release','energy-single-indicator-release',
+       'github-topics-client-package','github-multioperation-integration')
+def read(p): return json.loads(p.read_text())
+e={'controls':read(r/'cpu/cohort-controls.json'),
+   'tasks':{t:read(r/'cpu'/f'{t}.json') for t in tasks},
+   'task_footprints':{t:read(r/'cpu'/f'{t}-footprint.json') for t in tasks},
+   'footprint_audit':read(r/'footprint-audit.json'), 'reviews':{}}
+with (r/'evidence.pending.json').open('x') as h: json.dump(e,h,indent=2);h.write('\n')
+PY
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-manifest --lane rich_pilot \
+  --sources "$BC_FOUR_SOURCES" --model-lock "$BC_FOUR/cpu/worker-lock.json" \
+  --planner-lock "$BC_FOUR/cpu/planner-lock.json" \
+  --evidence "$BC_FOUR/evidence.pending.json" --output "$BC_FOUR/proposal.pending.json"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-review \
+  --manifest "$BC_FOUR/proposal.pending.json" --model-lock "$BC_FOUR/cpu/worker-lock.json" \
+  --output "$BC_FOUR/review.pending.json"
+"$BC_PYTHON" -m json.tool "$BC_FOUR/review.pending.json"
+)
+```
+
+**Stop here for the four independent task and attributed rights receipts.**
+`task_review_templates` contains exact task/source hashes and pending fields.
+Reviewers supply their genuine identities, roles, dates and evidence; Energy
+also needs `underlying_providers=approved` with its documented basis. Save a JSON
+object keyed by all four task IDs as `$BC_FOUR/reviews.json`. Do not substitute the
+campaign user's consent for an independent reviewer or turn CPU success into
+rights clearance. This gate comes from the four-task specification and the
+existing source/provider protocol, not a new blanket legal requirement.
+
+#### 4. Freeze reviewed evidence and the exact authorized scope
+
+Only with genuine completed receipts:
+
+```bash
+(
+set -euo pipefail
+cd "$BC_FOUR/source"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+r=Path(os.environ['BC_FOUR'])
+e=json.loads((r/'evidence.pending.json').read_text())
+e['reviews']=json.loads((r/'reviews.json').read_text())
+if set(e['reviews'])!=set(e['tasks']): raise SystemExit('STOP: all four reviews required')
+with (r/'evidence.json').open('x') as h: json.dump(e,h,indent=2);h.write('\n')
+PY
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-manifest --lane rich_pilot \
+  --sources "$BC_FOUR_SOURCES" --model-lock "$BC_FOUR/cpu/worker-lock.json" \
+  --planner-lock "$BC_FOUR/cpu/planner-lock.json" \
+  --evidence "$BC_FOUR/evidence.json" --output "$BC_FOUR/proposal.json"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-review \
+  --manifest "$BC_FOUR/proposal.json" --model-lock "$BC_FOUR/cpu/worker-lock.json" \
+  --output "$BC_FOUR/review.json"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+r=Path(os.environ['BC_FOUR']);review=json.loads((r/'review.json').read_text())
+print(json.dumps(review,indent=2))
+if review['blockers']: raise SystemExit('STOP: resolve listed blockers; no partial cohort')
+p=json.loads((r/'proposal.json').read_text())
+assert p['lane']=='rich_pilot' and len(p['configurations'])==8
+assert p['maximum_execution_branches']==16 and p['maximum_model_planning_sequences']==4
+print('Ready for exact cohort approval; no model executed.')
+PY
+)
+```
+
+The user has authorized this bounded phase. Record that authorization against
+the now-reviewable `approval_template` as `$BC_FOUR/approval.json`, changing only
+`decision` to `approved`, and supplying the actual approving person's `reviewer`
+and ISO `reviewed_at`. Preserve every scope hash and limitation. This is campaign
+approval, distinct from the independent receipts above.
+
+```bash
+(
+set -euo pipefail
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-approve \
+  --manifest "$BC_FOUR/proposal.json" --model-lock "$BC_FOUR/cpu/worker-lock.json" \
+  --approval "$BC_FOUR/approval.json" --output "$BC_FOUR/approved-manifest.json"
+"$BC_PYTHON" -I scripts/bc.py submit --mode run --concurrency 1 \
+  --cluster "$BC_FOUR_CLUSTER" --manifest "$BC_FOUR/approved-manifest.json" \
+  --model-lock "$BC_FOUR/cpu/worker-lock.json" --dry-run
+)
+```
+
+Inspect the eight-shard `%1` request and existing full-GPU qualification. Do not
+change model, partition/device class, budgets or frozen source while running.
+If scheduler inspection blocks another campaign, wait; do not bypass it.
+
+#### 5. Submit once, observe, and export
+
+```bash
+(
+set -euo pipefail
+set -o noclobber
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py submit --mode run --concurrency 1 \
+  --cluster "$BC_FOUR_CLUSTER" --manifest "$BC_FOUR/approved-manifest.json" \
+  --model-lock "$BC_FOUR/cpu/worker-lock.json" > "$BC_FOUR/run-submission.json"
+cat "$BC_FOUR/run-submission.json"
+)
+export BC_FOUR_JOB="$("$BC_PYTHON" -c 'import json,sys;print(json.load(open(sys.argv[1]))["job_id"])' "$BC_FOUR/run-submission.json")"
+export BC_FOUR_OUTPUT="$("$BC_PYTHON" -c 'import json,sys;print(json.load(open(sys.argv[1]))["output"])' "$BC_FOUR/run-submission.json")"
+squeue --array -j "$BC_FOUR_JOB" -o '%.22i %.12P %.20j %.2t %.10M %R'
+sacct -j "$BC_FOUR_JOB" --format=JobID,State,ExitCode,Elapsed
+```
+
+No automatic resume command is supplied: the current prospective adapter
+intentionally rejects a started configuration rather than regenerating planning.
+Checkpoints are retained for read-only interrupted accounting. If interrupted,
+export first and review whether a separately approved, provenance-preserving
+resumption is supported; a fresh same-labelled attempt is prohibited. Ordinary
+completed semantic failure, invalid planning or exhausted budgets do not request
+a scientific retry and do not cancel later scheduled conditions. Integrity,
+accounting, cleanup or conformance failures pause remaining work.
+
+After terminal jobs, or for a read-only interruption review:
+
+```bash
+export BC_FOUR_RESULTS="$(mktemp -d "$BC_FOUR/results.XXXXXX")"
+(
+set -euo pipefail
+cd "$BC_FOUR/source"
+"$BC_PYTHON" -I scripts/bc.py aggregate --output "$BC_FOUR_OUTPUT" \
+  > "$BC_FOUR_RESULTS/aggregate.json"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-export --run "$BC_FOUR_OUTPUT" \
+  --output "$BC_FOUR_RESULTS/audit.private.json"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-export --run "$BC_FOUR_OUTPUT" --public \
+  --output "$BC_FOUR_RESULTS/cohort.public.json"
+printf 'Review files: %s\n' "$BC_FOUR_RESULTS"
+)
+```
+
+The public export separates public planner inputs from future outcome metrics;
+it omits execution states, private journals, raw hidden checks and review receipts.
+The private audit retains actual journals, failed/invalid/unrun configurations and
+plan trajectories. Neither authorizes training. Do not publish the private file.
+
+After outcomes, prepare one **review-only B0 proposal per family/common worker
+setup** from all configurations: terminal statuses, complete/conformant/within-cap
+flags, actual and uncertain tokens/CPU, censored caps, planning and post-alarm
+subsets, and per-source counts. Leave the proposed representative B0 unselected
+until evidence suffices; never fit one favorable budget per planner/owner count.
+A lower-cap filter of old traces is an offline diagnostic, not a new planning run.
+No additional sweep or GPU experiment is authorized by this handoff.
+
+
+## Prospective stock result (2026-10-11 review)
+
+User-supplied export for experiment
+`e10d7ffbe1335f578745c36cbbeb2828d73046d0ed9c51fa672d35a80a31aa72`
+records one prompted-open planning sequence and three completed branches. The
+user reports Slurm job 1092937_0 completed 0:0 in 12:45. Uploaded export SHA256:
+`e5be83787cf2344316e0a73f407d9d29e04afe864f4edce0bb4a291d0d27d26b`.
+This is supplied evidence, not independent remote filesystem authentication.
+No model or SQL was executed during this local review. Raw traces stay outside Git.
+
+| Branch | Correct / conformant / within caps | Tokens | CPU debit seconds |
+| --- | --- | ---: | ---: |
+| Clean | Yes / yes / yes | 9120 | 169.303781757 |
+| F(w0) | Yes / yes / yes | 11849 | 196.625777765 |
+| F(w1) | Yes / yes / yes | 12723 | 211.657250723 |
+
+Both stock_report and zero_report passed the recorded terminal checks in every
+branch. Uncertain token/CPU usage was zero; no configurations were missing.
+Each branch had the same 100000-token/1200-CPU-second engineering caps. Planning
+used two model calls (one rejected response), 3005 tokens and 103.476834250 CPU
+seconds. These planning charges are already included in each branch total.
+
+The frozen plan used two units, two meaningful owners and one declared edge
+in a pool of seven identities. Targets were frozen before execution. F(w0)
+triggered loss before publication and repaired u0 with w1, then u1 with w2.
+F(w1) retained the stock artifact and repaired u1 with w0. The second unit read
+the producer artifact but its query used the original stock table: a permitted
+information dependency is not proof of a necessary executable dependency.
+
+This meets the narrow prospective stock protocol milestone. It is one synthetic
+task and one plan, not three independent samples, a planner comparison, B0, or
+a general robustness result. Independent task review remains pending. Historical
+conditional clean/F observations remain separate; their approvals are not reused.
+
+### Reporting correction
+
+Generic aggregate/status appended a legacy episode-hash coverage check after
+the cohort reader had validated the manifest hash, producing the misleading
+message "Result changed provenance; cannot resubmit". Cohort coverage now uses
+the cohort reader, including saved schedules and interrupted/unrun coverage.
+Changed provenance still fails; terminal invalid plans are not retry candidates.
+The existing no-retry submission gate, historical scores and ledgers are unchanged.
+Old snapshots remain immutable; the cohort-specific exporter can read this run.
+
+### Richer-task review readiness
+
+The reported cluster qualification at commit
+`e9139a401efd900a0a96e08ad1fc0c01dd3f11f3` passed 99 controls without skips and
+qualified stock plus the three implemented richer cards as review-pending.
+All four public prompt footprints and both role grammars passed. Renewed GPU
+footprint experiment `e923cb200f4835deb8457fe14e7bf50ee488b5b8be5d5070819bbaf75954f8e1`
+passed all five observed cases on A100-SXM4-80GB (15373 tokens). This is observed
+qualification, not worst-case fit or task competence. Energy CPU qualification
+was reported on the cluster; the earlier local source-download limitation below
+remains historical, not a claim that the cluster qualification is missing.
+
+| Candidate | Remaining review or implementation requirement |
+| --- | --- |
+| Jaffle payment release | Hash-bound task usefulness/semantics review and attributed rights receipt; demo grounding remains explicit. |
+| Energy single indicator | Task review and rights receipt covering underlying providers; passing CPU controls does not establish provider clearance. |
+| GitHub topics client package | Task review and attributed rights receipt; offline client semantics remain separate from server behavior. |
+| GitHub multioperation integration | Missing second operation and bounded source closure, public contract, two executable references and controls; then qualification and review. |
+
+The configured richer lane requires all four candidates. Do not silently shrink
+it to three or mark pending independent reviews approved. A smaller cohort would
+require an explicit revised design and fresh scope-bound proposal. No new jobs,
+source downloads, task approvals or experiment permissions are created here.
+
+The detailed local design review and fourth-candidate completion requirements
+are in [RICH_TASK_REVIEW_2026-10-11.md](RICH_TASK_REVIEW_2026-10-11.md).
+This review does not mark independent or rights receipts approved.
+
+## Original implementation record (2026-10-08)
 
 ## Milestones
 
@@ -189,7 +764,7 @@ wrapper, `check_rr_cohort.py`, two focused test modules and the rich task cards.
 Existing documentation changes were preserved; this document is the consolidated
 new milestone and handoff, with links from STATUS, the open runbook and v0.2.
 
-## Browser-terminal handoff
+## Historical October 8 browser-terminal handoff (do not rerun)
 
 ### 1. Review locally, then commit/push manually
 

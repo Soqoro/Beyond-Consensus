@@ -352,6 +352,17 @@ def doctor(config: ClusterConfig | None = None) -> dict[str, Any]:
 
 
 def failed_shard_ids(manifest: dict[str, Any], output: Path) -> list[int]:
+    if manifest.get('schema') == 'rr-cohort-manifest-v1':
+        from .rr_cohort import aggregate
+        # Cohort records bind the whole manifest, not the legacy episode row.
+        # Validate schedules/results through their own reader. These are coverage
+        # diagnostics only; the cohort submission gate still prohibits retries.
+        summary = aggregate(manifest, output)
+        incomplete = {row['configuration_id'] for row in summary['configurations']
+                      if row['status'] in ('unrun', 'missing', 'interrupted',
+                                           'infrastructure_failed', 'paused')}
+        return sorted(e['shard'] for e in manifest['episodes']
+                      if e['episode_id'] in incomplete)
     if manifest.get('schema') == 'rr-v2-stock-competence-v1':
         from .rr_v2_competence import aggregate
         summary=aggregate(manifest,output)

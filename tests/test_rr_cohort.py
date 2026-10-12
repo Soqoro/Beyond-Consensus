@@ -53,6 +53,85 @@ class Prospective(unittest.TestCase):
         self.assertEqual(result['branches'],[])
         self.assertEqual(summary['configurations'][0]['target_status'],'not_applicable_invalid_planning')
 
+    def test_uniform_invalid_plan_preserves_two_scheduled_conditions(self):
+        c=cohort.configuration('synthetic-stock','requirement_level')
+        f=v2.freeze(v2.request(self.public,c['config']),self.public,{},Resources(100000,1200),[],'scripted_mock')
+        s=cohort.schedule(c,f)
+        r=cohort.run_scheduled(c,s,lambda *a:self.fail('no execution'),lambda *a:None)
+        row=cohort.summarize([c],{c['configuration_id']:r})['configurations'][0]
+        self.assertEqual([x['track'] for x in row['scheduled_conditions']],['clean','F'])
+        self.assertTrue(all(x['target'] is None and x['complete_in_budget'] is False and not x['worker_executed'] for x in row['scheduled_conditions']))
+
+    def test_rich_receipts_are_pending_not_generated_approval(self):
+        m=adapter.build(ROOT,'/nonexistent','rich_pilot')
+        self.assertEqual(m['maximum_execution_branches'],16)
+        self.assertEqual(m['maximum_model_planning_sequences'],4)
+        templates=adapter.task_review_templates(m)
+        self.assertEqual(len(templates),4)
+        self.assertTrue(all(r['decision']=='pending' and r['rights']=='pending' and r['reviewer'] is None for r in templates.values()))
+        self.assertTrue(adapter.blockers(m,ROOT))
+
+    def test_read_exposure_is_not_executable_binding(self):
+        b=dict(track='F',target='w0',status='completed',events=[],state={'artifacts':{
+            'a':{'bindings':{},'exposure':['old']},'b':{'bindings':{'input':'a'},'producer_unit':'u1'}}},
+            conformance={'direct_imports':[{'version':'old'}]})
+        r=cohort.branch_metrics(b)
+        self.assertEqual(r['source_only_versions'],['a'])
+        self.assertEqual(r['executable_bindings'][0]['bindings'],{'input':'a'})
+        self.assertFalse(r['executable_bindings'][0]['execution_attempt_observed'])
+        b['events']=[{'type':'artifact_execution','version':'b'}]
+        self.assertTrue(cohort.branch_metrics(b)['executable_bindings'][0]['execution_attempt_observed'])
+        self.assertEqual(r['observed_imports'],[{'version':'old'}])
+
+    def test_public_export_omits_saved_state_and_private_journals(self):
+        raw={'experiment_id':'x','public_planner_inputs':[{'planner_input':{'task_id':'public'}}],
+             'future_outcome_labels':[{'secret':'audit'}],
+             'summary':{'configurations':[{'branches':[{'state':'private'}],'planning_resources':{'actual_tokens':1,'events':['private']}}]}}
+        with patch.object(adapter,'export',return_value=raw):out=adapter.public_export('/unused')
+        self.assertNotIn('future_outcome_labels',out)
+        self.assertNotIn('branches',out['summary']['configurations'][0])
+        self.assertNotIn('events',out['summary']['configurations'][0]['planning_resources'])
+        self.assertIn('branches',raw['summary']['configurations'][0])
+
+    def test_rich_consent_or_author_review_cannot_supply_independent_rights_receipts(self):
+        from reporecourse.common import load
+        from reporecourse.tasks import ROOT as tasks_root,catalog
+        cards={c['id']:c for c in catalog(tasks_root/'rich')['tasks']}
+        def fixture_task(task,sources):
+            return cards[task],load(tasks_root/'rich'/'public'/(task+'.json'))
+        with patch.object(adapter,'load_task',side_effect=fixture_task),patch.object(adapter,'prompt_cases',return_value=[]):
+            m=adapter.build(ROOT,'/unused','rich_pilot')
+            receipts=adapter.task_review_templates(m)
+            for r in receipts.values():
+                r.update(decision='engineering_exception',reviewer='test-only-author',reviewer_role='author',
+                    reviewed_at='2026-10-12',independent_review='pending',rights='approved',
+                    rights_basis='test-only-fixture',limitations_accepted=['independent_review_pending','development_engineering_only'])
+            m['evidence']['reviews']=receipts;adapter.seal(m)
+            errors=adapter.blockers(m,ROOT)
+            for task in cards:
+                self.assertIn(task+':independent_review_receipt_required',errors)
+                self.assertIn(task+':attributed_source_rights_receipt_required',errors)
+            self.assertIn('energy-single-indicator-release:provider_rights_pending',errors)
+            self.assertFalse(m['task_execution_allowed'])
+
+    def test_gpu_footprint_reuse_only_exempts_offline_changes(self):
+        from beyond_consensus.util import file_hash
+        paths=['src/reporecourse/engine.py','src/reporecourse/evaluator.py',
+               'src/beyond_consensus/config.py','src/beyond_consensus/experiments/rr_v2_preflight.py',
+               'src/beyond_consensus/experiments/rr_open_footprint.py']
+        with TemporaryDirectory() as d:
+            root=Path(d)
+            for p in paths:
+                dest=root/p;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text('old')
+            marker={'files':{p:file_hash(root/p) for p in paths}}
+            (root/paths[1]).write_text('new terminal scorer')
+            self.assertTrue(adapter.footprint_compatibility(root,marker)['compatible'])
+            (root/paths[0]).write_text('changed worker execution')
+            self.assertFalse(adapter.footprint_compatibility(root,marker)['compatible'])
+            (root/paths[0]).write_text('old')
+            (root/'src/reporecourse/new_execution.py').write_text('added')
+            self.assertFalse(adapter.footprint_compatibility(root,marker)['compatible'])
+
     def test_infrastructure_pause_retains_unrun(self):
         result=cohort.run_scheduled(self.c,self.s,lambda *a:dict(status='infrastructure_failed',success=None),lambda *a:None)
         self.assertEqual([b['status'] for b in result['branches']],['infrastructure_failed','unrun','unrun'])
@@ -100,6 +179,10 @@ class Prospective(unittest.TestCase):
         summary=cohort.summarize([self.c],{self.c['configuration_id']:r})
         self.assertEqual(summary['task_balanced']['requirement_level']['fault_configuration_mean'],0)
         self.assertEqual(sum(b['resource_profile']['actual_tokens'] for b in summary['configurations'][0]['branches']),300000)
+        tracks=summary['task_balanced']['requirement_level']['tracks']
+        self.assertEqual(tracks['F']['all_observed_branch_costs']['total_tokens']['known_sum'],200000)
+        self.assertEqual(tracks['F']['all_observed_branch_costs']['total_cpu']['observed_without_value'],2)
+        self.assertEqual(tracks['clean']['complete_at_budget_task_mean'],0)
         with self.assertRaises(Rejected):cohort.summarize([self.c,self.c],{})
 
     def test_changed_frozen_or_schedule_rejected(self):
@@ -107,6 +190,22 @@ class Prospective(unittest.TestCase):
         with self.assertRaises(Rejected):cohort.run_scheduled(self.c,s,None,None)
         f=deepcopy(self.f);f['planning_resources']['actual_tokens']=5
         with self.assertRaises(Rejected):cohort.schedule(self.c,f)
+
+    def test_fixed_shard_order_does_not_require_clean_success(self):
+        import json
+        m={'approval':{'decision':'approved'},'task_execution_allowed':True,
+           'episodes':[{'episode_id':'a','shard':0},{'episode_id':'b','shard':1}]}
+        with TemporaryDirectory() as tmp,patch.object(adapter,'verify'):
+            output=Path(tmp)
+            with self.assertRaisesRegex(BCError,'Earlier configuration not terminal'):
+                adapter.submission(m,ROOT,{},'run',1,output,1)
+            ep=output/'episodes'/'a';ep.mkdir(parents=True)
+            row={'status':'completed','success':False,'provenance':{'manifest_hash':digest(m)}}
+            (ep/'result.json').write_text(json.dumps(row))
+            adapter.submission(m,ROOT,{},'run',1,output,1)
+            row['provenance']['manifest_hash']='changed'
+            (ep/'result.json').write_text(json.dumps(row))
+            with self.assertRaises(BCError):adapter.submission(m,ROOT,{},'run',1,output,1)
 
     def test_scoped_manifest_counts_no_approval_bypass(self):
         stock=adapter.build(ROOT,'/nonexistent','stock_protocol')
@@ -155,6 +254,26 @@ class Prospective(unittest.TestCase):
             r=adapter.aggregate(m,d)['configurations'][0]
             self.assertEqual([b['status'] for b in r['branches']],['interrupted','unrun','unrun'])
             self.assertIsNone(r['clean_success'])
+            from beyond_consensus.experiments.cluster import failed_shard_ids
+            self.assertEqual(failed_shard_ids(m,Path(d)),[0])
+
+    def test_cohort_shard_reporting_uses_manifest_provenance(self):
+        from beyond_consensus.experiments.cluster import failed_shard_ids
+        from beyond_consensus.util import atomic_json
+        m=adapter.build(ROOT,'/nonexistent','stock_protocol');c=m['configurations'][0]
+        f=v2.freeze(v2.request(self.public,c['config']),self.public,{},Resources(100000,1200),[],'scripted_mock')
+        s=cohort.schedule(c,f)
+        r=cohort.run_scheduled(c,s,lambda *a:self.fail('invalid plan must not execute'),lambda *a:None)
+        r.update(experiment_id=m['experiment_id'],provenance={'manifest_hash':digest(m)})
+        with TemporaryDirectory() as d:
+            ep=Path(d)/'episodes'/c['configuration_id'];ep.mkdir(parents=True)
+            self.assertEqual(failed_shard_ids(m,Path(d)),[0])
+            atomic_json(ep/'schedule.json',{'manifest_hash':digest(m),'content':s})
+            atomic_json(ep/'result.json',r)
+            self.assertEqual(failed_shard_ids(m,Path(d)),[])
+            r['provenance']['manifest_hash']='changed'
+            atomic_json(ep/'result.json',r)
+            with self.assertRaises(BCError):failed_shard_ids(m,Path(d))
 
     def test_approval_scope_cannot_expand_or_rebind(self):
         m=adapter.build(ROOT,'/nonexistent','stock_protocol');r=adapter.approval_template(m)

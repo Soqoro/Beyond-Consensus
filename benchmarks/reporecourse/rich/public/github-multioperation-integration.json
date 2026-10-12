@@ -1,0 +1,191 @@
+{
+  "id": "github-multioperation-integration",
+  "family": "api_schema",
+  "request": "Build an offline repository metadata client package for the pinned GitHub PUT /repos/{owner}/{repo}/topics and GET /repos/{owner}/{repo}/languages operations. Required outputs: topics_request validates the PUT JSON body, topics_response validates its 200 JSON response, languages_response validates the GET 200 JSON response, repository_summary maps a client envelope containing topics_response and languages_response to exactly {topics: topics_response.names, language_bytes: languages_response}, and update_topics maps a valid summary to exactly {names: topics}. All validators validate payloads, not HTTP status/headers/path routing. Topics request/response are objects requiring names array of strings; empty arrays valid; absent names, null, wrong array/item types invalid. Other object fields allowed. Languages response is an object with arbitrary language-name keys and integer values, including an empty object; null, boolean, non-integral number and string values are invalid. The pinned schema has no minimum: do not invent nonnegative validation even though its description calls these counts bytes of code. JSON Schema integer semantics admit integral numeric values. No invented language-name enumeration or key normalization. Neither success payload is nullable. The languages GET has no request body; do not create one. The retained closure includes error responses and path parameters for provenance; they are outside these five outputs. Owner/repo are path strings, not JSON payload fields. Preserve topic order, duplicates, case and all language keys/values exactly. Server lowercase persistence is documented but is not emulated by this offline client. repository_summary inputs are valid success payloads under the two named required envelope fields; unknown envelope/topic properties are dropped. Its output_schema must require topics array of strings and language_bytes object of integers, with no additional top-level fields. update_topics accepts a valid summary (unknown extra client fields allowed), drops language_bytes and unrelated fields, and its output_schema must require names array of strings and forbid extra fields. Missing required input fields are errors; do not synthesize null/defaults. Mapping promises cover valid inputs with at most 128 topic items and 128 language entries within existing payload limits; validators impose no invented cardinality caps. The same submitted bundle must validate both responses, preserve both in the summary, then produce a PUT body accepted by topics_request with exactly the original names array. No aggregation, sorting, case conversion, network calls or general OpenAPI translation. OpenAPI 3.0.3 subset: annotation/example keywords are not constraints; required/properties/additionalProperties/items/type distinctions are preserved. Absent nullable forbids null for these typed payloads. Implement outputs independently, grouped, or using shared artifacts; consuming a helper is not required.",
+  "required_outputs": [
+    {
+      "id": "topics_request",
+      "format": "schema",
+      "public_inputs": [
+        "topic"
+      ]
+    },
+    {
+      "id": "topics_response",
+      "format": "schema",
+      "public_inputs": [
+        "topic"
+      ]
+    },
+    {
+      "id": "languages_response",
+      "format": "schema",
+      "public_inputs": [
+        "languages"
+      ]
+    },
+    {
+      "id": "repository_summary",
+      "format": "mapping",
+      "public_inputs": [
+        "metadata"
+      ]
+    },
+    {
+      "id": "update_topics",
+      "format": "mapping",
+      "public_inputs": [
+        "summary"
+      ]
+    }
+  ],
+  "tables": {},
+  "sources": {},
+  "examples": {
+    "topic": {
+      "names": [
+        "API",
+        "tools"
+      ]
+    },
+    "languages": {
+      "Python": 120,
+      "C++": 10
+    },
+    "metadata": {
+      "topics_response": {
+        "names": [
+          "API"
+        ]
+      },
+      "languages_response": {
+        "Python": 120
+      }
+    },
+    "summary": {
+      "topics": [
+        "API"
+      ],
+      "language_bytes": {
+        "Python": 120
+      }
+    }
+  },
+  "outlines": [
+    {
+      "id": "independent",
+      "units": [
+        {
+          "id": "topics_request",
+          "worker": "w0",
+          "outputs": [
+            "topics_request"
+          ],
+          "depends": [],
+          "description": "Implement topics_request according to the public request."
+        },
+        {
+          "id": "topics_response",
+          "worker": "w1",
+          "outputs": [
+            "topics_response"
+          ],
+          "depends": [],
+          "description": "Implement topics_response according to the public request."
+        },
+        {
+          "id": "languages_response",
+          "worker": "w2",
+          "outputs": [
+            "languages_response"
+          ],
+          "depends": [],
+          "description": "Implement languages_response according to the public request."
+        },
+        {
+          "id": "repository_summary",
+          "worker": "w3",
+          "outputs": [
+            "repository_summary"
+          ],
+          "depends": [],
+          "description": "Implement repository_summary according to the public request."
+        },
+        {
+          "id": "update_topics",
+          "worker": "w4",
+          "outputs": [
+            "update_topics"
+          ],
+          "depends": [],
+          "description": "Implement update_topics according to the public request."
+        }
+      ]
+    },
+    {
+      "id": "shared",
+      "units": [
+        {
+          "id": "topic_names",
+          "worker": "w0",
+          "outputs": [],
+          "depends": [],
+          "description": "Implement topic_names according to the public request."
+        },
+        {
+          "id": "topics_request",
+          "worker": "w1",
+          "outputs": [
+            "topics_request"
+          ],
+          "depends": [
+            "topic_names"
+          ],
+          "description": "Implement topics_request according to the public request."
+        },
+        {
+          "id": "topics_response",
+          "worker": "w2",
+          "outputs": [
+            "topics_response"
+          ],
+          "depends": [
+            "topic_names"
+          ],
+          "description": "Implement topics_response according to the public request."
+        },
+        {
+          "id": "languages_response",
+          "worker": "w3",
+          "outputs": [
+            "languages_response"
+          ],
+          "depends": [],
+          "description": "Implement languages_response according to the public request."
+        },
+        {
+          "id": "repository_summary",
+          "worker": "w4",
+          "outputs": [
+            "repository_summary"
+          ],
+          "depends": [
+            "topic_names"
+          ],
+          "description": "Implement repository_summary according to the public request."
+        },
+        {
+          "id": "update_topics",
+          "worker": "w5",
+          "outputs": [
+            "update_topics"
+          ],
+          "depends": [
+            "topic_names"
+          ],
+          "description": "Implement update_topics according to the public request."
+        }
+      ]
+    }
+  ]
+}

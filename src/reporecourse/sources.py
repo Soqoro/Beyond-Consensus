@@ -8,6 +8,35 @@ from .common import Rejected, file_hash, load, encoded, write_new
 from .tasks import ROOT
 
 
+def github_metadata_slice(document):
+    """Public operation-selected closure; never consult tasks, gold or fixtures."""
+    paths = {'/repos/{owner}/{repo}/topics': ('put',),
+             '/repos/{owner}/{repo}/languages': ('get',)}
+    out = {'openapi': document['openapi'], 'paths': {
+        path: {method: document['paths'][path][method] for method in methods}
+        for path, methods in paths.items()}, 'components': {}}
+    seen = set()
+    def visit(value):
+        if isinstance(value, list):
+            for item in value: visit(item)
+        elif isinstance(value, dict):
+            if '$ref' in value:
+                ref = value['$ref']
+                parts = ref.split('/')
+                if len(parts) != 4 or parts[:2] != ['#', 'components']:
+                    raise Rejected('source_reference')
+                if ref not in seen:
+                    seen.add(ref)
+                    if len(seen) > 64: raise Rejected('source_closure_bound')
+                    section, name = parts[2:]
+                    child = document['components'][section][name]
+                    out['components'].setdefault(section, {})[name] = child
+                    visit(child)
+            for item in value.values(): visit(item)
+    visit(out['paths'])
+    return out
+
+
 def extract(pack, files):
     if pack=='jaffle':
         out={k.replace('/','__'):v for k,v in files.items() if not k.endswith('.csv')}
@@ -29,6 +58,10 @@ def extract(pack, files):
         cb=[r for r in csv.DictReader(io.StringIO(files['owid-energy-codebook.csv'].decode())) if r['column'] in [c[0] for c in cols]]
         return {'README.md':files['README.md'],'codebook.json':encoded(cb),
                 'tables.json':encoded({'energy':{'columns':cols,'rows':rows}})}
+    if pack=='github-metadata':
+        d=json.loads(files['descriptions/api.github.com/api.github.com.json'])
+        return {'README.md':files['README.md'],'LICENSE.md':files['LICENSE.md'],
+                'metadata.json':encoded(github_metadata_slice(d))}
     if pack=='github':
         d=json.loads(files['descriptions/api.github.com/api.github.com.json'])
         return {'README.md':files['README.md'],'LICENSE.md':files['LICENSE.md'],

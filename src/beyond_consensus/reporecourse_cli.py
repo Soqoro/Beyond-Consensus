@@ -6,7 +6,7 @@ from .util import BCError
 
 
 def add_parsers(sub):
-    p=sub.add_parser('rr-rich-inventory',help='Three executable rich cards and one blocked candidate')
+    p=sub.add_parser('rr-rich-inventory',help='Four executable richer cards with explicit review gates')
     p.add_argument('--sources',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p=sub.add_parser('rr-rich-qualify',help='Restricted CPU reference and mutant qualification')
     p.add_argument('--sources',type=Path,required=True);p.add_argument('--task',required=True);p.add_argument('--output',type=Path,required=True)
@@ -20,6 +20,7 @@ def add_parsers(sub):
     for name in ('manifest','model-lock','approval','output'):p.add_argument('--'+name,type=Path,required=True)
     p=sub.add_parser('rr-cohort-export',help='All outcomes and trajectories; public inputs separate from labels')
     p.add_argument('--run',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--public',action='store_true',help='Omit journals, execution state and private audit records')
     p=sub.add_parser('rr-cohort-footprint',help='Offline CPU tokenizer on public task prompts only')
     p.add_argument('--task',required=True)
     for name in ('sources','model-lock','output'):p.add_argument('--'+name,type=Path,required=True)
@@ -61,7 +62,7 @@ def add_parsers(sub):
         if command in ('rr-qualify','rr-visibility','rr-plans','rr-demo'):p.add_argument('--task',required=True)
         if command in ('rr-source-plan','rr-stage'):
             p.add_argument('--dry-run',action='store_true')
-            p.add_argument('--packs',nargs='+',choices=('jaffle','energy','github'))
+            p.add_argument('--packs',nargs='+',choices=('jaffle','energy','github','github-metadata'))
         if command in ('rr-qualify','rr-demo','rr-manifest','rr-export'):p.add_argument('--output',type=Path,required=True)
         else:p.add_argument('--output',type=Path)
         if command=='rr-demo':
@@ -103,10 +104,10 @@ def dispatch(args):
         elif command=='rr-cohort-review':
             m=load_control_record(args.manifest)
             result=dict(experiment_id=m['experiment_id'],blockers=co.blockers(m,ROOT,load(args.model_lock) if args.model_lock else None),
-                approval_template=co.approval_template(m),task_execution_allowed=False)
+                approval_template=co.approval_template(m),task_review_templates=co.task_review_templates(m),task_execution_allowed=False)
         elif command=='rr-cohort-approve':result=co.authorize(load_control_record(args.manifest),load(args.approval),ROOT,load(args.model_lock))
         elif command=='rr-cohort-footprint':result=co.measure_prompts(args.task,args.sources,load(args.model_lock))
-        else:result=co.export(args.run)
+        else:result=co.public_export(args.run) if args.public else co.export(args.run)
         write_new(args.output,result)
         return dict(report=str(args.output),experiment_id=result.get('experiment_id'),model_executed=False,submitted=False)
     if command == 'rr-open-fault-manifest':

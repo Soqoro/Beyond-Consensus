@@ -85,8 +85,10 @@ def evaluate(public, private, state):
                 # Composition on every valid response, using the SAME bound bundle.
                 for value in fixture.get('composition',[]):
                     if not all(k in frozen for k in ('response','consumer')):per['consumer']=False;continue
-                    r=env.execute(frozen['response'],value);m=env.execute(frozen['consumer'],value)
-                    per['consumer'] &= r.get('valid') is True and m.get('valid') is True
+                    try:
+                        r=env.execute(frozen['response'],value);m=env.execute(frozen['consumer'],value)
+                        per['consumer'] &= r.get('valid') is True and m.get('valid') is True
+                    except Rejected:per['consumer']=False
                 for names in fixture.get('round_trip',[]):
                     ok=False
                     if all(k in frozen for k in ('request','response','consumer','outbound')):
@@ -101,6 +103,26 @@ def evaluate(public, private, state):
                     reports.append({'cross_output_round_trip':True,'passed':ok})
                     if not ok:
                         for key in per:per[key]=False
+                # Both operations must compose through the SAME bound submission.
+                # Python expectations use the public field-copy contract, not a
+                # reference artifact or a hidden selection among candidates.
+                for envelope in fixture.get('metadata_round_trip', []):
+                    keys=('topics_request','topics_response','languages_response','repository_summary','update_topics')
+                    ok=False
+                    if all(k in frozen for k in keys):
+                        try:
+                            topics=envelope['topics_response']; languages=envelope['languages_response']
+                            a=env.execute(frozen['topics_response'],topics)
+                            b=env.execute(frozen['languages_response'],languages)
+                            view=env.execute(frozen['repository_summary'],envelope)
+                            outbound=env.execute(frozen['update_topics'],view.get('output'))
+                            body=outbound.get('output')
+                            accepted=env.execute(frozen['topics_request'],body)
+                            ok=all(x.get('valid') is True for x in (a,b,view,outbound,accepted)) and view.get('output')=={'topics':topics['names'],'language_bytes':languages} and body=={'names':topics['names']}
+                        except Rejected:pass
+                    reports.append({'cross_operation_consistency':True,'passed':ok})
+                    if not ok:
+                        for key in keys:per[key]=False
         finally:env.close()
     try:resources.parent_overhead('terminal_evaluator_parent',start,0)
     except Rejected:

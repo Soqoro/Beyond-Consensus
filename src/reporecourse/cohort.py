@@ -155,6 +155,21 @@ def summarize(configurations,records):
             clean_success=cr,unconditional_configuration_fault_score=fr,
             branches=deepcopy(branches),invalid_planning_counts_as_configuration_failure=bool(invalid))
         row['branch_metrics']=[branch_metrics(b) for b in branches]
+        units=f['plan']['units'] if f and f.get('plan') else []
+        row['declared_imports']=[dict(unit=u['id'],imports=deepcopy(u.get('consumes',{}))) for u in units]
+        row['target_details']=[dict(target=b['target'],eligible_count=len(plans['meaningful_active_owners']) if plans else None,
+            owned_units=[u['id'] for u in units if u['worker']==b['target']],
+            positions=[i for i,u in enumerate(units) if u['worker']==b['target']]) for b in branches if b['track']=='F']
+        # Scheduled conditions remain visible even when no executable plan exists.
+        # These are reporting rows, not invented worker executions or targets.
+        tracks=('clean','F') if c['target_rule']=='uniform' else ('clean',)
+        row['scheduled_conditions']=[dict(track=track,
+            status='not_executed_invalid_planning' if invalid else 'pending',
+            target=None,target_status=row['target_status'],worker_executed=False,
+            complete_in_budget=False if invalid else None)
+            for track in tracks] if not branches else [dict(track=b['track'],target=b.get('target'),
+                status=b['status'],target_status=row['target_status'],worker_executed=False if b['status']=='unrun' else b.get('model_executed'),
+                complete_in_budget=b.get('success')) for b in branches]
         rows.append(row);groups.setdefault(c['planner'],[]).append(row)
     balanced={}
     for planner,rs in groups.items():
@@ -163,21 +178,57 @@ def summarize(configurations,records):
         if any(len(x)!=1 for x in by_task.values()):raise Rejected('duplicate_task_planner')
         scores=[r['unconditional_configuration_fault_score'] for r in rs]
         balanced[planner]=dict(scheduled_tasks=len(rs),resolved_tasks=sum(s is not None for s in scores),
-            fault_configuration_mean=sum(scores)/len(scores) if scores and all(s is not None for s in scores) else None)
+            fault_configuration_mean=sum(scores)/len(scores) if scores and all(s is not None for s in scores) else None,
+            tracks=track_summary(rs))
     return dict(schema='rr-cohort-summary-v1',configurations=rows,task_balanced=balanced,
                 missing_configurations=sum(c['configuration_id'] not in records for c in configurations),
                 interpretation='Development characterization; no worst-case robustness, planner superiority or independent-branch inference.')
 
 
+def track_summary(rows):
+    """Task-balanced completion plus costs from ALL observed branches.
+
+    Missing costs are counted, never silently imputed. Invalid planning has no
+    worker branch; its retained planning ledger is reported separately.
+    """
+    out={}
+    for track in ('clean','F'):
+        scores=[r['clean_success'] if track=='clean' else r['unconditional_configuration_fault_score'] for r in rows]
+        branches=[b for r in rows for b in r['branch_metrics'] if b['track']==track]
+        costs={}
+        for key in ('total_tokens','total_cpu','uncertain_tokens','uncertain_cpu'):
+            known=[b[key] for b in branches if b.get(key) is not None]
+            costs[key]=dict(known_sum=sum(known),observed_with_value=len(known),
+                observed_without_value=len(branches)-len(known),
+                observed_mean=sum(known)/len(known) if known else None)
+        out[track]=dict(scheduled_task_configurations=len(rows),resolved_task_configurations=sum(x is not None for x in scores),
+            complete_at_budget_task_mean=sum(scores)/len(scores) if scores and all(x is not None for x in scores) else None,
+            observed_branches=len(branches),invalid_plans=sum(r['invalid_planning_counts_as_configuration_failure'] for r in rows),
+            all_observed_branch_costs=costs,
+            cost_scope='Includes failures; known observations only. Invalid planning expense is in configuration planning_resources; no invented branch ledger.')
+    return out
+
+
 def branch_metrics(b):
     events=b.get('events',[]);resources=b.get('resource_profile',{});conf=b.get('conformance',{})
+    state=b.get('state') or {}
+    artifacts=state.get('artifacts',{})
+    attempted={e.get('version') for e in events if e['type']=='artifact_execution'}
+    bindings=[dict(version=v,producer_unit=a.get('producer_unit'),bindings=deepcopy(a.get('bindings',{})),
+                   execution_attempt_observed=v in attempted)
+              for v,a in artifacts.items() if a.get('bindings')]
     return dict(track=b['track'],target=b['target'],status=b['status'],correct=b.get('task_correct'),
         complete_in_budget=b.get('success'),contract_conformant=b.get('contract_conformant'),
         loss_triggered=b.get('intervention_triggered'),fault_fraction=b.get('fault_fraction'),
         loss_event=next((e for e in events if e['type']=='unavailable'),None),
         allowed_unused_edges=conf.get('allowed_not_observed'),observed_imports=conf.get('direct_imports'),
+        executable_bindings=bindings,
+        source_reads=[{k:e.get(k) for k in ('worker','source')} for e in events if e['type']=='source_read'],
+        source_only_versions=[v for v,a in artifacts.items() if not a.get('bindings')],
+        binding_semantics='Saved executable inputs, distinct from reads; attempt flag is not success or causal necessity.',
         retained_versions=b.get('retained_versions'),artifact_executions=b.get('artifact_executions'),
         explicit_rebindings=b.get('explicit_rebindings'),reexecutions=sum(e['type']=='jit_reexecute' for e in events) if events else None,
+        scope_overlays=deepcopy((state.get('scope_state') or {}).get('overlays',[])),
         repair_assignments=[{k:e.get(k) for k in ('unit','worker','new_versions','actual_tokens','cpu_cap_debit')} for e in events if e['type']=='unit_end' and e['stage']=='repair'],
         primary_assignment_tokens=sum(e['actual_tokens'] for e in events if e['type']=='unit_end' and e['stage']=='primary') if events else None,
         primary_assignment_cpu=sum(e['cpu_cap_debit'] for e in events if e['type']=='unit_end' and e['stage']=='primary') if events else None,

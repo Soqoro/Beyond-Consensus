@@ -184,6 +184,53 @@
           "source_id": "topics_json"
         }
       ]
+    },
+    {
+      "id": "github-metadata",
+      "repository": "github/rest-api-description",
+      "revision": "4377b4f4845badf28d13464dfb3042c6cf0e3a1f",
+      "license": "MIT",
+      "grounding": "repo_grounded_authored",
+      "license_review": "license_file_inspected_independent_review_pending",
+      "independent_review": "pending",
+      "redistribution": "not_approved_pending_review",
+      "upstream": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1063,
+          "sha256": "3243761cbac07e6d169a5a2f4e7c25cc544da85248e735df74c3672e055cc87b"
+        },
+        {
+          "path": "README.md",
+          "bytes": 3795,
+          "sha256": "dfb5896f8c1e3763c3f203eb5e40e1fcf2a3a7c3463d16ef1e34085335b213ea"
+        },
+        {
+          "path": "descriptions/api.github.com/api.github.com.json",
+          "bytes": 12964430,
+          "sha256": "b8ca03764f54058ec40e2b61e048a4518ee88e943ac04d393b1757094c895aad"
+        }
+      ],
+      "retained": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1063,
+          "sha256": "3243761cbac07e6d169a5a2f4e7c25cc544da85248e735df74c3672e055cc87b",
+          "source_id": "LICENSE_md"
+        },
+        {
+          "path": "README.md",
+          "bytes": 3795,
+          "sha256": "dfb5896f8c1e3763c3f203eb5e40e1fcf2a3a7c3463d16ef1e34085335b213ea",
+          "source_id": "README_md"
+        },
+        {
+          "path": "metadata.json",
+          "bytes": 3839,
+          "sha256": "a0899be4025fc3632482762492ea45fbe95943af5cd57d8a2c19007edefa819d",
+          "source_id": "metadata_json"
+        }
+      ]
     }
   ]
 }

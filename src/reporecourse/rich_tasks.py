@@ -1,4 +1,4 @@
-"""Three authored requests and one honestly blocked candidate; no online solver.
+"""Four authored requests with review gates; no online solver.
 
 Expected values are independent Python reductions, never exposed by worker tools.
 Reference artifacts continue through the existing restricted executor/interpreter.
@@ -12,6 +12,28 @@ from .resources import Resources
 from . import v2
 
 RICH = ROOT/'rich'
+
+
+def replace_bound_control(public,basis,plan,key,content,format=None):
+    """Republish one deliberately wrong output from a COPY of one submission.
+
+    Trusted qualification only: use the normal publisher to create a valid new
+    receipt, so rejection measures behavior rather than a corrupted version hash.
+    No worker, JIT, best-candidate selection or reference regeneration occurs.
+    """
+    from .runtime import Environment
+    from .scope import validate_bundle
+    resources=Resources(100000,1200)
+    env=Environment(public,resources,workers=v2.worker_registry(7),plan=plan,
+                    execution_contract='plan_scoped_v1',track=basis['track'],target=basis['target'])
+    try:
+        env.restore_state(deepcopy(basis))
+        artifact=env.artifacts[env.bound[key]]
+        env.publish(artifact['author'],artifact['name'],format or artifact['format'],
+                    deepcopy(content),deepcopy(artifact['bindings']),[key])
+        state=env.state();validate_bundle(state)
+        return state,resources.summary()
+    finally:env.close()
 
 
 def energy_rows_match(actual,expected,types):
@@ -114,11 +136,11 @@ def inventory(sources):
             source_table_count=len(loaded['tables']) if loaded is not None else None,
             source_schema_breadth={k:len(t['columns']) for k,t in loaded['tables'].items()} if loaded is not None else None,
             structure_scope='private reference only, not preferred model plans'))
-    rows.append(load(RICH/'blocked-api-integration.json'))
+    # The historical blocked draft is retained on disk, not a fifth candidate.
     versions=runtime_versions()
     return dict(schema='rr-rich-inventory-v1',candidates=rows,runtime_versions=versions,
                 dependencies_available=all(versions.get(k)==v for k,v in PINS.items()),
-                executable_cards=3,authoring_target=4,source_groups=3,model_executed=False,
+                executable_cards=len(rows),authoring_target=4,source_groups=3,model_executed=False,
                 task_execution_allowed=False)
 
 
@@ -133,7 +155,7 @@ def qualify(task,sources):
     card,public=load_task(task,sources)
     private=private_task(task)
     c=v2.configuration(7,planning_lane='authored_diagnostic',execution_contract='plan_scoped_v1',planner_output_cap=6144)
-    positive=[];basis=None
+    positive=[];basis=None;basis_plan=None;basis_grade=None
     for witness in private['witnesses']:
         plan=v2.authored_plan(public,c,witness['organization'])
         engine=Engine(public,ScriptedWorker(witness),plan=plan,v2=c,resources=Resources(100000,1200))
@@ -142,39 +164,41 @@ def qualify(task,sources):
             positive.append(dict(organization=witness['organization'],success=grade.get('success'),
                 status=row['status'],conformant=row['conformance']['contract_conformant'],structure=v2.descriptors(plan),
                 checks=len(grade.get('checks',[])),resources=row['resource_profile'],evaluator_resources=grade.get('evaluator_resources')))
-            if basis is None:basis=deepcopy(row['state'])
+            if basis is None:
+                basis=deepcopy(row['state']);basis_plan=deepcopy(plan);basis_grade=deepcopy(grade)
         finally:engine.env.close()
-    controls=[]
+    before=digest(basis);controls=[]
     for req in public['required_outputs']:
         key=req['id']
         for mutation in ('missing','wrong_semantics'):
             state=deepcopy(basis)
+            mutation_resources=None
             if mutation=='missing':state['bound'].pop(key,None)
             else:
-                bad=deepcopy(private['witnesses'][0])
-                action=next(x['action'] for x in bad['actions'] if key in x['action']['obligations'])
-                if action['format']=='sql':
-                    action['content']='SELECT '+','.join(("'incorrect'" if typ=="string" else "999")+" AS "+col for col,typ in zip(req['columns'],req['types']))
-                elif action['format']=='schema':action['content']=True
-                else:action['content']['fields']={}
-                eng=Engine(public,ScriptedWorker(bad),plan=v2.authored_plan(public,c,bad['organization']),v2=c,resources=Resources(100000,1200))
-                try:state=eng.run()['state']
-                finally:eng.env.close()
-            controls.append(dict(obligation=key,mutation=mutation,detected=evaluate(public,private,state).get('success') is False))
+                # Destructive controls start from the same exact bound submission.
+                # Never rerun workers/JIT to obtain an independently repaired copy.
+                version=state['bound'][key];artifact=state['artifacts'][version]
+                if artifact['format']=='select':
+                    content='SELECT '+','.join(("'incorrect'" if typ=='string' else '999')+' AS '+col for col,typ in zip(req['columns'],req['types']))
+                    format='sql'
+                else:
+                    format=artifact['format'];content=True if format=='schema' else deepcopy(artifact['content'])
+                    if format=='mapping':content['fields']={}
+                state,mutation_resources=replace_bound_control(public,basis,basis_plan,key,content,format)
+            controls.append(dict(obligation=key,mutation=mutation,detected=evaluate(public,private,state).get('success') is False,
+                                 mutation_resources=mutation_resources))
         if req['format']=='schema':
-            bad=deepcopy(private['witnesses'][0])
-            next(x['action'] for x in bad['actions'] if key in x['action']['obligations'])['content']=False
-            eng=Engine(public,ScriptedWorker(bad),plan=v2.authored_plan(public,c,bad['organization']),v2=c,resources=Resources(100000,1200))
-            try:state=eng.run()['state']
-            finally:eng.env.close()
-            controls.append(dict(obligation=key,mutation='reject_all',detected=evaluate(public,private,state).get('success') is False))
+            state,mutation_resources=replace_bound_control(public,basis,basis_plan,key,False)
+            controls.append(dict(obligation=key,mutation='reject_all',detected=evaluate(public,private,state).get('success') is False,
+                                 mutation_resources=mutation_resources))
     repeat=evaluate(public,private,basis)
     _,again=load_task(task,sources)
-    integrity=digest(public)==digest(again)
-    ok=all(r['success'] is True and r['conformant'] for r in positive) and all(r['detected'] for r in controls) and integrity and repeat.get('success') is True
+    integrity=digest(public)==digest(again) and digest(basis)==before
+    identical=all(repeat.get(k)==basis_grade.get(k) for k in ('status','success','obligations','checks','bound_bundle_hash'))
+    ok=all(r['success'] is True and r['conformant'] for r in positive) and all(r['detected'] for r in controls) and integrity and identical and repeat.get('success') is True
     return dict(schema='rr-rich-qualification-v1',task=task,task_hash=digest(card),public_hash=digest(public),private_hash=digest(private),
         status='cpu_qualified_review_pending' if ok else 'failed',witnesses=positive,negative_controls=controls,
-        source_integrity=integrity,reset_repeat_identical=repeat.get('success') is True,
+        source_integrity=integrity,reset_repeat_identical=identical,
         implementation_hashes=implementation_hashes(),runtime_versions=actual,
         model_executed=False,evidence='scripted_reference_only',task_execution_allowed=False,independent_review='pending',
         source_schema_breadth={k:len(v['columns']) for k,v in public['tables'].items()},
