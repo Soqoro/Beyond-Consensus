@@ -1,5 +1,25 @@
 # Implementation status and handoff
 
+## User-directed unreviewed development lane — 2026-10-12
+
+After the audit, the user explicitly instructed proceeding with the four-task
+experiments while deferring review. The opt-in `rich_development_unreviewed`
+lane implements that instruction; `rich_pilot` and historical approvals retain
+their existing review gates. This is a deliberate conflict with the earlier
+no-waiver policy below, not a claim that independent or source/provider-rights
+reviews occurred. All four pending, hash-bound review records remain pending.
+The exact run approval accepts the deferral limitations. Aggregate and public
+exports label the lane and deferred review status. No rights clearance is inferred.
+
+Scope remains four tasks, two planners, at most 16 clean/F branches, concurrency
+one, no retry or stock rerun. Source integrity, CPU controls, role locks, GPU
+probe compatibility, scope, accounting and scheduling gates remain enforced.
+Cluster CPU controls must renew against the changed admission code. The earlier
+cluster result at `rr-four-task.y6a46O` passed 109 controls and all four footprints;
+it is preserved, not edited into fresh qualification. No new model outcome or
+submission is recorded here. See [the executable handoff](UNREVIEWED_COHORT_RUNBOOK.md).
+
+
 Latest consolidated audit: [PROGRESS_REPORT_2026-10-11.md](PROGRESS_REPORT_2026-10-11.md).
 
 ## Four executable richer tasks; comparison blocked on reviews (2026-10-12)

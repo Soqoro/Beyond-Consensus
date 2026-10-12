@@ -1,5 +1,18 @@
 # Research protocol implemented here
 
+## Explicit development review deferral (2026-10-12)
+
+The user has instructed proceeding with the bounded four-task experiment after
+reviewing the audit and asking to defer independent/task and source-rights review.
+`rich_development_unreviewed` is a separate opt-in admission lane: review records
+stay pending, the exact approval accepts the unresolved limitations, and outputs
+are labelled unreviewed development evidence. This changes the earlier project
+admission policy only for this lane; it does not assert rights clearance or
+independent validity, change scoring, enlarge the 16-branch scope, waive technical
+qualification, or reinterpret historical `rich_pilot` evidence. See
+[UNREVIEWED_COHORT_RUNBOOK.md](UNREVIEWED_COHORT_RUNBOOK.md).
+
+
 ## Question and scope
 
 Does recovery-aware delegation improve complete-task success after contributor

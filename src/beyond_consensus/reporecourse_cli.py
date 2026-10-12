@@ -11,7 +11,7 @@ def add_parsers(sub):
     p=sub.add_parser('rr-rich-qualify',help='Restricted CPU reference and mutant qualification')
     p.add_argument('--sources',type=Path,required=True);p.add_argument('--task',required=True);p.add_argument('--output',type=Path,required=True)
     p=sub.add_parser('rr-cohort-manifest',help='Commit prospective stock or matched rich cohort; no execution')
-    p.add_argument('--lane',choices=('stock_protocol','rich_pilot'),required=True)
+    p.add_argument('--lane',choices=('stock_protocol','rich_pilot','rich_development_unreviewed'),required=True)
     p.add_argument('--sources',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     for name in ('model-lock','planner-lock','evidence'):p.add_argument('--'+name,type=Path)
     p=sub.add_parser('rr-cohort-review',help='Read-only blockers and approval template')
@@ -103,7 +103,7 @@ def dispatch(args):
                 planner=load(args.planner_lock) if args.planner_lock else None,evidence=load_control_record(args.evidence) if args.evidence else None)
         elif command=='rr-cohort-review':
             m=load_control_record(args.manifest)
-            result=dict(experiment_id=m['experiment_id'],blockers=co.blockers(m,ROOT,load(args.model_lock) if args.model_lock else None),
+            result=dict(experiment_id=m['experiment_id'],lane=m['lane'],limitations=m['limitations'],blockers=co.blockers(m,ROOT,load(args.model_lock) if args.model_lock else None),
                 approval_template=co.approval_template(m),task_review_templates=co.task_review_templates(m),task_execution_allowed=False)
         elif command=='rr-cohort-approve':result=co.authorize(load_control_record(args.manifest),load(args.approval),ROOT,load(args.model_lock))
         elif command=='rr-cohort-footprint':result=co.measure_prompts(args.task,args.sources,load(args.model_lock))

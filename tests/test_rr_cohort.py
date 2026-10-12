@@ -71,6 +71,66 @@ class Prospective(unittest.TestCase):
         self.assertTrue(all(r['decision']=='pending' and r['rights']=='pending' and r['reviewer'] is None for r in templates.values()))
         self.assertTrue(adapter.blockers(m,ROOT))
 
+    def test_unreviewed_scope_and_approval_keep_pending_status(self):
+        m=adapter.build(ROOT,'/nonexistent',adapter.UNREVIEWED_LANE)
+        adapter.validate(m)
+        self.assertEqual(m['maximum_execution_branches'],16)
+        self.assertEqual(len(m['configurations']),8)
+        self.assertFalse(m['task_execution_allowed'])
+        self.assertEqual(m['evidence']['reviews'],adapter.task_review_templates(m))
+        receipt=adapter.approval_template(m)
+        self.assertIn('source_and_provider_rights_review_pending_not_clearance',receipt['limitations_accepted'])
+        receipt.update(decision='approved',reviewer='test-user',reviewed_at='2026-10-12')
+        with patch.object(adapter,'verify'):
+            approved=adapter.authorize(m,receipt,ROOT,None)
+        adapter.validate(approved)
+        self.assertTrue(approved['task_execution_allowed'])
+        self.assertEqual(approved['evidence']['reviews'],m['evidence']['reviews'])
+        for change in ('lane','limits','review','receipt'):
+            bad=deepcopy(approved)
+            if change=='lane':bad['lane']='rich_pilot'
+            elif change=='limits':bad['maximum_execution_branches']=17
+            elif change=='review':bad['evidence']['reviews']['jaffle-payment-release']['rights']='approved'
+            else:bad['approval']['limitations_accepted']=adapter.LIMITATIONS
+            adapter.seal(bad)
+            with self.assertRaises(BCError):adapter.validate(bad)
+        with TemporaryDirectory() as d:
+            report=adapter.aggregate(m,d)
+        self.assertEqual(report['lane'],adapter.UNREVIEWED_LANE)
+        self.assertEqual(report['review_status'],'deferred_by_user')
+        self.assertEqual(report['limitations'],m['limitations'])
+        self.assertEqual(len(report['configurations']),8)
+        with patch.object(adapter,'export',return_value={'experiment_id':m['experiment_id'],
+                'public_planner_inputs':[],'summary':report}):
+            public=adapter.public_export('/unused')
+        self.assertEqual(public['summary']['review_status'],'deferred_by_user')
+        self.assertTrue(all('task_review_receipt' not in r for r in public['summary']['configurations']))
+
+    def test_unreviewed_lane_defers_only_review_gates(self):
+        from reporecourse.common import load
+        from reporecourse.tasks import ROOT as tasks_root,catalog
+        cards={c['id']:c for c in catalog(tasks_root/'rich')['tasks']}
+        def fixture_task(task,sources):
+            return cards[task],load(tasks_root/'rich'/'public'/(task+'.json'))
+        with patch.object(adapter,'load_task',side_effect=fixture_task),patch.object(adapter,'prompt_cases',return_value=[]):
+            strict=adapter.build(ROOT,'/unused','rich_pilot')
+            dev=adapter.build(ROOT,'/unused',adapter.UNREVIEWED_LANE)
+            strict_errors=set(adapter.blockers(strict,ROOT))
+            dev_errors=set(adapter.blockers(dev,ROOT))
+            deferred={'specific_task_review_required','independent_review_unresolved',
+                'rights_review_required','independent_review_receipt_required',
+                'attributed_source_rights_receipt_required','provider_rights_pending'}
+            self.assertEqual(dev_errors,{e for e in strict_errors if e.split(':')[-1] not in deferred})
+            self.assertIn('current_no_skip_cohort_controls_required',dev_errors)
+            self.assertIn('renewed_gpu_footprint_audit_required',dev_errors)
+            for task in cards:
+                self.assertIn(task+':fresh_task_cpu_qualification_required',dev_errors)
+                self.assertIn(task+':reference_output_expressibility_required',dev_errors)
+            with self.assertRaises(BCError):adapter.authorize(dev,adapter.approval_template(dev),ROOT,None)
+            forged=deepcopy(dev['evidence'])
+            forged['reviews']['jaffle-payment-release']['independent_review']='approved'
+            with self.assertRaises(BCError):adapter.build(ROOT,'/unused',adapter.UNREVIEWED_LANE,evidence=forged)
+
     def test_read_exposure_is_not_executable_binding(self):
         b=dict(track='F',target='w0',status='completed',events=[],state={'artifacts':{
             'a':{'bindings':{},'exposure':['old']},'b':{'bindings':{'input':'a'},'producer_unit':'u1'}}},

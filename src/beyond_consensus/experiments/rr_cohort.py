@@ -21,6 +21,13 @@ from reporecourse.qualification import implementation_hashes, runtime_versions
 from reporecourse.resources import Resources
 
 SCHEMA='rr-cohort-manifest-v1'
+UNREVIEWED_LANE='rich_development_unreviewed'
+DEFERRED_LIMITATIONS=['independent_task_review_deferred_by_user',
+    'source_and_provider_rights_review_pending_not_clearance','unreviewed_development_only']
+
+def limitations(lane):
+    return LIMITATIONS + (DEFERRED_LIMITATIONS if lane==UNREVIEWED_LANE else [])
+
 RICH_TASKS=('jaffle-payment-release','energy-single-indicator-release','github-topics-client-package','github-multioperation-integration')
 LIMITATIONS=['development_requests_not_population_inference','uncalibrated_engineering_caps_not_B0',
              'observed_memory_only','no_retry_no_training','persistent_availability_F_not_adaptive_adversary',
@@ -67,7 +74,7 @@ def model_settings():
 
 
 def build(root,sources,lane,*,worker=None,planner=None,evidence=None):
-    if lane not in ('stock_protocol','rich_pilot'):raise BCError('Unknown prospective cohort')
+    if lane not in ('stock_protocol','rich_pilot',UNREVIEWED_LANE):raise BCError('Unknown prospective cohort')
     tasks=('synthetic-stock',) if lane=='stock_protocol' else RICH_TASKS
     planners=('prompted_open',) if lane=='stock_protocol' else cohort.PLANNERS
     rows=[cohort.configuration(t,p,target_rule='all' if lane=='stock_protocol' else 'uniform') for t in tasks for p in planners]
@@ -87,17 +94,22 @@ def build(root,sources,lane,*,worker=None,planner=None,evidence=None):
         configurations=rows,task_bindings=bindings,model=model_settings(),backend_profile=base,
         model_lock_sha256=digest(worker) if worker else None,implementation_hashes=implementation_hashes(),
         evidence=deepcopy(evidence or {}),approval=None,task_execution_allowed=False,confirmatory=False,
-        limitations=LIMITATIONS,shards=len(rows),planned_episodes=None,
+        limitations=limitations(lane),shards=len(rows),planned_episodes=None,
         maximum_execution_branches=maximum,maximum_model_planning_sequences=sum(c['planner']=='prompted_open' for c in rows),
         maximum_logical_tokens=maximum*100000,maximum_charged_cpu_seconds=maximum*1200,
         budget_basis='uncalibrated_engineering_cap',episodes=[dict(episode_id=c['configuration_id'],shard=i) for i,c in enumerate(rows)])
+    if lane==UNREVIEWED_LANE:
+        pending=task_review_templates(m)
+        review.require(not m['evidence'].get('reviews') or m['evidence']['reviews']==pending,
+                       'Unreviewed lane must retain pending task and rights records')
+        m['evidence']['reviews']=pending
     return seal(m)
 
 
 def approval_template(m):
     return dict(schema='rr-cohort-approval-v1',proposal_id=m['experiment_id'],decision='pending',reviewer=None,reviewed_at=None,
         scope_hash=digest({k:v for k,v in m.items() if k not in ('experiment_id','approval','task_execution_allowed')}),
-        maximum_execution_branches=m['maximum_execution_branches'],limitations_accepted=LIMITATIONS)
+        maximum_execution_branches=m['maximum_execution_branches'],limitations_accepted=limitations(m['lane']))
 
 
 def task_review_templates(m):
@@ -123,17 +135,20 @@ def authorize(m,receipt,root,worker):
 
 def validate(m):
     review.require(m.get('schema')==SCHEMA and m.get('experiment_id')==digest({k:v for k,v in m.items() if k!='experiment_id'}),'Cohort manifest integrity')
-    tasks=('synthetic-stock',) if m['lane']=='stock_protocol' else RICH_TASKS if m['lane']=='rich_pilot' else ()
+    tasks=('synthetic-stock',) if m['lane']=='stock_protocol' else RICH_TASKS if m['lane'] in ('rich_pilot',UNREVIEWED_LANE) else ()
     planners=('prompted_open',) if m['lane']=='stock_protocol' else cohort.PLANNERS
     expected=[cohort.configuration(t,p,target_rule='all' if m['lane']=='stock_protocol' else 'uniform') for t in tasks for p in planners]
     review.require(bool(tasks) and m['configurations']==expected and m['shards']==len(expected) and
-        set(m['task_bindings'])==set(tasks) and m['model']==model_settings() and m['limitations']==LIMITATIONS and
+        set(m['task_bindings'])==set(tasks) and m['model']==model_settings() and m['limitations']==limitations(m['lane']) and
         m['maximum_execution_branches']==sum(c['maximum_branches'] for c in expected) and
         m['maximum_logical_tokens']==m['maximum_execution_branches']*100000 and
         m['maximum_charged_cpu_seconds']==m['maximum_execution_branches']*1200 and
         m['maximum_model_planning_sequences']==sum(c['planner']=='prompted_open' for c in expected) and
         m['episodes']==[dict(episode_id=c['configuration_id'],shard=i) for i,c in enumerate(expected)] and
         m['planned_episodes'] is None and m['confirmatory'] is False and m['budget_basis']=='uncalibrated_engineering_cap','Cohort scope changed')
+    if m['lane']==UNREVIEWED_LANE:
+        review.require(m['evidence'].get('reviews')==task_review_templates(m),
+                       'Pending review records changed in unreviewed lane')
     if m['backend_profile']:
         profile.validate(m['backend_profile'])
         review.require(m['backend_profile']['model']==m['model'] and m['backend_profile']['source_revision']==m['source_revision'] and
@@ -173,23 +188,24 @@ def blockers(m,root,worker=None):
             need(q.get('status')=='cpu_qualified_review_pending' and q.get('task_hash')==digest(card) and
                  q.get('implementation_hashes')==implementation_hashes() and q.get('source_integrity') is True and
                  q.get('reset_repeat_identical') is True and q.get('model_executed') is False and q.get('runtime_versions')==runtime_versions(),task+':fresh_task_cpu_qualification_required')
-            r=e.get('reviews',{}).get(task,{})
-            need(r.get('task_hash')==digest(card) and r.get('decision') in ('approved','engineering_exception') and
-                 bool(r.get('reviewer')) and bool(r.get('reviewed_at')) and r.get('scope')=='this_cohort_only',task+':specific_task_review_required')
-            if r.get('decision')=='engineering_exception':
-                need(r.get('independent_review')=='pending' and r.get('limitations_accepted')==['independent_review_pending','development_engineering_only'],task+':exception_must_preserve_pending_review')
-            else:need(r.get('independent_review')=='approved',task+':independent_review_unresolved')
-            need(r.get('rights')=='approved' and bool(r.get('rights_basis')),task+':rights_review_required')
-            if m['lane']=='rich_pilot':
-                # Experiment consent and author self-review are separate from
-                # the independently attributed review required by this pilot.
-                need(r.get('decision')=='approved' and r.get('independent_review')=='approved' and
-                     r.get('reviewer_role')=='independent_reviewer' and bool(r.get('evidence')),
-                     task+':independent_review_receipt_required')
-                need(r.get('source_hash')==digest(next(p for p in load(ROOT/'source_registry.json')['packs'] if p['id']==card['pack'])) and
-                     bool(r.get('rights_reviewer')) and bool(r.get('rights_reviewer_role')) and bool(r.get('rights_reviewed_at')),
-                     task+':attributed_source_rights_receipt_required')
-            if card['pack']=='energy':need(r.get('underlying_providers')=='approved',task+':provider_rights_pending')
+            if m['lane']!=UNREVIEWED_LANE:
+                r=e.get('reviews',{}).get(task,{})
+                need(r.get('task_hash')==digest(card) and r.get('decision') in ('approved','engineering_exception') and
+                     bool(r.get('reviewer')) and bool(r.get('reviewed_at')) and r.get('scope')=='this_cohort_only',task+':specific_task_review_required')
+                if r.get('decision')=='engineering_exception':
+                    need(r.get('independent_review')=='pending' and r.get('limitations_accepted')==['independent_review_pending','development_engineering_only'],task+':exception_must_preserve_pending_review')
+                else:need(r.get('independent_review')=='approved',task+':independent_review_unresolved')
+                need(r.get('rights')=='approved' and bool(r.get('rights_basis')),task+':rights_review_required')
+                if m['lane']=='rich_pilot':
+                    # Experiment consent and author self-review are separate from
+                    # the independently attributed review required by this pilot.
+                    need(r.get('decision')=='approved' and r.get('independent_review')=='approved' and
+                         r.get('reviewer_role')=='independent_reviewer' and bool(r.get('evidence')),
+                         task+':independent_review_receipt_required')
+                    need(r.get('source_hash')==digest(next(p for p in load(ROOT/'source_registry.json')['packs'] if p['id']==card['pack'])) and
+                         bool(r.get('rights_reviewer')) and bool(r.get('rights_reviewer_role')) and bool(r.get('rights_reviewed_at')),
+                         task+':attributed_source_rights_receipt_required')
+                if card['pack']=='energy':need(r.get('underlying_providers')=='approved',task+':provider_rights_pending')
             # Exact public prompt footprint measured with qualified tokenizer, not guessed from characters.
             footprint=e.get('task_footprints',{}).get(task,{})
             need(footprint.get('public_hash')==digest(pub) and footprint.get('model_lock_sha256')==m['model_lock_sha256'] and
@@ -201,7 +217,7 @@ def blockers(m,root,worker=None):
                 b.get('output_cap')==(6144 if a['role']=='plan' else 2048) and type(b.get('input_tokens')) is int and
                 0<b['input_tokens']<=16384-b['output_cap'] and b.get('passed') is True
                 for a,b in zip(expected,measured)),task+':prompt_measurements_incomplete_or_changed')
-            if m['lane']=='rich_pilot':
+            if m['lane'] in ('rich_pilot',UNREVIEWED_LANE):
                 actions=[a['action'] for w in private['witnesses'] for a in w['actions']]
                 sizes=footprint.get('reference_action_measurements',[])
                 need(len(actions)==len(sizes) and all(digest(a)==r.get('action_hash') and
@@ -419,7 +435,9 @@ def aggregate(m,output):
         source_summary.setdefault(row['source_group'],{}).setdefault(row['planner'],[]).append(row)
     summary['per_source']={source:{planner:cohort.track_summary(rows) for planner,rows in planners.items()}
                            for source,planners in source_summary.items()}
-    return dict(summary,experiment_id=m['experiment_id'],
+    return dict(summary,experiment_id=m['experiment_id'],lane=m['lane'],
+                review_status='deferred_by_user' if m['lane']==UNREVIEWED_LANE else 'see_task_review_receipts',
+                limitations=deepcopy(m['limitations']),
                 source_groups={t:b['card']['source_group'] if b['card'] else None for t,b in m['task_bindings'].items()},
                 evidence='real_model_results_or_unrun',confirmatory=False,maximum_execution_branches=m['maximum_execution_branches'])
 
