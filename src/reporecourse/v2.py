@@ -20,7 +20,7 @@ def worker_registry(n):
 def configuration(pool_size=4, mode='adaptive_size', primary_count=None, lane='open',
                   token_cap=100000,cpu_cap=1200,seed=0,threat='F',target_rule='uniform',
                   recovery='delegation_jit',max_units=24,planner='external_supplied',*,
-                  planning_lane=None,execution_contract=None,planner_output_cap=2048):
+                  planning_lane=None,execution_contract=None,planner_output_cap=2048,interface_profile=None):
     ident(planner)
     worker_registry(pool_size);Resources(token_cap=token_cap,cpu_cap=cpu_cap)
     if mode not in ('adaptive_size','matched_primary_count'):raise Rejected('count_mode')
@@ -50,13 +50,19 @@ def configuration(pool_size=4, mode='adaptive_size', primary_count=None, lane='o
         if execution_contract=='plan_scoped_v1':
             from .scope import JIT as scoped_jit
             result.update(jit=scoped_jit,memory_policy='assignment-local-reprefill-v1')
+    if interface_profile is not None:
+        from .interface import enabled
+        enabled(interface_profile)
+        if execution_contract!='plan_scoped_v1':raise Rejected('interface_requires_scopes')
+        result['interface_profile']=interface_profile
     return result
 
 
 def check_config(c):
     rebuilt=configuration(c['pool_size'],c['count_mode'],c['primary_count'],c['lane'],
         c['resource']['token_cap'],c['resource']['cpu_cap'],0,c['threat'],c['target_rule'],c['recovery'],c['max_units'],c['planner'],
-        **({k:c[k] for k in ('planning_lane','execution_contract','planner_output_cap')} if 'execution_contract' in c else {}))
+        **({k:c[k] for k in ('planning_lane','execution_contract','planner_output_cap')} if 'execution_contract' in c else {}),
+        interface_profile=c.get('interface_profile'))
     if set(c)!=set(rebuilt) or any(c[k]!=rebuilt[k] for k in c if k!='seeds'):raise Rejected('v2_config')
     if set(c['seeds'])!=set(rebuilt['seeds']) or any(type(x) is not int or x<0 for x in c['seeds'].values()):raise Rejected('seed_streams')
     return c
@@ -64,7 +70,11 @@ def check_config(c):
 
 def validate_work_plan(plan,public,c):
     try:return _validate_work_plan(plan,public,c)
-    except Rejected:raise
+    except Rejected as exc:
+        if c.get('interface_profile'):
+            from .interface import plan_feedback
+            exc.public_feedback=plan_feedback(plan,public,exc)
+        raise
     except (KeyError,TypeError,ValueError,AttributeError):raise Rejected('plan_structure') from None
 
 
@@ -171,6 +181,7 @@ def planner_input(public,c):
             planner_output_cap=c['planner_output_cap'],plan_bounds=c['plan_bounds'],
             source_focus='hints_only_all_original_sources_permitted',
             units_description_limit=2048,max_plan_bytes=65536,imports='permissions_not_mandatory_reads')
+    if c.get('interface_profile'):result['interface_profile']=c['interface_profile']
     return result
 
 
@@ -227,6 +238,9 @@ def planner_messages(req):
         'Invent any bounded acyclic structure, intermediate names and owners. No menu of named outlines. '
         'Cover every terminal output once. No final artifacts or code. Prose is audited, not proof of absence of answers. '
         'Workers use the public restricted SQL/schema/mapping artifact tools.')
+    if req.get('config',{}).get('interface_profile') or req.get('planner_input',{}).get('interface_profile'):
+        from .interface import planner_contract
+        system+=' '+__import__('json').dumps(planner_contract())
     return [{'role':'system','content':system},{'role':'user','content':__import__('json').dumps(req['planner_input'])}]
 
 
@@ -236,16 +250,20 @@ class PromptedPlanner:
         if evidence_mode not in ('real_model','scripted_mock'):raise Rejected('planner_evidence_mode')
         self.backend=backend;self.output_cap=output_cap;self.evidence_mode=evidence_mode
     def run(self,req,public,save=None):
-        verify_record(req,'request_id');c=check_config(req['config']);r=Resources(**{k:c['resource'][k] for k in ('token_cap','cpu_cap')})
+        verify_record(req,'request_id');c=check_config(req['config']);r=Resources(**{k:c['resource'][k] for k in ('token_cap','cpu_cap')},diagnostics=bool(c.get('interface_profile')))
         if c.get('planning_lane') not in (None,'open_generated'):raise Rejected('generated_planner_lane')
         if c.get('planner_output_cap',self.output_cap)!=self.output_cap:raise Rejected('planner_output_allowance_mismatch')
         if req['public_hash']!=digest(public):raise Rejected('task_changed')
+        if c.get('interface_profile') and self.evidence_mode=='real_model' and not hasattr(self.backend,'bind_public_plan'):
+            raise Rejected('qualified_public_grammar_required')
         messages=planner_messages(req)
         events=[];plan={};bad=0;accepted=False;terminal_error=None
         for call in range(c['planning_calls']):
             before=len(r.events);start=time.process_time();key=None;g=None;dispatched=False
             try:
                 r.reserve_cpu(31)
+                if call==0 and c.get('interface_profile') and hasattr(self.backend,'bind_public_plan'):
+                    self.backend.bind_public_plan(public['id'],[x['id'] for x in public['required_outputs']])
                 count=self.backend.count_input(messages)
                 if count+self.output_cap>getattr(self.backend,'context_limit',getattr(getattr(self.backend,'config',None),'context_limit',16384)):raise Rejected('context_limit')
                 key=r.reserve(count,self.output_cap)
@@ -254,7 +272,8 @@ class PromptedPlanner:
                 dispatched=True
                 g=self.backend.generate(messages,self.output_cap,c['seeds']['planner']+call)
                 r.reconcile(key,g.output_tokens,g.reasoning_tokens,device_seconds=g.device_seconds,
-                    generation_wall_seconds=g.diagnostics.get('generation_wall_seconds'))
+                    generation_wall_seconds=g.diagnostics.get('generation_wall_seconds'),
+                    **({k:g.diagnostics.get(k) for k in ('finish_reason','constraint_complete','public_grammar_binding')} if c.get('interface_profile') else {}))
                 key=None;r.reconcile_cpu('planner_model_host',31,time.process_time()-start)
                 import json
                 def pairs(items):
@@ -276,6 +295,7 @@ class PromptedPlanner:
                     try:r.reconcile_cpu('planner_failed_call_host',31,time.process_time()-start)
                     except Rejected:pass
                 reply={'error':str(exc) if isinstance(exc,Rejected) else 'malformed_plan_action'}
+                if c.get('interface_profile') and hasattr(exc,'public_feedback'):reply.update(exc.public_feedback)
                 bad+=1
             except BaseException as exc:
                 if key is not None:r.reconcile(key)

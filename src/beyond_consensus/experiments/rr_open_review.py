@@ -23,11 +23,11 @@ def unique(items):
 
 def check_report(manifest, report, worker):
     footprint.validate(manifest)
-    require(manifest['schema'] == footprint.SCHEMA_V3, 'Planner-6144 v3 evidence required')
+    require(manifest['schema'] in (footprint.SCHEMA_V3,footprint.SCHEMA_V4), 'Planner-6144 v3 evidence required')
     packet = manifest['cpu_packet']; profile = packet['base_manifest']
     runtime = report['runtime']; planner = profile['planner_lock']
-    require(report['schema'] == 'rr-open-footprint-report-v3' and
-            report['protocol'] == footprint.PROTOCOL_V3 and
+    require(report['schema'] == footprint.packet_version(packet)[4] and
+            report['protocol'] == footprint.packet_version(packet)[2] and
             report['status'] == 'passed_observed_cases' and report['command_failed'] is False,
             'Footprint did not pass')
     require(report['experiment_id'] == manifest['experiment_id'] and
@@ -53,7 +53,7 @@ def check_report(manifest, report, worker):
         require(all(q['effective_generation_tokens'][k] == runtime['generation_tokens'][k] for k in ('eos_token_id', 'pad_token_id')) and
                 q['thinking_template']['template_hash'] == runtime['chat_template']['template_hash'], 'Generation template mismatch')
     require(runtime['qualification_key'] == report['qualification_keys']['json'], 'Runtime grammar mismatch')
-    require(len(report['calls']) == len(packet['cases']) == 5, 'Incomplete cases')
+    require(len(report['calls']) == len(packet['cases']) == (4 if manifest['schema']==footprint.SCHEMA_V4 else 5), 'Incomplete cases')
     tokens = 0
     for row, case in zip(report['calls'], packet['cases']):
         g = row['generation']; d = g['diagnostics']; measured = case['measurement']; cap = report['role_output_caps'][case['role']]
@@ -68,6 +68,10 @@ def check_report(manifest, report, worker):
         q = (worker if case['role'] == 'json' else planner)['decoder_qualification']
         require(d['action_constraint'] == q['contract'] and d['eos_token_id'] == runtime['generation_tokens']['eos_token_id'] and
                 d['last_generated_token_id'] in d['eos_token_id'], 'Decoder contract mismatch')
+        if manifest['schema']==footprint.SCHEMA_V4 and case['role']=='plan':
+            from reporecourse.action_schema import schema_v2
+            mode=footprint.base.grammar(profile,'plan');schema=schema_v2(mode,['report']);task=footprint.reliable_public()['id']
+            require(d.get('public_grammar_binding')==dict(task_id=task,terminal_ids=['report'],schema_sha256=digest(schema),cache_key=digest([mode,task,['report'],schema])),'Public task grammar binding changed')
         mem = row['memory']
         require(0 < mem['peak_allocated_bytes'] <= mem['peak_reserved_bytes'] <= mem['total_bytes'] == runtime['vram_total_bytes'], 'Invalid memory observation')
         tokens += row['input_tokens']+g['output_tokens']

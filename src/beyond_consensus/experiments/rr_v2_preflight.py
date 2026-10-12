@@ -29,10 +29,13 @@ def grammar(m,role):
     contract=m.get('execution_contract','adaptive_legacy')
     if contract not in ('adaptive_legacy','plan_scoped_v1'):raise BCError('Unknown probe execution contract')
     suffix='scoped-v1' if contract=='plan_scoped_v1' else 'v2'
+    if m.get('interface_profile'):
+        from reporecourse.interface import enabled
+        enabled(m['interface_profile']);suffix='reliable-v1'
     return f'reporecourse-{role}-{suffix}-pool-{m["pool"]}'
 
 
-def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False, planner_output_cap=2048):
+def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, plan_scoped=False, planner_output_cap=2048, interface_profile=None):
     from ..models.competence import CHECKPOINT, REVISION
     if type(planner_output_cap) is not int or planner_output_cap not in (2048, *FOOTPRINT_PROFILES):
         raise BCError("Unsupported planner output cap")
@@ -53,6 +56,12 @@ def build(root, worker_lock, planner_lock, pool, *, full_budget_stress=False, pl
         profile_schema, profile_protocol = FOOTPRINT_PROFILES[planner_output_cap]
         m.update(schema=profile_schema, protocol=profile_protocol,
                  planner_output_cap=planner_output_cap)
+    if interface_profile:
+        from reporecourse.interface import enabled, bindings
+        enabled(interface_profile)
+        if pool!=7 or not plan_scoped or planner_output_cap!=6144:raise BCError('Interface profile requires scoped pool7 roles')
+        m['interface_profile']=interface_profile;m['interface_bindings']=bindings()
+        m['model']['action_constraint']=grammar(m,'json')
     m["experiment_id"] = digest(m)
     validate(m)
     check_locks(m, worker_lock)
@@ -75,6 +84,10 @@ def validate(m):
             or m.get("task_inputs_used") is not False
             or m.get("task_execution_allowed") is not False):
         raise BCError("Invalid synthetic preflight manifest")
+    if m.get('interface_profile'):
+        from reporecourse.interface import enabled, bindings
+        enabled(m['interface_profile'])
+        if m.get('interface_bindings')!=bindings():raise BCError('Interface bindings changed')
     from ..models.competence import CHECKPOINT, REVISION
     config = ModelConfig(**m["model"])
     if (config.checkpoint != CHECKPOINT or config.revision != REVISION
@@ -206,6 +219,16 @@ def qualified_backend(m, lock_path, root):
     def switch(role):
         backend.config = role_configs[role]
         backend.constraint = constraints[role]
+    if m.get('interface_profile'):
+        cache={}
+        def bind_public_plan(task_id,terminal_ids):
+            from reporecourse.action_schema import schema_v2
+            key=digest([grammar(m,'plan'),task_id,terminal_ids,schema_v2(grammar(m,'plan'),terminal_ids)])
+            if key not in cache:
+                cache[key]=ActionConstraint(backend.tokenizer,backend.model.get_output_embeddings().weight.shape[0],
+                    backend.generation_tokens['eos_token_id'],grammar(m,'plan'),public_task=task_id,terminal_ids=terminal_ids)
+            backend.constraint=cache[key]
+        backend.bind_public_plan=bind_public_plan
     def memory(*, reset):
         cuda = backend.torch.cuda
         cuda.synchronize()

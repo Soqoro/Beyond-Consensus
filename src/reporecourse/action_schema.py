@@ -35,10 +35,11 @@ def controls():
 LEGACY_V2_MODES=tuple(f'reporecourse-{kind}-v2-pool-{n}' for kind in ('json','plan') for n in range(2,9))
 
 OPEN_MODES=tuple(f'reporecourse-{kind}-scoped-v1-pool-{n}' for kind in ('json','plan') for n in range(2,9))
-V2_MODES=LEGACY_V2_MODES+OPEN_MODES
+RELIABLE_MODES=tuple(f'reporecourse-{kind}-reliable-v1-pool-7' for kind in ('json','plan'))
+V2_MODES=LEGACY_V2_MODES+OPEN_MODES+RELIABLE_MODES
 
 
-def schema_v2(mode):
+def schema_v2(mode, terminal_ids=None):
     from .v2 import worker_registry
     if mode not in V2_MODES:raise ValueError('v2 mode')
     workers=list(worker_registry(int(mode.rsplit('-',1)[1])))
@@ -49,6 +50,19 @@ def schema_v2(mode):
                 action['properties']['recipient']={'enum':workers}
         # Execution identities cannot invoke planning tools.
         result['anyOf']=[a for a in result['anyOf'] if a['properties']['tool']['enum']!=['plan_catalog']]
+        if mode in RELIABLE_MODES:
+            actions=[]
+            for a in result['anyOf']:
+                if a['properties']['tool']['enum']!=['publish']:actions.append(a);continue
+                from copy import deepcopy
+                for fmt in ('sql','schema','mapping'):
+                    branch=deepcopy(a);props=branch['properties'];props['format']={'enum':[fmt]}
+                    content={'type':'object','additionalProperties':{'$ref':'#/$defs/value'}}
+                    if fmt=='sql':content={'type':'string'}
+                    elif fmt=='schema':content={'anyOf':[content,{'type':'boolean'}]}
+                    else:content=dict(content,properties={k:{'$ref':'#/$defs/value'} for k in ('fields','each','output_schema')},required=['output_schema'])
+                    props['content']=content;actions.append(branch)
+            result['anyOf']=actions
         return result
     def obj(props):return {'type':'object','properties':props,'required':list(props),'additionalProperties':False}
     string={'type':'string','maxLength':2048}
@@ -57,10 +71,13 @@ def schema_v2(mode):
     unit=obj(dict(id=string,worker={'enum':workers},outputs=names,depends=names,description=string,
         produces={'type':'object','additionalProperties':fmt},
         consumes={'type':'object','additionalProperties':obj(dict(unit=string,artifact=string,format=fmt))},sources=names))
-    if mode in OPEN_MODES:
+    if mode in OPEN_MODES+RELIABLE_MODES:
         unit['properties']['interfaces']={'type':'object','additionalProperties':string}
         unit['properties']['terminal_bindings']={'type':'object','additionalProperties':string}
         unit['required']+=['interfaces','terminal_bindings']
+    if mode in RELIABLE_MODES and terminal_ids is not None:
+        if not terminal_ids or len(set(terminal_ids))!=len(terminal_ids):raise ValueError('public terminal IDs')
+        unit['properties']['outputs']={'type':'array','items':{'enum':list(terminal_ids)},'maxItems':24}
     plan=obj({'schema':{'enum':['rr-work-plan-v2']},'id':string,'units':{'type':'array','items':unit,'minItems':1,'maxItems':24}})
     return {'anyOf':[obj({'tool':{'enum':['read_source']},'name':string}),
         obj({'tool':{'enum':['submit_plan']},'plan':plan})]}
@@ -76,8 +93,16 @@ def controls_v2(mode):
             'outputs':['result'],'depends':[],'description':'Implement public requirement.',
             'produces':{'result':'sql'},'consumes':{},'sources':[]}]}}]
         bad=['{}','{"tool":"publish"}']
-    if mode in OPEN_MODES and '-plan-' in mode:
+    if mode in OPEN_MODES+RELIABLE_MODES and '-plan-' in mode:
         good[1]['plan']['units'][0]['interfaces']={'result':'Public output contract.'}
         good[1]['plan']['units'][0]['terminal_bindings']={'result':'result'}
+    if mode in RELIABLE_MODES and '-json-' in mode:
+        import json
+        from copy import deepcopy
+        for fmt in ('schema','mapping'):
+            a=deepcopy(next(a for a in good if a.get('format')==fmt))
+            for content in ('{}',[],None):
+                a['content']=content;bad.append(json.dumps(a))
+        good.append(dict(tool='publish',name='boolean_schema',format='schema',content=False,bindings={},obligations=[]))
     bad.append('{"tool":"message","recipient":"w8","text":"invalid"}')
     return good,bad

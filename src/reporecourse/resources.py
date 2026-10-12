@@ -20,6 +20,7 @@ class Resources:
     cpu_reserved: float = 0
     cpu_pending: list = field(default_factory=list)
     uncertain_cpu: float = 0
+    diagnostics: bool = False
 
     def __post_init__(self):
         if type(self.token_cap) is not int or self.token_cap < 1 or type(self.cpu_cap) not in (int,float) or not math.isfinite(self.cpu_cap) or self.cpu_cap <= 0:
@@ -29,15 +30,23 @@ class Resources:
     def remaining(self):
         return self.token_cap-self.actual_tokens-self.uncertain_tokens-sum(a+b for a,b in self.reservations.values())
 
+    def admission_failure(self,code,requested=0):
+        if getattr(self,'diagnostics',False):
+            self.events.append(dict(kind='admission_failure',code=code,requested=requested,
+                remaining_tokens=self.remaining,remaining_cpu=self.cpu_cap-self.cpu_seconds-self.cpu_reserved,
+                actual_tokens=self.actual_tokens,actual_cpu=self.cpu_seconds,
+                reason='actual_cap_exceeded' if self.cpu_seconds>self.cpu_cap or self.actual_tokens>self.token_cap else 'insufficient_remaining_allowance'))
+        raise Rejected(code)
+
     def ensure_dispatch(self):
-        if self.remaining <= 0: raise Rejected("token_cap")
-        if self.cpu_seconds+self.cpu_reserved >= self.cpu_cap: raise Rejected("cpu_cap")
+        if self.remaining <= 0: self.admission_failure("token_cap")
+        if self.cpu_seconds+self.cpu_reserved >= self.cpu_cap: self.admission_failure("cpu_cap")
 
     def reserve(self, input_tokens, output_cap):
         self.ensure_dispatch()
         if any(type(x) is not int or x < 0 for x in (input_tokens,output_cap)):
             raise Rejected('usage')
-        if input_tokens+output_cap > self.remaining: raise Rejected('token_cap')
+        if input_tokens+output_cap > self.remaining: self.admission_failure('token_cap',input_tokens+output_cap)
         key = str(len(self.events)); self.reservations[key] = (input_tokens,output_cap)
         self.events.append(dict(kind='reservation', id=key, input=input_tokens, output_cap=output_cap))
         return key
@@ -60,7 +69,7 @@ class Resources:
             raise Rejected('cpu_usage')
         self.ensure_dispatch()
         if self.cpu_seconds+self.cpu_reserved+allowance > self.cpu_cap:
-            raise Rejected('cpu_cap')
+            self.admission_failure('cpu_cap',allowance)
         self.cpu_pending.append(allowance)
         self.cpu_reserved += allowance
         self.events.append(dict(kind='cpu_reservation', allowance=allowance,

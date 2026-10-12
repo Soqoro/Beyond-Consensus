@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE | --worker-lock FILE --planner-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--rich-only] [--pool-count N] [--repo-root DIR]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE | --worker-lock FILE --planner-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--rich-only] [--interface-reliability] [--pool-count N] [--repo-root DIR]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -14,6 +14,8 @@ output=''
 model_lock=''
 worker_lock=''
 planner_lock=''
+interface_profile=''
+interface_args=()
 rich_only=false
 local_run=false
 dry=false
@@ -31,6 +33,7 @@ while (($#)); do
         --scoped-controls) scoped=true; v2=true; shift ;;
         --cohort-controls) cohort=true; shift ;;
         --rich-only) rich_only=true; shift ;;
+        --interface-reliability) interface_profile=rr-interface-reliability-v1; interface_args=(--interface-profile "$interface_profile"); shift ;;
         --pool-count) (($# >= 2)) || exit 2; pool_count="$2"; shift 2 ;;
         --track-f-controls) track_f=true; shift ;;
         --sources|--output|--model-lock|--worker-lock|--planner-lock|--repo-root)
@@ -47,6 +50,9 @@ while (($#)); do
         *) usage >&2; exit 2 ;;
     esac
 done
+if [[ -n "$interface_profile" ]] && { ! "$cohort" || ! "$rich_only" || [[ -z "$model_lock" || -n "$worker_lock" ]]; }; then
+    printf "Interface revision requires --cohort-controls --rich-only --model-lock; renew both grammars.\n" >&2; exit 2
+fi
 if "$rich_only" && ! "$cohort"; then printf 'Use --rich-only with --cohort-controls.\n' >&2; exit 2; fi
 if [[ -n "$worker_lock$planner_lock" ]]; then
     if ! "$cohort" || [[ -z "$worker_lock" || -z "$planner_lock" || -n "$model_lock" ]]; then
@@ -116,10 +122,11 @@ PYLOCKS
     fi
     if [[ -n "$model_lock" ]]; then
         for role in worker planner; do
-            mode=json; cap=2048
+            mode=json; cap=2048; grammar_suffix=scoped-v1
+            if [[ -n "$interface_profile" ]]; then grammar_suffix=reliable-v1; fi
             if [[ "$role" == planner ]]; then mode=plan; cap=6144; fi
             "$BC_PYTHON" -I scripts/check_action_constraints.py --model-lock "$model_lock" \
-                --context-limit 16384 --output-cap "$cap" --action-constraint "reporecourse-$mode-scoped-v1-pool-7" \
+                --context-limit 16384 --output-cap "$cap" --action-constraint "reporecourse-$mode-$grammar_suffix-pool-7" \
                 --output "$output/$role-grammar.json" --qualified-lock "$output/$role-lock.json"
         done
     fi
@@ -128,9 +135,30 @@ PYLOCKS
             if [[ "$task" == synthetic-stock ]] && "$rich_only"; then continue; fi
             if "$BC_PYTHON" -c 'import json,sys; sys.exit(json.load(open(sys.argv[1])).get("status")!="cpu_qualified_review_pending")' "$output/$task.json"; then
                 "$BC_PYTHON" -I scripts/bc.py rr-cohort-footprint --task "$task" --sources "$sources" \
-                    --model-lock "$output/worker-lock.json" --output "$output/$task-footprint.json"
+                    --model-lock "$output/worker-lock.json" --output "$output/$task-footprint.json" "${interface_args[@]}"
             fi
         done
+    fi
+    if [[ -n "$interface_profile" ]]; then
+        # A written report is not necessarily a passing qualification. Fail
+        # before preparing a GPU job if any actual task prompt failed its gate.
+        "$BC_PYTHON" - "$output" <<'PYINTERFACE'
+import json, sys
+from pathlib import Path
+root=Path(sys.argv[1])
+for task in ('jaffle-payment-release','energy-single-indicator-release','github-topics-client-package','github-multioperation-integration'):
+    for suffix,expected in (('', 'cpu_qualified_review_pending'),('-footprint', 'passed')):
+        path=root/(task+suffix+'.json')
+        if not path.is_file() or json.loads(path.read_text()).get('status')!=expected:
+            raise SystemExit('Interface qualification blocked: '+str(path))
+PYINTERFACE
+        "$BC_PYTHON" -I scripts/prepare_rr_open_footprint.py \
+            --interface-profile "$interface_profile" --planner-output-cap 6144 --measure \
+            --model-lock "$output/worker-lock.json" --planner-lock "$output/planner-lock.json" \
+            --output "$output/interface-footprint.json"
+        "$BC_PYTHON" -I scripts/bc.py rr-open-footprint-manifest \
+            --packet "$output/interface-footprint.json" --model-lock "$output/worker-lock.json" \
+            --output "$output/interface-preflight-manifest.json"
     fi
     printf 'Prospective CPU preparation complete. Source/review/rights/GPU footprint and explicit cohort approval remain separate gates.\n'
     exit 0

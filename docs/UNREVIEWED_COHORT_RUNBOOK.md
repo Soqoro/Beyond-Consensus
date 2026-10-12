@@ -1,5 +1,225 @@
 # Four-task unreviewed development run
 
+## Interface-reliability revision — current handoff, 12 October 2026
+
+The first cohort completed: see [the trace audit](RICH_COHORT_TRACE_AUDIT_2026-10-12.md).
+The commands in this section prepare a **new** combined interface revision,
+`rr-interface-reliability-v1`. The older instructions below are retained as
+historical instructions and must not be used to reuse an old approval or grammar.
+
+The task requests, source/task/private hashes, terminal evaluator and scoped JIT
+are unchanged. Interface hashes live in configurations/manifests, not task cards.
+Source/runtime bindings and configuration/proposal IDs change. Original resolved
+settings were checked against the uploaded cohort export: seed index 1 and its
+four seed streams, uniform meaningful-owner selection, 8 planner calls / 2
+revisions, 24 actions/units, pool 7, context 16384, worker 2048 / planner 6144,
+100000 tokens / 1200 CPU seconds. Both planners get the same revised worker
+contract in primary and repair. Requirement allocation still has zero model calls.
+
+Four tasks × two planners × clean/F = 16 scheduled conditions. Task-major order
+is Jaffle, Energy, topics, multioperation; planner order is requirement-level then
+prompted-open; clean precedes F. Invalid planning retains two failed conditions
+without worker execution. Wrong clean answers do not cancel F. Maximum logical
+ceilings are 1600000 tokens / 19200 CPU seconds, with separate qualification and
+terminal evaluation overhead. Review/rights status stays pending/deferred and
+`confirmatory` stays false. No retry, seed search, extra targets or training.
+
+### Local validation for this revision
+
+Python 3.12.7; no model inference or cluster submission:
+
+| Check | Result |
+| --- | --- |
+| Full `unittest discover -s tests -v` | 473 tests: 442 passed, 31 skipped; no failures/errors |
+| Pinned `scripts/check_rr_cohort.py` | 127 passed; zero skips/failures/errors |
+| Pinned `tests.test_sql_text` | 4 passed |
+| New pinned `tests.test_rr_interface` | 16 passed, also included in the 127 controls |
+| `scripts/check_shell.py` | All 10 shell files passed |
+| `compileall`, `git diff --check`, `python -I -S scripts/bc.py --help` | Passed |
+| Runbook Bash syntax | All 13 blocks parsed; none submitted/executed |
+
+Thirty full-suite skips require optional pinned SQL/schema child dependencies;
+the remaining skip is the separate legacy container qualification. Relevant
+compiler, schema, cohort and scoped-recovery controls passed in the pinned CPU
+environment. Exact Qwen tokenizer/XGrammar and GPU checks remain **pending**.
+The local test reports are development checks, not reusable cluster locks.
+
+Reproduce local checks (the optional environment path is workstation-specific):
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/check_shell.py
+python -m compileall -q src tests scripts
+git diff --check
+python -I -S scripts/bc.py --help
+/tmp/bc-rich-cpu/bin/python -m unittest tests.test_sql_text tests.test_rr_interface -v
+BC_LOCAL_CHECKS="$(mktemp -d /tmp/rr-interface-controls.XXXXXX)"
+/tmp/bc-rich-cpu/bin/python scripts/check_rr_cohort.py --output "$BC_LOCAL_CHECKS/controls.json"
+```
+
+### A. Freeze and submit CPU qualification
+
+Run after reviewing/committing/pushing the implementation. This session has not
+submitted any cluster job. Use one terminal; save the printed directory. Inspect
+partition availability before running `sbatch`. This uses the existing wrapper
+with an explicit source root, not Slurm's spool directory. It renews role grammars,
+all task/public-feedback footprints and public terminal-ID grammar checks, then
+prepares exactly four task-free GPU probes. It does not load model weights.
+
+```bash
+cd "$HOME/Beyond-Consensus"
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_PYTHON="$BC_STORAGE/envs/bc-gpu-py312/bin/python"
+export BC_DEV_SOURCES="$BC_STORAGE/datasets/reporecourse-v01"
+export BC_BASE_LOCK="$BC_STORAGE/diagnostics/rr-rich-cohort.5tpWjC/cpu/worker-lock.json"
+export BC_DEV="$(mktemp -d "$BC_STORAGE/diagnostics/rr-interface-v1.XXXXXX")"
+export BC_DEV_CLUSTER="$BC_DEV/cluster.json"
+(
+set -euo pipefail
+set -o noclobber
+git pull --ff-only
+if test -n "$(git status --porcelain)"; then
+    git status --short
+    printf 'STOP: preserve exports outside Git and review local changes.\n'
+    exit 1
+fi
+test -x "$BC_PYTHON"
+test -s "$BC_BASE_LOCK"
+git rev-parse HEAD > "$BC_DEV/source-commit.txt"
+git clone --no-hardlinks "$PWD" "$BC_DEV/source"
+git -C "$BC_DEV/source" checkout --detach "$(cat "$BC_DEV/source-commit.txt")"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+c=json.loads(Path('configs/cluster.qwen27b-na100.local.json').read_text())
+c['partition']='HPCAIq'
+c['output_root']=str(Path(os.environ['BC_DEV'])/'outputs')
+with Path(os.environ['BC_DEV_CLUSTER']).open('x') as f:json.dump(c,f,indent=2)
+PY
+sinfo -p PA100q,HPCAIq -N -o '%N %P %t %G'
+sbatch --parsable --partition=PA100q --nodes=1 --ntasks=1 \
+  --cpus-per-task=4 --mem=32G --time=02:00:00 --job-name=rr-interface-cpu \
+  --chdir="$BC_DEV/source" --output="$BC_DEV/cpu.out" --error="$BC_DEV/cpu.err" \
+  "$BC_DEV/source/experiments/qualify_reporecourse.sh" \
+  --repo-root "$BC_DEV/source" --cohort-controls --rich-only --interface-reliability \
+  --sources "$BC_DEV_SOURCES" --model-lock "$BC_BASE_LOCK" --output "$BC_DEV/cpu" \
+  > "$BC_DEV/cpu-job.txt"
+cat "$BC_DEV/cpu-job.txt"
+printf 'Save directory: %s\n' "$BC_DEV"
+)
+```
+
+```bash
+sacct -j "$(cut -d';' -f1 "$BC_DEV/cpu-job.txt")" --format=JobID,State,ExitCode,Elapsed
+tail -n 40 "$BC_DEV/cpu.err"
+```
+
+Proceed only after `COMPLETED 0:0`. CPU doubles and compiler tests are not model
+competence. Missing tokenizer/XGrammar, grammar rejection, changed bindings or
+prompt overflow are blockers; there is no instructions-only fallback. Do not
+increase caps or drop a failed case.
+
+### B. One four-probe GPU preflight
+
+HPCAIq previously supplied a full A100 80GB PCIe allocation. Availability and
+hardware are checked again; this is not a claim about current queue state.
+Use the **same selected cluster config** for qualification and the cohort.
+Preflight is separate task-free work, not one of the 16 study conditions.
+
+```bash
+(
+set -euo pipefail
+cd "$BC_DEV/source"
+test -s "$BC_DEV/cpu/interface-preflight-manifest.json"
+"$BC_PYTHON" -I scripts/bc.py submit --mode preflight --concurrency 1 \
+  --cluster "$BC_DEV_CLUSTER" --manifest "$BC_DEV/cpu/interface-preflight-manifest.json" \
+  --model-lock "$BC_DEV/cpu/worker-lock.json" --dry-run
+)
+```
+
+After inspecting the dry run, submit the preflight once through the registry:
+
+```bash
+(
+set -euo pipefail
+set -o noclobber
+cd "$BC_DEV/source"
+"$BC_PYTHON" -I scripts/bc.py submit --mode preflight --concurrency 1 \
+  --cluster "$BC_DEV_CLUSTER" --manifest "$BC_DEV/cpu/interface-preflight-manifest.json" \
+  --model-lock "$BC_DEV/cpu/worker-lock.json" > "$BC_DEV/preflight-submission.json"
+cat "$BC_DEV/preflight-submission.json"
+)
+export BC_DEV_PREFLIGHT="$("$BC_PYTHON" -c 'import json,sys;print(json.load(open(sys.argv[1]))["output"])' "$BC_DEV/preflight-submission.json")"
+export BC_DEV_PREFLIGHT_JOB="$("$BC_PYTHON" -c 'import json,sys;print(json.load(open(sys.argv[1]))["job_id"])' "$BC_DEV/preflight-submission.json")"
+sacct -j "$BC_DEV_PREFLIGHT_JOB" --format=JobID,State,ExitCode,Elapsed
+```
+
+Wait for completion, then inspect `preflight.json`. It must report all four cases
+passed, zero uncertain tokens and `command_failed: false`. Observed cases do not
+establish universal worst-case memory fit. Do not rerun on ordinary probe failure.
+
+### C. Audit new evidence and prepare the prospective proposal
+
+```bash
+(
+set -euo pipefail
+cd "$BC_DEV/source"
+"$BC_PYTHON" -I scripts/bc.py rr-open-footprint-audit \
+  --run "$BC_DEV_PREFLIGHT" --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_DEV/footprint-audit.json"
+"$BC_PYTHON" - <<'PY'
+import json, os
+from pathlib import Path
+r=Path(os.environ['BC_DEV'])
+def read(p):return json.loads(p.read_text())
+tasks=('jaffle-payment-release','energy-single-indicator-release',
+       'github-topics-client-package','github-multioperation-integration')
+e={'controls':read(r/'cpu/cohort-controls.json'),'footprint_audit':read(r/'footprint-audit.json'),
+   'tasks':{t:read(r/'cpu'/f'{t}.json') for t in tasks},
+   'task_footprints':{t:read(r/'cpu'/f'{t}-footprint.json') for t in tasks},'reviews':{}}
+with (r/'evidence.json').open('x') as f:json.dump(e,f,indent=2)
+PY
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-manifest \
+  --lane rich_development_unreviewed --interface-profile rr-interface-reliability-v1 \
+  --sources "$BC_DEV_SOURCES" --model-lock "$BC_DEV/cpu/worker-lock.json" \
+  --planner-lock "$BC_DEV/cpu/planner-lock.json" --evidence "$BC_DEV/evidence.json" \
+  --output "$BC_DEV/proposal.json"
+"$BC_PYTHON" -I scripts/bc.py rr-cohort-review \
+  --manifest "$BC_DEV/proposal.json" --model-lock "$BC_DEV/cpu/worker-lock.json" \
+  --output "$BC_DEV/review.json"
+"$BC_PYTHON" -m json.tool "$BC_DEV/review.json"
+)
+```
+
+This creates the exact prospective ID only after real cluster qualification.
+No local draft ID substitutes for it. A **new exact-scope approval** is required
+by the existing `rr-cohort-approve` mechanism. The implementation/preparation
+instruction does not reuse the previous run's approval. Show the proposal and
+review to the user; after approval of this concrete scope, use the existing
+approval-record block in historical section 4 below with this new `BC_DEV`.
+It records execution consent, never independent task/rights review. Technical
+blockers must be empty. Preserve pending reviews.
+
+### D. Finite run, monitoring, interrupted coverage and export
+
+After the new approval is bound, use sections 5 and 6 below unchanged, with the
+new `BC_DEV`, `BC_DEV_CLUSTER` and approved manifest. Those are the actual CLI
+commands for concurrency-one submission, `sacct`, aggregation and public/private
+exports. They do not silently retry a started shard. **There is no retry/resume
+command for started cohort configurations**: inspect/export interrupted coverage;
+resume only never-started work through the existing guarded submission path if
+its checks permit it. Infrastructure/accounting/integrity defects pause the study;
+ordinary semantic, budget and validly recorded planning failures remain results.
+
+Do not run the historical CPU/lock reuse instructions in sections 1–3 below.
+Do not change code, prompts or grammar halfway through the new cohort. Keep the
+old result unchanged and report any new result as a combined interface revision,
+not causal evidence for any one fix. Stop after the finite study for review.
+
+---
+
+## Historical pre-revision handoff (retained; superseded above)
+
 Date: 2026-10-12. The user explicitly instructed proceeding after the audit,
 deferring review. This handoff does not invent reviewers, evidence or rights
 clearance. The earlier reviewed `rich_pilot` lane remains strict. Use the new

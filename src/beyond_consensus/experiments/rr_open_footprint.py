@@ -21,7 +21,10 @@ PROTOCOL_V2 = base.FOOTPRINT_PROTOCOL
 SCHEMA_V3 = 'rr-open-footprint-manifest-v3'
 PACKET_V3 = 'rr-open-footprint-cpu-v3'
 PROTOCOL_V3 = base.FOOTPRINT_PROTOCOL_V3
+SCHEMA_V4='rr-open-footprint-manifest-v4'
+PROTOCOL_V4='rr-interface-reliability-four-probes-v1'
 VERSIONS = {
+    'reliable': ('rr-open-footprint-cpu-v4',SCHEMA_V4,PROTOCOL_V4,base.FOOTPRINT_PROFILE_V3,'rr-open-footprint-report-v4'),
     2048: (PACKET, SCHEMA, PROTOCOL, base.SCHEMA, 'rr-open-footprint-report-v1'),
     4096: (PACKET_V2, SCHEMA_V2, PROTOCOL_V2, base.FOOTPRINT_PROFILE, 'rr-open-footprint-report-v2'),
     6144: (PACKET_V3, SCHEMA_V3, PROTOCOL_V3, base.FOOTPRINT_PROFILE_V3, 'rr-open-footprint-report-v3'),
@@ -88,6 +91,24 @@ def case(name, role, messages, expected, **extra):
                 expected=expected, expected_hash=digest(expected), **extra)
 
 
+def reliable_public():
+    return dict(id='neutral-interface-probe',family='api_schema',request='Task-free syntax qualification.',
+        sources={},required_outputs=[{'id':'report','format':'sql'}],examples=[])
+
+
+def reliable_cases():
+    from reporecourse.interface import PROFILE, example_plan, publications, worker_contract
+    c=v2.configuration(7,planning_lane='open_generated',execution_contract='plan_scoped_v1',planner_output_cap=6144,interface_profile=PROFILE)
+    public=reliable_public();p=example_plan();v2.validate_work_plan(p,public,c)
+    rows=[case('helper_terminal','plan',v2.planner_messages({'config':c,'planner_input':v2.planner_input(public,c)}),
+               {'tool':'submit_plan','plan':p},structural_valid=True)]
+    for a in publications():
+        obs=dict(request='Task-free syntax reproduction; no artifact execution.',
+                 interface_delivery={'profile':PROFILE,'contract_hash':digest(worker_contract()),'scope':'assignment','truncated':False})
+        rows.append(case('publish_'+a['format'],'json',worker_messages(obs,[]),a,structural_valid=True))
+    return rows
+
+
 def cases(planner_output_cap=2048):
     """Use actual scoped observations and publications, no database or execution."""
     public = public_contract(); c = config(planner_output_cap); result = []
@@ -147,15 +168,15 @@ def proposal_check(proposal, model):
     require(proposal.get('task_execution_allowed') is False and proposal.get('campaign_allowed') is False,
             'Proposal must remain blocked')
     require(proposal['worker_config']['model'] == model, 'Proposal worker model differs')
-    expected = dict(model, action_constraint='reporecourse-plan-scoped-v1-pool-7')
+    expected = dict(model, action_constraint='reporecourse-plan-reliable-v1-pool-7' if 'reliable-v1' in model['action_constraint'] else 'reporecourse-plan-scoped-v1-pool-7')
     require(proposal['planner_config']['model'] == expected, 'Proposal planner model differs')
 
 
-def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap=2048):
+def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap=2048, interface_profile=None):
     start = time.process_time()
-    frozen = base.build(root, worker, planner, 7, plan_scoped=True, planner_output_cap=planner_output_cap)
+    frozen = base.build(root, worker, planner, 7, plan_scoped=True, planner_output_cap=planner_output_cap, interface_profile=interface_profile)
     proposal_check(proposal, frozen['model'])
-    rows = cases(planner_output_cap)
+    rows = reliable_cases() if interface_profile else cases(planner_output_cap)
     for row in rows:
         cap = base.output_cap(frozen, row['role'])
         text = json.dumps(row['expected'], separators=(',', ':'))
@@ -170,9 +191,9 @@ def prepare(root, proposal, worker, planner, measure=None, *, planner_output_cap
                       'input_reservation_exceeds_context' if i+cap > 16384 else 'passed')
             row['measurement'].update(values, action_plus_stop_tokens=a+1, status=status,
                                       dispatch_allowed=status == 'passed')
-    version = VERSIONS[planner_output_cap]
+    version = VERSIONS["reliable" if interface_profile else planner_output_cap]
     report = dict(schema=version[0], protocol=version[2], source_revision=frozen['source_revision'],
-        proposal=proposal, base_manifest=frozen, public=public_contract(), cases=rows,
+        proposal=proposal, base_manifest=frozen, public=reliable_public() if interface_profile else public_contract(), cases=rows,
         model_executed=False, sql_executed=False, task_inputs_used=False,
         status='prepared_unmeasured' if measure is None else
                'passed_cpu_cases' if all(r['measurement']['dispatch_allowed'] for r in rows) else 'failed_cpu_cases',
@@ -188,7 +209,8 @@ def validate_packet(packet, measured=False):
             packet.get('task_inputs_used') is False, 'CPU packet evidence scope mismatch')
     for k, value in FLAGS.items():
         require(packet.get(k) is value, 'CPU packet changed permission')
-    require(packet['public'] == public_contract(), 'Synthetic public contract changed')
+    reliable=packet['base_manifest'].get('interface_profile') is not None
+    require(packet['public'] == (reliable_public() if reliable else public_contract()), 'Synthetic public contract changed')
     base.validate(packet['base_manifest'])
     require(packet['base_manifest']['schema'] == version[3],
             'Footprint profile/version mismatch')
@@ -196,6 +218,21 @@ def validate_packet(packet, measured=False):
     require(packet['base_manifest'].get('execution_contract') == 'plan_scoped_v1' and
             packet['base_manifest']['pool'] == 7 and packet['source_revision'] == packet['base_manifest']['source_revision'], 'Packet scope mismatch')
     proposal_check(packet['proposal'], packet['base_manifest']['model'])
+    if reliable:
+        require(version==VERSIONS['reliable'], 'Interface footprint version mismatch')
+        regenerated=reliable_cases()
+        require(len(packet['cases'])==4,'Exactly four interface probes required')
+        for row,want in zip(packet['cases'],regenerated):
+            require({k:v for k,v in row.items() if k!='measurement'}==want,'Interface probe changed')
+            cap=base.output_cap(packet['base_manifest'],row['role']);m=row['measurement']
+            if measured:
+                require(type(m.get('input_tokens')) is int and m['input_tokens']>0 and
+                    type(m.get('action_tokens')) is int and m['action_tokens']>0 and
+                    m.get('action_plus_stop_tokens')==m['action_tokens']+1 and
+                    m.get('grammar_accepted') is True and m.get('dispatch_allowed') is True and
+                    m.get('status')=='passed' and m['input_tokens']+cap<=16384 and m['action_plus_stop_tokens']<=cap,
+                    'Unqualified interface probe')
+        return
     regenerated = cases(planner_cap)
     require([r['id'] for r in packet['cases']] == list(CASE_IDS), 'Incomplete/changed case coverage')
     for index, row in enumerate(packet['cases']):
@@ -320,6 +357,8 @@ def sequence(packet, backend, switch, memory):
         stage = 'runtime_admission'
         try:
             switch(case_row['role'])
+            if packet['base_manifest'].get('interface_profile') and case_row['role']=='plan':
+                backend.bind_public_plan(reliable_public()['id'],['report'])
             actual_input = backend.count_input(case_row['messages'])
             if hasattr(backend, 'encode'):
                 ids = backend.encode(case_row['messages'])['input_ids'][0].tolist()
@@ -340,7 +379,7 @@ def sequence(packet, backend, switch, memory):
             stage = 'response_validation'
             action = parse(generated.text)
             if case_row['role'] == 'plan':
-                v2.validate_work_plan(action['plan'], public_contract(), config(base.output_cap(packet['base_manifest'], 'plan')))
+                v2.validate_work_plan(action['plan'], packet['public'], config(base.output_cap(packet['base_manifest'], 'plan')))
             row['passed'] = (action == case_row['expected'] and d.get('constraint_complete') is True and d.get('finish_reason') == 'eos')
             row['status'] = 'passed' if row['passed'] else 'response_failed'
         except Exception as exc:
@@ -362,7 +401,7 @@ def sequence(packet, backend, switch, memory):
     return rows
 
 
-def measure_cpu(root, proposal, worker, planner, *, planner_output_cap=2048):
+def measure_cpu(root, proposal, worker, planner, *, planner_output_cap=2048, interface_profile=None):
     """Optional offline CPU tokenizer/grammar stack; never load model weights."""
     start = time.process_time(); wall = time.monotonic()
     from ..models.competence import check_output_allowance
@@ -384,13 +423,14 @@ def measure_cpu(root, proposal, worker, planner, *, planner_output_cap=2048):
     vocab = metadata.get('text_config', metadata)['vocab_size']
     constraints = {}
     for role, lock in (('json', worker), ('plan', planner)):
-        mode = f'reporecourse-{role}-scoped-v1-pool-7'
+        mode = f'reporecourse-{role}-reliable-v1-pool-7' if interface_profile else f'reporecourse-{role}-scoped-v1-pool-7'
         require_qualification(lock, packages, 16384, mode, planner_output_cap if role == 'plan' else 2048)
         q = lock['decoder_qualification']
         require(template['template_hash'] == q['thinking_template']['template_hash'], 'Tokenizer template changed')
         require(q['vocab_size'] == vocab, 'Qualified vocabulary changed')
         require(q['effective_generation_tokens'] == worker['decoder_qualification']['effective_generation_tokens'], 'Worker/planner stop tokens differ')
-        constraints[role] = ActionConstraint(tokenizer, vocab, q['effective_generation_tokens']['eos_token_id'], mode)
+        constraints[role] = ActionConstraint(tokenizer, vocab, q['effective_generation_tokens']['eos_token_id'], mode,
+            **({'public_task':reliable_public()['id'],'terminal_ids':['report']} if interface_profile and role=='plan' else {}))
     def measure(row, text):
         constraint = constraints[row['role']]
         ids = tokenizer.encode(text, add_special_tokens=False)
@@ -401,7 +441,7 @@ def measure_cpu(root, proposal, worker, planner, *, planner_output_cap=2048):
                                                 return_dict=True, enable_thinking=True)
         return dict(input_tokens=len(encoded['input_ids']), action_tokens=len(ids),
                     grammar_accepted=accepted, rendered_input_ids_hash=digest(encoded['input_ids']))
-    report = prepare(root, proposal, worker, planner, measure, planner_output_cap=planner_output_cap)
+    report = prepare(root, proposal, worker, planner, measure, planner_output_cap=planner_output_cap, interface_profile=interface_profile)
     report.update(measurement_runtime=dict(packages=packages, template=template, worker_lock_sha256=digest(worker),
         qualification_keys={role:lock['decoder_qualification']['qualification_key']
                             for role,lock in (('json',worker),('plan',planner))}),
@@ -420,7 +460,7 @@ def run(m, lock_path, root):
     require(any(r['measurement']['dispatch_allowed'] for r in packet['cases']), 'No eligible cases; do not load model')
     backend, switch, memory = base.qualified_backend(packet['base_manifest'], lock_path, root)
     rows = sequence(packet, backend, switch, memory)
-    passed = len(rows) == 5 and all(r['passed'] for r in rows)
+    passed = len(rows) == len(packet['cases']) and all(r['passed'] for r in rows)
     return dict(schema=packet_version(packet)[4],
         protocol=packet['protocol'], role_output_caps={r:base.output_cap(packet['base_manifest'], r) for r in ('json','plan')}, experiment_id=m['experiment_id'],
         manifest_hash=digest(m), source_revision=m['source_revision'], packet_id=packet['packet_id'],

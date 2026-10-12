@@ -1,5 +1,42 @@
 # Implementation status and handoff
 
+## Four-task result and prospective interface revision — 2026-10-12
+
+The uploaded export for `b9f84bc78966300bfd615ff4c54a140ae9d238a371e26c157bd5c3ecc8f9f5a6`
+records requirement-level clean 1/4 and F 0/4; prompted-open clean/F 0/4,
+including three invalid planning configurations. Ten branches executed, all
+conformant; five F interventions triggered. These are unreviewed development
+observations across four tasks / three source groups. Earlier same-day “unrun”
+and review-blocked entries below are historical and superseded. See the
+[trace audit](RICH_COHORT_TRACE_AUDIT_2026-10-12.md).
+
+The user requested one prospective interface-reliability revision. Local code
+now implements `rr-interface-reliability-v1`: public helper/terminal examples,
+bounded field-specific feedback, typed publication envelopes, public terminal-ID
+planner grammars, exact restricted-SQL capability documentation, and offline
+partial-versus-joint diagnostics. Boolean schemas remain expressible because
+they are accepted by the existing runtime; encoded JSON strings remain invalid.
+Task/source/evaluator data, compiler language, scoped JIT, fault targeting,
+model settings, limits and budget debits are unchanged. Admission diagnostics
+add records without changing allowance decisions. Old profiles retain their
+contracts; old runs are not migrated or rescored.
+
+The new profile is opt-in within `rich_development_unreviewed`, with eight
+configurations / sixteen scheduled clean/F conditions and a fresh exact-scope
+approval. Reviews stay pending/deferred, not approved. The existing CPU wrapper
+renews role grammars, public task/feedback footprints and task-bound grammar
+controls; the existing Slurm preflight runs four task-free syntax probes.
+Pinned tokenizer/XGrammar checks and GPU qualification remain unexecuted locally.
+No job, commit, push or new model outcome is claimed. Commands and stopping rules
+are in [UNREVIEWED_COHORT_RUNBOOK.md](UNREVIEWED_COHORT_RUNBOOK.md).
+
+Local validation completed: full suite 473 tests (442 passed, 31 optional skips);
+127 pinned cohort controls with zero skips; four pinned SQL tests and 16 new
+interface tests passed. Shell/compileall/diff/stdlib-only CLI checks passed.
+Cluster tokenizer/grammar/footprint evidence and a new exact proposal approval
+remain prerequisites; all new study conditions are unrun.
+
+
 ## User-directed unreviewed development lane — 2026-10-12
 
 After the audit, the user explicitly instructed proceeding with the four-task

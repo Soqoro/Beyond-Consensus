@@ -58,17 +58,26 @@ def load_xgrammar():
 
 
 class ActionConstraint:
-    def __init__(self, tokenizer, vocab_size, eos_ids, mode="sqlite-json-schema-v1"):
+    def __init__(self, tokenizer, vocab_size, eos_ids, mode="sqlite-json-schema-v1", *, public_task=None, terminal_ids=None):
         start = time.process_time()
         self.xgr, self.processor_class = load_xgrammar()
         info = self.xgr.TokenizerInfo.from_huggingface(tokenizer, vocab_size=vocab_size,
                                                       stop_token_ids=eos_ids)
         compiler = self.xgr.GrammarCompiler(info, max_threads=1, cache_enabled=False)
         # Fixed property order enforces required-key presence and uniqueness.
-        self.compiled = compiler.compile_json_schema(decoder_schema(mode), any_whitespace=True,
+        schema=decoder_schema(mode)
+        if terminal_ids is not None:
+            from reporecourse.action_schema import schema_v2, RELIABLE_MODES
+            if mode not in RELIABLE_MODES or '-plan-' not in mode or not public_task:raise BCError('Invalid public grammar binding')
+            schema=schema_v2(mode,terminal_ids)
+        self.compiled = compiler.compile_json_schema(schema, any_whitespace=True,
                                                      max_whitespace_cnt=2, strict_mode=True)
         self.runtime = {**contract(mode), "vocab_size": vocab_size, "stop_token_ids": list(eos_ids),
                         "static_setup_cpu_seconds": time.process_time()-start}
+
+        if terminal_ids is not None:
+            from ..util import digest
+            self.runtime['public_grammar_binding']=dict(task_id=public_task,terminal_ids=list(terminal_ids),schema_sha256=digest(schema),cache_key=digest([mode,public_task,list(terminal_ids),schema]))
 
     def processor(self, prompt_length, closing_id):
         return ReasoningGate(self.processor_class(self.compiled), prompt_length, closing_id)

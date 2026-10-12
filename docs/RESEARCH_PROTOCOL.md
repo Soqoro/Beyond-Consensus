@@ -1,5 +1,20 @@
 # Research protocol implemented here
 
+## Prospective interface reliability package (2026-10-12)
+
+`rr-interface-reliability-v1` is an opt-in combined-interface treatment within
+`rich_development_unreviewed`. It changes public explanations/examples, bounded
+validation feedback, and generation envelopes to exclude already-invalid forms.
+It preserves task semantics, source permissions, supported artifact language,
+scorer/JIT/fault behavior, model and caps. Existing Boolean schemas remain legal;
+wrong-but-valid artifacts remain subject to the unchanged hidden evaluator.
+Task hashes stay unchanged because interface metadata is bound separately in
+configurations and manifests. Runtime/grammar qualification and a new exact-scope
+approval are required. Old-versus-new changes cannot identify the contribution
+of any single interface fix; within-revision planner comparisons remain matched.
+The prior cohort and its failures/costs remain historical development evidence.
+
+
 ## Explicit development review deferral (2026-10-12)
 
 The user has instructed proceeding with the bounded four-task experiment after

@@ -1,5 +1,122 @@
 # Prospective richer-task pilot — implementation and review
 
+## Four-task result and prospective interface revision — 2026-10-12
+
+The uploaded export for `b9f84bc78966300bfd615ff4c54a140ae9d238a371e26c157bd5c3ecc8f9f5a6`
+records requirement-level clean 1/4 and F 0/4; prompted-open clean/F 0/4,
+including three invalid planning configurations. Ten branches executed, all
+conformant; five F interventions triggered. These are unreviewed development
+observations across four tasks / three source groups. Earlier same-day “unrun”
+and review-blocked entries below are historical and superseded. See the
+[trace audit](RICH_COHORT_TRACE_AUDIT_2026-10-12.md).
+
+The user requested one prospective interface-reliability revision. Local code
+now implements `rr-interface-reliability-v1`: public helper/terminal examples,
+bounded field-specific feedback, typed publication envelopes, public terminal-ID
+planner grammars, exact restricted-SQL capability documentation, and offline
+partial-versus-joint diagnostics. Boolean schemas remain expressible because
+they are accepted by the existing runtime; encoded JSON strings remain invalid.
+Task/source/evaluator data, compiler language, scoped JIT, fault targeting,
+model settings, limits and budget debits are unchanged. Admission diagnostics
+add records without changing allowance decisions. Old profiles retain their
+contracts; old runs are not migrated or rescored.
+
+The new profile is opt-in within `rich_development_unreviewed`, with eight
+configurations / sixteen scheduled clean/F conditions and a fresh exact-scope
+approval. Reviews stay pending/deferred, not approved. The existing CPU wrapper
+renews role grammars, public task/feedback footprints and task-bound grammar
+controls; the existing Slurm preflight runs four task-free syntax probes.
+Pinned tokenizer/XGrammar checks and GPU qualification remain unexecuted locally.
+No job, commit, push or new model outcome is claimed. Commands and stopping rules
+are in [UNREVIEWED_COHORT_RUNBOOK.md](UNREVIEWED_COHORT_RUNBOOK.md).
+
+### Interface revision implementation details
+
+- `reporecourse/interface.py` owns the neutral examples, feedback contract and
+  interface fingerprints. It reads no task-private material. Legacy profiles do
+  not receive its additional messages or detailed validation feedback.
+- New `reporecourse-{json,plan}-reliable-v1-pool-7` modes use the existing pinned
+  XGrammar adapter. SQL content stays a string; schema content permits objects
+  and the existing Boolean form; mappings require top-level `output_schema`.
+  Nested/user-defined property names remain open. Rebinding still republishes
+  the unchanged artifact through the same runtime checks.
+- Planner `outputs` is specialized to public terminal IDs. `produces` identifiers
+  remain open; empty helper outputs remain legal. Actual task/schema fingerprints
+  and task IDs bind cache entries, CPU measurements and generated diagnostics.
+  Cross-unit references, cycles and terminal coverage remain runtime checks.
+- Public SQL examples are tested through the pinned compiler child. IN/NOT IN,
+  BETWEEN and implicit CASE ELSE remain rejected. SQLite function arity is
+  distinguished from the IR's generic maximum of eight arguments. No SQL repair
+  or direct execution path was added.
+- `Resources` records failed admission requests only for the opt-in profile,
+  with remaining allowance and measured usage; rejection thresholds and charged
+  measurements remain unchanged. Per-task grammar construction is inside charged
+  planning host CPU. Role-static setup remains separate.
+- Offline cohort metrics expose publication-attempt denominators, rejection
+  categories, missing/bound outputs, saved raw checks versus consistency gates,
+  and terminal status. Absent checks stay unknown. Private raw checks are removed
+  from the public export and never enter worker or JIT observations.
+- Runtime and accounting hashes accompany prompt/example/feedback/grammar/SQL
+  capability hashes. Task files and their hashes are unchanged. Cohort and
+  configuration IDs change; no historical approval is reused.
+
+### Local verification and remaining qualification
+
+Changed files for this implementation (the prior trace-audit file is preserved):
+
+- Public/runtime contracts: `src/reporecourse/interface.py` (new),
+  `action_schema.py`, `v2.py`, `runtime.py`, `schema_runtime.py`, `engine.py`,
+  `resources.py`, `cohort.py` in the same package;
+  `src/restricted_artifacts/sql_text.py`.
+- Backend/qualification: `src/beyond_consensus/models/constrained.py`,
+  `competence.py`, `transformers_backend.py`;
+  `src/beyond_consensus/experiments/rr_v2_preflight.py`, `rr_open_footprint.py`,
+  `rr_open_review.py`, `rr_cohort.py`, `manifest.py`, `cluster.py`, `runner.py`.
+- CLI/wrapper: `src/beyond_consensus/cli.py`, `reporecourse_cli.py`;
+  `scripts/check_rr_cohort.py`, `scripts/prepare_rr_open_footprint.py`,
+  `experiments/qualify_reporecourse.sh`.
+- Controls: `tests/test_rr_interface.py` (new).
+- Documentation: this file, `docs/STATUS.md`, `docs/RESEARCH_PROTOCOL.md`,
+  `docs/UNREVIEWED_COHORT_RUNBOOK.md`.
+
+Final local validation: 473 full-suite tests (442 passed, 31 optional skips),
+127 pinned cohort controls passed without skips, four pinned SQL compiler tests
+passed, and all 16 new interface tests passed. Shell, compileall, diff and
+stdlib-only CLI checks passed. Reproduction commands and skip details are in the
+runbook. No GPU/model result is included in those counts.
+The local optional environment contains SQLGlot 27.28.1, jsonschema 4.25.1 and
+referencing 0.36.2. It lacks XGrammar, Transformers, Torch and the locked Qwen
+model/tokenizer. Exact tokenizer/grammar, role/prompt footprint, dynamic task-enum
+controls, and four GPU probes must pass on the cluster before approval/submission.
+The runbook supplies those commands without a different submission stack.
+No populated cluster proposal/approval identifier can be truthfully supplied
+until those source-bound reports and locks exist. Local preparation does not
+claim a new success or waive any technical qualification.
+
+Base commit at implementation start: `e8d0e3ff6d6c628b712eb54a9ff3db26f43bf0ed`.
+Implementation remains uncommitted for user review/push. The existing untracked
+trace-audit Markdown file is preserved. Original historical outcome/cost tables
+are in the linked audit; new study outcome rows are all unrun.
+
+| Prospective task | Requirement-level clean/F | Prompted-open clean/F |
+| --- | --- | --- |
+| jaffle-payment-release | Unrun / unrun | Unrun / unrun |
+| energy-single-indicator-release | Unrun / unrun | Unrun / unrun |
+| github-topics-client-package | Unrun / unrun | Unrun / unrun |
+| github-multioperation-integration | Unrun / unrun | Unrun / unrun |
+
+There are no new observed cost totals. Each logical branch retains 100000 tokens
+and 1200 charged CPU seconds: combined ceilings 1600000 tokens / 19200 CPU
+seconds, excluding separately reported qualification/evaluation. Failed planning
+expense remains recorded without invented execution branches. Final proposal and
+experiment IDs will be produced from the renewed real evidence, not copied from
+the historical comparison. Review/rights status remains deferred/pending.
+
+Next bounded decision: qualify this one interface version and review its new
+16-condition proposal. No task-outcome tuning, extra seeds, model changes or
+training follows automatically.
+
+
 ## User-directed unreviewed development lane — 2026-10-12
 
 After the audit, the user explicitly instructed proceeding with the four-task

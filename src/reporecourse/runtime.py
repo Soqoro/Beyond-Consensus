@@ -25,7 +25,9 @@ def create_database(path, tables):
 
 
 class Environment:
-    def __init__(self, public, resources=None, *, track='clean', target=None, active=None, seed=0, sabotage='one_shot', workers=None, execution_contract='adaptive_legacy', plan=None):
+    def __init__(self, public, resources=None, *, track='clean', target=None, active=None, seed=0, sabotage='one_shot', workers=None, execution_contract='adaptive_legacy', plan=None, interface_profile=None):
+        from .interface import enabled
+        enabled(interface_profile);self.interface_profile=interface_profile
         self.execution_contract=execution_contract
         self.scopes=None
         if execution_contract not in ('adaptive_legacy','plan_scoped_v1'):raise Rejected('execution_contract')
@@ -110,6 +112,7 @@ class Environment:
         registry={alias:self.artifacts[v]['content'] for alias,v in aliases.items()}
         if any(self.artifacts[v]['format']!='schema' for v in aliases.values()):raise Rejected('artifact_format')
         req={'registry':registry,'value':value}
+        if self.interface_profile:req['public_diagnostics']=True
         req.update(operation='validate',schema=a['content']) if a['format']=='schema' else req.update(operation='map',program=a['content'])
         return self.cpu('schema_checker',4,lambda:execute(req))
 
@@ -121,6 +124,16 @@ class Environment:
         return resolve(a['content'],{k:self.resolved_schema(v,seen+(version,)) for k,v in a['bindings'].items()})
 
     def publish(self, worker, name, format, content, bindings, obligations):
+        try:return self._publish(worker,name,format,content,bindings,obligations)
+        except Rejected as exc:
+            if self.interface_profile and not hasattr(exc,'public_feedback'):
+                from .interface import publication_feedback
+                if str(exc).startswith(('schema_','mapping_')):
+                    exc.public_feedback=publication_feedback(format,content,exc)
+                    exc.args=(exc.public_feedback['findings'][0]['code'],)
+            raise
+
+    def _publish(self, worker, name, format, content, bindings, obligations):
         ident(name); bounded(content)
         if format not in ('sql','schema','mapping'):raise Rejected('artifact_format')
         if not isinstance(bindings,dict) or len(bindings)>16:raise Rejected('artifact_reference')
@@ -157,9 +170,11 @@ class Environment:
             objects=set(self.public.get('tables',{}))|set(bindings)
             if self.scopes is None:
                 for dep in bindings.values():objects.update(self._closure(dep))
-            report=self.cpu('compiler',4,lambda:lower(content,objects))
+            report=self.cpu('compiler',4,lambda:lower(content,objects,diagnostics=bool(self.interface_profile)))
             if report['status']!='ok':
                 feedback=compiler_feedback(report.get('category'))
+                if self.interface_profile and report.get('public_diagnostic'):
+                    feedback['validation']=report['public_diagnostic']
                 self.events.append(dict(type='compiler_feedback',worker=worker,**feedback))
                 error=Rejected('sql_rejected');error.public_feedback=feedback
                 raise error
@@ -314,6 +329,9 @@ class Environment:
             bound=dict(self.bound),messages=deepcopy(self.messages[worker]),unavailable=sorted(self.unavailable),
             announcements=[deepcopy(e['announcement']) for e in self.events if e['type']=='unavailable' and 'announcement' in e],
             remaining_tokens=self.resources.remaining,cpu_remaining=self.resources.cpu_cap-self.resources.cpu_seconds))
+        if self.interface_profile:
+            from .interface import PROFILE, FEEDBACK, worker_contract
+            value['interface_delivery']=dict(profile=PROFILE,feedback=FEEDBACK,contract_hash=digest(worker_contract()),scope='assignment',truncated=False)
         return self.scopes.observation(worker,value) if self.scopes else value
 
     def state(self):

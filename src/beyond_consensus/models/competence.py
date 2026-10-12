@@ -37,7 +37,7 @@ def check_output_allowance(context_limit, mode, output_cap):
         raise BCError("Unsupported qualification context")
     if type(output_cap) is not int or (output_cap != 2048 and not (
             output_cap in (4096, 6144) and context_limit == 16384 and
-            mode == 'reporecourse-plan-scoped-v1-pool-7')):
+            mode in ('reporecourse-plan-scoped-v1-pool-7','reporecourse-plan-reliable-v1-pool-7'))):
         raise BCError("Outputs 4096/6144 are reserved for the scoped pool-7 planner qualification")
 
 

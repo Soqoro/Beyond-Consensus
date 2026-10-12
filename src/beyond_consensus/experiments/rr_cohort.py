@@ -62,22 +62,22 @@ def control_hashes(root):
            'src/beyond_consensus/experiments/runner.py','src/beyond_consensus/experiments/manifest.py',
            'src/beyond_consensus/reporecourse_cli.py','src/beyond_consensus/evaluation/aggregate.py',
            'src/beyond_consensus/cli.py','experiments/qualify_reporecourse.sh',
-           'tests/test_rr_cohort.py','tests/test_rr_rich_tasks.py','scripts/check_rr_cohort.py']
+           'tests/test_rr_cohort.py','tests/test_rr_rich_tasks.py','tests/test_rr_interface.py','scripts/check_rr_cohort.py']
     return {p:file_hash(Path(root)/p) for p in paths}
 
 
-def model_settings():
+def model_settings(interface_profile=None):
     from ..models.competence import CHECKPOINT,REVISION
     return asdict(ModelConfig(backend='transformers',checkpoint=CHECKPOINT,revision=REVISION,
         tokenizer_revision=REVISION,dtype='bfloat16',context_limit=16384,max_new_tokens=2048,
-        thinking=True,do_sample=False,action_constraint='reporecourse-json-scoped-v1-pool-7'))
+        thinking=True,do_sample=False,action_constraint='reporecourse-json-reliable-v1-pool-7' if interface_profile else 'reporecourse-json-scoped-v1-pool-7'))
 
 
-def build(root,sources,lane,*,worker=None,planner=None,evidence=None):
+def build(root,sources,lane,*,worker=None,planner=None,evidence=None,interface_profile=None):
     if lane not in ('stock_protocol','rich_pilot',UNREVIEWED_LANE):raise BCError('Unknown prospective cohort')
     tasks=('synthetic-stock',) if lane=='stock_protocol' else RICH_TASKS
     planners=('prompted_open',) if lane=='stock_protocol' else cohort.PLANNERS
-    rows=[cohort.configuration(t,p,target_rule='all' if lane=='stock_protocol' else 'uniform') for t in tasks for p in planners]
+    rows=[cohort.configuration(t,p,target_rule='all' if lane=='stock_protocol' else 'uniform',interface_profile=interface_profile) for t in tasks for p in planners]
     bindings={}
     for task in tasks:
         try:
@@ -88,16 +88,21 @@ def build(root,sources,lane,*,worker=None,planner=None,evidence=None):
             blocked_card=load(ROOT/'rich'/'blocked-api-integration.json')
             if card is None and blocked_card['id']==task:card=blocked_card
             bindings[task]=dict(card=card,public_hash=None,private_hash=None,source_error=str(exc))
-    base=profile.build(root,worker,planner,7,plan_scoped=True,planner_output_cap=6144) if worker and planner else None
+    base=profile.build(root,worker,planner,7,plan_scoped=True,planner_output_cap=6144,interface_profile=interface_profile) if worker and planner else None
     maximum=sum(c['maximum_branches'] for c in rows)
     m=dict(schema=SCHEMA,lane=lane,source_revision=source_revision(root),sources_root=str(Path(sources).resolve()),
-        configurations=rows,task_bindings=bindings,model=model_settings(),backend_profile=base,
+        configurations=rows,task_bindings=bindings,model=model_settings(interface_profile),backend_profile=base,
         model_lock_sha256=digest(worker) if worker else None,implementation_hashes=implementation_hashes(),
         evidence=deepcopy(evidence or {}),approval=None,task_execution_allowed=False,confirmatory=False,
         limitations=limitations(lane),shards=len(rows),planned_episodes=None,
         maximum_execution_branches=maximum,maximum_model_planning_sequences=sum(c['planner']=='prompted_open' for c in rows),
         maximum_logical_tokens=maximum*100000,maximum_charged_cpu_seconds=maximum*1200,
         budget_basis='uncalibrated_engineering_cap',episodes=[dict(episode_id=c['configuration_id'],shard=i) for i,c in enumerate(rows)])
+    if interface_profile:
+        from reporecourse.interface import enabled, bindings
+        enabled(interface_profile)
+        if lane!=UNREVIEWED_LANE:raise BCError('Interface revision uses the existing unreviewed development lane')
+        m['interface_profile']=interface_profile;m['interface_bindings']=bindings()
     if lane==UNREVIEWED_LANE:
         pending=task_review_templates(m)
         review.require(not m['evidence'].get('reviews') or m['evidence']['reviews']==pending,
@@ -137,15 +142,19 @@ def validate(m):
     review.require(m.get('schema')==SCHEMA and m.get('experiment_id')==digest({k:v for k,v in m.items() if k!='experiment_id'}),'Cohort manifest integrity')
     tasks=('synthetic-stock',) if m['lane']=='stock_protocol' else RICH_TASKS if m['lane'] in ('rich_pilot',UNREVIEWED_LANE) else ()
     planners=('prompted_open',) if m['lane']=='stock_protocol' else cohort.PLANNERS
-    expected=[cohort.configuration(t,p,target_rule='all' if m['lane']=='stock_protocol' else 'uniform') for t in tasks for p in planners]
+    expected=[cohort.configuration(t,p,target_rule='all' if m['lane']=='stock_protocol' else 'uniform',interface_profile=m.get('interface_profile')) for t in tasks for p in planners]
     review.require(bool(tasks) and m['configurations']==expected and m['shards']==len(expected) and
-        set(m['task_bindings'])==set(tasks) and m['model']==model_settings() and m['limitations']==limitations(m['lane']) and
+        set(m['task_bindings'])==set(tasks) and m['model']==model_settings(m.get('interface_profile')) and m['limitations']==limitations(m['lane']) and
         m['maximum_execution_branches']==sum(c['maximum_branches'] for c in expected) and
         m['maximum_logical_tokens']==m['maximum_execution_branches']*100000 and
         m['maximum_charged_cpu_seconds']==m['maximum_execution_branches']*1200 and
         m['maximum_model_planning_sequences']==sum(c['planner']=='prompted_open' for c in expected) and
         m['episodes']==[dict(episode_id=c['configuration_id'],shard=i) for i,c in enumerate(expected)] and
         m['planned_episodes'] is None and m['confirmatory'] is False and m['budget_basis']=='uncalibrated_engineering_cap','Cohort scope changed')
+    if m.get('interface_profile'):
+        from reporecourse.interface import enabled, bindings
+        enabled(m['interface_profile'])
+        review.require(m['lane']==UNREVIEWED_LANE and m.get('interface_bindings')==bindings(),'Interface revision changed')
     if m['lane']==UNREVIEWED_LANE:
         review.require(m['evidence'].get('reviews')==task_review_templates(m),
                        'Pending review records changed in unreviewed lane')
@@ -211,7 +220,12 @@ def blockers(m,root,worker=None):
             need(footprint.get('public_hash')==digest(pub) and footprint.get('model_lock_sha256')==m['model_lock_sha256'] and
                  footprint.get('implementation_hashes')==implementation_hashes() and footprint.get('status')=='passed' and
                  footprint.get('task_execution_allowed') is False,task+':public_prompt_footprint_required')
-            expected=prompt_cases(pub);measured=footprint.get('cases',[])
+            if m.get('interface_profile'):
+                from reporecourse.interface import mode
+                from reporecourse.action_schema import schema_v2
+                ids=[r['id'] for r in pub['required_outputs']];schema=schema_v2(mode('plan'),ids)
+                need(footprint.get('public_grammar_binding')==dict(task_id=pub['id'],terminal_ids=ids,schema_sha256=digest(schema),cache_key=digest([mode('plan'),pub['id'],ids,schema]),accepted=True,invalid_output_rejected=True),task+':task_grammar_binding_required')
+            expected=prompt_cases(pub,m.get("interface_profile"));measured=footprint.get('cases',[])
             need(len(expected)==len(measured) and all(
                 a['id']==b.get('id') and a['role']==b.get('role') and digest(a['messages'])==b.get('messages_hash') and
                 b.get('output_cap')==(6144 if a['role']=='plan' else 2048) and type(b.get('input_tokens')) is int and
@@ -442,12 +456,12 @@ def aggregate(m,output):
                 evidence='real_model_results_or_unrun',confirmatory=False,maximum_execution_branches=m['maximum_execution_branches'])
 
 
-def prompt_cases(public):
+def prompt_cases(public,interface_profile=None):
     """Fixed public-only admission scenarios, not a universal history fit proof."""
     import json
     from reporecourse.engine import worker_messages
     from reporecourse.runtime import Environment
-    c=cohort.configuration(public['id'],'prompted_open')['config']
+    c=cohort.configuration(public['id'],'prompted_open',interface_profile=interface_profile)['config']
     req=v2.request(public,c)
     cases=[dict(id='planner_initial',role='plan',messages=v2.planner_messages(req))]
     for name,value in sorted(public['sources'].items()):
@@ -456,7 +470,7 @@ def prompt_cases(public):
             {'role':'user','content':json.dumps(value)}]))
     # Construct actual mediated initial worker observations with no SQL execution.
     p=v2.requirement_plan(public,c)
-    env=Environment(public,resources=Resources(100000,1200),workers=c['workers'],plan=p,execution_contract='plan_scoped_v1')
+    env=Environment(public,resources=Resources(100000,1200),workers=c['workers'],plan=p,execution_contract='plan_scoped_v1',interface_profile=interface_profile)
     try:
         for unit in p['units']:
             env.scopes.begin(unit,unit['worker'],'primary');env.assignment[unit['worker']]=unit
@@ -471,24 +485,50 @@ def prompt_cases(public):
                          {'role':'user','content':json.dumps(value)}]
                 cases.append(dict(id='worker_source_'+unit['id']+'_'+name,role='json',messages=worker_messages(obs,history)))
     finally:env.close()
+    if interface_profile:
+        from reporecourse.interface import feedback, finding, plan_feedback, example_plan
+        bad=example_plan();bad['units'][0]['outputs']=['invented_rows']
+        cases.append(dict(id='planner_validation_feedback',role='plan',messages=v2.planner_messages(req)+[{'role':'user','content':json.dumps(plan_feedback(bad,public,'output'))}]))
+        error=feedback([finding('content_type','content','{}','object','Emit an object, not JSON text.')])
+        cases.append(dict(id='worker_validation_feedback',role='json',messages=worker_messages(obs,[{'role':'user','content':json.dumps(error)}])))
     return cases
 
 
-def measure_prompts(task,sources,worker):
+def measure_prompts(task,sources,worker,interface_profile=None):
     from transformers import AutoTokenizer
     from ..models.transformers_backend import verify_thinking_template
     from ..models.competence import require_qualification,versions
-    require_qualification(worker,versions(),16384,'reporecourse-json-scoped-v1-pool-7',2048)
+    require_qualification(worker,versions(),16384,model_settings(interface_profile)['action_constraint'],2048)
     _,public=load_task(task,sources)
     tokenizer=AutoTokenizer.from_pretrained(worker['tokenizer_path'],local_files_only=True,trust_remote_code=False)
     template=verify_thinking_template(tokenizer,True)
     rows=[]
-    for case in prompt_cases(public):
+    for case in prompt_cases(public,interface_profile):
         ids=tokenizer.apply_chat_template(case['messages'],tokenize=True,add_generation_prompt=True,enable_thinking=True,return_dict=True)['input_ids']
         cap=6144 if case['role']=='plan' else 2048
         rows.append(dict(id=case['id'],role=case['role'],messages_hash=digest(case['messages']),
             rendered_input_ids_hash=digest(ids),input_tokens=len(ids),output_cap=cap,passed=len(ids)+cap<=16384))
     import json
+    grammar_binding=None
+    if interface_profile:
+        from ..models.constrained import ActionConstraint
+        from reporecourse.interface import mode
+        from reporecourse.action_schema import schema_v2
+        from .rr_open_footprint import parse
+        metadata=read_json(Path(worker['model_path'])/'config.json');vocab=metadata.get('text_config',metadata)['vocab_size']
+        terminals=[r['id'] for r in public['required_outputs']]
+        constraint=ActionConstraint(tokenizer,vocab,worker['decoder_qualification']['effective_generation_tokens']['eos_token_id'],mode('plan'),public_task=public['id'],terminal_ids=terminals)
+        sample=v2.requirement_plan(public,cohort.configuration(public['id'],'prompted_open',interface_profile=interface_profile)['config'])
+        for u in sample['units']:
+            u['interfaces']={k:'Public terminal artifact.' for k in u['produces']};u['terminal_bindings']={k:k for k in u['outputs']}
+        ids=tokenizer.encode(json.dumps({'tool':'submit_plan','plan':sample},separators=(',',':')),add_special_tokens=False)
+        matcher=constraint.xgr.GrammarMatcher(constraint.compiled)
+        accepted=all(matcher.accept_token(t) for t in [*ids,worker['decoder_qualification']['effective_generation_tokens']['eos_token_id'][0]])
+        bad=deepcopy(sample);bad['units'][0]['outputs']=['not_a_terminal']
+        bad_ids=tokenizer.encode(json.dumps({'tool':'submit_plan','plan':bad},separators=(',',':')),add_special_tokens=False)
+        negative=constraint.xgr.GrammarMatcher(constraint.compiled)
+        rejected=not all(negative.accept_token(t) for t in [*bad_ids,worker['decoder_qualification']['effective_generation_tokens']['eos_token_id'][0]])
+        grammar_binding=dict(constraint.runtime['public_grammar_binding'],accepted=accepted,invalid_output_rejected=rejected)
     sizes=[]
     for w in private_task(task)['witnesses']:
         for item in w['actions']:
@@ -500,8 +540,8 @@ def measure_prompts(task,sources,worker):
             sizes.append(dict(action_hash=digest(action),action_plus_stop_tokens=tokens,
                               binding_measurement='representative-64-hex-version-v1'))
     return dict(schema='rr-cohort-public-footprint-v1',task=task,public_hash=digest(public),model_lock_sha256=digest(worker),
-        implementation_hashes=implementation_hashes(),template=template,cases=rows,
-        status='passed' if all(r['passed'] for r in rows) and all(r['action_plus_stop_tokens']<=2048 for r in sizes) else 'failed',
+        implementation_hashes=implementation_hashes(),template=template,cases=rows,public_grammar_binding=grammar_binding,
+        status='passed' if (grammar_binding is None or (grammar_binding['accepted'] and grammar_binding['invalid_output_rejected'])) and all(r['passed'] for r in rows) and all(r['action_plus_stop_tokens']<=2048 for r in sizes) else 'failed',
         reference_action_measurements=sizes,reference_measurement_scope='Evaluator-side serialization only; no solution text exported; representative version IDs; reasoning and worst-case tokenization unmeasured; not a shortest solution.',
         model_executed=False,task_sql_executed=False,
         sql_executed=public['family']=='data_product',qualification_budget_display={'remaining_tokens':100000,'cpu_remaining':1200},
@@ -532,6 +572,9 @@ def public_export(run):
     for row in summary['configurations']:
         row.pop('branches',None)
         row.pop('task_review_receipt',None)
+        for b in row.get('branch_metrics',[]):
+            d=b.get('offline_diagnostics',{})
+            d.pop('raw_per_output_checks',None);d.pop('bundle_consistency_checks',None)
         for key in ('planning_resources','interrupted_planning_usage'):
             resources=row.get(key)
             if resources:resources.pop('events',None)

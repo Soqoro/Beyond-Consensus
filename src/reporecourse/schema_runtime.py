@@ -129,8 +129,15 @@ if __name__=='__main__':
     resource.setrlimit(resource.RLIMIT_AS,(268435456,268435456))
     resource.setrlimit(resource.RLIMIT_FSIZE,(0,0))
     start=time.process_time()
-    try: report=child(json.loads(sys.stdin.read(262145)))
+    request={}
+    try:
+        request=json.loads(sys.stdin.read(262145));report=child(request)
     except ImportError: report={'status':'blocked_prerequisite','category':'pinned_validator_unavailable'}
-    except Exception: report={'status':'rejected','category':'schema_or_mapping_rejected'}
+    except Exception as exc:
+        report={'status':'rejected','category':'schema_or_mapping_rejected'}
+        if request.get('public_diagnostics') and isinstance(exc,Rejected):
+            from reporecourse.interface import publication_feedback
+            fmt='mapping' if request.get('operation')=='map' else 'schema'
+            report['validation']=publication_feedback(fmt,request.get('program' if fmt=='mapping' else 'schema'),exc)
     report['cpu_seconds']=time.process_time()-start
     print(json.dumps(report,allow_nan=False))

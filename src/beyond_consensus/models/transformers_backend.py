@@ -269,6 +269,8 @@ class TransformersBackend:
             constraint_details = {"action_constraint": contract(self.config.action_constraint), "constraint_complete": complete,
                 "constraint_mask_calls": processor.mask_calls,
                 "constraint_cpu_seconds": setup_cpu+processor.cpu_seconds+time.process_time()-start_cpu}
+        if getattr(self,'constraint',None) is not None and 'public_grammar_binding' in self.constraint.runtime:
+            constraint_details['public_grammar_binding']=self.constraint.runtime['public_grammar_binding']
         return Generation(text, len(ids), reasoning, start.elapsed_time(end)/1000,
             {**constraint_details, **cache_details, "generation_wall_seconds": time.monotonic()-wall_start,
              "finish_reason": stop, "rendered_input_ids_hash": digest(inputs["input_ids"][0].tolist()),

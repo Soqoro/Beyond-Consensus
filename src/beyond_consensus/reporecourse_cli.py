@@ -14,6 +14,7 @@ def add_parsers(sub):
     p.add_argument('--lane',choices=('stock_protocol','rich_pilot','rich_development_unreviewed'),required=True)
     p.add_argument('--sources',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     for name in ('model-lock','planner-lock','evidence'):p.add_argument('--'+name,type=Path)
+    p.add_argument('--interface-profile',choices=('rr-interface-reliability-v1',))
     p=sub.add_parser('rr-cohort-review',help='Read-only blockers and approval template')
     p.add_argument('--manifest',type=Path,required=True);p.add_argument('--model-lock',type=Path);p.add_argument('--output',type=Path,required=True)
     p=sub.add_parser('rr-cohort-approve',help='Bind attributed cohort approval after all task gates')
@@ -23,6 +24,7 @@ def add_parsers(sub):
     p.add_argument('--public',action='store_true',help='Omit journals, execution state and private audit records')
     p=sub.add_parser('rr-cohort-footprint',help='Offline CPU tokenizer on public task prompts only')
     p.add_argument('--task',required=True)
+    p.add_argument('--interface-profile',choices=('rr-interface-reliability-v1',))
     for name in ('sources','model-lock','output'):p.add_argument('--'+name,type=Path,required=True)
     p = sub.add_parser('rr-open-fault-manifest', help='Prepare two conditional F branches; no execution approval')
     for name in ('clean-proposal', 'model-lock', 'history-run', 'snapshots', 'receipt', 'controls', 'output'):
@@ -100,13 +102,13 @@ def dispatch(args):
         if command=='rr-cohort-manifest':
             if bool(args.model_lock)!=bool(args.planner_lock):raise BCError('Both role locks required together')
             result=co.build(ROOT,args.sources,args.lane,worker=load(args.model_lock) if args.model_lock else None,
-                planner=load(args.planner_lock) if args.planner_lock else None,evidence=load_control_record(args.evidence) if args.evidence else None)
+                planner=load(args.planner_lock) if args.planner_lock else None,evidence=load_control_record(args.evidence) if args.evidence else None,interface_profile=args.interface_profile)
         elif command=='rr-cohort-review':
             m=load_control_record(args.manifest)
             result=dict(experiment_id=m['experiment_id'],lane=m['lane'],limitations=m['limitations'],blockers=co.blockers(m,ROOT,load(args.model_lock) if args.model_lock else None),
                 approval_template=co.approval_template(m),task_review_templates=co.task_review_templates(m),task_execution_allowed=False)
         elif command=='rr-cohort-approve':result=co.authorize(load_control_record(args.manifest),load(args.approval),ROOT,load(args.model_lock))
-        elif command=='rr-cohort-footprint':result=co.measure_prompts(args.task,args.sources,load(args.model_lock))
+        elif command=='rr-cohort-footprint':result=co.measure_prompts(args.task,args.sources,load(args.model_lock),args.interface_profile)
         else:result=co.public_export(args.run) if args.public else co.export(args.run)
         write_new(args.output,result)
         return dict(report=str(args.output),experiment_id=result.get('experiment_id'),model_executed=False,submitted=False)

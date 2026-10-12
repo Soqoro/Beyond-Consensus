@@ -24,6 +24,24 @@ def contract():
                 lowering='bc-sqlite-lowering-v1', executable_output='bc-select-tree-v1')
 
 
+def capability():
+    from restricted_artifacts.sqlite_executor import FUNCTIONS
+    return dict(version='rr-sql-capability-v1',lowering=contract(),
+        expressions='columns, literals, scalar SELECT subqueries, + - * / %, = != < <= > >=, AND OR IS IS NOT LIKE; negative numeric literals; searched CASE with explicit ELSE',
+        select='explicit output columns; computed outputs require AS alias; SELECT DISTINCT; FROM tables or SELECT subqueries; inner/left/cross joins; GROUP BY HAVING ORDER BY LIMIT within IR bounds',
+        unsupported=['IN','NOT IN','BETWEEN','general NOT','implicit CASE ELSE','simple CASE','CTE','UNION','window','DDL','DML','wildcard projections','remote or database-qualified objects','nondefault NULL ordering'],
+        functions=sorted(FUNCTIONS),arity='IR permits 0..8 arguments; SQLite validates function-specific arity at execution. COUNT(*) lowers to COUNT(). DISTINCT requires a valid aggregate use.',
+        function_arities={'abs':1,'coalesce':'2..8','ifnull':2,'nullif':2,'round':'1..2','length':1,'lower':1,'upper':1,'substr':'2..3','trim':'1..2','replace':3,'min':'1..8','max':'1..8','sum':1,'avg':1,'count':'0..1','total':1,'json_extract':'1..8','json_array_length':'1..2','json_type':'1..2'},
+        examples=['SELECT id FROM demo WHERE (id = 1 OR id = 3) AND id >= 1 AND id <= 9',
+                  'SELECT CASE WHEN id > 2 THEN 1 ELSE 0 END AS flag FROM demo'],
+        warning='Examples illustrate syntax, not universal rewrites of IN, NOT IN, subqueries or NULL semantics.')
+
+
+class LoweringRejected(ValueError):
+    def __init__(self,code,operator=None):
+        super().__init__(code);self.code=code;self.operator=operator
+
+
 def _lower(text, objects):
     """Child-only parser/lowering. No optimizer, transpiler, or SQL execution."""
     import sqlglot
@@ -63,7 +81,7 @@ def _lower(text, objects):
     def fields(node, allowed):
         if any(key not in allowed and val is not None and val is not False and val != []
                for key, val in node.args.items()):
-            raise ValueError('unsupported modifier')
+            raise LoweringRejected('unsupported_modifier',type(node).__name__)
     def ident(node):
         if type(node) is not e.Identifier:
             raise ValueError('identifier')
@@ -109,7 +127,7 @@ def _lower(text, objects):
             fields(node, {'this', 'expressions'})
             name = node.this.lower() if isinstance(node.this, str) else ident(node.this).lower()
             if name not in FUNCTIONS:
-                raise ValueError('function')
+                raise LoweringRejected('unsupported_function',str(name)[:64])
             args = node.expressions
             distinct = len(args) == 1 and type(args[0]) is e.Distinct
             if name == 'count' and len(args) == 1 and type(args[0]) is e.Star:
@@ -128,12 +146,12 @@ def _lower(text, objects):
                 fields(branch, {'this', 'true'})
                 pairs.append([expr(branch.this), expr(branch.args['true'])])
             if node.args.get('default') is None:
-                raise ValueError('explicit ELSE required')
+                raise LoweringRejected('case_else_required','Case')
             return {'case': {'when': pairs, 'else': expr(node.args['default'])}}
         if kind is e.Subquery:
             fields(node, {'this'})
             return {'select': select(node.this)}
-        raise ValueError('unsupported expression')
+        raise LoweringRejected('unsupported_expression',kind.__name__)
     def source(node):
         if type(node) not in (e.Table, e.Subquery):
             raise ValueError('source')
@@ -208,10 +226,11 @@ def _lower(text, objects):
     return tree
 
 
-def lower(text, objects):
+def lower(text, objects, *, diagnostics=False):
     """Bounded separate CPU process, no inherited credentials or working files."""
     start = time.monotonic()
     request = {'text': text, 'objects': sorted(objects)}
+    if diagnostics:request['diagnostics']=True
     if not isinstance(text, str) or len(text.encode()) > MAX_BYTES or len(json.dumps(request)) > 131072:
         return {'status': 'rejected', 'category': 'sql_input_limit', 'contract': contract()}
     try:
@@ -244,6 +263,10 @@ if __name__ == '__main__':
                     'sql_parse_rejected' if type(exc).__module__ == 'sqlglot.errors' else
                     'sql_ir_rejected' if type(exc).__name__ == 'SQLRejected' else 'sql_construction_rejected')
         report = {'status': 'rejected', 'category': category}
+        if request.get('diagnostics'):
+            report['public_diagnostic']={'code':exc.code if isinstance(exc,LoweringRejected) else ('lowering_'+str(exc).replace(' ','_') if type(exc) is ValueError and str(exc) in {'size','statement','complexity','identifier','division dialect','case','source','alias','select','computed output requires explicit alias','join','nondefault NULL ordering','limit','unsupported dialect or token limit'} else category),
+                'path':'sql.ast' if isinstance(exc,LoweringRejected) else 'sql',
+                'operator':exc.operator if isinstance(exc,LoweringRejected) else None,
+                'capability':'rr-sql-capability-v1'}
     report['cpu_seconds'] = time.process_time()-start
     print(json.dumps(report))
-

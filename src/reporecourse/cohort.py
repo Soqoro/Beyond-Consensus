@@ -19,10 +19,10 @@ STOP_POLICY={'completed_semantic_failure':'continue','resource_exhausted':'conti
              'accounting_failure':'pause_retain_unrun','pause_scope':'remaining_branches_and_configurations','retry':'none'}
 
 
-def configuration(task,planner,*,seed=1,target_rule='uniform'):
+def configuration(task,planner,*,seed=1,target_rule='uniform',interface_profile=None):
     if planner not in PLANNERS:raise Rejected('cohort_planner')
     c=v2.configuration(7,seed=seed,target_rule=target_rule,planner=planner,
-        planning_lane='open_generated',execution_contract='plan_scoped_v1',planner_output_cap=6144)
+        planning_lane='open_generated',execution_contract='plan_scoped_v1',planner_output_cap=6144,interface_profile=interface_profile)
     row=dict(task=task,planner=planner,config=c,seed_index=seed,
         target_rule=target_rule,planning_sequences=1,task_weight=1,
         branch_identity_rule='sha256-frozen-request-plan-track-target-v1',stop_policy=STOP_POLICY,
@@ -31,7 +31,7 @@ def configuration(task,planner,*,seed=1,target_rule='uniform'):
 
 
 def check_configuration(row):
-    expected=configuration(row['task'],row['planner'],seed=row['seed_index'],target_rule=row['target_rule'])
+    expected=configuration(row['task'],row['planner'],seed=row['seed_index'],target_rule=row['target_rule'],interface_profile=row['config'].get('interface_profile'))
     if row!=expected:raise Rejected('cohort_configuration_changed')
 
 
@@ -155,6 +155,9 @@ def summarize(configurations,records):
             clean_success=cr,unconditional_configuration_fault_score=fr,
             branches=deepcopy(branches),invalid_planning_counts_as_configuration_failure=bool(invalid))
         row['branch_metrics']=[branch_metrics(b) for b in branches]
+        if f:
+            feedbacks=[e.get('feedback') for e in f.get('planning_events',[]) if 'error' in e.get('feedback',{})]
+            row['planning_interface_diagnostics']=dict(rejections=deepcopy(feedbacks),initial_acceptance=f.get('status')=='valid' and not feedbacks,accepted_after_revision=f.get('status')=='valid' and bool(feedbacks))
         units=f['plan']['units'] if f and f.get('plan') else []
         row['declared_imports']=[dict(unit=u['id'],imports=deepcopy(u.get('consumes',{}))) for u in units]
         row['target_details']=[dict(target=b['target'],eligible_count=len(plans['meaningful_active_owners']) if plans else None,
@@ -217,7 +220,7 @@ def branch_metrics(b):
     bindings=[dict(version=v,producer_unit=a.get('producer_unit'),bindings=deepcopy(a.get('bindings',{})),
                    execution_attempt_observed=v in attempted)
               for v,a in artifacts.items() if a.get('bindings')]
-    return dict(track=b['track'],target=b['target'],status=b['status'],correct=b.get('task_correct'),
+    return dict(offline_diagnostics=offline_diagnostics(b),track=b['track'],target=b['target'],status=b['status'],correct=b.get('task_correct'),
         complete_in_budget=b.get('success'),contract_conformant=b.get('contract_conformant'),
         loss_triggered=b.get('intervention_triggered'),fault_fraction=b.get('fault_fraction'),
         loss_event=next((e for e in events if e['type']=='unavailable'),None),
@@ -236,3 +239,40 @@ def branch_metrics(b):
         total_tokens=resources.get('actual_tokens'),total_cpu=resources.get('cpu_cap_debit'),
         uncertain_tokens=resources.get('uncertain_tokens'),uncertain_cpu=resources.get('uncertain_cpu'),
         component_note='Assignment totals exclude separate monitoring/orchestration; post-alarm is the recorded runtime cutoff, not a new additive ledger.')
+
+
+def offline_diagnostics(b):
+    """Saved evidence only. Never called by a worker, monitor or JIT."""
+    from collections import Counter
+    state=b.get('state') or {};ev=b.get('evaluation') or {};checks=ev.get('checks')
+    required=list(ev.get('obligations',{})) or None
+    published=sorted({o for e in state.get('events',[]) if e.get('type')=='publish' for o in e.get('obligations',[])})
+    bound=sorted(state.get('bound',{}));raw=None;consistency=None
+    if isinstance(checks,list):
+        raw=[deepcopy(x) for x in checks if 'obligation' in x]
+        consistency=[deepcopy(x) for x in checks if x.get('cross_output_consistency')]
+    traces=b.get('trajectories',[]);attempts=[t for t in traces if isinstance(t.get('action'),dict) and t['action'].get('tool')=='publish']
+    events=state.get('events',b.get('events',[]));known='trajectories' in b
+    categories=Counter();sql=Counter()
+    for t in attempts:
+        r=t.get('tool_result') or {}
+        if r.get('error'):categories[r['error']]+=1
+        if r.get('validation') and r['validation'].get('code'):sql[r['validation']['code']]+=1
+    resources=b.get('resource_profile') or {}
+    return dict(required_outputs=required,published_outputs=published if 'events' in state else None,
+        explicitly_bound_outputs=bound if 'bound' in state else None,
+        missing_obligations=sorted(set(required)-set(bound)) if required is not None and 'bound' in state else None,
+        raw_per_output_checks=raw,bundle_consistency_checks=consistency,
+        final_gated_obligations=deepcopy(ev.get('obligations')),complete_at_budget=b.get('success'),
+        publication_attempts=len(attempts) if known else None,publication_attempts_by_format=dict(Counter(t['action'].get('format') for t in attempts)) if known else None,
+        publication_rejections=dict(categories) if known else None,sql_rejection_codes=dict(sql) if known else None,
+        repeated_sql_rejections=dict(Counter(digest(t['action']) for t in attempts if (t.get('tool_result') or {}).get('error')=='sql_rejected')) if known else None,
+        rebind_attempts=sum(isinstance(t.get('action'),dict) and t['action'].get('tool')=='rebind_artifact' for t in traces) if known else None,
+        sql_construction_statuses=dict(Counter(e.get('status') for e in events if e.get('type')=='execution' and e.get('category')=='compiler')) if 'events' in state or 'events' in b else None,
+        successful_publications=sum('version' in (t.get('tool_result') or {}) for t in attempts) if known else None,
+        admission_failures=[deepcopy(e) for e in resources.get('events',[]) if e.get('kind')=='admission_failure'],
+        generation_finish_reasons=dict(Counter(e.get('finish_reason','unknown') for e in resources.get('events',[]) if e.get('kind')=='model_usage')),
+        termination_failures=deepcopy(b.get('failures')),
+        assignment_terminations=[{k:e.get(k) for k in ('unit','worker','stage','termination_reason','actions','action_limit')} for e in events if e.get('type')=='unit_end'],
+        status=b.get('status'),conformant=b.get('contract_conformant'),intervention=b.get('intervention_triggered'),
+        evidence='offline_saved_checks_only_no_rescore',worker_feedback=False)
