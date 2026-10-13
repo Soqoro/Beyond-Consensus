@@ -1,5 +1,53 @@
 # Implementation status and handoff
 
+## Assignment cohort audit and rejected-response diagnostics — 2026-10-14
+
+Uploaded export `rr-assignment-results-kpmhk2b4.private.json` records experiment
+`dd7f957805ef6c9e78dbe30739e890ed74e6d8fb38bd70d9fe4850cc1b72df4f`:
+eight configurations, sixteen branches, requirement clean/F successes 1/4 and
+1/4, prompted-open clean/F 0/4 and 0/4. All branches report conformance; all
+eight F interventions triggered. Scope-denied publications fell from 84 to 7
+versus the previous interface cohort; complete success fell from 3/16 to 2/16.
+Two Jaffle/open branches exhausted token admission. Logical branch totals are
+816353 tokens and 9386.019483016 charged CPU seconds, including reused planning
+charged per branch. These are unreviewed development results, not causal or
+population claims. No historical score is changed.
+
+Read-only inspection of representative submitted artifacts against public
+contracts found:
+
+- Jaffle requirement clean customer_summary counts o.id after joining payments;
+  multiple payments multiply the order count. The public request counts orders,
+  including unpaid ones. Its raw customer checks passed 1/4.
+- Energy requirement clean exclusions emits 'other country', 'outside window',
+  and 'selected null'; the public request specifies 'country', 'year', 'missing'.
+  Raw exclusion checks passed 0/3. This explains a concrete mismatch, without
+  claiming it is the only possible defect in every Energy branch.
+- Topics requirement F consumer emits an extra errors field copied from names;
+  the public request requires exactly topics. Its consumer checks passed 0/2.
+- Multioperation requirement clean update_topics emits name instead of names,
+  including in its output schema. Its raw update checks passed 0/4.
+
+No candidate SQL was executed, rewritten or fed back to a worker for this audit.
+Wrong-but-valid content remains the evaluator's responsibility.
+
+Thirteen malformed_json failures were recorded: two length-limit endings and
+11 normal EOS endings. Historical exports cannot distinguish duplicate object
+keys from other JSON parse failures. Prospective code now retains bounded
+rr-rejected-response-v1 metadata in offline trajectories/checkpoints: parse
+category, response hash/length, syntax location, completion and token metadata.
+It stores neither response text nor duplicate key text and does not attach this
+metadata to worker feedback/history. The existing malformed_json category,
+rejection limit, parser acceptance and budget policy remain unchanged. Offline
+exports expose those records and category counts; old missing evidence remains
+missing. Source/runtime changes require renewed qualification before inference.
+No new run, retry or approval is implied.
+
+Validation: 476 full-suite tests, 445 passed and 31 optional skips; 19 focused
+interface tests, 17 passed and two optional skips. Shell, stdlib-only CLI help,
+compileall and diff checks passed. No GPU/model inference was run locally.
+
+
 ## Assignment publication follow-up — 2026-10-13
 
 Uploaded interface cohort `5b2323b230ffbcb1ee4081f6d5190d027a230bb6e9da346275c5f193fad7a669`

@@ -186,6 +186,39 @@ class PublicContracts(unittest.TestCase):
             self.assertFalse(e.env.artifacts)
         finally:e.env.close()
 
+    def test_rejected_response_metadata_preserves_feedback_and_charges(self):
+        from reporecourse.engine import Engine,ModelWorker
+        for text,finish,category in (
+            ('{"secret_key":1,"secret_key":2}','eos','duplicate_object_key'),
+            ('{"tool":','length_limit','json_syntax'),
+            ('not JSON','eos','json_syntax'),
+        ):
+            class Backend:
+                def count_input(self,m):return 10
+                def generate(self,*args):return SimpleNamespace(text=text,output_tokens=8,reasoning_tokens=2,
+                    device_seconds=0,diagnostics={'finish_reason':finish,'constraint_complete':True})
+            e=Engine(public(),ModelWorker(Backend()),plan=I.example_plan(),v2=config())
+            try:
+                e.unit(e.plan['units'][0],'w0','primary')
+                self.assertEqual(len(e.trajectories),3)
+                self.assertEqual(e.env.resources.actual_tokens,54)
+                self.assertFalse(e.env.resources.reservations)
+                for row in e.trajectories:
+                    self.assertEqual(row['tool_result'],{'error':'malformed_json'})
+                    d=row['response_diagnostic']
+                    self.assertEqual(d['parse_failure'],category)
+                    self.assertEqual(d['finish_reason'],finish)
+                    self.assertEqual(d['constraint_complete'],True)
+                    self.assertNotIn('secret_key',json.dumps(d))
+                    self.assertLess(len(json.dumps(d)),1000)
+                    self.assertEqual(len(d['response_sha256']),64)
+                    self.assertNotIn('response_diagnostic',json.dumps(row['next_observation']))
+                self.assertNotIn('response_sha256',json.dumps(e.histories))
+                saved=e.checkpoint()
+                report=cohort.offline_diagnostics(dict(checkpoint={'engine':saved},status='completed',success=False))
+                self.assertEqual(report['rejected_response_categories'],{category:3})
+            finally:e.env.close()
+
     def test_four_probes_only_and_no_task_content(self):
         rows=footprint.reliable_cases();self.assertEqual(len(rows),4)
         self.assertEqual([r['role'] for r in rows],['plan','json','json','json'])

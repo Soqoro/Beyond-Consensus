@@ -93,7 +93,7 @@ class Engine:
             observation=env.observation(worker)
             observation["artifacts"]=[a for a in observation["artifacts"] if env.artifacts[a["version"]]["sequence"]>=self.view_since]
             self.checkpoint()
-            action=None;result=None
+            action=None;result=None;response_diagnostic=None
             usage_start=len(env.resources.events)
             visible_before=deepcopy(observation)
             if self.v2 is not None:visible_before['worker_history']=deepcopy(self.histories[worker])
@@ -118,6 +118,7 @@ class Engine:
                     break
             except Rejected as exc:
                 if env.triggered and self.alarm_resources is None:self.alarm_resources=deepcopy(env.resources.summary())
+                response_diagnostic=deepcopy(getattr(exc,'response_diagnostic',None))
                 code=str(exc);self.failures.append({'unit':unit['id'],'stage':tag,'category':code})
                 feedback={'error':code}
                 if (code=='sql_rejected' or env.interface_profile) and hasattr(exc,'public_feedback'):
@@ -135,7 +136,8 @@ class Engine:
                 if self.v2 is not None:
                     self.trajectories.append(dict(actor=worker,stage=tag,unit=unit['id'],
                         observation=visible_before,action=deepcopy(action),tool_result=deepcopy(result),
-                        costs=deepcopy(env.resources.events[usage_start:]),next_observation=env.observation(worker)))
+                        costs=deepcopy(env.resources.events[usage_start:]),next_observation=env.observation(worker),
+                        **({'response_diagnostic':response_diagnostic} if response_diagnostic is not None else {})))
                 self.checkpoint()
             if env.finished:
                 stop_reason='episode_closed';break
@@ -342,14 +344,39 @@ class ModelWorker:
             decoder_cpu_seconds=generation.diagnostics.get('constraint_cpu_seconds'))
         save()
         try:
+            duplicate=False
             def pairs(items):
+                nonlocal duplicate
                 out={}
                 for k,v in items:
-                    if k in out:raise ValueError('duplicate')
+                    if k in out:
+                        duplicate=True
+                        raise ValueError('duplicate')
                     out[k]=v
                 return out
             return json.loads(generation.text,object_pairs_hook=pairs)
-        except ValueError:raise Rejected('malformed_json')
+        except ValueError as cause:
+            exc=Rejected('malformed_json')
+            exc.response_diagnostic=rejected_response_diagnostic(generation,cause,duplicate)
+            raise exc from None
+
+
+def rejected_response_diagnostic(generation,cause,duplicate=False):
+    """Bounded offline metadata, never response content or worker feedback."""
+    import hashlib
+    text=generation.text;raw=text.encode('utf-8',errors='surrogatepass')
+    diagnostics=generation.diagnostics or {}
+    finish=diagnostics.get('finish_reason')
+    return dict(schema='rr-rejected-response-v1',
+        parse_failure='duplicate_object_key' if duplicate else 'json_syntax' if isinstance(cause,json.JSONDecodeError) else 'value_error',
+        response_sha256=hashlib.sha256(raw).hexdigest(),utf8_bytes=len(raw),characters=len(text),
+        error_position=cause.pos if isinstance(cause,json.JSONDecodeError) else None,
+        error_line=cause.lineno if isinstance(cause,json.JSONDecodeError) else None,
+        error_column=cause.colno if isinstance(cause,json.JSONDecodeError) else None,
+        finish_reason=finish if finish in ('eos','length_limit') else 'unknown',
+        constraint_complete=diagnostics.get('constraint_complete') if type(diagnostics.get('constraint_complete')) is bool else None,
+        output_tokens=generation.output_tokens,reasoning_tokens=generation.reasoning_tokens,
+        response_text_retained=False,worker_feedback=False)
 
 
 def open_catalog(public, backend, resources, *, context_limit=16384, output_cap=2048, seed=0):

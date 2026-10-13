@@ -1,5 +1,17 @@
 # Research protocol implemented here
 
+## Offline rejected-response metadata (2026-10-14)
+
+The user-authorized diagnostic follow-up separates duplicate-key rejection from
+JSON syntax failure in saved worker trajectories. Bounded records contain hashes,
+lengths, syntax locations and allowlisted generation metadata, not response text,
+duplicate key names or hidden evaluation material. Worker feedback remains the
+same generic error. No automatic repair, retries, semantic correction or changed
+parser acceptance is introduced. Historical absent diagnostics are not inferred.
+This source/runtime revision requires renewed compatibility controls; it does not
+authorize another experimental cohort.
+
+
 ## Assignment publication follow-up (2026-10-13)
 
 The user-authorized prospective follow-up to the interface cohort adds public
