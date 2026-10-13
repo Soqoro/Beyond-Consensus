@@ -1,5 +1,33 @@
 # Implementation status and handoff
 
+## Assignment publication follow-up — 2026-10-13
+
+Uploaded interface cohort `5b2323b230ffbcb1ee4081f6d5190d027a230bb6e9da346275c5f193fad7a669`
+completed eight configurations / sixteen branches. Requirement-level clean/F
+successes were 0/4 and 2/4; prompted-open clean/F were 1/4 and 0/4. All four
+generated plans were accepted on their first attempt. These remain unreviewed
+development observations, not population estimates. Six scheduled faults
+triggered; the topics/open branch did not reach handoff and the exhausted
+energy/open checkpoint records no trigger. Historical scores are unchanged.
+
+Read-only checkpoint inspection recovered 84 denied publication attempts:
+72 first violate the declared artifact name and 12 first violate the assigned
+terminal obligations. Three CPU-exhausted branches retain traces in checkpoints
+even though final evaluation/conformance fields are absent. Their model calls
+overran admission estimates; actual costs were charged.
+
+Prospective changes add assignment-specific allowed publication metadata and
+bounded name/obligation/format feedback to the existing opt-in interface only.
+No scope permission, artifact language, task, scorer, JIT or budget is widened.
+Offline diagnostics read checkpoint traces as an explicitly labelled fallback,
+without synthesizing final evaluation or conformance. Updated runtime and
+worker-contract hashes require renewed controls, footprint evidence and a new
+exact-scope approval before another experiment. No new GPU run is claimed.
+
+Local validation: 475 tests, 444 passed and 31 optional skips; shell checks,
+CLI help, compileall and diff checks passed. Read-only export analysis recovered
+84 scope denials using 13 branch traces and three checkpoint traces.
+
 ## Four-task result and prospective interface revision — 2026-10-12
 
 The uploaded export for `b9f84bc78966300bfd615ff4c54a140ae9d238a371e26c157bd5c3ecc8f9f5a6`

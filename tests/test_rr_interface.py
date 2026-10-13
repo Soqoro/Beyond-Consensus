@@ -102,6 +102,38 @@ class PublicContracts(unittest.TestCase):
             self.assertEqual(*systems)
         finally:env.close()
 
+    def test_assignment_publication_feedback_preserves_denial(self):
+        for revised in (False,True):
+            env=Environment(public(),workers=config()['workers'],execution_contract='plan_scoped_v1',
+                plan=I.example_plan(),interface_profile=I.PROFILE if revised else None)
+            try:
+                unit=I.example_plan()['units'][0];env.scopes.begin(unit,'w0','primary')
+                obs=env.observation('w0')
+                self.assertEqual('publication_contract' in obs,revised)
+                if revised:self.assertEqual(obs['publication_contract']['artifacts'][0]['permitted_obligations'],[])
+                a=dict(tool='publish',name='invented_rows',format='sql',obligations=['invented_rows'],bindings={})
+                with self.assertRaises(Rejected) as ctx:env.scopes.authorize('w0',a)
+                self.assertEqual(str(ctx.exception),'scope_denied')
+                self.assertEqual(hasattr(ctx.exception,'public_feedback'),revised)
+                if revised:self.assertEqual(ctx.exception.public_feedback['findings'][0]['code'],'publication_obligation')
+                a['obligations']=[];env.scopes.authorize('w0',a)
+                a['name']='report'
+                with self.assertRaises(Rejected) as ctx:env.scopes.authorize('w0',a)
+                if revised:self.assertEqual(ctx.exception.public_feedback['findings'][0]['path'],'name')
+                self.assertFalse(env.artifacts)
+            finally:env.close()
+
+    def test_checkpoint_diagnostics_never_infer_final_score(self):
+        b=dict(status='resource_exhausted',success=False,checkpoint={'engine':dict(status='resource_exhausted',
+            environment=dict(triggered=False,bound={},events=[]),failures=[{'category':'cpu_cap'}],
+            trajectories=[dict(action=dict(tool='publish',format='schema'),tool_result={'error':'scope_denied'})])})
+        before=deepcopy(b);d=cohort.offline_diagnostics(b)
+        self.assertEqual(d['trace_source'],'checkpoint');self.assertEqual(d['publication_rejections'],{'scope_denied':1})
+        self.assertFalse(d['checkpoint_intervention']);self.assertIsNone(d['conformant'])
+        self.assertIsNone(d['final_gated_obligations']);self.assertEqual(b,before)
+        b['trajectories']=[]
+        self.assertEqual(cohort.offline_diagnostics(b)['publication_attempts'],0)
+
     def test_new_manifest_bound_scope_and_legacy_task_hashes(self):
         old=adapter.build(ROOT,'/nonexistent',adapter.UNREVIEWED_LANE)
         new=adapter.build(ROOT,'/nonexistent',adapter.UNREVIEWED_LANE,interface_profile=I.PROFILE)

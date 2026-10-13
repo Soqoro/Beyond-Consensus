@@ -1,5 +1,17 @@
 # Research protocol implemented here
 
+## Assignment publication follow-up (2026-10-13)
+
+The user-authorized prospective follow-up to the interface cohort adds public
+assignment publication guidance and bounded rejection feedback under the opt-in
+interface. Helpers explicitly use empty obligations; terminal IDs remain distinct
+from artifact names. This changes worker observations/feedback, not permissions
+or evaluation. Source/runtime and worker-contract hashes change; previous
+qualification or approvals must not authorize the changed treatment silently.
+Historical snapshots and scores remain unchanged. Checkpoint-derived export
+diagnostics are offline evidence only and cannot replace unavailable final scores.
+
+
 ## Prospective interface reliability package (2026-10-12)
 
 `rr-interface-reliability-v1` is an opt-in combined-interface treatment within

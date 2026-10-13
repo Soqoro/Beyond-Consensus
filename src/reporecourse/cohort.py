@@ -244,22 +244,28 @@ def branch_metrics(b):
 def offline_diagnostics(b):
     """Saved evidence only. Never called by a worker, monitor or JIT."""
     from collections import Counter
-    state=b.get('state') or {};ev=b.get('evaluation') or {};checks=ev.get('checks')
+    checkpoint=(b.get('checkpoint') or {}).get('engine') or {}
+    state=b.get('state') or checkpoint.get('environment') or {}
+    ev=b.get('evaluation') or {};checks=ev.get('checks')
     required=list(ev.get('obligations',{})) or None
     published=sorted({o for e in state.get('events',[]) if e.get('type')=='publish' for o in e.get('obligations',[])})
     bound=sorted(state.get('bound',{}));raw=None;consistency=None
     if isinstance(checks,list):
         raw=[deepcopy(x) for x in checks if 'obligation' in x]
         consistency=[deepcopy(x) for x in checks if x.get('cross_output_consistency')]
-    traces=b.get('trajectories',[]);attempts=[t for t in traces if isinstance(t.get('action'),dict) and t['action'].get('tool')=='publish']
-    events=state.get('events',b.get('events',[]));known='trajectories' in b
+    traces=b.get('trajectories',checkpoint.get('trajectories',[]));attempts=[t for t in traces if isinstance(t.get('action'),dict) and t['action'].get('tool')=='publish']
+    events=state.get('events',b.get('events',[]));known='trajectories' in b or 'trajectories' in checkpoint
     categories=Counter();sql=Counter()
     for t in attempts:
         r=t.get('tool_result') or {}
         if r.get('error'):categories[r['error']]+=1
         if r.get('validation') and r['validation'].get('code'):sql[r['validation']['code']]+=1
     resources=b.get('resource_profile') or {}
-    return dict(required_outputs=required,published_outputs=published if 'events' in state else None,
+    return dict(trace_source='branch' if 'trajectories' in b else 'checkpoint' if 'trajectories' in checkpoint else None,
+        checkpoint_intervention=state.get('triggered') if checkpoint else None,
+        checkpoint_status=checkpoint.get('status'),
+        cpu_estimate_overruns=[deepcopy(e) for e in resources.get('events',[]) if e.get('kind')=='cpu' and e.get('estimate_overrun',0)>0],
+        required_outputs=required,published_outputs=published if 'events' in state else None,
         explicitly_bound_outputs=bound if 'bound' in state else None,
         missing_obligations=sorted(set(required)-set(bound)) if required is not None and 'bound' in state else None,
         raw_per_output_checks=raw,bundle_consistency_checks=consistency,
@@ -272,7 +278,7 @@ def offline_diagnostics(b):
         successful_publications=sum('version' in (t.get('tool_result') or {}) for t in attempts) if known else None,
         admission_failures=[deepcopy(e) for e in resources.get('events',[]) if e.get('kind')=='admission_failure'],
         generation_finish_reasons=dict(Counter(e.get('finish_reason','unknown') for e in resources.get('events',[]) if e.get('kind')=='model_usage')),
-        termination_failures=deepcopy(b.get('failures')),
+        termination_failures=deepcopy(b.get('failures',checkpoint.get('failures'))),
         assignment_terminations=[{k:e.get(k) for k in ('unit','worker','stage','termination_reason','actions','action_limit')} for e in events if e.get('type')=='unit_end'],
         status=b.get('status'),conformant=b.get('contract_conformant'),intervention=b.get('intervention_triggered'),
         evidence='offline_saved_checks_only_no_rescore',worker_feedback=False)

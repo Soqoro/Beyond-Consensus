@@ -69,10 +69,15 @@ class AssignmentScopes:
         if sid is None:raise Rejected('scope_denied')
         return self.data['records'][sid]
 
-    def deny(self,worker,surface):
+    def deny(self,worker,surface,action=None):
         s=self.current(worker)
         self.env.events.append(dict(type='scope_denied',worker=worker,unit=s['unit'],stage=s['stage'],scope_id=s['id'],surface=surface))
-        raise Rejected('scope_denied')
+        exc=Rejected('scope_denied')
+        if self.env.interface_profile and action is not None:
+            from .interface import scope_feedback
+            detail=scope_feedback(s,action)
+            if detail:exc.public_feedback=detail
+        raise exc
 
     def begin(self,unit,worker,stage):
         """Deterministic admission. A changed repair scope gets fresh context."""
@@ -141,6 +146,9 @@ class AssignmentScopes:
                 messages.append(deepcopy(m));self.env.exposure[worker].update(m['exposure'])
         value['messages']=messages
         value['execution_scope']={k:deepcopy(s[k]) for k in ('id','unit','stage','imports','produces','outputs','sources')}
+        if self.env.interface_profile:
+            from .interface import assignment_publications
+            value['publication_contract']=assignment_publications(s)
         value['execution_scope']['contract']=CONTRACT
         value['execution_scope']['instructions']='Only own and imported versions are accessible. Source focus is a hint. Messages require a declared predecessor. Grouped outputs share this context; other assignments start fresh.'
         # Public loss announcements are fixed trusted coordination facts only.
@@ -157,10 +165,10 @@ class AssignmentScopes:
             self.version(worker,action.get('version'),tool)
         if tool in ('publish','rebind_artifact'):
             name=action.get('name');obligations=action.get('obligations',[])
-            if name not in s['produces'] or not set(obligations)<=set(s['outputs']):self.deny(worker,'publication')
-            if any(s['terminal_bindings'][o]!=name for o in obligations):self.deny(worker,'terminal_mapping')
+            if name not in s['produces'] or not set(obligations)<=set(s['outputs']):self.deny(worker,'publication',action)
+            if any(s['terminal_bindings'][o]!=name for o in obligations):self.deny(worker,'terminal_mapping',action)
             fmt=action.get('format') if tool=='publish' else self.env.artifacts[action['version']]['format']
-            if ('sql' if fmt=='select' else fmt)!=s['produces'][name]:self.deny(worker,'publication')
+            if ('sql' if fmt=='select' else fmt)!=s['produces'][name]:self.deny(worker,'publication',action)
             bindings=action.get('bindings',{})
             if not isinstance(bindings,dict):self.deny(worker,'bindings')
             for v in bindings.values():self.version(worker,v,'bindings')

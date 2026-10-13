@@ -46,7 +46,11 @@ def worker_contract():
     from restricted_artifacts.sql_text import capability
     return dict(version=PROFILE,feedback=FEEDBACK,
         content_types='SQL: string. Schema: object (Boolean schemas also remain valid). Mapping: object with top-level output_schema. Do not JSON-encode objects into strings. No automatic decoding, insertion or repair.',
-        examples=publications(),sql_capability=capability())
+        examples=publications(),sql_capability=capability(),
+        publication_guidance_version='rr-assignment-publication-v1',
+        publication_rules=['Follow publication_contract for this assignment, not the full task output list.',
+            'name is a declared artifact name; obligations are terminal IDs mapped to that artifact.',
+            'Helper artifacts use obligations: []. Never put a helper name in obligations.'])
 
 
 def finding(code,path,value,expected,correction):
@@ -145,3 +149,32 @@ def bindings():
                 examples=digest([example_plan(),publications()]),feedback_schema=digest([FEEDBACK,MAX_FINDINGS,sorted(finding('x','x',None,'x','x'))]),
                 generation_grammars={r:digest(schema_v2(mode(r))) for r in ('json','plan')},
                 compiler_capability=digest(capability()))
+
+
+def assignment_publications(scope):
+    """Public scope metadata only; no generated content or semantic correction."""
+    return dict(version='rr-assignment-publication-v1',
+        artifacts=[dict(name=name,format=fmt,
+            permitted_obligations=sorted(o for o in scope['outputs'] if scope['terminal_bindings'][o]==name))
+            for name,fmt in sorted(scope['produces'].items())],
+        instruction='Use one declared name and its format. obligations may contain only terminal IDs listed for that artifact; use [] for helpers. Content must be authored by the worker.')
+
+
+def scope_feedback(scope,action):
+    items=[];name=action.get('name');obligations=action.get('obligations',[])
+    if name not in scope['produces']:
+        items.append(finding('publication_name','name',name,sorted(scope['produces']),
+            'Use an artifact name declared for this assignment.'))
+    for i,o in enumerate(obligations):
+        if o not in scope['outputs']:
+            items.append(finding('publication_obligation',f'obligations[{i}]',o,scope['outputs'],
+                'Use assigned terminal IDs only; helper artifacts use obligations: [].'))
+        elif scope['terminal_bindings'][o]!=name:
+            items.append(finding('terminal_mapping',f'obligations[{i}]',o,{'artifact_name':scope['terminal_bindings'][o]},
+                'Match the declared terminal binding.'))
+        if len(items)>MAX_FINDINGS:break
+    if name in scope['produces'] and action.get('tool')=='publish':
+        fmt=action.get('format');normalized='sql' if fmt=='select' else fmt
+        if normalized!=scope['produces'][name]:
+            items.append(finding('publication_format','format',fmt,scope['produces'][name],'Use the declared artifact format.'))
+    return feedback(items) if items else None
