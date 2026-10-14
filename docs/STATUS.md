@@ -1,5 +1,35 @@
 # Implementation status and handoff
 
+## Bounded response reconstruction implementation — 2026-10-14
+
+The user reports 130 no-skip CPU controls and four successful task-free GPU
+probes at source 712fded6…; preflight 9dce059c… used 6843 tokens on an A100-SXM4
+80GB. This does not recover historical response text or authorize rescoring.
+
+A separate rr-response-probe-v1 runner now selects exactly three first EOS
+mapping failures from dd7f9578… (requirement F primary, prompted clean primary,
+prompted F repair). Their saved input-token counts were 2781, 3191 and 3206;
+all three selected calls had empty assignment histories. No export is committed
+as a new fixture. Only saved worker observations/history enter reconstructed
+prompts; hidden evaluator labels, reference artifacts and later responses do not.
+Original serialized prompt bytes are unavailable and exact replay is not claimed.
+
+The runner records parse diagnostics and fresh ledgers, never executes generated
+actions, never calls an evaluator, and never edits old outputs. It uses run-only
+registry submission, one GPU/model, three calls maximum and a single-use started
+marker. Interrupted reservations remain in checkpoint reports; generation errors
+stop subsequent calls. CPU adapter controls are hash-bound, role locks and prior
+GPU evidence must match current runtime code. The unchanged worker/scoping
+modules allow compatible task-free GPU evidence reuse; changed code blocks reuse.
+No new model result is claimed. Preparation is scripts/prepare_rr_response_probe.py;
+see the diagnostic handoff in UNREVIEWED_COHORT_RUNBOOK.md.
+
+Validation: full suite 484 tests (453 passed, 31 optional skips); all nine
+focused diagnostic controls passed, including the subsequently added parsed-action
+nonexecution control. Shell, stdlib-only CLI help, compileall and diff checks
+passed. Cluster controls and model calls remain unrun for the new adapter.
+
+
 ## Assignment cohort audit and rejected-response diagnostics — 2026-10-14
 
 Uploaded export `rr-assignment-results-kpmhk2b4.private.json` records experiment

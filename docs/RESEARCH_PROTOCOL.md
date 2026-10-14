@@ -1,5 +1,28 @@
 # Research protocol implemented here
 
+## Selected reconstructed-input response diagnostic (2026-10-14)
+
+The user requested proceeding with a bounded diagnostic after the diagnostic
+runtime passed CPU controls and the four task-free GPU probes. The new
+rr-response-probe-v1 lane permits only three independent model calls: the first
+normal-EOS malformed repository_summary response in each affected multioperation
+branch (requirement F, prompted clean, prompted F) of experiment dd7f9578….
+Selection is fixed in code before new inference. No returned action is executed,
+no evaluator is called, no prompt is repaired, and no branch score is updated.
+
+Saved public observations, history values and execution seeds are reconstructed;
+original serialized prompt bytes are unavailable. This is selected, task-input
+reconstruction, not exact replay, a task-free preflight, a competence estimate or
+an independent sample. Model/grammar/context/output settings are unchanged. Each
+call has its own 16384 logical-token / 1200 CPU admission cap (49152 tokens and
+3600 declared CPU caps total, not a hard host cutoff). Setup/analysis CPU and
+physical runtime are reported separately from historical work. No retries,
+extra targets, training or expanded cohort are authorized. Fresh adapter CPU
+controls and compatible hash-verified role locks/preflight evidence are required.
+Submission uses the shared registry at concurrency one, in run mode. A started
+marker prevents resubmission even after interruption.
+
+
 ## Offline rejected-response metadata (2026-10-14)
 
 The user-authorized diagnostic follow-up separates duplicate-key rejection from

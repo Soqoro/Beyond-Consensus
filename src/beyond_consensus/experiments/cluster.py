@@ -204,6 +204,12 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    if manifest.get('schema') == 'rr-response-probe-v1':
+        from .rr_response_probe import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError('Response diagnostic has no retry, override or queued campaign')
+        submission(manifest,model_lock,existing_snapshot or repo,mode,concurrency,
+                   Path(config.output_root)/manifest['experiment_id'])
     if manifest.get('schema') == 'rr-cohort-manifest-v1':
         from .rr_cohort import submission
         if serialize or failed_shards is not None or condition is not None:

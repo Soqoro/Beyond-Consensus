@@ -1,5 +1,45 @@
 # Four-task unreviewed development run
 
+## Three-call response reconstruction — 14 October 2026
+
+This separate diagnostic does not repeat the cohort. Commit/push the diagnostic
+adapter, freeze a fresh checkout on the cluster, then run the no-skip
+`scripts/check_rr_cohort.py --output NEW/controls.json` on a CPU allocation from
+that checkout. Its control set includes test_rr_response_probe.py. The existing
+worker/planner locks from rr-response-diagnostics.2O5s92 may be reused only when
+the preparation/submission compatibility checks accept them. The original export
+must be supplied explicitly; keep private exports outside Git.
+
+From the frozen checkout, prepare using actual paths:
+
+```bash
+"$BC_PYTHON" -I scripts/prepare_rr_response_probe.py \
+  --export "$BC_RESPONSE_EXPORT" \
+  --controls "$BC_RESPONSE/controls.json" \
+  --worker-lock "$BC_DIAG/cpu/worker-lock.json" \
+  --planner-lock "$BC_DIAG/cpu/planner-lock.json" \
+  --preflight-run "$BC_RESPONSE_PREFLIGHT" \
+  --snapshots "$BC_STORAGE/snapshots" \
+  --output "$BC_RESPONSE/manifest.json"
+```
+
+BC_DIAG is the completed response-diagnostics qualification directory;
+BC_RESPONSE is a fresh preparation/output directory. BC_RESPONSE_PREFLIGHT is
+the output path in BC_DIAG/preflight-submission.json. Preparation verifies saved
+snapshot evidence and selects exactly three calls, with separate task-input
+labels. It does not load weights or execute any returned artifact. There is no
+exact-rendered-prompt reproduction claim. The model receives no corrected answers.
+
+Submit only through `scripts/bc.py submit --mode run --concurrency 1`, supplying
+this manifest, the same worker lock and the selected NA100q cluster config. Use
+`--dry-run` first and retain the receipt. No preflight mode, retry, override or
+queued campaign is accepted. Inspect `response-diagnostic.json` in the returned
+output directory after completion; `bc.py aggregate --output RUN` also returns
+this diagnostic report. A parsed response is not a valid-artifact or correctness
+claim. There are no episode scores and no cohort result replacement. An interrupted
+or completed attempt cannot be submitted again under this manifest.
+
+
 ## Interface-reliability revision — current handoff, 12 October 2026
 
 The first cohort completed: see [the trace audit](RICH_COHORT_TRACE_AUDIT_2026-10-12.md).
