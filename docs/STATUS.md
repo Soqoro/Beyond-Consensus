@@ -1,5 +1,46 @@
 # Implementation status and handoff
 
+## Native duplicate-key finding and opt-in prevention — 2026-10-14
+
+User-supplied CPU audit from `rr-decoder-boundary.A87RdN`, source
+`8db00303511b448e83dcf794d03e6c80ef194d38`, reports `observed`, no control
+errors, 16.114127532 CPU seconds, no model/task inputs. Both stop IDs and both
+reasoning paths agree: valid mapping accepted, duplicate envelope blocked,
+nested and escaped-equivalent duplicate keys grammar-accepted but parser-rejected,
+incomplete JSON EOS blocked. This establishes a synthetic grammar/parser gap,
+not a reasoning-boundary failure or exact historical duplicate location.
+
+Added prospective `reporecourse-json-unique-v1-pool-7`. The public schema equals
+the reliable worker schema; the versioned contract adds duplicate-key enforcement.
+A new stdlib byte-prefix state machine records object-local decoded key sets.
+The logits processor intersects native masks before token selection, including
+tokens that complete several keys. It handles split UTF-8, JSON escapes and
+surrogate pairs, distinct sibling objects, arrays and key-like value strings.
+It does not normalize Unicode, alter responses or relax strict parsing.
+
+Optional imports remain lazy. Native decoded bytes are obtained from the pinned
+XGrammar TokenizerInfo API; implicit prefix-space tokenization is rejected.
+The new source is bound into qualification hashes. Guard/mask CPU stays within
+the existing charged decoder interval and allowance; no-valid-token and CPU
+exhaustion paths fail closed. Old modes do not install the guard. Existing
+cohort constructors and approvals remain unchanged; this is implementation and
+CPU qualification preparation only, with no new model experiment authorized.
+
+The existing CPU qualification command now requires 44 native guard cases
+(11 synthetic texts × two stops × two reasoning paths) for the new mode, in
+addition to its original controls, before writing a qualified lock. Positive
+controls preserve nested/sibling keys and distinct Unicode spellings; negatives
+cover nested duplicates, escapes, Unicode and array-contained objects. Token
+bytes must round trip exactly. Local doubles do not establish native performance
+or GPU behavior; cluster CPU qualification remains pending.
+
+Validation: full suite 497 tests (466 passed, 31 optional skips); nine new
+unique-key controls passed, including every two-piece UTF-8/escape split,
+bytewise masking, speculative-state isolation and fail-closed resource paths.
+Final focused unique-key/cohort checks ran 41 tests (40 passed, one optional
+skip). Shell checks (10 files), isolated CLI help, compile and diff checks passed.
+No GPU/cluster job was submitted and no native qualification result is claimed.
+
 ## Response diagnostic result and decoder boundary audit — 2026-10-14
 
 User-supplied report `8ede5e0491aad8a9e79b7e6b65e9476597558fd8572bb51e942a688741b76fef`

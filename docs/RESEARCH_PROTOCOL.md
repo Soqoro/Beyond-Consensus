@@ -1,5 +1,31 @@
 # Research protocol implemented here
 
+## Opt-in duplicate-key decoding constraint (2026-10-14)
+
+The user authorized implementing prevention after the CPU native audit confirmed
+that arbitrary nested duplicate keys (including escaped equivalents) pass the
+pinned grammar and EOS masks while the strict parser rejects them. Introduce
+`reporecourse-json-unique-v1-pool-7` as a prospective worker-only mode. It keeps
+the reliable-v1 public schema and strict parser, adding a stateful intersection
+mask over decoded token bytes. No response repair, key deletion, last-key-wins
+parsing, semantic correction or forced reasoning termination is permitted.
+
+Every object has a distinct key scope; JSON escape decoding defines equality,
+without Unicode normalization. The mask starts only after the generated reasoning
+close (or at the action start when reasoning is disabled). Arbitrary token splits
+and tokens spanning several keys must be checked. Only otherwise-allowed tokens
+are considered and no grammar-masked token may be restored. Guard CPU is inside
+the existing charged decoder interval and 30-second allowance; exhaustion or
+no valid continuation raises an error without fallback. Static setup remains
+separately reported. Workers still share the unchanged input/output budgets.
+
+The mode is not a new cohort approval. Historical manifests, scores and old mode
+semantics are preserved. Source/qualification hashes change; current old locks
+cannot authorize the changed implementation. Native CPU controls and separate
+GPU/footprint qualification remain required before any prospective model trial.
+Existing cohort constructors continue to select the old mode; they cannot
+silently switch treatment or reuse previous run approvals.
+
 ## Synthetic decoder boundary audit (2026-10-14)
 
 Following the three-call response diagnostic, inspect matcher/strict-parser

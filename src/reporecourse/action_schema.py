@@ -36,10 +36,13 @@ LEGACY_V2_MODES=tuple(f'reporecourse-{kind}-v2-pool-{n}' for kind in ('json','pl
 
 OPEN_MODES=tuple(f'reporecourse-{kind}-scoped-v1-pool-{n}' for kind in ('json','plan') for n in range(2,9))
 RELIABLE_MODES=tuple(f'reporecourse-{kind}-reliable-v1-pool-7' for kind in ('json','plan'))
-V2_MODES=LEGACY_V2_MODES+OPEN_MODES+RELIABLE_MODES
+UNIQUE_MODES=('reporecourse-json-unique-v1-pool-7',)
+V2_MODES=LEGACY_V2_MODES+OPEN_MODES+RELIABLE_MODES+UNIQUE_MODES
 
 
 def schema_v2(mode, terminal_ids=None):
+    if mode in UNIQUE_MODES:
+        mode = "reporecourse-json-reliable-v1-pool-7"
     from .v2 import worker_registry
     if mode not in V2_MODES:raise ValueError('v2 mode')
     workers=list(worker_registry(int(mode.rsplit('-',1)[1])))
@@ -84,6 +87,7 @@ def schema_v2(mode, terminal_ids=None):
 
 
 def controls_v2(mode):
+    if mode in UNIQUE_MODES: mode = "reporecourse-json-reliable-v1-pool-7"
     if '-json-' in mode:
         good,bad=controls();good=[a for a in good if a['tool']!='plan_catalog']
         good.append({'tool':'message','recipient':f'w{int(mode.rsplit("-",1)[1])-1}','text':'synthetic'})

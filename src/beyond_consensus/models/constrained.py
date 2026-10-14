@@ -64,12 +64,17 @@ class ActionConstraint:
         info = self.xgr.TokenizerInfo.from_huggingface(tokenizer, vocab_size=vocab_size,
                                                       stop_token_ids=eos_ids)
         compiler = self.xgr.GrammarCompiler(info, max_threads=1, cache_enabled=False)
-        # Fixed property order enforces required-key presence and uniqueness.
+        # Declared envelope order does not guarantee arbitrary nested-key uniqueness.
         schema=decoder_schema(mode)
         if terminal_ids is not None:
             from reporecourse.action_schema import schema_v2, RELIABLE_MODES
             if mode not in RELIABLE_MODES or '-plan-' not in mode or not public_task:raise BCError('Invalid public grammar binding')
             schema=schema_v2(mode,terminal_ids)
+        from .unique_keys import MODE as UNIQUE_MODE
+        self.unique_vocab = info.decoded_vocab if mode == UNIQUE_MODE else None
+        if mode == UNIQUE_MODE and info.add_prefix_space:
+            raise BCError('Unique-key decoding requires no implicit prefix space')
+        self.stop_ids = eos_ids
         self.compiled = compiler.compile_json_schema(schema, any_whitespace=True,
                                                      max_whitespace_cnt=2, strict_mode=True)
         self.runtime = {**contract(mode), "vocab_size": vocab_size, "stop_token_ids": list(eos_ids),
@@ -80,4 +85,8 @@ class ActionConstraint:
             self.runtime['public_grammar_binding']=dict(task_id=public_task,terminal_ids=list(terminal_ids),schema_sha256=digest(schema),cache_key=digest([mode,public_task,list(terminal_ids),schema]))
 
     def processor(self, prompt_length, closing_id):
-        return ReasoningGate(self.processor_class(self.compiled), prompt_length, closing_id)
+        inner = self.processor_class(self.compiled)
+        if self.unique_vocab is not None:
+            from .unique_keys import UniqueKeyProcessor
+            inner = UniqueKeyProcessor(inner, self.unique_vocab, self.stop_ids)
+        return ReasoningGate(inner, prompt_length, closing_id)

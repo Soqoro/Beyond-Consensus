@@ -494,3 +494,32 @@ Its `observed` status means the synthetic comparison completed, not that the
 runtime parser and grammar necessarily agree on duplicate-key texts. Inspect
 `cases` (direct matcher, EOS and both gated routes) and `errors` together. Save
 this report separately; it cannot replace a qualified lock or historical score.
+
+
+## Prospective unique-key worker CPU qualification (2026-10-14)
+
+After freezing the pushed source, first run the no-skip cohort CPU controls
+(which now include `test_unique_keys.py`). Then, in the same CPU batch environment
+with pinned optional dependencies, use a fresh output directory:
+
+```bash
+"$BC_PYTHON" -I scripts/check_action_constraints.py \
+  --model-lock /dataset/suaq0001/beyond-consensus/diagnostics/rr-response-diagnostics.2O5s92/cpu/worker-lock.json \
+  --action-constraint reporecourse-json-unique-v1-pool-7 \
+  --context-limit 16384 \
+  --output-cap 2048 \
+  --output "$BC_UNIQUE/worker-grammar.json" \
+  --qualified-lock "$BC_UNIQUE/worker-lock.json"
+```
+
+The input lock supplies staged metadata, not authorization for the new mode.
+Inspect `unique_key_controls.status`, all case rows, CPU times and the ordinary
+qualification status. Preserve the old lock/report. No model, task data or SQL
+is used by this grammar qualification. A native positive control rejection or
+CPU allowance failure is a blocker, not permission to loosen the parser, raise
+caps or bypass the guard. This step does not submit or authorize a cohort; a
+new GPU footprint and prospective mode-bound run preparation remain separate.
+
+Implementation API reference: pinned [XGrammar v0.1.32 TokenizerInfo](https://github.com/mlc-ai/xgrammar/blob/v0.1.32/python/xgrammar/tokenizer_info.py)
+provides decoded vocabulary bytes; the [HF processor](https://github.com/mlc-ai/xgrammar/blob/v0.1.32/python/xgrammar/contrib/hf.py)
+is initialized when the reasoning gate activates. No dependency upgrade is made.

@@ -181,6 +181,10 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1", output_ca
     masked = processor(torch.tensor([[closing]]), torch.zeros((1,vocab)))
     if any(torch.isfinite(masked[0,token]).item() for token in eos):
         raise BCError("EOS is allowed before the action is complete")
+    unique_report = {}
+    if mode == "reporecourse-json-unique-v1-pool-7":
+        from beyond_consensus.models.unique_keys import qualify_unique_keys
+        unique_report = {"unique_key_controls": qualify_unique_keys(constraint, tokenizer, torch, closing, eos, vocab)}
     return {"schema": "bc-action-constraint-check-v1", "status": "passed",
         "qualification_key": qualification_key(lock, packages, context_limit, mode, output_cap), "output_cap": output_cap, "context_limit": context_limit, "packages": packages,
         "effective_generation_tokens": tokens, "vocab_size": vocab,
@@ -190,7 +194,7 @@ def check(lock_path, context_limit=8192, mode="sqlite-json-schema-v1", output_ca
         "positive_controls": len(good), "negative_controls": len(bad), "contract": contract(mode),
         "model_lock_sha256": file_hash(lock_path), "script_sha256": file_hash(Path(__file__)),
         "runtime": constraint.runtime, "thinking_template": template,
-        "control_hash": digest([good,bad]), "analysis_cpu_seconds": time.process_time()-start}
+        "control_hash": digest([good,bad]), **unique_report, "analysis_cpu_seconds": time.process_time()-start}
 
 
 def main():

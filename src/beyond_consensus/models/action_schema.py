@@ -124,6 +124,8 @@ def contract(mode=MODE):
         result["observation_contract"]="assignment-scoped-v1"
     if mode.startswith("reporecourse-"):
         result["decoder_charge"] = "measured_cpu_subset_no_token_conversion"
+    if mode == "reporecourse-json-unique-v1-pool-7":
+        result["duplicate_key_enforcement"] = "decoded-byte-prefix-intersection-v1"
     return result
 
 
