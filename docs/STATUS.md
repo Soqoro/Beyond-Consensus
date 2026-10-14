@@ -1,5 +1,29 @@
 # Implementation status and handoff
 
+## Unique-key native qualification blocked on token round trip — 2026-10-14
+
+User-supplied job 1096537 from `rr-unique-keys.0cf2vW`, source
+`433d23d0f7e7cd070192ab67d4a4f58c5374e63c`, failed after 9:04. All 148
+no-skip CPU controls passed. Native qualification then raised
+`Unique-key token bytes do not round trip`; no grammar report or qualified lock
+was issued. The existing log identifies neither the synthetic case nor changed
+bytes, so tokenizer normalization is a hypothesis, not a measured cause.
+
+The qualification failure now reports the fixed synthetic case and expected/
+decoded UTF-8 hex. Added `scripts/probe_unique_token_bytes.py` to compare all
+11 fixed texts against native vocabulary concatenation and HF decoding, expose
+the staged tokenizer normalizer, and measure NFC agreement. This separate CPU
+probe verifies staged metadata and pinned decoder dependencies, does not compile
+a grammar, load model weights, use task inputs, normalize controls, issue a lock,
+or weaken the round-trip gate. An observed report is diagnostic only. Preserve
+the failed qualification; run this short probe before repeating the full suite
+on the cluster. Local tests cover both a normalization-like mismatch and an
+independent byte-decoder mismatch without claiming either was observed natively.
+
+Validation: full suite 499 tests (468 passed, 31 optional skips); all 11 focused
+unique-key tests passed. Shell checks, isolated probe help, compile and diff
+checks passed. Native tokenizer measurements remain pending; no jobs submitted.
+
 ## Native duplicate-key finding and opt-in prevention — 2026-10-14
 
 User-supplied CPU audit from `rr-decoder-boundary.A87RdN`, source

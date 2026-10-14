@@ -5,13 +5,29 @@ from unittest.mock import patch
 from types import SimpleNamespace
 
 from tests.test_action_constraints import Matrix
-from beyond_consensus.models.unique_keys import KeyState, DuplicateKey, UniqueKeyProcessor, synthetic_controls, MODE
+from beyond_consensus.models.unique_keys import KeyState, DuplicateKey, UniqueKeyProcessor, synthetic_controls, qualify_unique_keys, MODE
 from beyond_consensus.models.action_schema import action_schema, contract, validate_action
 from beyond_consensus.models.constrained import ReasoningGate
 from beyond_consensus.util import BCError
 
 
 class UniqueKeys(unittest.TestCase):
+    def test_byte_probe_distinguishes_normalization_from_native_mismatch(self):
+        import importlib.util
+        from pathlib import Path
+        path = Path(__file__).resolve().parents[1] / 'scripts/probe_unique_token_bytes.py'
+        spec = importlib.util.spec_from_file_location('unique_token_probe', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        row = module.compare(4, 'e\u0301', 'é'.encode(), 'é')
+        self.assertFalse(row['roundtrip'])
+        self.assertTrue(row['native_matches_hf'])
+        self.assertTrue(row['native_matches_nfc'])
+        row = module.compare(4, 'e\u0301', b'wrong', 'e\u0301')
+        self.assertFalse(row['native_matches_hf'])
+        self.assertFalse(row['native_matches_nfc'])
+        self.assertTrue(row['hf_matches_original'])
+
     def test_equivalent_public_schema_distinct_contract(self):
         old = 'reporecourse-json-reliable-v1-pool-7'
         self.assertEqual(action_schema(old), action_schema(MODE))
@@ -133,6 +149,17 @@ class ProcessorTests(unittest.TestCase):
         clock = iter([0., 31., 31.])
         with patch.dict('sys.modules', torch=TORCH), self.assertRaises(BCError):
             self.processor([b'{}', b'"x"', b'EOS'], clock=lambda: next(clock))(IDs([42]), Scores([0, 0, 0]))
+
+    def test_native_roundtrip_failure_identifies_control_without_qualification(self):
+        tokenizer = SimpleNamespace(encode=lambda *args, **kwargs: [0])
+        constraint = SimpleNamespace(unique_vocab=[b'changed'])
+        with self.assertRaises(BCError) as caught:
+            qualify_unique_keys(constraint, tokenizer, None, 9, [10], 11)
+        details = json.loads(str(caught.exception).split(': ', 1)[1])
+        self.assertEqual(details['case'], 0)
+        self.assertTrue(details['expected_accepted'])
+        self.assertEqual(bytes.fromhex(details['decoded_utf8_hex']), b'changed')
+        self.assertEqual(bytes.fromhex(details['expected_utf8_hex']).decode(), synthetic_controls()[0][0])
 
     def test_bad_vocabulary_is_rejected(self):
         with self.assertRaises(BCError):self.processor(['decoded-as-text', b'EOS'])

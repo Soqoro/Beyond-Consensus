@@ -178,8 +178,15 @@ def qualify_unique_keys(constraint, tokenizer, torch, closing, stops, vocab):
     for index, text in enumerate(good + bad):
         expected = index < len(good)
         ids = tokenizer.encode(text, add_special_tokens=False)
-        if b''.join(constraint.unique_vocab[t] for t in ids) != text.encode('utf-8'):
-            raise BCError('Unique-key token bytes do not round trip')
+        decoded = b''.join(constraint.unique_vocab[t] for t in ids)
+        expected_bytes = text.encode('utf-8')
+        if decoded != expected_bytes:
+            # Fixed synthetic controls only; never print worker responses here.
+            raise BCError('Unique-key token bytes do not round trip: ' + json.dumps({
+                'case': index, 'expected_accepted': expected,
+                'synthetic_text': text, 'expected_utf8_hex': expected_bytes.hex(),
+                'decoded_utf8_hex': decoded.hex(),
+            }, ensure_ascii=True))
         for stop in stops:
             for reasoning in (False, True):
                 prefix = [closing]

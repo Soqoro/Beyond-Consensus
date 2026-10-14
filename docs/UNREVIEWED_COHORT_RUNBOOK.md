@@ -523,3 +523,23 @@ new GPU footprint and prospective mode-bound run preparation remain separate.
 Implementation API reference: pinned [XGrammar v0.1.32 TokenizerInfo](https://github.com/mlc-ai/xgrammar/blob/v0.1.32/python/xgrammar/tokenizer_info.py)
 provides decoded vocabulary bytes; the [HF processor](https://github.com/mlc-ai/xgrammar/blob/v0.1.32/python/xgrammar/contrib/hf.py)
 is initialized when the reasoning gate activates. No dependency upgrade is made.
+
+
+### Failed round-trip qualification: inspect before repeating (2026-10-14)
+
+The first unique-key native qualification failed its token-byte round-trip
+check after 148 CPU controls passed. Keep that evidence and its missing lock.
+Freeze the new source and run only the following in a CPU batch allocation,
+with a fresh report path (no model weights or grammar compilation):
+
+```bash
+"$BC_PYTHON" -I scripts/probe_unique_token_bytes.py \
+  --model-lock /dataset/suaq0001/beyond-consensus/diagnostics/rr-response-diagnostics.2O5s92/cpu/worker-lock.json \
+  --output "$BC_UNIQUE_BYTES/token-bytes.json"
+```
+
+Inspect the printed `normalizer` and `mismatches`. `native_matches_hf` separates
+native vocabulary decoding from tokenizer encode/decode changes;
+`native_matches_nfc` is a comparison, not authorization to normalize an action
+or collapse distinct keys. This report cannot issue a qualified lock or replace
+the failed native qualification. Do not rerun GPU diagnostics/cohorts yet.
