@@ -28,6 +28,22 @@ class UniqueKeys(unittest.TestCase):
         self.assertFalse(row['native_matches_nfc'])
         self.assertTrue(row['hf_matches_original'])
 
+    def test_native_controls_survive_nfc_without_collapsing_json_keys(self):
+        import unicodedata
+        good, bad = synthetic_controls()
+        for text in good + bad:
+            self.assertEqual(unicodedata.normalize('NFC', text), text)
+        text = good[4]
+        fields = json.loads(text)['content']['fields']
+        self.assertEqual(fields, {'é': 1, 'e\u0301': 2, '😀': 3})
+        # Literal decomposed UTF-8 remains valid to the guard too. This local
+        # byte test deliberately bypasses tokenizer input normalization.
+        raw = text.replace(r'e\u0301', 'e\u0301').encode('utf-8')
+        self.assertTrue(KeyState().allows(raw))
+        for split in range(len(raw) + 1):
+            state = KeyState().feed(raw[:split]).feed(raw[split:])
+            self.assertEqual(state.frames, [])
+
     def test_equivalent_public_schema_distinct_contract(self):
         old = 'reporecourse-json-reliable-v1-pool-7'
         self.assertEqual(action_schema(old), action_schema(MODE))

@@ -157,7 +157,9 @@ def synthetic_controls():
         '{"fields":{"x":{"x":1},"y":{"x":2}},"output_schema":{}}',
         '{"fields":{"x":[{"id":1},{"id":2}]},"output_schema":{}}',
         '{"fields":{"x":"quoted \\"x\\" and braces {}","y":"x"},"output_schema":{}}',
-        '{"fields":{"é":1,"é":2,"😀":3},"output_schema":{}}',
+        # NFC tokenizers collapse a literal decomposed key before generation.
+        # JSON escapes preserve its distinct decoded value without normalization.
+        r'{"fields":{"é":1,"e\u0301":2,"😀":3},"output_schema":{}}',
     ]
     bad = [
         '{"fields":{"x":1,"x":2},"output_schema":{}}',

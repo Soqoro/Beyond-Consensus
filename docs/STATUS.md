@@ -1,5 +1,28 @@
 # Implementation status and handoff
 
+## Tokenizer NFC finding and synthetic-control correction — 2026-10-14
+
+User-supplied `rr-unique-bytes.AW7qBk/token-bytes.json` identifies exactly one
+round-trip mismatch, positive case 4. The tokenizer reports normalizer `NFC`;
+native vocabulary concatenation equals HF decoding and the NFC form of the
+original control. Its literal decomposed key `e\u0301` became precomposed `é`,
+colliding with another key before the guard. This explains the qualification
+control failure; it is not evidence of a native decoded-vocabulary defect.
+
+Changed only that synthetic control's JSON spelling to an escaped combining
+mark. The JSON-decoded key remains decomposed and distinct from `é`, while the
+serialized control survives NFC unchanged. Tests require every native control
+to be NFC-stable, verify the distinct parsed keys, and retain all-byte-split
+coverage for literal decomposed UTF-8 directly through the guard. Runtime
+masking, strict parser semantics, output/CPU caps and the exact round-trip gate
+are unchanged. No model output is normalized or repaired. Previous failed
+qualification and probe evidence remain historical records. Native qualification
+must run afresh with the new control/source hashes; no qualified lock exists yet.
+
+Validation: full suite 500 tests (469 passed, 31 optional skips); all 12
+focused unique-key tests passed. Shell checks, isolated qualification CLI help,
+compile and diff checks passed. No cluster or model run performed locally.
+
 ## Unique-key native qualification blocked on token round trip — 2026-10-14
 
 User-supplied job 1096537 from `rr-unique-keys.0cf2vW`, source

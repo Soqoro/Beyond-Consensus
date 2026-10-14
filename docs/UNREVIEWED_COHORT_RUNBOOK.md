@@ -543,3 +543,15 @@ native vocabulary decoding from tokenizer encode/decode changes;
 `native_matches_nfc` is a comparison, not authorization to normalize an action
 or collapse distinct keys. This report cannot issue a qualified lock or replace
 the failed native qualification. Do not rerun GPU diagnostics/cohorts yet.
+
+
+### NFC control correction confirmed (2026-10-14)
+
+The short byte probe identified NFC normalization of positive case 4, with
+native bytes and HF decoding agreeing. The corrected control writes its
+combining mark as a JSON escape so the serialized text is NFC-stable while the
+parsed key stays distinct. After pushing and freezing the correction, repeat
+the no-skip CPU controls and native unique-key qualification in a fresh directory
+using the preceding qualification command. Do not repeat the short byte probe
+or a GPU run first. The exact byte round-trip check and all 44 native guard cases
+remain required; a new grammar report/lock has not yet been observed.
