@@ -554,4 +554,40 @@ parsed key stays distinct. After pushing and freezing the correction, repeat
 the no-skip CPU controls and native unique-key qualification in a fresh directory
 using the preceding qualification command. Do not repeat the short byte probe
 or a GPU run first. The exact byte round-trip check and all 44 native guard cases
-remain required; a new grammar report/lock has not yet been observed.
+remain required. The subsequent qualification passed, as recorded below.
+
+
+### Unique-key GPU preflight handoff (2026-10-14)
+
+The user supplied a passing native qualification from `rr-unique-nfc.lOjYvr`:
+151 CPU controls and 44 native grammar/guard cases. Preserve those files.
+After pushing the preflight adapter, freeze a fresh clean checkout and run
+fresh `scripts/check_rr_cohort.py --output "$BC_UNIQUE_GPU/controls.json"`
+in the pinned CPU environment from that checkout. Do not overwrite earlier
+controls. The successful native worker lock can be reused: qualification-key
+and native-case checks reject incompatible evidence before model loading.
+
+From the same frozen source, prepare the bounded manifest:
+
+```bash
+"$BC_PYTHON" -I scripts/prepare_rr_unique_preflight.py \
+  --model-lock /dataset/suaq0001/beyond-consensus/diagnostics/rr-unique-nfc.lOjYvr/worker-lock.json \
+  --controls "$BC_UNIQUE_GPU/controls.json" \
+  --output "$BC_UNIQUE_GPU/manifest.json"
+
+"$BC_PYTHON" -I scripts/bc.py submit \
+  --mode preflight --concurrency 1 \
+  --cluster "$BC_UNIQUE_GPU_CLUSTER" \
+  --manifest "$BC_UNIQUE_GPU/manifest.json" \
+  --model-lock /dataset/suaq0001/beyond-consensus/diagnostics/rr-unique-nfc.lOjYvr/worker-lock.json \
+  --dry-run
+```
+
+`BC_UNIQUE_GPU_CLUSTER` must identify the intended cluster configuration;
+partition availability is checked at submission, not assumed here. Actual
+submission uses the same command without `--dry-run` and a fresh receipt path.
+The shared registry and scheduler checks remain active. Do not launch a task
+cohort. Inspect all three calls in `preflight.json`, their generation diagnostics,
+resource reservations and memory observations after the scheduler job finishes.
+A started preflight cannot be repeated through resume/retry; preserve failures
+for diagnosis. No new GPU result has yet been observed.

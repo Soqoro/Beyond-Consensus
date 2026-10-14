@@ -1,5 +1,17 @@
 # Research protocol implemented here
 
+## Task-free unique-key GPU qualification (2026-10-14)
+
+The bounded follow-up uses three fixed synthetic calls, one model/GPU, worker
+output cap 2048 and context 16384. One call uses a 14080–14336-token prompt.
+Exact expected JSON semantics, strict parsing, EOS completion and the existing
+30-second decoder CPU allowance are checked. Returned actions are never executed.
+Each call has a separate 16384-token/1200-CPU-second diagnostic ledger; model
+loading and total host CPU are also reported. No task-specific or historical
+ledger is replaced. Errors retain observations and uncertain usage; a started
+attempt has no automatic retry. This qualification cannot authorize task runs,
+change planner caps, establish worst-case fit, or measure task competence.
+
 ## Opt-in duplicate-key decoding constraint (2026-10-14)
 
 The user authorized implementing prevention after the CPU native audit confirmed

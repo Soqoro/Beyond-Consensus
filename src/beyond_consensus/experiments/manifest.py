@@ -177,6 +177,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
 
 
 def validate_manifest(data: dict[str, Any]) -> RunConfig:
+    if data.get('schema') == 'rr-unique-preflight-manifest-v1':
+        from .rr_unique_preflight import validate
+        return validate(data)
     if data.get('schema') == 'rr-response-probe-v1':
         from .rr_response_probe import validate
         return validate(data)

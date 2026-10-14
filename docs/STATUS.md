@@ -1,5 +1,26 @@
 # Implementation status and handoff
 
+## Unique-key native qualification passed; GPU preflight prepared — 2026-10-14
+
+User-supplied `rr-unique-nfc.lOjYvr` evidence at commit
+`14d56d497ece7f9f16769e6fb95d90404b8a7949` reports 151 CPU controls passed
+without skips and all 44 native unique-key controls passed. Worker grammar
+qualification key is `57ee87220bbe1a520e233d95297fedcedd7e405ad3520fcc7e5f65a2c0200960`;
+context/output caps remain 16384/2048. Maximum reported per-case decoder CPU
+was 0.35181015999998166 seconds. The qualified worker lock exists. These are
+CPU/tokenizer/grammar results; no model generation was performed.
+
+Implemented `rr-unique-preflight-manifest-v1`: three fixed synthetic GPU calls
+(nested mapping, escaped keys, long-context mapping), one frozen model instance,
+concurrency one, no task inputs, tools, scoring, retry or cohort execution.
+It records generation, decoder CPU, memory and resource checkpoints, including
+uncertain usage on interruption. Long input is 14080–14336 tokens; every output
+cap is 2048. Started attempts cannot be resubmitted. Fresh adapter controls and
+compatible native unique-key evidence are required. Existing worker grammar
+qualification can be reused only after its hashes and all 44 cases are checked.
+GPU results remain pending; a pass will establish observed cases only, not
+worst-case memory fit or task competence. See the runbook handoff below.
+
 ## Tokenizer NFC finding and synthetic-control correction — 2026-10-14
 
 User-supplied `rr-unique-bytes.AW7qBk/token-bytes.json` identifies exactly one

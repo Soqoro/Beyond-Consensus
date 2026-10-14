@@ -18,7 +18,7 @@ def main():
     versions=runtime_versions()
     if any(versions.get(k)!=v for k,v in PINS.items()):p.error('Pinned CPU dependencies required')
     suite=unittest.TestSuite()
-    patterns=('test_rr_cohort.py','test_rr_rich_tasks.py','test_reporecourse_v2.py','test_reporecourse_scoped.py','test_rr_open_clean.py','test_rr_open_fault.py','test_rr_interface.py','test_rr_response_probe.py','test_unique_keys.py')
+    patterns=('test_rr_cohort.py','test_rr_rich_tasks.py','test_reporecourse_v2.py','test_reporecourse_scoped.py','test_rr_open_clean.py','test_rr_open_fault.py','test_rr_interface.py','test_rr_response_probe.py','test_unique_keys.py','test_rr_unique_preflight.py')
     for pattern in patterns:suite.addTests(unittest.defaultTestLoader.discover(str(ROOT/'tests'),pattern=pattern))
     start=time.process_time();r=unittest.TextTestRunner(verbosity=2).run(suite)
     ok=r.wasSuccessful() and not r.skipped

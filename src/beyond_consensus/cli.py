@@ -349,6 +349,9 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get('schema') == 'rr-unique-preflight-manifest-v1':
+            from .experiments.rr_unique_preflight import run as unique_preflight
+            return unique_preflight(frozen, args.model_lock, ROOT, args.output)
         if frozen.get('schema') == 'rr-response-probe-v1':
             raise BCError('Task-input response diagnostic is run-only, not task-free preflight')
         if frozen.get('schema') == 'rr-cohort-manifest-v1':

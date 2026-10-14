@@ -65,6 +65,8 @@ def control_hashes(root):
            'tests/test_rr_cohort.py','tests/test_rr_rich_tasks.py','tests/test_rr_interface.py','scripts/check_rr_cohort.py',
            'tests/test_rr_response_probe.py','scripts/prepare_rr_response_probe.py',
            'tests/test_unique_keys.py','src/beyond_consensus/models/unique_keys.py',
+           'tests/test_rr_unique_preflight.py','src/beyond_consensus/experiments/rr_unique_preflight.py',
+           'scripts/prepare_rr_unique_preflight.py',
            'src/beyond_consensus/experiments/rr_response_probe.py']
     return {p:file_hash(Path(root)/p) for p in paths}
 
