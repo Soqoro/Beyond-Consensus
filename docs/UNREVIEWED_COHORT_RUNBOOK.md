@@ -471,3 +471,26 @@ neither review clearance nor population inference follows from success.
   non-review blockers between reviewed and unreviewed lanes.
 
 No model inference, cluster submission, commit or push was performed locally.
+
+
+## Decoder boundary audit after response reconstruction (2026-10-14)
+
+Do not repeat the three model calls or launch another cohort. The next diagnostic
+is a CPU-only synthetic matcher/parser comparison. Freeze the pushed checkout
+and run the following inside a CPU batch allocation (Python 3.12 environment
+with the existing pinned tokenizer/XGrammar dependencies). Use a fresh output:
+
+```bash
+"$BC_PYTHON" -I scripts/probe_decoder_boundary.py \
+  --model-lock /dataset/suaq0001/beyond-consensus/diagnostics/rr-response-diagnostics.2O5s92/cpu/worker-lock.json \
+  --output "$BC_BOUNDARY/decoder-boundary.json"
+```
+
+The Slurm wrapper must explicitly `cd` to the frozen source directory; it must
+not derive the source path from its spooled script location. This program uses
+no model weights, GPU, task sources, hidden evaluator or historical response.
+It first reuses the existing metadata/version and baseline decoder controls.
+Its `observed` status means the synthetic comparison completed, not that the
+runtime parser and grammar necessarily agree on duplicate-key texts. Inspect
+`cases` (direct matcher, EOS and both gated routes) and `errors` together. Save
+this report separately; it cannot replace a qualified lock or historical score.

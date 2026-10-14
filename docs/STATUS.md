@@ -1,5 +1,41 @@
 # Implementation status and handoff
 
+## Response diagnostic result and decoder boundary audit — 2026-10-14
+
+User-supplied report `8ede5e0491aad8a9e79b7e6b65e9476597558fd8572bb51e942a688741b76fef`
+completed all three reconstructed-input calls. Requirement F and prompted clean
+parsed; prompted F was rejected for `duplicate_object_key` at EOS, with 772
+output tokens (577 reasoning), below the 2048 cap. Total logical tokens: 11534;
+charged call CPU: 186.200644588 seconds; wall: 410.931751202 seconds. Uncertain
+usage is zero. No actions/SQL/evaluation ran and no historical score changed.
+The reconstructed input counts (2779, 3189, 3203) differ from the historical
+counts (2781, 3191, 3206); this is not exact replay or historical attribution.
+
+Inspection finds `constraint_complete` is assigned by post-generation strict
+validation, not by querying the native matcher. EOS plus false therefore does
+not by itself establish premature EOS or a reasoning-gate defect. The runtime
+parser rejects duplicate keys at every nesting depth. Public schemas contain
+arbitrary-key objects; declared envelope property order is not a demonstrated
+uniqueness guarantee for those objects. Raw rejected text was not retained, so
+the location of the duplicate in the observed response remains unknown.
+
+Added `scripts/probe_decoder_boundary.py`: separate CPU/tokenizer-only audit of
+five synthetic texts (valid mapping, duplicate envelope, nested duplicate,
+escaped-key duplicate, incomplete action), every configured stop ID, and both
+reasoning-close and no-reasoning routes. It compares direct native matcher/EOS
+acceptance, actual logits masking, and strict parser acceptance. Duplicate
+acceptance is recorded as a grammar/parser differential, not silently waived.
+Positive rejection, incomplete EOS acceptance, or matcher/processor disagreement
+fails the controls. Existing metadata/version/baseline qualification checks run
+first, but this audit issues no qualification lock or task authorization.
+No model generation, task inputs, retries, grammar/runtime changes or historical
+rescoring are introduced. Native tokenizer/matcher measurements remain pending
+on the cluster; local tests use explicitly labelled doubles.
+
+Validation: full suite 488 tests (457 passed, 31 optional skips); all three
+new boundary controls passed. Shell checks (10 files), isolated CLI help,
+compile checks and diff whitespace checks passed. No cluster jobs submitted.
+
 ## Bounded response reconstruction implementation — 2026-10-14
 
 The user reports 130 no-skip CPU controls and four successful task-free GPU

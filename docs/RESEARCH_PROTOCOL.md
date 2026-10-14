@@ -1,5 +1,18 @@
 # Research protocol implemented here
 
+## Synthetic decoder boundary audit (2026-10-14)
+
+Following the three-call response diagnostic, inspect matcher/strict-parser
+agreement using fixed synthetic controls only. This CPU/tokenizer-only audit
+must distinguish grammar acceptance, stop-token masking and post-generation
+validation. A duplicate-key rejection at EOS is not evidence of budget
+exhaustion or premature grammar termination. Arbitrary-key object uniqueness
+must not be inferred from declared envelope ordering. No model generation,
+additional task reconstruction, tool execution, parser relaxation, response
+repair, historical attribution or expanded cohort is authorized by this audit.
+No new qualification lock is issued; runtime/grammar changes, if later justified,
+require their own renewed controls and compatibility assessment.
+
 ## Selected reconstructed-input response diagnostic (2026-10-14)
 
 The user requested proceeding with a bounded diagnostic after the diagnostic
