@@ -29,7 +29,7 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
         if backend is not None:raise BCError('Response diagnostic cannot use an injected backend')
         from .rr_response_probe import run
         return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)
-    if manifest.get('schema') == 'rr-cohort-manifest-v1':
+    if manifest.get('schema') in ('rr-cohort-manifest-v1','rr-sampled-run-manifest-v1'):
         if backend is not None:raise BCError('Cohort cannot use an injected backend')
         from .rr_cohort import run
         return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)

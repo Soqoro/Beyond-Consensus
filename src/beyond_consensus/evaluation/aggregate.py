@@ -21,6 +21,9 @@ def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
     if manifest.get('schema') == 'rr-response-probe-v1':
         from ..experiments.rr_response_probe import aggregate as response_summary
         return response_summary(manifest,root)
+    if manifest.get('schema') == 'rr-sampled-run-manifest-v1':
+        from ..experiments.rr_sampled_run import aggregate as sampled_summary
+        return sampled_summary(manifest, root)
     if manifest.get('schema') == 'rr-cohort-manifest-v1':
         from ..experiments.rr_cohort import aggregate as cohort_summary
         return cohort_summary(manifest,root)

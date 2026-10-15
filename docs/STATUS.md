@@ -1,5 +1,39 @@
 # Implementation status and handoff
 
+## Sampled organization execution adapter prepared — 2026-10-15
+
+The user supplied the completed normal audit from `rr-normal-audit.BwJ9rS`:
+internal bindings/inventory verified, current compatibility `compatible`, no
+changed files/errors, 3 observed calls, 17521 tokens and zero uncertainty.
+Scheduler completion remains separate evidence; no new task results exist.
+
+Implemented opt-in `rr-sampled-run-manifest-v1` through the existing cohort
+runner and shared registry. Six fixed catalog organizations / twelve clean+F
+conditions, no generated planner calls, seeded meaningful owner committed before
+clean execution, same scoped worker/JIT/monitor/evaluator, branch caps and loss
+semantics. Offline catalog cost stays separate; fresh measured receipt and
+validation CPU is logically charged in both branches. Ordinary semantic failure
+continues to F; interruption/infrastructure/conformance failure preserves
+uncertainty and pauses remaining work. Saved results bind to actual runtime
+schedules without rewriting historical proposal receipts.
+
+Preparation rechecks all selected CPU reference certificates, source/task and
+model bindings, the complete normal audit, current no-skip adapter controls,
+and actual-plan worker prompt/reference-serialization footprints. Existing
+review deferrals remain labelled; an exact twelve-condition approval is still
+required. No native grammar, model implementation or portable core was changed,
+so compatible saved locks/catalog/GPU evidence can be reused after these checks.
+No jobs were submitted, task models executed, commits created or code pushed.
+See [the staged Jupyter commands](SAMPLED_ORGANIZATION_RUNBOOK.md).
+
+Validation: **568 tests run, 535 passed, 33 optional-dependency skips**. All 15
+new adapter tests passed, including the actual scoped engine with a CPU model
+interface double. Shell validation (10 files), runbook shell syntax, compileall,
+diff whitespace and isolated stdlib CLI help passed. The local environment lacks
+the pinned optional executors; the cluster no-skip control run remains required.
+No real model or source-backed cluster execution was performed locally.
+
+
 ## Normal guarded qualification reported; read-only audit prepared — 2026-10-15
 
 The user reports experiment

@@ -222,6 +222,12 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
             raise BCError('Response diagnostic has no retry, override or queued campaign')
         submission(manifest,model_lock,existing_snapshot or repo,mode,concurrency,
                    Path(config.output_root)/manifest['experiment_id'])
+    if manifest.get('schema') == 'rr-sampled-run-manifest-v1':
+        from .rr_sampled_run import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError('Sampled study has no retry, override or queued campaign')
+        submission(manifest,existing_snapshot or repo,model_lock,mode,concurrency,
+                   Path(config.output_root)/manifest['experiment_id'])
     if manifest.get('schema') == 'rr-cohort-manifest-v1':
         from .rr_cohort import submission
         if serialize or failed_shards is not None or condition is not None:
@@ -370,6 +376,11 @@ def doctor(config: ClusterConfig | None = None) -> dict[str, Any]:
 
 
 def failed_shard_ids(manifest: dict[str, Any], output: Path) -> list[int]:
+    if manifest.get('schema') == 'rr-sampled-run-manifest-v1':
+        from .rr_sampled_run import aggregate
+        records=aggregate(manifest,output)['configuration_records']
+        return [e['shard'] for e in manifest['episodes']
+                if records.get(e['episode_id'],{}).get('status') != 'completed']
     if manifest.get('schema') == 'rr-cohort-manifest-v1':
         from .rr_cohort import aggregate
         # Cohort records bind the whole manifest, not the legacy episode row.

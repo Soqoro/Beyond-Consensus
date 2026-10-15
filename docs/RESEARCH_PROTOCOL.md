@@ -1,5 +1,18 @@
 # Research protocol implemented here
 
+## Sampled execution adapter scope (2026-10-15)
+
+The user authorized local implementation after a successful normal decoder audit.
+The new adapter prepares six CPU-qualified authored organizations and twelve
+clean/F conditions through the shared runner. It invokes no model planner;
+branch receipt/validation work is measured prospectively and logically charged
+in each branch, while catalog construction/reference expense remains separate.
+Historical failed/blocked proposals and scores remain unchanged. Existing
+review deferrals are explicit development limitations, not independent or rights
+clearance. Renewed no-skip adapter controls, actual-plan tokenizer footprints,
+exact source/normal-evidence bindings and twelve-condition approval precede any
+submission. No GPU execution is authorized by this implementation request.
+
 ## Bounded diagnosis and organization characterization (2026-10-15)
 
 The user explicitly authorized two parallel local workstreams after the failed

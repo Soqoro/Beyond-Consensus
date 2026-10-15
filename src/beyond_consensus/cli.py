@@ -357,7 +357,7 @@ def dispatch(args: argparse.Namespace) -> Any:
             return unique_preflight(frozen, args.model_lock, ROOT, args.output)
         if frozen.get('schema') == 'rr-response-probe-v1':
             raise BCError('Task-input response diagnostic is run-only, not task-free preflight')
-        if frozen.get('schema') == 'rr-cohort-manifest-v1':
+        if frozen.get('schema') in ('rr-cohort-manifest-v1','rr-sampled-run-manifest-v1'):
             raise BCError('Prospective cohort is run-only; preflight evidence is separate')
         if frozen.get("schema") == "rr-open-fault-manifest-v1":
             raise BCError("Conditional fault manifests are run-only")

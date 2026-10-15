@@ -276,6 +276,10 @@ def submission(m,root,worker,mode,concurrency,output,shard=None):
     review.require(mode=='run' and concurrency==1,'Prospective qualification/pilot uses concurrency one')
     verify(m,root,worker)
     review.require(m['approval'] is not None and m['task_execution_allowed'],'Cohort needs explicit scoped approval')
+    attempt_checks(m,output,shard)
+
+
+def attempt_checks(m,output,shard=None):
     output=Path(output)
     review.require(not (output/'cohort-pause.json').exists(),'Cohort paused: preserve unrun configurations; no automatic continuation')
     review.require(not (output/'manifest.json').exists() or read_json(output/'manifest.json')==m,'Output manifest mismatch')
@@ -308,6 +312,11 @@ def execute_configuration(m,c,public,private,backend,switch,save):
     except Rejected:frozen.update(status='invalid_plan',plan=None,error='planning_resource_exhausted')
     frozen['planning_resources']=deepcopy(vars(resources));frozen['frozen_id']=digest({k:v for k,v in frozen.items() if k!='frozen_id'})
     save('frozen-plan',frozen);schedule=cohort.schedule(c,frozen)
+    return execute_schedule(c,schedule,public,private,backend,switch,save)
+
+
+def execute_schedule(c,schedule,public,private,backend,switch,save):
+    frozen=schedule['frozen']
     def execute(branches,branch):
         from reporecourse.engine import ModelWorker
         switch('json');checkpoint=None;begin=time.process_time()
@@ -336,24 +345,31 @@ def execute_configuration(m,c,public,private,backend,switch,save):
 
 def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
     review.require(type(shard) is int and 0<=shard<m['shards'] and not retry_failures and model_lock is not None,'Explicit configuration shard, no retry')
+    from . import rr_sampled_run
+    adapter=rr_sampled_run if m.get('schema')==rr_sampled_run.SCHEMA else None
+    admit=adapter.submission if adapter else submission
     worker=read_json(model_lock);output=Path(output)
-    submission(m,root,worker,'run',1,output,shard)
+    admit(m,root,worker,'run',1,output,shard)
     from ..models.transformers_backend import require_allocation
     require_allocation();c=m['configurations'][shard];ep=output/'episodes'/c['configuration_id'];ep.mkdir(parents=True,exist_ok=True)
     with directory_lock(ep/'.lock'):
-        submission(m,root,worker,'run',1,output,shard)
+        admit(m,root,worker,'run',1,output,shard)
         atomic_json(output/'manifest.json',m);atomic_json(ep/'started.json',{'manifest_hash':digest(m)})
         handlers={};backend=None
         def save(name,data):atomic_json(ep/(name+'.json'),dict(manifest_hash=digest(m),content=data))
         def stop(*_):raise InterruptedError('allocation_termination')
         for sig in (signal.SIGTERM,signal.SIGINT):handlers[sig]=signal.signal(sig,stop)
         try:
-            backend,switch,_=profile.qualified_backend(m['backend_profile'],model_lock,root)
-            prior=read_json(Path(m['evidence']['footprint_audit']['run'])/'preflight.json')['runtime']
+            if adapter:
+                backend,switch,prior=adapter.load_backend(m,model_lock)
+            else:
+                backend,switch,_=profile.qualified_backend(m['backend_profile'],model_lock,root)
+                prior=read_json(Path(m['evidence']['footprint_audit']['run'])/'preflight.json')['runtime']
             for key in ('hardware','compute_capability','vram_total_bytes','torch_cuda','dependencies'):
                 review.require(backend.runtime[key]==prior[key],'Allocation differs from footprint: '+key)
             _,public=load_task(c['task'],m['sources_root']);private=private_task(c['task'])
-            row=execute_configuration(m,c,public,private,backend,switch,save)
+            execute=adapter.execute_configuration if adapter else execute_configuration
+            row=execute(m,c,public,private,backend,switch,save)
         except (Exception,KeyboardInterrupt) as exc:
             row=dict(configuration_id=c['configuration_id'],status='interrupted' if isinstance(exc,(KeyboardInterrupt,InterruptedError)) else 'infrastructure_failed',
                      branches=[],planning=None,error_type=type(exc).__name__,target_status='unresolved')
@@ -380,8 +396,8 @@ def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
         return [row]
 
 
-def aggregate(m,output):
-    validate(m);records={}
+def read_records(m,output):
+    records={}
     for c in m['configurations']:
         ep=Path(output)/'episodes'/c['configuration_id'];path=ep/'result.json'
         if path.exists():
@@ -437,6 +453,7 @@ def aggregate(m,output):
                 branches.append(result)
             records[c['configuration_id']]=dict(configuration_id=c['configuration_id'],planning=schedule['frozen'],
                 status='interrupted' if schedule['branches'] else schedule['planning_status'],target_status=schedule['target_status'],branches=branches,
+                schedule_id=schedule['schedule_id'],
                 read_only_reconstruction=True)
         if c['configuration_id'] in records and records[c['configuration_id']].get('branches'):
             r=records[c['configuration_id']]
@@ -449,6 +466,11 @@ def aggregate(m,output):
             review.require(len(expected)==len(r['branches']) and all(
                 all(a[k]==b.get(k) for k in ('branch_id','track','target')) for a,b in zip(expected,r['branches'])),
                 'Result branch coverage changed')
+    return records
+
+
+def aggregate(m,output):
+    validate(m);records=read_records(m,output)
     summary=cohort.summarize(m['configurations'],records)
     for row in summary['configurations']:
         card=m['task_bindings'][row['task']]['card'] or {}

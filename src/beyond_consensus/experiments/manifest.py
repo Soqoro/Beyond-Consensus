@@ -186,6 +186,9 @@ def validate_manifest(data: dict[str, Any]) -> RunConfig:
     if data.get('schema') == 'rr-response-probe-v1':
         from .rr_response_probe import validate
         return validate(data)
+    if data.get('schema') == 'rr-sampled-run-manifest-v1':
+        from .rr_sampled_run import validate
+        return validate(data)
     if data.get('schema') == 'rr-cohort-manifest-v1':
         from .rr_cohort import validate
         return validate(data)
