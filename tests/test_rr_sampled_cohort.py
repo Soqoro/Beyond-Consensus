@@ -159,4 +159,58 @@ class EvidenceBindings(unittest.TestCase):
         candidate['plan_id']=digest(candidate['plan'])
         self.assertFalse(sampled.qualified_candidate(candidate,task,public,{},catalog))
 
+class SavedRecordCLI(unittest.TestCase):
+    def test_large_catalog_proposal_and_result_records_round_trip(self):
+        import json
+        import subprocess
+        from tempfile import TemporaryDirectory
+        from reporecourse.common import load,write_new
+        root=Path(__file__).resolve().parents[1]
+        with TemporaryDirectory() as directory:
+            directory=Path(directory)
+            # Synthetic offline evidence exercises serialization, not task qualification.
+            catalog=dict(schema='rr-organization-catalog-v1',tasks=[],
+                offline_costs={'synthetic_record_padding':'x'*(3*1024*1024)})
+            catalog['catalog_id']=digest(catalog)
+            path=directory/'catalog.json';write_new(path,catalog)
+            with self.assertRaisesRegex(Rejected,'file_size'):load(path)
+            proposal_path=directory/'proposal.json'
+            result=subprocess.run([sys.executable,'-I','-S',str(root/'scripts/prepare_rr_sampled_cohort.py'),
+                '--catalog',str(path),'--sources',str(directory/'missing-sources'),
+                '--output',str(proposal_path),'--approval-template',str(directory/'approval.json')],
+                capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            proposal=json.loads(proposal_path.read_text())
+            self.assertEqual(proposal['catalog'],catalog)
+            self.assertEqual(proposal['planned_conditions'],12)
+            self.assertFalse(proposal['task_execution_allowed'])
+            self.assertEqual(len(proposal['missing_slots']),6)
+            self.assertGreater(proposal_path.stat().st_size,2097152)
+            records=directory/'records.json'
+            records.write_text('{}'+' '*(3*1024*1024))
+            output=directory/'analysis.json'
+            result=subprocess.run([sys.executable,'-I','-S',str(root/'scripts/analyze_rr_sampled_cohort.py'),
+                '--proposal',str(proposal_path),'--records',str(records),'--output',str(output)],
+                capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            report=json.loads(output.read_text())
+            self.assertEqual(len(report['missing_slots']),6)
+            self.assertTrue(all(t['clean']['complete_rate'] is None for t in report['by_task'].values()))
+
+    def test_saved_record_cli_keeps_strict_json_rejections(self):
+        import subprocess
+        from tempfile import TemporaryDirectory
+        root=Path(__file__).resolve().parents[1]
+        with TemporaryDirectory() as directory:
+            directory=Path(directory);path=directory/'catalog.json'
+            for raw in ('{"tasks":[],"tasks":[]}', '{"value":NaN}', '{"value":Infinity}', '[]'):
+                path.write_text(raw)
+                result=subprocess.run([sys.executable,'-I','-S',str(root/'scripts/prepare_rr_sampled_cohort.py'),
+                    '--catalog',str(path),'--sources',str(directory/'missing'),
+                    '--output',str(directory/'proposal.json'),'--approval-template',str(directory/'approval.json')],
+                    capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+                self.assertFalse((directory/'proposal.json').exists())
+
+
 if __name__=='__main__':unittest.main()

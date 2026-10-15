@@ -1,5 +1,34 @@
 # Implementation status and handoff
 
+## Qualified catalog export loading correction — 2026-10-15
+
+User-supplied cluster summary at frozen commit
+`08872a75f07520d98845c74e79ffb34a0791f885` (`rr-two-workstreams.9vczlH`)
+reports 197 controls passed with zero skips in each CPU workstream, both native
+and guarded grammar qualifications passed (16384/2048), and all six selected
+organizations CPU-reference-qualified (three per task). Task review remains
+pending; these are not GPU/model competence results.
+
+The matched diagnostic proposal was written successfully. The sampled proposal
+then failed while reading `catalog-cpu/catalog.json`: the generic `common.load`
+2 MiB boundary rejected the full offline qualification record before any plan
+preparation or execution. Proposal and analysis CLIs now reuse the existing
+128 MiB bounded operator-record loader for catalogs, embedded proposals, saved
+result records and normal-qualification reports. Duplicate-key, nonfinite,
+object/depth/node checks remain; ordinary worker/task JSON limits are unchanged.
+No reference, model, grammar, task semantics or historical evidence was changed.
+
+Keep the successful diagnostic proposal and its original frozen source. After
+pushing this loader fix, use the updated proposal/analysis scripts with the saved
+catalog and locks, writing fresh outputs. No new CPU reference or grammar run is
+needed for this script-only read-boundary fix. New GPU work remains separately
+gated. Regression coverage includes an actual CLI round trip with a >2 MiB
+catalog/proposal/results file and rejection of malformed operator records.
+
+Validation: full suite **548 tests: 515 passed, 33 optional skips**; shell
+validation, compileall, diff check and isolated stdlib CLI help passed. No jobs
+were submitted and no new remote evidence was produced locally.
+
 ## Matched decoder diagnosis and organization sampler implemented — 2026-10-15
 
 The new local implementation prepares two bounded workstreams. It does not

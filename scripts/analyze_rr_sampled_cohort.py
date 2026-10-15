@@ -4,7 +4,8 @@ from pathlib import Path
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
-from reporecourse.common import load,write_new
+from reporecourse.common import write_new
+from beyond_consensus.experiments.rr_open_clean import load_control_record
 from reporecourse.sampled_cohort import analyze
 
 
@@ -14,7 +15,7 @@ def main():
     p.add_argument('--records',type=Path,help='Optional object mapping configuration IDs to saved results.')
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args()
-    write_new(args.output,analyze(load(args.proposal),load(args.records) if args.records else {}))
+    write_new(args.output,analyze(load_control_record(args.proposal),load_control_record(args.records) if args.records else {}))
     print('Read-only analysis:',args.output)
 
 if __name__=='__main__':main()

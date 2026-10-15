@@ -5,6 +5,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
 from reporecourse.common import load,write_new,Rejected
+from beyond_consensus.experiments.rr_open_clean import load_control_record
 from reporecourse.tasks import load_task
 from reporecourse.sampled_cohort import proposal,approval_template,TASKS
 
@@ -21,9 +22,9 @@ def main():
     for task in TASKS:
         try:publics[task]=load_task(task,args.sources)[1]
         except (Rejected,OSError):pass
-    value=proposal(load(args.catalog),publics,
+    value=proposal(load_control_record(args.catalog),publics,
         worker_lock=load(args.worker_lock) if args.worker_lock else None,
-        normal_qualification=load(args.normal_qualification) if args.normal_qualification else None)
+        normal_qualification=load_control_record(args.normal_qualification) if args.normal_qualification else None)
     write_new(args.output,value);write_new(args.approval_template,approval_template(value))
     print('Proposal:',args.output)
     print('Status:',value['status'])

@@ -368,3 +368,22 @@ locating errors: [CUDA semantics](https://docs.pytorch.org/docs/2.10/notes/cuda.
 and [CUDA environment variables](https://docs.pytorch.org/docs/2.10/cuda_environment_variables.html).
 This diagnostic applies that setting equally to both fresh processes. It changes
 execution timing; it does not establish a production fix or kernel cause.
+
+
+## Recovery: qualified catalog exceeds the generic JSON limit
+
+If proposal preparation raises `reporecourse.common.Rejected: file_size` at
+`load(args.catalog)`, retain the completed CPU outputs and diagnostic proposal.
+The sampled CLI now uses the existing bounded 128 MiB operator-record loader;
+worker/action limits remain unchanged. Analysis uses that loader too because a
+sampled proposal embeds the catalog. This is a read-boundary correction, not a
+new qualification or altered reference outcome.
+
+After reviewing/pushing/pulling the correction, run the **updated**
+`scripts/prepare_rr_sampled_cohort.py` and `scripts/analyze_rr_sampled_cohort.py`
+from the updated repository with the existing catalog, source packs and worker
+lock, and fresh output paths. Do not edit the old frozen source or regenerate
+the already written diagnostic proposal. Its eventual submission must still
+use its original frozen source and controls. No GPU submission is part of this
+recovery. The proposal's runtime/task hashes must still match the saved catalog;
+the fix does not waive any incompatibility check.
