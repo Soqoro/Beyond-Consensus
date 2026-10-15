@@ -1,6 +1,10 @@
 # Bounded decoder diagnosis and organization characterization
 
-**15 October 2026 — development preparation, no new GPU result**
+**15 October 2026 — development preparation; subsequent reported GPU evidence below**
+
+Update: the user has now supplied a successful normal guarded three-call
+qualification. See [the evidence review and read-only audit commands](NORMAL_GUARDED_QUALIFICATION_REVIEW.md).
+The original failure remains unresolved and sampled task execution remains blocked.
 
 ## Scientific stopping point
 

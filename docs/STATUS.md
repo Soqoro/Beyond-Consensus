@@ -1,5 +1,41 @@
 # Implementation status and handoff
 
+## Normal guarded qualification reported; read-only audit prepared — 2026-10-15
+
+The user reports experiment
+`5dd357626b3ad6a3677f6bca7ca1b7e548557c1b86fe6a7c03fdc91a701c96a0`,
+job **1097545_0**, completed 0:0 on A100-SXM4-80GB. All three normal-mode
+synthetic calls passed: nested mapping (91 input / 601 output), escaped keys
+(95 / 1559), and long-context mapping (14335 / 840). Total **17521 tokens**,
+zero uncertain tokens, **318.633 seconds** wall time, one model instance.
+All responses ended at EOS with complete constraints and strict parser validity;
+no accelerator exception was observed. These are user-supplied summaries, not
+locally verified full cluster artifacts. They do not resolve the historical
+accelerator failure, establish worst-case fit, or measure task competence.
+
+Added `scripts/audit_rr_unique_normal.py`: read-only verification of the saved
+normal manifest/report, exact diagnostic approval binding, immutable snapshot
+inventory, resolved lock/settings/packages/template, per-call admissions and
+usage ledgers, completion and memory observations. It separately compares the
+current decoder/core implementation and CPU qualification key with saved
+qualification evidence. It never imports historical snapshot code, runs models,
+executes SQL, edits evidence, approves tasks, or submits jobs. Saved normal
+responses contain hashes, not text: their semantic correctness remains the
+frozen runtime observation, not an independent reparse. Scheduler completion
+and environment authenticity are not independently certified by this audit.
+
+Validation: full suite **553 tests, 520 passed, 33 optional skips**; shell
+validation, compileall, diff whitespace and isolated stdlib CLI help passed.
+The new audit tests use CPU doubles, not new GPU evidence.
+
+The next action is to run this auditor against the existing successful output,
+not repeat GPU qualification. See [commands and remaining gates](NORMAL_GUARDED_QUALIFICATION_REVIEW.md).
+The six-plan/twelve-condition sampled proposal remains blocked. No sampled GPU
+execution adapter or task approval was added by this read-only audit change;
+current-contract controls, exact catalog/compatibility review and prospective
+execution wiring remain necessary. Historical blocked proposals stay unchanged.
+
+
 ## Qualified catalog export loading correction — 2026-10-15
 
 User-supplied cluster summary at frozen commit
