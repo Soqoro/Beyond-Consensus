@@ -4,6 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 import json
+import os
 import unittest
 
 from tests.support import ROOT
@@ -67,8 +68,14 @@ class Boundaries(unittest.TestCase):
         m,_=candidate()
         with TemporaryDirectory() as d,patch.object(adapter,'verify'),patch('beyond_consensus.experiments.cluster.command',side_effect=AssertionError('No scheduler before approval')):
             cluster=ClusterConfig('test','00:30:00',32,'/usr/bin/python',d,d,d,d)
-            with self.assertRaisesRegex(BCError,'approval'):submit(ROOT,cluster,m,{},1,dry_run=True)
-            with self.assertRaisesRegex(BCError,'no retry'):submit(ROOT,cluster,m,{},1,dry_run=True,failed_shards=[0])
+            # Qualification runs inside Slurm. Simulate the login terminal
+            # only within these mocked calls; never change the batch environment.
+            with patch.dict(os.environ, {'SLURM_JOB_ID': ''}):
+                with self.assertRaisesRegex(BCError,'approval'):submit(ROOT,cluster,m,{},1,dry_run=True)
+                with self.assertRaisesRegex(BCError,'no retry'):submit(ROOT,cluster,m,{},1,dry_run=True,failed_shards=[0])
+            with patch.dict(os.environ, {'SLURM_JOB_ID': 'synthetic-cpu-allocation'}):
+                with self.assertRaisesRegex(BCError,'Batch/allocation'):
+                    submit(ROOT,cluster,m,{},1,dry_run=True)
 
     def test_debug_environment_rejected_before_model_load(self):
         import os

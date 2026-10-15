@@ -1,5 +1,27 @@
 # Implementation status and handoff
 
+## Sampled CPU control: Slurm test-environment correction — 2026-10-15
+
+User output from `rr-sampled-ready.cDZuz5` reports 219 CPU tests with one
+failure. `test_scheduler_route_has_no_pending_or_retry_bypass` expected the
+approval error, but the inherited `SLURM_JOB_ID` correctly triggered the earlier
+batch self-submission prohibition. This is a test-environment assumption, not a
+failed model, reference, or scheduler guard. Preparation stopped at the controls;
+no footprint/proposal/review or task submission was reached by that script.
+
+The test now temporarily simulates a login-terminal environment inside mocked
+submission calls, then explicitly asserts that an allocation environment rejects
+submission. The scheduler command remains mocked to fail if reached. Production
+submission logic, job environment, qualifications and scientific behavior are
+unchanged. Preserve the failed directory; after pushing, rerun CPU preparation
+in a fresh directory using the sampled runbook. Existing catalog/worker-lock/
+normal-audit evidence is reusable subject to the unchanged compatibility checks.
+
+Validation: all 15 sampled adapter tests passed with an inherited synthetic
+`SLURM_JOB_ID`. Full suite: **568 tests, 535 passed, 33 optional skips**.
+Shell validation, compileall, diff whitespace and isolated stdlib CLI help passed.
+
+
 ## Sampled organization execution adapter prepared — 2026-10-15
 
 The user supplied the completed normal audit from `rr-normal-audit.BwJ9rS`:
