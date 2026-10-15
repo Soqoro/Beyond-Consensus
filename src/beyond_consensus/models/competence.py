@@ -52,6 +52,7 @@ def qualification_key(lock, packages, context_limit=8192, mode="sqlite-json-sche
             'scripts/check_action_constraints.py',
             'src/beyond_consensus/models/constrained.py',
             'src/beyond_consensus/models/action_schema.py', 'src/beyond_consensus/models/transformers_backend.py',
+            'src/beyond_consensus/models/decoder_trace.py',
             *(['src/beyond_consensus/models/unique_keys.py'] if mode == 'reporecourse-json-unique-v1-pool-7' else []),
             *(['src/reporecourse/action_schema.py'] if mode.startswith('reporecourse-') else []))}})
 

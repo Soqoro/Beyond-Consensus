@@ -21,6 +21,8 @@ RETRYABLE = {"interrupted", "infrastructure_failed"}
 def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: int | None = None,
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
+    if manifest.get('schema') == 'rr-decoder-diagnostic-v1':
+        raise BCError('Decoder diagnostic is preflight-only; task runner forbidden')
     if manifest.get('schema') == 'rr-unique-preflight-manifest-v1':
         raise BCError('Unique preflight is preflight-only; task runner forbidden')
     if manifest.get('schema') == 'rr-response-probe-v1':

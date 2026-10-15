@@ -1,5 +1,21 @@
 # Four-task unreviewed development run
 
+## Current handoff: bounded decoder diagnosis and CPU organization catalog — 15 October 2026
+
+Use [the two-workstream runbook](DECODER_AND_ORGANIZATION_WORKSTREAMS.md).
+It supersedes the earlier immediate three-call unique-key rerun instructions.
+The failed `a3aadd…` attempt remains immutable. First prepare one exact approved
+native/guarded pair (two calls per fresh process, synchronous debugging in both).
+Only reviewed diagnostic evidence can support a separately approved normal
+three-call qualification. Renew both CPU grammar locks after instrumentation.
+No task execution is authorized by either diagnostic.
+
+The CPU catalog samples only Jaffle payment release and GitHub multioperation
+integration. Its six selected plans require real source-backed reference and
+negative controls. The twelve-condition proposal retains missing slots and all
+closed gates; there is no sampled GPU submission route yet. Use the existing
+frozen-source CPU wrapper modes in that document. Do not rerun old task cohorts.
+
 ## Three-call response reconstruction — 14 October 2026
 
 This separate diagnostic does not repeat the cohort. Commit/push the diagnostic
@@ -591,3 +607,21 @@ cohort. Inspect all three calls in `preflight.json`, their generation diagnostic
 resource reservations and memory observations after the scheduler job finishes.
 A started preflight cannot be repeated through resume/retry; preserve failures
 for diagnosis. No new GPU result has yet been observed.
+
+
+### Unique-key preflight error capture follow-up (2026-10-15)
+
+The first GPU preflight `a3aadd69…` passed nested mapping, then failed escaped
+keys with AcceleratorError and no stderr message. Long-context mapping did not
+run. Preserve that output and its 2143 uncertain tokens; do not remove its
+started marker. The updated adapter adds `failure_stage`, `error_message`,
+`error_message_truncated`, and `error_frames` to call/load errors. Messages are
+limited to 4096 characters and frames to twelve, without local values. These
+fields are for fixed synthetic probes only, not worker feedback or task exports.
+
+After pushing, use the same preparation workflow in a fresh diagnostic directory
+and frozen source, with renewed adapter CPU controls. The unchanged native
+worker lock remains subject to its existing compatibility checks. Inspect the
+new structured error fields, not just stderr. No decoder fix, cap increase,
+CUDA synchronization setting, or dependency change is justified by the old
+exception type alone. No new result is claimed.

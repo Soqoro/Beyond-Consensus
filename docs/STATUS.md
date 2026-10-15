@@ -1,5 +1,74 @@
 # Implementation status and handoff
 
+## Matched decoder diagnosis and organization sampler implemented — 2026-10-15
+
+The new local implementation prepares two bounded workstreams. It does not
+resolve the historical accelerator failure or authorize a new task campaign.
+See [scope, limitations and exact commands](DECODER_AND_ORGANIZATION_WORKSTREAMS.md).
+
+- Decoder: one separately approved four-call pair, native strict parser versus
+  the same grammar/parser with unique-key guarding, in two fresh processes with
+  launch blocking equally enabled. Host checkpoints retain input IDs/hashes,
+  bounded stage/mask/error metadata, and uncertain dispatched work. Fatal errors
+  stop the arm; later calls stay not attempted. Both CPU grammar locks must be
+  renewed because the qualification-bound implementation changed.
+- Normal qualification: one separately reviewed and approved three-call attempt
+  with launch blocking disabled. Diagnostic success is not normal qualification.
+  The previous nested/escaped/long-context prompts and parser semantics remain.
+- Catalog: deterministic public recipes select independent, grouped and shared
+  organizations for Jaffle payment release and GitHub multioperation integration.
+  Relabel duplicates and inapplicable transformations are retained as such;
+  identity concentration differs from merging assignment contexts. Private
+  reference witnesses feed only existing restricted execution and evaluation.
+- Qualification/export: source integrity, complete obligations, semantic/missing
+  negative controls, fresh reset, runtime hashes and separate offline CPU costs.
+  Local unavailable-source smoke produced six selected outlines, **zero qualified
+  plans**; this is blocker handling, not six measured reference successes.
+- Prepared study: six plan slots / twelve prospective clean+F conditions, fixed
+  100000-token / 1200-CPU-second branch caps, meaningful seeded owner chosen
+  before clean outcomes. Unknowns remain in coverage; clean semantic failure
+  does not filter F. Real source-backed catalog qualification, normal guarded
+  GPU qualification, exact compatibility/scope review, approval and a reviewed
+  sampled GPU task adapter remain closed gates. Reference/mock execution reuses
+  the existing scheduler, scoped branch engine, evaluator and common JIT.
+
+Validation on 15 October: full unittest suite **546 tests, 513 passed, 33
+optional-dependency skips**. The skips include the two source-family executor /
+recovery tests added for the catalog; pinned SQLGlot 27.28.1, jsonschema 4.25.1
+and referencing 0.36.2 are unavailable locally. Existing optional execution skips
+remain. New decoder mask/adapter tests use CPU doubles, not native GPU kernels.
+Pinned native tokenizer/XGrammar qualification and model calls were not run.
+Shell validation (10 files), compileall, diff whitespace checks and isolated
+stdlib CLI help passed. The missing-source catalog/proposal/analysis CLI smoke
+retained six blocked slots, twelve planned conditions and unknown rates.
+
+No models, source packs or optional packages were downloaded. No jobs were
+submitted, historical runs rescored, commits created or changes pushed.
+
+## Unique-key GPU failure and diagnostic capture — 2026-10-15
+
+User-supplied experiment
+`a3aadd6913fb1f2968de6c735183c65f48dfd2cf36c0c9c7c2ed724c6d959a32`,
+job 1096744_0, failed after 3:08 on A100-SXM4-80GB. Model loading succeeded.
+The nested-mapping call passed with 91 input / 601 output tokens (556 reasoning),
+EOS and complete constraint validation, 1.344673142 decoder CPU seconds, and
+55031365632 peak reserved GPU bytes. The escaped-key call was dispatched with
+95 input tokens, then raised AcceleratorError; its 2143-token reservation was
+retained as uncertain. Long-context mapping was not attempted. Totals: 692 known
+tokens, 2143 uncertain tokens, 184.949315332 wall seconds. No task actions or SQL
+ran. This is a failed partial qualification, not a 1/3 competence score.
+
+The user confirmed the job stderr file is empty. The adapter caught ordinary
+exceptions and saved only their type, so the underlying message/stack was lost.
+OOM, a guard defect, and a CUDA/kernel problem are not distinguished by current
+evidence. Prospective task-free reports now record a bounded exception message,
+up to twelve file/function/line frames (no locals), and the operation stage.
+Generation results are retained before post-generation memory inspection.
+Failure capture performs no additional GPU operations. Decoder/model settings,
+prompts, CPU/output caps, task gates, and historical results remain unchanged.
+The failed run stays immutable; a fresh source-bound manifest and CPU controls
+are needed for a new diagnostic attempt. No GPU rerun has been submitted.
+
 ## Unique-key native qualification passed; GPU preflight prepared — 2026-10-14
 
 User-supplied `rr-unique-nfc.lOjYvr` evidence at commit

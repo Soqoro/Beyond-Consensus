@@ -198,10 +198,38 @@ class TransformersBackend:
     def count_input(self, messages: list[dict[str, str]]) -> int:
         return int(self.encode(messages)["input_ids"].shape[-1])
 
+    def diagnostic_inputs(self, messages):
+        """CPU token IDs before dispatch; no generated or private text persisted."""
+        ids = self.encode(messages)["input_ids"][0].tolist()
+        return dict(rendered_input_ids=ids, rendered_input_ids_hash=digest(ids),
+            rendered_input_tokens=len(ids))
+
     def generate(self, messages: list[dict[str, str]], max_new_tokens: int, seed: int) -> Generation:
+        trace = getattr(self, 'diagnostic_trace', None)
+        handles=[]
+        if trace is not None:
+            def before(module, args, kwargs):
+                if trace.steps:trace.end('token_choice', observation='next_forward_started; selected_token_not_exported')
+                ids=kwargs.get('input_ids')
+                length=int(ids.shape[-1]) if ids is not None else None
+                trace.begin('prefill_model_forward' if trace.steps==0 else 'model_forward', input_length=length)
+            def after(module, args, kwargs, output):
+                trace.end('prefill_model_forward' if trace.steps==0 else 'model_forward')
+                trace.steps+=1
+            handles=[self.model.register_forward_pre_hook(before,with_kwargs=True),
+                     self.model.register_forward_hook(after,with_kwargs=True)]
+        try:
+            return self._generate(messages,max_new_tokens,seed)
+        finally:
+            for handle in handles:handle.remove()
+
+    def _generate(self, messages: list[dict[str, str]], max_new_tokens: int, seed: int) -> Generation:
         torch = self.torch
+        trace = getattr(self, 'diagnostic_trace', None)
+        if trace:trace.begin('input_transfer')
         inputs = self.encode(messages).to(torch.device("cuda:0"))
         size = int(inputs["input_ids"].shape[-1])
+        if trace:trace.end('input_transfer')
         if size + max_new_tokens > self.config.context_limit:
             raise BCError("Context/generation limits exceeded; no implicit truncation")
         torch.manual_seed(seed)
@@ -215,8 +243,16 @@ class TransformersBackend:
         if self.config.action_constraint != "none":
             start_cpu = time.process_time()
             closing_id = self.tokenizer.convert_tokens_to_ids("</think>") if self.config.thinking else None
-            processor = self.constraint.processor(size, closing_id)
+            processor = self.constraint.processor(size, closing_id, trace=trace) if trace else self.constraint.processor(size, closing_id)
             options["logits_processor"] = [processor]
+            if trace:
+                # This is the last observable point before HF chooses a token;
+                # completion of token choice is observed on the next model step.
+                class ChoiceBoundary:
+                    def __call__(self, input_ids, scores):
+                        trace.begin('token_choice')
+                        return scores
+                options['logits_processor'].append(ChoiceBoundary())
             setup_cpu = time.process_time()-start_cpu
         wall_start = time.monotonic()
         candidate = self.config.checkpoint == "Qwen/Qwen3.5-27B"
@@ -229,10 +265,13 @@ class TransformersBackend:
                 outputs = self.model.generate(**inputs, **options)
             except torch.cuda.OutOfMemoryError as exc:
                 raise BCError('GPU OOM during generation; no automatic cap/precision/device fallback; '
-                    f'input={size}, cap={max_new_tokens}, allocated={torch.cuda.max_memory_allocated(0)}, '
-                    f'reserved={torch.cuda.max_memory_reserved(0)}') from exc
+                    f'input={size}, cap={max_new_tokens}; post-error device counters unavailable') from exc
+        if trace:
+            trace.end('generation_returned')
+            trace.begin('generation_synchronize')
         end.record()
         torch.cuda.synchronize()
+        if trace:trace.end('generation_synchronize')
         cache_details = {}
         if candidate:
             cache = getattr(outputs, 'past_key_values', None)
@@ -261,11 +300,13 @@ class TransformersBackend:
         if processor is not None:
             from .action_schema import validate_action, contract
             start_cpu = time.process_time()
+            if trace:trace.begin('final_parsing')
             try:
                 validate_action(text, self.config.action_constraint)
                 complete = reasoning is not None
             except BCError:
                 complete = False
+            if trace:trace.end('final_parsing', strict_parser_valid=complete)
             constraint_details = {"action_constraint": contract(self.config.action_constraint), "constraint_complete": complete,
                 "constraint_mask_calls": processor.mask_calls,
                 "constraint_cpu_seconds": setup_cpu+processor.cpu_seconds+time.process_time()-start_cpu}

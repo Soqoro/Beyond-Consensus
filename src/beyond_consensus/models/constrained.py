@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import importlib.metadata
 import time
+import sys
 
 from .action_schema import decoder_schema, contract, XGRAMMAR_VERSION, DECODER_CPU_SECONDS
 from ..util import BCError
@@ -41,7 +42,7 @@ class ReasoningGate:
             return scores
         finally:
             self.cpu_seconds += max(0.0, self.clock()-start)
-            if self.cpu_seconds > DECODER_CPU_SECONDS:
+            if self.cpu_seconds > DECODER_CPU_SECONDS and sys.exc_info()[0] is None:
                 raise BCError("Constrained decoder CPU allowance exhausted")
 
 
@@ -84,9 +85,12 @@ class ActionConstraint:
             from ..util import digest
             self.runtime['public_grammar_binding']=dict(task_id=public_task,terminal_ids=list(terminal_ids),schema_sha256=digest(schema),cache_key=digest([mode,public_task,list(terminal_ids),schema]))
 
-    def processor(self, prompt_length, closing_id):
+    def processor(self, prompt_length, closing_id, trace=None):
         inner = self.processor_class(self.compiled)
+        if trace is not None:
+            from .decoder_trace import ObservedProcessor
+            inner = ObservedProcessor(inner,trace,self.runtime['vocab_size'],stop_ids=self.stop_ids)
         if self.unique_vocab is not None:
             from .unique_keys import UniqueKeyProcessor
-            inner = UniqueKeyProcessor(inner, self.unique_vocab, self.stop_ids)
+            inner = UniqueKeyProcessor(inner, self.unique_vocab, self.stop_ids, trace=trace)
         return ReasoningGate(inner, prompt_length, closing_id)

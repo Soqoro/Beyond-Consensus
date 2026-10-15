@@ -349,6 +349,9 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get('schema') == 'rr-decoder-diagnostic-v1':
+            from .experiments.rr_decoder_diagnostic import run as decoder_diagnostic
+            return decoder_diagnostic(frozen, args.model_lock, ROOT, args.output)
         if frozen.get('schema') == 'rr-unique-preflight-manifest-v1':
             from .experiments.rr_unique_preflight import run as unique_preflight
             return unique_preflight(frozen, args.model_lock, ROOT, args.output)

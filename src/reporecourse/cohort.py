@@ -31,6 +31,9 @@ def configuration(task,planner,*,seed=1,target_rule='uniform',interface_profile=
 
 
 def check_configuration(row):
+    if row.get("schema")=="rr-sampled-configuration-v1":
+        from .sampled_cohort import check_configuration as check_sampled
+        return check_sampled(row)
     expected=configuration(row['task'],row['planner'],seed=row['seed_index'],target_rule=row['target_rule'],interface_profile=row['config'].get('interface_profile'))
     if row!=expected:raise Rejected('cohort_configuration_changed')
 

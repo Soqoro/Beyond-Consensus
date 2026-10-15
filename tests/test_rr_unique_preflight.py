@@ -59,6 +59,9 @@ class UniquePreflight(unittest.TestCase):
         rows=probe.sequence(backend,lambda reset:{},lambda rows:None)
         self.assertEqual(len(backend.calls),1)
         self.assertEqual(rows[0]['status'],'error')
+        self.assertEqual(rows[0]['failure_stage'],'generation')
+        self.assertEqual(rows[0]['error_message'],'synthetic')
+        self.assertEqual(rows[0]['error_frames'][-1]['function'],'generate')
         self.assertGreater(rows[0]['resources']['uncertain_tokens'],0)
         self.assertFalse(rows[0]['passed'])
 
@@ -71,7 +74,8 @@ class UniquePreflight(unittest.TestCase):
 
     def test_duplicate_response_fails_despite_completion_metadata(self):
         rows=probe.sequence(Backend(text='{"tool":"finish","tool":"finish"}'),lambda reset:{},lambda rows:None)
-        self.assertEqual(len(rows),1)
+        self.assertEqual(len(rows),3)
+        self.assertTrue(all(r['status']=='not_attempted' for r in rows[1:]))
         self.assertFalse(rows[0]['passed'])
         self.assertEqual(rows[0]['resources']['uncertain_tokens'],0)
 
@@ -97,6 +101,8 @@ class UniquePreflight(unittest.TestCase):
                 with self.assertRaises(RuntimeError):probe.run(m,lock,ROOT,output)
                 report=aggregate(m,root)
                 self.assertEqual(report['status'],'error')
+                self.assertEqual(report['failure_stage'],'model_load')
+                self.assertEqual(report['error_message'],'load')
                 self.assertEqual(report['calls'],[])
                 self.assertFalse(report['model_executed'])
                 with self.assertRaises(BCError):probe.run(m,lock,ROOT,output)
@@ -112,3 +118,26 @@ class UniquePreflight(unittest.TestCase):
             lock={'decoder_qualification':{}};m['model_lock_sha256']=digest(lock)
             m['experiment_id']=digest({k:v for k,v in m.items() if k!='experiment_id'})
             with self.assertRaises(BCError):probe.check(m,ROOT,lock)
+
+    def test_error_capture_is_bounded_and_has_no_locals(self):
+        rows=probe.sequence(Backend(error=RuntimeError('x'*5000)),lambda reset:{},lambda rows:None)
+        row=rows[0]
+        self.assertEqual(len(row['error_message']),4096)
+        self.assertTrue(row['error_message_truncated'])
+        self.assertLessEqual(len(row['error_frames']),12)
+        self.assertTrue(all(set(f)=={'file','line','function'} for f in row['error_frames']))
+
+    def test_post_generation_memory_error_preserves_known_usage_and_response(self):
+        calls=[]
+        def memory(reset):
+            calls.append(reset)
+            if not reset:raise RuntimeError('synthetic device failure')
+            return {}
+        backend=Backend()
+        rows=probe.sequence(backend,memory,lambda rows:None)
+        self.assertEqual(calls,[True,False])
+        self.assertEqual(len(backend.calls),1)
+        self.assertEqual(rows[0]['failure_stage'],'memory_after')
+        self.assertEqual(rows[0]['generation']['output_tokens'],100)
+        self.assertEqual(rows[0]['resources']['uncertain_tokens'],0)
+        self.assertGreater(rows[0]['resources']['actual_tokens'],0)

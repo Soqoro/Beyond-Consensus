@@ -111,6 +111,8 @@ class Vector(list):
 
 
 class Scores:
+    @property
+    def shape(self):return (1,len(self.values))
     device = 'cpu'
     def __init__(self, values):self.values = Vector(values)
     def __getitem__(self, key):return self.values if key == 0 else self.values[key[1]]

@@ -12,6 +12,9 @@ from .metrics import summarize
 
 
 def aggregate(manifest: dict[str, Any], root: Path) -> dict[str, Any]:
+    if manifest.get('schema') == 'rr-decoder-diagnostic-v1':
+        from ..experiments.rr_decoder_diagnostic import aggregate as diagnostic_summary
+        return diagnostic_summary(manifest,root)
     if manifest.get('schema') == 'rr-unique-preflight-manifest-v1':
         from ..experiments.rr_unique_preflight import aggregate as unique_summary
         return unique_summary(manifest,root)

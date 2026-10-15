@@ -3,7 +3,7 @@
 set -euo pipefail
 usage() {
     cat <<'EOF'
-Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE | --worker-lock FILE --planner-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--rich-only] [--interface-reliability] [--pool-count N] [--repo-root DIR]
+Usage: qualify_reporecourse.sh --sources DIR --output NEW_DIR [--model-lock FILE | --worker-lock FILE --planner-lock FILE] [--local] [--dry-run] [--track-f-controls] [--v2-controls] [--scoped-controls] [--cohort-controls] [--rich-only] [--interface-reliability] [--pool-count N] [--repo-root DIR] [--decoder-diagnostic-controls | --organization-catalog]
 CPU pack/reference checks; optional pinned-tokenizer grammar qualification.
 Use sbatch on the cluster. --local allows explicit workstation CPU checks.
 EOF
@@ -17,6 +17,8 @@ planner_lock=''
 interface_profile=''
 interface_args=()
 rich_only=false
+decoder_diagnostic=false
+organization_catalog=false
 local_run=false
 dry=false
 track_f=false
@@ -26,6 +28,8 @@ cohort=false
 pool_count=4
 while (($#)); do
     case "$1" in
+        --decoder-diagnostic-controls) decoder_diagnostic=true; shift ;;
+        --organization-catalog) organization_catalog=true; shift ;;
         --help|-h) usage; exit 0 ;;
         --dry-run) dry=true; shift ;;
         --local) local_run=true; shift ;;
@@ -50,6 +54,17 @@ while (($#)); do
         *) usage >&2; exit 2 ;;
     esac
 done
+if "$decoder_diagnostic" || "$organization_catalog"; then
+    if "$cohort" || "$v2" || "$scoped" || "$track_f" || "$rich_only" || [[ -n "$interface_profile$worker_lock$planner_lock" ]] || { "$decoder_diagnostic" && "$organization_catalog"; }; then
+        printf 'Use decoder diagnostics or organization catalog as a separate CPU qualification.\n' >&2; exit 2
+    fi
+    if "$organization_catalog" && [[ -n "$model_lock" ]]; then
+        printf 'Organization catalog does not use a model lock.\n' >&2; exit 2
+    fi
+    if "$decoder_diagnostic" && [[ -z "$model_lock" ]]; then
+        printf 'Decoder diagnostic controls require --model-lock.\n' >&2; exit 2
+    fi
+fi
 if [[ -n "$interface_profile" ]] && { ! "$cohort" || ! "$rich_only" || [[ -z "$model_lock" || -n "$worker_lock" ]]; }; then
     printf "Interface revision requires --cohort-controls --rich-only --model-lock; renew both grammars.\n" >&2; exit 2
 fi
@@ -63,7 +78,8 @@ if "$dry"; then
     printf 'CPU qualification only: reference alternatives, negatives, compiler; optional model-specific decoder. No model weights or GPU jobs.\n'
     exit 0
 fi
-[[ -n "$sources" && -n "$output" ]] || { usage >&2; exit 2; }
+[[ -n "$output" ]] || { usage >&2; exit 2; }
+if ! "$decoder_diagnostic"; then [[ -n "$sources" ]] || { usage >&2; exit 2; }; fi
 if ! "$local_run"; then
     : "${SLURM_JOB_ID:?Use a CPU batch allocation, or explicitly --local on a workstation}"
 fi
@@ -84,6 +100,25 @@ for required in scripts/bc.py scripts/rr_v2.py src/reporecourse/engine.py; do
 done
 [[ ! -e "$output" ]] || { printf 'Use a fresh output directory.\n' >&2; exit 2; }
 mkdir -p -- "$output"
+if "$decoder_diagnostic"; then
+    "$BC_PYTHON" -I scripts/check_rr_cohort.py --output "$output/controls.json"
+    for role in native guarded; do
+        mode=reporecourse-json-reliable-v1-pool-7
+        if [[ "$role" == guarded ]]; then mode=reporecourse-json-unique-v1-pool-7; fi
+        "$BC_PYTHON" -I scripts/check_action_constraints.py --model-lock "$model_lock" \
+            --context-limit 16384 --output-cap 2048 --action-constraint "$mode" \
+            --output "$output/$role-grammar.json" --qualified-lock "$output/$role-lock.json"
+    done
+    printf 'CPU decoder controls complete; no GPU execution authorized.\n'
+    exit 0
+fi
+if "$organization_catalog"; then
+    "$BC_PYTHON" -I scripts/check_rr_cohort.py --output "$output/controls.json"
+    "$BC_PYTHON" -I scripts/sample_rr_organizations.py --sources "$sources" \
+        --output "$output/catalog.json" --qualify
+    printf 'Organization catalog prepared; inspect qualification and missing slots. No GPU execution authorized.\n'
+    exit 0
+fi
 "$BC_PYTHON" -I scripts/bc.py rr-readiness --sources "$sources" --output "$output/readiness.json"
 if "$cohort"; then
     if "$v2" || "$track_f"; then printf 'Use cohort controls as a separate qualification.\n' >&2; exit 2; fi

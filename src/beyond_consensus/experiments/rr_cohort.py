@@ -67,6 +67,14 @@ def control_hashes(root):
            'tests/test_unique_keys.py','src/beyond_consensus/models/unique_keys.py',
            'tests/test_rr_unique_preflight.py','src/beyond_consensus/experiments/rr_unique_preflight.py',
            'scripts/prepare_rr_unique_preflight.py',
+           'src/beyond_consensus/models/decoder_trace.py',
+           'src/beyond_consensus/experiments/rr_decoder_diagnostic.py',
+           'scripts/prepare_rr_decoder_diagnostic.py','scripts/run_rr_decoder_diagnostic.py',
+           'tests/test_rr_decoder_diagnostic.py','tests/test_decoder_trace.py',
+           'src/reporecourse/organization_sampler.py','scripts/sample_rr_organizations.py',
+           'tests/test_rr_organization_sampler.py','src/reporecourse/sampled_cohort.py',
+           'scripts/prepare_rr_sampled_cohort.py','scripts/analyze_rr_sampled_cohort.py',
+           'tests/test_rr_sampled_cohort.py','tests/test_rr_workstream_routes.py',
            'src/beyond_consensus/experiments/rr_response_probe.py']
     return {p:file_hash(Path(root)/p) for p in paths}
 

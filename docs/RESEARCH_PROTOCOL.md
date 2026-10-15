@@ -1,5 +1,35 @@
 # Research protocol implemented here
 
+## Bounded diagnosis and organization characterization (2026-10-15)
+
+The user explicitly authorized two parallel local workstreams after the failed
+unique-key GPU preflight. This supersedes the prior plan to repeat the same
+three-call preflight immediately. Preserve the failed attempt and uncertainty.
+Prepare one matched native-versus-guarded synthetic diagnostic, two original
+cases per arm, fresh processes, sequentially on one allocated 80GB-class GPU,
+with launch blocking applied to both before CUDA initialization. This is at
+most four calls; no task actions, inference-stack changes, or automatic retries.
+Diagnostic review and separate exact approval precede a normal-mode three-call
+qualification. Synchronous debugging success does not qualify task execution.
+
+In parallel, construct a bounded public-contract organization catalog for Jaffle
+payment release and GitHub multioperation integration. Target three executable
+organizations per task from at most twelve deterministic candidates each.
+Authored recipes and generic transformations are labelled; private references
+certify feasibility only and never become planner/worker inputs. Selection is
+prespecified structural coverage, not hidden outcomes or measured model scores.
+Missing source/dependency/qualification evidence must remain blocked.
+
+Prepare twelve scheduled task conditions, six plans each with clean and one
+seeded meaningful-owner F branch. Ordinary clean failure does not cancel F.
+Keep worker limits, scoped JIT, public monitoring, source access, loss and reserve
+rules fixed. All variants remain development-only; task/source review deferrals
+remain explicit. This is controlled organization characterization, not an
+open-generated planner contest, free deployable planner, training dataset, or
+held-out evaluation. Beyond Consensus remains a pre-execution full-plan adapter.
+No new GPU submission or task execution is authorized by local preparation.
+See [the workstream handoff](DECODER_AND_ORGANIZATION_WORKSTREAMS.md).
+
 ## Task-free unique-key GPU qualification (2026-10-14)
 
 The bounded follow-up uses three fixed synthetic calls, one model/GPU, worker

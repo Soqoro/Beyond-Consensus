@@ -5,6 +5,7 @@ Unicode normalization is deliberately not applied. No optional imports at load.
 """
 import json
 import time
+import sys
 
 from ..util import BCError
 from .action_schema import DECODER_CPU_SECONDS
@@ -93,10 +94,11 @@ class KeyState:
 
 class UniqueKeyProcessor:
     """Intersect native masks with duplicate-key validity, never unmask tokens."""
-    def __init__(self, inner, decoded_vocab, stop_ids, *, clock=time.process_time):
+    def __init__(self, inner, decoded_vocab, stop_ids, *, clock=time.process_time, trace=None):
         if not decoded_vocab or not all(isinstance(p, bytes) for p in decoded_vocab):
             raise BCError('Unique-key decoding requires native decoded vocabulary bytes')
         self.inner = inner
+        self.trace = trace
         self.vocab = decoded_vocab
         self.stops = frozenset(stop_ids)
         self.quote_ids = [i for i, p in enumerate(decoded_vocab) if b'"' in p and i not in self.stops]
@@ -115,17 +117,24 @@ class UniqueKeyProcessor:
             if input_ids.shape[0] != 1 or (self.length is not None and size != self.length + 1):
                 raise BCError('Unique-key decoding requires one append-only sequence')
             if self.length is not None:
+                if self.trace:self.trace.begin('byte_state_update')
                 token = int(input_ids[0, -1])
+                if not 0 <= token < len(self.vocab):
+                    raise BCError('Unique-key token_index_bounds')
                 if token in self.stops:
                     raise BCError('Generation continued after EOS')
                 try:
                     self.state.feed(self.vocab[token])
                 except (ValueError, UnicodeError, IndexError) as exc:
                     raise BCError('Invalid committed unique-key prefix') from exc
+                if self.trace:self.trace.end('byte_state_update', token_id=token, token_in_bounds=True)
             # First invocation is after ReasoningGate activates. Everything
             # before this position is prompt/reasoning, never JSON state.
             self.length = size
             masked = self.inner(input_ids, scores)
+            if len(masked.shape) != 2 or tuple(masked.shape) != (1,len(self.vocab)):
+                raise BCError('Unique-key vocabulary_alignment')
+            if self.trace:self.trace.begin('unique_key_mask', quote_candidate_count=len(self.quote_ids))
             if self.device_indices is None:
                 self.device_indices = torch.tensor(self.quote_ids, dtype=torch.long, device=masked.device)
             finite = torch.isfinite(masked[0].index_select(0, self.device_indices))
@@ -136,15 +145,21 @@ class UniqueKeyProcessor:
                     raise BCError('Unique-key decoder CPU allowance exhausted')
                 if not self.state.allows(self.vocab[token]):
                     blocked.append(token)
+            if self.trace:
+                self.trace.end('unique_key_mask', blocked_count=len(blocked))
+                self.trace.begin('mask_combination')
             if blocked:
                 masked[0, blocked] = float('-inf')
                 self.blocked_tokens += len(blocked)
             if not torch.isfinite(masked).any().item():
-                raise BCError('Unique-key decoder has no valid continuation')
+                raise BCError('Unique-key empty_allowed_intersection')
+            if self.trace:
+                from .decoder_trace import tensor_summary
+                self.trace.end('mask_combination',**tensor_summary(masked,len(self.vocab)))
             return masked
         finally:
             self.cpu_seconds += max(0.0, self.clock() - start)
-            if self.cpu_seconds > DECODER_CPU_SECONDS:
+            if self.cpu_seconds > DECODER_CPU_SECONDS and sys.exc_info()[0] is None:
                 raise BCError('Unique-key decoder CPU allowance exhausted')
 
 
