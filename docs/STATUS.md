@@ -1,5 +1,29 @@
 # Implementation status and handoff
 
+## Three-call semantic adapter prepared — 2026-10-16
+
+User reports production-control job 1098418 completed 0:0 at
+`rr-semantic-controls.sqPwI7`, source 82cd822fa80ff427cbb8d4101af98819d30ecd19.
+All seven controls passed with pinned dependencies: three semantically correct
+artifacts and four deliberate errors accepted by public monitoring but rejected
+by the independent oracle. This is CPU evidence, not a model outcome.
+
+Added the run-only three-case semantic adapter through shared Slurm registry,
+snapshot, runner and aggregation routes. It rechecks the existing production
+report and normal guarded qualification, requires fresh no-skip adapter controls
+and actual public-prompt footprints, and requires exact three-call approval.
+One scoped worker call per case; no planner, repair, replay or retry. Source
+materialization and model/tool/public checks are charged; terminal checking has
+a separate ledger and no feedback. Incomplete/uncertain records survive failures;
+started attempts cannot repeat. Historical records and monitor behavior remain
+unchanged. No GPU jobs submitted. See [CPU preparation and scope](SEMANTIC_DIAGNOSTIC_RUNBOOK.md).
+
+Validation: 592 tests, 557 passed, 35 optional-dependency skips. The new adapter
+controls passed locally except the actual child-executor slice requiring pinned
+optional libraries. Shell checks (10 files), isolated CLI help, runbook syntax,
+compileall and whitespace checks passed. Fresh no-skip cluster controls remain
+required before the exact GPU review packet is created.
+
 ## Synthetic semantic production controls prepared — 2026-10-16
 
 Added seven positive/negative controls through the actual scoped Environment,

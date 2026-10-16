@@ -25,6 +25,10 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
         raise BCError('Decoder diagnostic is preflight-only; task runner forbidden')
     if manifest.get('schema') == 'rr-unique-preflight-manifest-v1':
         raise BCError('Unique preflight is preflight-only; task runner forbidden')
+    if manifest.get('schema') == 'rr-semantic-run-manifest-v1':
+        if backend is not None:raise BCError('Semantic diagnostic cannot use an injected backend')
+        from .rr_semantic_run import run
+        return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)
     if manifest.get('schema') == 'rr-response-probe-v1':
         if backend is not None:raise BCError('Response diagnostic cannot use an injected backend')
         from .rr_response_probe import run

@@ -1,5 +1,18 @@
 # Research protocol implemented here
 
+## Synthetic semantic runner (2026-10-16)
+
+The passed seven-case CPU production report motivates a separate prospective
+three-call diagnostic. Supply invented source data directly to one fresh scoped
+assignment per case; no tools are called to fetch additional prompt context.
+Keep public monitoring unchanged and grade independently only after the single
+publication. This observation contract is a labelled synthetic design, not a
+reconstruction of historical worker messages or a clean/F comparison. Preserve
+actual/uncertain accounting, terminal-evaluator separation and missing cases.
+Reuse qualification only after exact implementation/model/runtime checks; require
+fresh adapter controls, actual prompt footprint and exact three-call approval.
+No model run is authorized merely by preparation or the earlier cohort approval.
+
 ## Semantic follow-up design (2026-10-16)
 
 Following the sampled run, prepare three invented synthetic mechanism cases

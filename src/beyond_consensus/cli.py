@@ -355,6 +355,8 @@ def dispatch(args: argparse.Namespace) -> Any:
         if frozen.get('schema') == 'rr-unique-preflight-manifest-v1':
             from .experiments.rr_unique_preflight import run as unique_preflight
             return unique_preflight(frozen, args.model_lock, ROOT, args.output)
+        if frozen.get('schema') == 'rr-semantic-run-manifest-v1':
+            raise BCError('Semantic diagnostic is run-only; qualification is separate')
         if frozen.get('schema') == 'rr-response-probe-v1':
             raise BCError('Task-input response diagnostic is run-only, not task-free preflight')
         if frozen.get('schema') in ('rr-cohort-manifest-v1','rr-sampled-run-manifest-v1'):

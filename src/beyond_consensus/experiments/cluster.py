@@ -216,6 +216,12 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
             raise BCError('Unique preflight has no retry, override or queued campaign')
         submission(manifest, existing_snapshot or repo, model_lock, mode, concurrency,
                    Path(config.output_root)/(manifest['experiment_id']+'-preflight'))
+    if manifest.get('schema') == 'rr-semantic-run-manifest-v1':
+        from .rr_semantic_run import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError('Semantic diagnostic has no retry, override or queued campaign')
+        submission(manifest,model_lock,existing_snapshot or repo,mode,concurrency,
+                   Path(config.output_root)/manifest['experiment_id'])
     if manifest.get('schema') == 'rr-response-probe-v1':
         from .rr_response_probe import submission
         if serialize or failed_shards is not None or condition is not None:
