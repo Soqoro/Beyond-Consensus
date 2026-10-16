@@ -1,5 +1,15 @@
 # Research protocol implemented here
 
+## Semantic follow-up design (2026-10-16)
+
+Following the sampled run, prepare three invented synthetic mechanism cases
+for join granularity, no-order boundaries and exact mapping field names.
+This is post-hoc diagnostic design, not task replay or a new planner comparison.
+Keep hidden checks out of worker feedback and leave public monitoring unchanged.
+Python mechanism controls are not production executor qualification. The design
+packet has no submission authority; production controls, exact model bindings,
+shared runner integration and concrete GPU approval remain required.
+
 ## Sampled execution adapter scope (2026-10-15)
 
 The user authorized local implementation after a successful normal decoder audit.

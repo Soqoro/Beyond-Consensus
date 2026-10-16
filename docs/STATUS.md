@@ -1,5 +1,46 @@
 # Implementation status and handoff
 
+## Synthetic semantic production controls prepared — 2026-10-16
+
+Added seven positive/negative controls through the actual scoped Environment,
+compiler/approved executor and schema/mapping child, and unchanged public monitor.
+Controls require all three correct artifacts to pass semantic checks and all
+four wrong artifacts to pass public shape/self-schema checking but fail the
+independent oracle. Literal materialization remains harness-owned; SQL is only
+compiled and executed through existing trusted children. Resource ledgers,
+uncertainty, implementation hashes and dependency versions are retained.
+
+Local execution saved `blocked_prerequisite` because pinned optional libraries
+are unavailable; no production qualification or model outcome is claimed.
+The CLI exits nonzero for blocked/failed reports. Public observation separation
+and prerequisite handling tests pass. The cluster CPU command is in
+[SAMPLED_SEMANTIC_FOLLOWUP.md](SAMPLED_SEMANTIC_FOLLOWUP.md).
+Exact model/footprint bindings and shared GPU submission integration remain
+pending; no historical task or public monitoring behavior changed.
+
+Validation: full suite 576 tests, 542 passed, 34 optional-dependency skips;
+targeted suite 7 passed, 1 pinned-child prerequisite skip. Shell checks (10),
+CLI help, compileall, runbook syntax and whitespace checks passed.
+
+## Sampled run inspected; synthetic semantic design prepared — 2026-10-16
+
+User export for `a6b820857f765fb3a4841b696e120f00e662c523be31744e5ed3cc6452d97ba4`
+contains all twelve conditions: clean 3/6, F 2/6, all conformant, all six losses
+triggered, no uncertain token/CPU usage. One F branch exhausted admission;
+others completed. Only one of three clean successes also passes under loss.
+Artifact inspection identifies order-count fanout, null-row unpaid counts,
+and wrong mapping output names. These findings are offline, not causal proof
+of a decoder fault or evidence of organization superiority.
+
+Added a three-case synthetic design packet and independent Python mechanism
+controls, with no production runtime or GPU execution authority. Executor/
+monitor controls, exact lock/footprint, execution adapter and GPU approval are
+explicitly still pending. See [findings and scope](SAMPLED_SEMANTIC_FOLLOWUP.md).
+
+Validation: 572 tests, 539 passed and 33 optional-dependency skips. All four
+new mechanism tests passed. Shell validation (10 files), isolated CLI help,
+compileall and diff whitespace checks passed. No GPU jobs were submitted.
+
 ## Sampled CPU control: Slurm test-environment correction — 2026-10-15
 
 User output from `rr-sampled-ready.cDZuz5` reports 219 CPU tests with one
