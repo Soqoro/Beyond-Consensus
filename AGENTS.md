@@ -79,3 +79,19 @@ Milestones and limitations are tracked in `docs/STATUS.md`.
 - New grammars, observation contracts and runtime hashes require renewed controls.
   CPU doubles/reference tests are not generated-plan or GPU competence evidence.
   Existing stock/Jaffle exceptions do not authorize open-generated task execution.
+
+## Worker selection (opt-in, 2026-10-16)
+
+- Read `docs/WORKER_SELECTION_RUNBOOK.md`. New worker-selection manifests compare
+  frozen Qwen3.5-27B thinking with Qwen3-Coder-Next non-thinking; both use 4096
+  output / 16384 context. Historical 2048-token profiles remain unchanged.
+- Separate exact approvals: task-free Q <=4 calls/profile; A 48 one-call attempts;
+  B 24 fresh one-call attempts; C at most 24 clean/F workflow branches. No automatic
+  chaining, retry, training, model search, or semantic correction.
+- Coder's explicitly qualified single-process four-GPU placement is the sole new
+  opt-in qualification exception to the legacy one-GPU rule. One node, <=4 physical
+  GPUs total, concurrency one; no overlapping control, CPU/disk offload or distributed
+  ranks. Staging requires separate exact large-download authorization.
+- Freeze both case sets before A; select one common presentation using the declared
+  rule. Preserve source/rights limits and common JIT. Pending optional/native/fit
+  qualification is a blocker, never a fabricated pass.

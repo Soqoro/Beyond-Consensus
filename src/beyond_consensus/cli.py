@@ -349,6 +349,13 @@ def dispatch(args: argparse.Namespace) -> Any:
     if args.command == "gpu-preflight":
         from .models.transformers_backend import preflight
         frozen = read_json(args.manifest)
+        if frozen.get("schema") == "rr-worker-selection-v1":
+            from .experiments.worker_selection import run
+            if frozen["stage"] != "Q":raise BCError("Task stage cannot be a preflight")
+            result = run(frozen,args.output.parent,ROOT,model_lock=args.model_lock)[0]
+            result["command_failed"] = result["status"] != "completed"
+            atomic_json(args.output, result)
+            return result
         if frozen.get('schema') == 'rr-decoder-diagnostic-v1':
             from .experiments.rr_decoder_diagnostic import run as decoder_diagnostic
             return decoder_diagnostic(frozen, args.model_lock, ROOT, args.output)

@@ -1,5 +1,73 @@
 # Implementation status and handoff
 
+## Worker-selection metadata observed — 2026-10-18
+
+Retrieved only official JSON metadata for pinned Qwen3-Coder-Next revision
+`a7fbcb5c0e12d62a448eaa0e260346bf5dcc0feb`. The 40 weight shards total
+159358031480 bytes; 49 selected assets total 159376298911 bytes (148.43 GiB).
+Every weight shard has an official LFS SHA-256. Two-copy staging reserve is
+318752597822 bytes (296.86 GiB). Card metadata declares Apache-2.0; README is
+present, with no separate LICENSE in this selected inventory. Saved small public
+metadata: [inventory](WORKER_SELECTION_METADATA_2026-10-18.json).
+
+No weights staged, model run or job submitted. Four-GPU single-node allocation,
+256-GB host-memory availability, site quotas, free storage, native compatibility
+and actual fit still require cluster evidence. This observation updates the
+earlier exact-asset-size limitation only. Next step is the runbook's read-only
+site feasibility check; it does not authorize a download or qualification job.
+
+## Worker-selection phase implemented locally — 2026-10-16
+
+Added opt-in worker profiles, official-metadata/staging commands, an explicit
+single-process four-GPU Coder deployment, model-specific native qualification,
+physical GPU submission counts, 24 authored diagnostic cases and independent
+reference/mutant controls, two public-field-equivalent presentations, separately
+approved Q/A/B/C manifests, shared-engine execution, paired selection/confirmation
+reports, and sanitized workflow exports. See
+[the worker-selection runbook](WORKER_SELECTION_RUNBOOK.md).
+
+No weight download, GPU job, task outcome, independent review or winner was added.
+Coder revision is a7fbcb5c0e12d62a448eaa0e260346bf5dcc0feb, resolved from official
+metadata; control remains fc05daec18b0a78c049392ed2e771dde82bdf654. Both new arms
+use 4096 output / 16384 context; historical profiles and scores remain unchanged.
+Four-GPU fit, actual allocation/quota, exact staged bytes, package compatibility,
+and native/production CPU qualification remain pending. The local production-case
+control attempt correctly reported blocked prerequisites, not reference success.
+
+Scope is 48 screening attempts, 24 fresh confirmation attempts, then at most 24
+workflow branches (variable calls); task-free qualification is separate. The
+single-process CPU contract preserves strict admission/scoring with measured
+overshoot, not a hard host cutoff. No equal-CPU claim is allowed with untracked
+inference processes. Whole-allocation costs remain unknown until scheduler export.
+New tests cover parity, gates/counts, targets, common engine, failures/reservations,
+physical GPU limits, and non-thinking routing. Final validation is recorded in the
+runbook's local validation section: 624 tests, 588 passed, 36 skipped; all 11
+shell checks, compilation, stdlib CLI help and whitespace checks passed.
+
+
+## Three-call semantic result and rejection audit — 2026-10-16
+
+User-pasted experiment `254b92bc02c5733cfeff6e0b4d46fca608b0aeba01228e9390a192f22b2cbdf5`
+records order_grain semantically correct, unpaid_boundary compiler-rejected,
+and mapping_keys executable/public-valid but semantically wrong. Three calls,
+9437 summed task tokens, zero recorded uncertain tokens, no missing cases.
+The exact compiler feedback is `case_else_required`: both CASE expressions omit
+the explicit ELSE required by the public restricted SQL contract. Existing
+compiler code and regression coverage agree with this rejection. No compiler
+defect or semantic result for that rejected query is inferred. The mapping
+used label/bytes instead of labels/size_bytes, including in its own schema.
+
+This is a fragment-based offline audit, not independent snapshot verification,
+SQL replay, or a retry. No runtime, scoring or monitoring changes were made.
+See [results, evidence limits and next questions](SEMANTIC_DIAGNOSTIC_RESULTS.md).
+
+Follow-up static prompt audit finds both requirements in the public message
+construction. The generic mapping/schema examples use label, overlapping one
+observed wrong output key; this is a hypothesis, not causal attribution. The
+results document proposes a separate two-arm mapping-example sensitivity test,
+with a fresh baseline and isolated example-key rename. No interface/runtime
+change, executable proposal, or additional GPU submission was made.
+
 ## Three-call semantic adapter prepared — 2026-10-16
 
 User reports production-control job 1098418 completed 0:0 at

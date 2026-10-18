@@ -315,7 +315,7 @@ def execute_configuration(m,c,public,private,backend,switch,save):
     return execute_schedule(c,schedule,public,private,backend,switch,save)
 
 
-def execute_schedule(c,schedule,public,private,backend,switch,save):
+def execute_schedule(c,schedule,public,private,backend,switch,save,*,output_cap=2048):
     frozen=schedule['frozen']
     def execute(branches,branch):
         from reporecourse.engine import ModelWorker
@@ -324,7 +324,7 @@ def execute_schedule(c,schedule,public,private,backend,switch,save):
             nonlocal checkpoint
             checkpoint=value;save('checkpoint-'+branch['branch_id'],value)
         try:
-            result=v2._execute_branch(branches,branch['branch_id'],public,private,ModelWorker(backend,16384,2048),save=checkpoint_save)
+            result=v2._execute_branch(branches,branch['branch_id'],public,private,ModelWorker(backend,16384,output_cap),save=checkpoint_save)
             result.update(fault_fraction=branch['fault_fraction'],within_track_weight=branch['within_track_weight'])
             return result
         except (Exception,KeyboardInterrupt) as exc:

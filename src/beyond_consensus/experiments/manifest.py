@@ -177,6 +177,9 @@ def build_manifest(config: RunConfig, root: Path, tasks: list[TaskInstance] | No
 
 
 def validate_manifest(data: dict[str, Any]) -> RunConfig:
+    if data.get("schema") == "rr-worker-selection-v1":
+        from .worker_selection import validate
+        return validate(data)
     if data.get('schema') == 'rr-decoder-diagnostic-v1':
         from .rr_decoder_diagnostic import validate
         return validate(data)

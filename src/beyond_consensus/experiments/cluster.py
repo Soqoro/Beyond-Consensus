@@ -169,9 +169,11 @@ def validate_site(config: ClusterConfig) -> None:
 
 def sbatch_arguments(config: ClusterConfig, snapshot: Path, output: Path, shards: list[int],
                      concurrency: int, *, mode: str = "run", dependencies: list[str] = (),
-                     retry: bool = False) -> list[str]:
+                     retry: bool = False, physical_gpus: int = 1) -> list[str]:
     if type(concurrency) is not int or not 1 <= concurrency <= 4:
         raise BCError("Concurrency must be 1..4 total GPUs in the campaign")
+    if type(physical_gpus) is not int or not 1 <= physical_gpus <= 4 or physical_gpus*concurrency > 4:
+        raise BCError("Physical GPU reservation exceeds four")
     if not shards or any(type(s) is not int or s < 0 for s in shards) or len(shards) != len(set(shards)):
         raise BCError("Invalid shard set")
     if mode == "preflight" and (concurrency != 1 or shards != [0]):
@@ -179,7 +181,7 @@ def sbatch_arguments(config: ClusterConfig, snapshot: Path, output: Path, shards
     ordered = sorted(shards)
     array = f"0-{ordered[-1]}" if ordered == list(range(ordered[-1]+1)) else ",".join(map(str, ordered))
     argv = ["sbatch", "--parsable", f"--partition={config.partition}", "--nodes=1", "--ntasks=1",
-            "--cpus-per-task=4", "--gres=gpu:1", f"--array={array}%{concurrency}",
+            "--cpus-per-task=4", f"--gres=gpu:{physical_gpus}", f"--array={array}%{concurrency}",
             f"--time={config.time}", f"--mem={config.memory_gb}G", "--job-name=bc-"+mode,
             f"--output={output / 'logs' / '%A_%a.out'}", f"--error={output / 'logs' / '%A_%a.err'}",
             "--signal=B:TERM@60", "--no-requeue", f"--chdir={snapshot}"]
@@ -204,6 +206,16 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Concurrency must be 1..4 total GPUs")
     from .manifest import validate_manifest
     run_config = validate_manifest(manifest)
+    physical_gpus = 1
+    if manifest.get("schema") == "rr-worker-selection-v1":
+        from .worker_selection import submission
+        if serialize or failed_shards is not None or condition is not None:
+            raise BCError("Worker comparison has no retry, override or queued campaign")
+        physical_gpus = manifest["physical_gpus"]
+        if physical_gpus * concurrency > 4 or config.memory_gb < manifest["profile"]["host_memory_gb"]:
+            raise BCError("Insufficient host memory or physical GPU allowance")
+        submission(manifest, existing_snapshot or repo, model_lock, mode, concurrency,
+                   Path(config.output_root)/(manifest["experiment_id"]+("-preflight" if mode=="preflight" else "")))
     if manifest.get('schema') == 'rr-decoder-diagnostic-v1':
         from .rr_decoder_diagnostic import submission
         if serialize or failed_shards is not None or condition is not None:
@@ -279,7 +291,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         raise BCError("Stage and resolve model revisions before GPU submission")
     if model_lock.get("revision") != run_config.model.revision:
         raise BCError("Manifest and staged model differ")
-    if run_config.model.checkpoint == "Qwen/Qwen3.5-27B":
+    if run_config.model.checkpoint == "Qwen/Qwen3.5-27B" and manifest.get("schema") != "rr-worker-selection-v1":
         from ..models.competence import require_qualification
         report = model_lock.get('decoder_qualification', {})
         require_qualification(model_lock, report.get('packages', {}), run_config.model.context_limit, run_config.model.action_constraint, run_config.model.max_new_tokens)
@@ -323,7 +335,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
                 raise BCError("Retry snapshot/config provenance mismatch; start a new campaign")
         if dry_run:
             argv = sbatch_arguments(config, snapshot, output, shards, concurrency, mode=mode,
-                                     dependencies=dependencies, retry=failed_shards is not None)
+                                     dependencies=dependencies, retry=failed_shards is not None, physical_gpus=physical_gpus)
             return {"dry_run": True, "argv": argv, "output": str(output), "submitted": False,
                     "snapshot": str(existing_snapshot) if existing_snapshot else "requires clean committed checkout at actual submission",
                     "registry": str(state_path)}
@@ -337,7 +349,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
         (output / "logs").mkdir(parents=True, exist_ok=True)
         atomic_json(output / "manifest.json", manifest)
         argv = sbatch_arguments(config, snapshot, output, shards, concurrency, mode=mode,
-                                 dependencies=dependencies, retry=failed_shards is not None)
+                                 dependencies=dependencies, retry=failed_shards is not None, physical_gpus=physical_gpus)
         # Scheduler validates actual access/account/QoS/resource requests without a job.
         command([argv[0], "--test-only", *argv[1:]])
         state["uncertain_submission"] = {"manifest_hash": digest(manifest), "snapshot": str(snapshot)}
@@ -348,7 +360,7 @@ def submit(repo: Path, config: ClusterConfig, manifest: dict[str, Any], model_lo
             raise BCError("sbatch returned an unknown job ID; registry stays uncertain for manual reconciliation")
         state["uncertain_submission"] = None
         state["jobs"].append({"job_id": job, "manifest_hash": digest(manifest), "snapshot": str(snapshot),
-                              "output": str(output), "concurrency": concurrency, "mode": mode})
+                              "output": str(output), "concurrency": concurrency, "mode": mode, "physical_gpus_per_job": physical_gpus, "reserved_physical_gpus": physical_gpus*concurrency})
         atomic_json(state_path, state)
         return {"job_id": job, "snapshot": str(snapshot), "output": str(output), "submitted": True}
     if dry_run:
