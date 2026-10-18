@@ -1,5 +1,27 @@
 # Implementation status and handoff
 
+## Worker-selection proposal token-ID correction — 2026-10-18
+
+User reports staging job 1099588 and Coder CPU-native qualification job 1099681
+completed 0:0. Proposal job 1099714 then failed before GPU execution because the
+chat-template result was a BatchEncoding rather than a flat token list. The
+worker-selection adapter now explicitly extracts one validated input_ids sequence
+for prompt hashes and actual token counts, including long-prompt binary search.
+Malformed/multiple sequences remain rejected; output/context caps are unchanged.
+
+The native profile/grammar implementation is unchanged, so the existing qualified
+lock can pass its normal exact compatibility checks. No old report or lock was
+modified, no model run added and no preparation failure promoted to success.
+Recovery requires a new proposal from the corrected committed source, followed
+by exact GPU scope review. Commands are in the
+[worker-selection runbook](WORKER_SELECTION_RUNBOOK.md#coder-proposal-token-id-fix--18-october-2026).
+
+Validation: **627 tests, 591 passed, 36 skipped**; focused 35 tests, 34 passed and
+one pinned production-executor skip. Three new CPU tokenizer-double regressions
+cover mapping/list/batch return values, invalid input sequences, and full four-case
+footprint sizing/hashing. Shell checks (11), compilation, stdlib CLI help and
+whitespace checks passed. Actual cluster proposal regeneration remains pending.
+
 ## Worker-selection metadata observed — 2026-10-18
 
 Retrieved only official JSON metadata for pinned Qwen3-Coder-Next revision

@@ -20,6 +20,52 @@ from reporecourse.resources import Resources,success_at_budget
 from reporecourse.common import Rejected
 
 
+class PromptFootprints(unittest.TestCase):
+    def test_extracts_mapping_list_and_single_batch_without_counting_keys(self):
+        from collections import UserDict
+        ids=[101,102,103,104]
+        tensor=SimpleNamespace(tolist=lambda:[ids])
+        for encoded in (ids,[ids],UserDict(input_ids=ids,attention_mask=[1]*4),
+                        UserDict(input_ids=tensor,attention_mask=[[1]*4])):
+            for name in ('control','coder'):
+                with self.subTest(encoded=type(encoded).__name__,profile=name):
+                    def apply(messages,**kwargs):
+                        self.assertTrue(kwargs['return_dict'])
+                        self.assertIsNone(kwargs['return_tensors'])
+                        self.assertEqual(kwargs.get('enable_thinking'),True if name=='control' else None)
+                        return encoded
+                    result=w.prompt_token_ids(SimpleNamespace(apply_chat_template=apply),p.profile(name),[])
+                    self.assertEqual(result,ids)
+                    self.assertEqual(digest(result),digest(ids))
+
+    def test_bad_or_multiple_sequences_rejected(self):
+        for encoded in ({'attention_mask':[1]},[],[[1],[2]],[True],[1.5],[-1],'123'):
+            with self.subTest(encoded=encoded):
+                with self.assertRaises(BCError):
+                    w.prompt_token_ids(SimpleNamespace(apply_chat_template=lambda *a,**k:encoded),p.profile('coder'),[])
+
+    def test_full_q_footprint_uses_ids_for_long_search_counts_and_hashes(self):
+        from collections import UserDict
+        class Tokenizer:
+            def apply_chat_template(self,messages,**kwargs):
+                count=20+10*messages[-1]['content'].count('Record ')
+                return UserDict(input_ids=list(range(count)),attention_mask=[1]*count)
+        tokenizer=Tokenizer()
+        module=SimpleNamespace(AutoTokenizer=SimpleNamespace(from_pretrained=lambda *a,**k:tokenizer))
+        with patch.dict('os.environ',{'SLURM_JOB_ID':'cpu-test'}),patch.dict(sys.modules,{'transformers':module}),\
+             patch.object(p,'require_qualified'):
+            result=w.footprint(p.profile('coder'),{'tokenizer_path':'/unused'},'Q',w.grid('Q'))
+        self.assertEqual(result['status'],'passed')
+        self.assertEqual([row['id'] for row in result['cases']],['sql','schema','mapping','long'])
+        for row in result['cases']:
+            ids=tokenizer.apply_chat_template(row['messages'])['input_ids']
+            self.assertEqual(row['input_tokens'],len(ids))
+            self.assertEqual(row['rendered_ids_hash'],digest(ids))
+        long=result['cases'][-1]
+        self.assertEqual(long['input_tokens'],12280)
+        self.assertGreater(long['input_tokens']+10,12288)
+
+
 class Design(unittest.TestCase):
     def test_disjoint_inventory_domain_family_membership(self):
         cases=d.cases();self.assertEqual(len(cases),24);self.assertEqual(len({x['id'] for x in cases}),24)

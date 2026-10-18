@@ -106,6 +106,19 @@ def probes():
     return dict(zip(('sql','schema','mapping','long'),values))
 
 
+def prompt_token_ids(tokenizer,p,messages):
+    """One actual input sequence, independent of chat-template container defaults."""
+    from collections.abc import Mapping
+    encoded=tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=True,
+        return_dict=True,return_tensors=None,**profiles.template_options(p))
+    ids=encoded.get('input_ids') if isinstance(encoded,Mapping) else encoded
+    if hasattr(ids,'tolist'):ids=ids.tolist()
+    if isinstance(ids,list) and len(ids)==1 and isinstance(ids[0],list):ids=ids[0]
+    require(isinstance(ids,list) and bool(ids) and all(type(i) is int and i>=0 for i in ids),
+        'Expected one nonempty integer input_ids sequence')
+    return ids
+
+
 def probe_prompt(case,tokenizer,p):
     value=probes()[case];base=[{'role':'system','content':'Return exactly the requested single JSON action, no Markdown.'},
         {'role':'user','content':json.dumps(value)}]
@@ -115,7 +128,7 @@ def probe_prompt(case,tokenizer,p):
         while lo<hi:
             n=(lo+hi+1)//2
             candidate=deepcopy(base);candidate[-1]['content']='\n'.join('Record %d: neutral datum.'%i for i in range(n))+'\nRequired action: '+json.dumps(value)
-            count=len(tokenizer.apply_chat_template(candidate,tokenize=True,add_generation_prompt=True,**profiles.template_options(p)))
+            count=len(prompt_token_ids(tokenizer,p,candidate))
             if count<=12288:lo=n
             else:hi=n-1
         base[-1]['content']='\n'.join('Record %d: neutral datum.'%i for i in range(lo))+'\nRequired action: '+json.dumps(value)
@@ -153,7 +166,7 @@ def footprint(p,lock,stage,rows,configs=(),publics=None):
                 outputs.append(dict(id=c['configuration_id']+'/'+str(i),action_plus_stop_tokens=count,passed=count<=4096))
     result=[]
     for identity,prompt in prompts:
-        ids=tokenizer.apply_chat_template(prompt,tokenize=True,add_generation_prompt=True,**profiles.template_options(p))
+        ids=prompt_token_ids(tokenizer,p,prompt)
         result.append(dict(id=identity,messages_hash=digest(prompt),input_tokens=len(ids),rendered_ids_hash=digest(ids),
             prompt_bytes=len(json.dumps(prompt).encode()),passed=0<len(ids)<=12288,**({'messages':prompt} if stage=='Q' else {})))
     return dict(schema='rr-worker-footprint-v1',stage=stage,profile=p['name'],lock_hash=digest(lock),implementation=hashes(),

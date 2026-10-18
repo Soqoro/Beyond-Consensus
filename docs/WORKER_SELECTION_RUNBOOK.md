@@ -12,6 +12,87 @@ See [the consolidated audit](AUDIT_REPORT_2026-10-16.md) and
 [semantic results](SEMANTIC_DIAGNOSTIC_RESULTS.md). Those are development results,
 not controls for the new settings. The original AcceleratorError remains unexplained.
 
+## Coder proposal token-ID fix — 18 October 2026
+
+User-reported staging job 1099588 completed 0:0 and saved the asset lock at
+`rr-worker-feasibility.eIAIzU/staging.5Bb3l3/model-lock.json`. CPU-native job
+1099681 subsequently completed 0:0 with a qualified lock under
+`native-accelerate.NfpVuR/model-lock.json`, using the isolated environment with
+Accelerate 1.12.0 and psutil 7.0.0. These reports do not establish GPU fit.
+
+Proposal-preparation job 1099714 failed before GPU submission: chat-template
+output was a `BatchEncoding`, so hashing the container raised `TypeError`.
+The same assumption would have counted mapping keys in long-prompt sizing.
+The fix explicitly requests structured output and extracts one validated
+`input_ids` sequence for both measurement and hashing. It rejects missing,
+empty, malformed or multiple sequences. The long synthetic prompt now uses
+actual token counts against the unchanged 12288-input / 4096-output reservation.
+
+The native model/grammar implementation is unchanged. Reuse its qualified lock
+only when the existing exact package and implementation checks pass; no lock is
+edited or relabelled. Preserve the failed preparation directory. After committing
+and pushing the fix, prepare a new proposal from a fresh frozen checkout:
+
+```bash
+export BC_STORAGE=/dataset/suaq0001/beyond-consensus
+export BC_STAGE="$BC_STORAGE/diagnostics/rr-worker-feasibility.eIAIzU/staging.5Bb3l3"
+export BC_NATIVE="$BC_STAGE/native-accelerate.NfpVuR"
+export BC_WORKER_PYTHON="$(cat "$BC_NATIVE/python-path.txt")"
+export BC_CODER_Q="$(mktemp -d "$BC_NATIVE/gpu-proposal-tokenids.XXXXXX")"
+
+(
+set -euo pipefail
+set -o noclobber
+cd "$HOME/Beyond-Consensus"
+git pull --ff-only
+test -x "$BC_WORKER_PYTHON"
+test -s "$BC_NATIVE/model-lock.json"
+git rev-parse HEAD > "$BC_CODER_Q/source-commit.txt"
+git clone --no-hardlinks --no-checkout "$PWD" "$BC_CODER_Q/source"
+git -C "$BC_CODER_Q/source" checkout --detach \
+  "$(cat "$BC_CODER_Q/source-commit.txt")"
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+sbatch --parsable \
+  --partition=NA100q --nodes=1 --ntasks=1 --cpus-per-task=4 \
+  --mem=32G --time=01:00:00 --job-name=rr-coder-q-prepare \
+  --chdir="$BC_CODER_Q/source" \
+  --output="$BC_CODER_Q/cpu.out" --error="$BC_CODER_Q/cpu.err" \
+  "$BC_CODER_Q/source/experiments/worker_selection_cpu.sh" \
+  "$BC_CODER_Q/source" "$BC_WORKER_PYTHON" \
+  proposal --stage Q --profile coder \
+  --model-lock "$BC_NATIVE/model-lock.json" \
+  --output "$BC_CODER_Q/proposal.json" > "$BC_CODER_Q/cpu-job.txt"
+cat "$BC_CODER_Q/cpu-job.txt"
+printf 'Proposal directory: %s\n' "$BC_CODER_Q"
+)
+```
+
+After the CPU job completes:
+
+```bash
+sacct -j "$(cut -d';' -f1 "$BC_CODER_Q/cpu-job.txt")" \
+  --format=JobID,State,ExitCode,Elapsed
+tail -n 40 "$BC_CODER_Q/cpu.err"
+(
+set -euo pipefail
+test -s "$BC_CODER_Q/proposal.json"
+"$BC_WORKER_PYTHON" -I "$BC_CODER_Q/source/scripts/worker_selection.py" review \
+  --manifest "$BC_CODER_Q/proposal.json" --output "$BC_CODER_Q/review.json"
+"$BC_WORKER_PYTHON" -m json.tool "$BC_CODER_Q/review.json"
+)
+```
+
+This only prepares the four-call scope. GPU submission still requires its exact
+review and approval; no staging download or native-control rerun is implied.
+
+Local verification: full suite **627 tests, 591 passed, 36 skipped** (90.729 s).
+Focused worker-selection tests: 35 run, 34 passed, one pinned-executor skip.
+The three new regression tests use CPU tokenizer doubles, not native model evidence.
+All 11 shell-file checks, compilation, stdlib-only CLI help and whitespace checks
+passed. The 36 existing optional execution/sandbox skips remain as listed below.
+Fresh actual-tokenizer proposal measurement on the cluster remains pending.
+
 ### Deployment records
 
 | Profile | Immutable model and tokenizer revision | Generation | Placement proposal |
