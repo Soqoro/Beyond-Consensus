@@ -349,6 +349,9 @@ def qualification_call(backend,entry,save=lambda r:None):
         for n in list(r.cpu_pending):
             try:r.reconcile_cpu('interrupted_host',n,time.process_time()-start)
             except Rejected:pass
+        if hasattr(exc,'inference_child_cpu'):
+            row['inference_child_cpu']=deepcopy(exc.inference_child_cpu)
+            row['cpu_accounting_complete']=False
         row.update(status='infrastructure_failed',error_type=type(exc).__name__,error_category=str(exc)[:160])
     row['resources']=r.summary();return row
 

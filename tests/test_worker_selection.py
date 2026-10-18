@@ -157,6 +157,37 @@ class Deployments(unittest.TestCase):
         self.assertIsNone(result.device_seconds);self.assertEqual(synced,[0,1,2,3]*2)
         self.assertEqual(result.diagnostics['actual_gpus'],4);self.assertIsNone(b.model._cache)
 
+    def test_reaped_child_cpu_blocks_and_survives_qualification_report(self):
+        b=p.WorkerBackend.__new__(p.WorkerBackend);b.profile=p.profile('coder')
+        b.count_input=lambda messages:63
+        b.torch=SimpleNamespace(cuda=SimpleNamespace(synchronize=lambda i:None))
+        g=Generation('{}',2,0,None,{})
+        usage=[SimpleNamespace(ru_utime=1.,ru_stime=2.),SimpleNamespace(ru_utime=1.25,ru_stime=2.5)]
+        with patch('resource.getrusage',side_effect=usage), patch.object(p,'inference_processes',return_value={}), patch.object(p,'child_process_observation',return_value={'children':[]}):
+            with patch('beyond_consensus.models.transformers_backend.TransformersBackend.generate',return_value=g):
+                row=w.qualification_call(b,dict(id='sql',messages=[],input_tokens=63))
+        self.assertFalse(row['passed']);self.assertFalse(row['cpu_accounting_complete'])
+        self.assertEqual(row['inference_child_cpu']['reaped_child_cpu_delta_seconds'],.75)
+        self.assertEqual(row['resources']['uncertain_tokens'],4159)
+        self.assertNotIn('generation',row)
+
+    def test_generation_failure_keeps_original_error_and_child_observation(self):
+        b=p.WorkerBackend.__new__(p.WorkerBackend);b.profile=p.profile('coder')
+        b.torch=SimpleNamespace(cuda=SimpleNamespace(synchronize=lambda i:None))
+        with patch.object(p,'inference_processes',return_value={}):
+            with patch('beyond_consensus.models.transformers_backend.TransformersBackend.generate',side_effect=RuntimeError('accelerator')):
+                with self.assertRaisesRegex(RuntimeError,'accelerator') as caught:b.generate([],4096,0)
+        self.assertEqual(caught.exception.inference_child_cpu['schema'],'rr-inference-child-cpu-observation-v1')
+
+    def test_live_child_guard_remains_with_zero_reaped_delta(self):
+        b=p.WorkerBackend.__new__(p.WorkerBackend);b.profile=p.profile('coder')
+        b.torch=SimpleNamespace(cuda=SimpleNamespace(synchronize=lambda i:None))
+        usage=SimpleNamespace(ru_utime=0.,ru_stime=0.)
+        with patch('resource.getrusage',return_value=usage), patch.object(p,'inference_processes',side_effect=[{},BCError('live child')]):
+            with patch('beyond_consensus.models.transformers_backend.TransformersBackend.generate',return_value=Generation('{}',2)):
+                with self.assertRaisesRegex(BCError,'live child') as caught:b.generate([],4096,0)
+        self.assertEqual(caught.exception.inference_child_cpu['reaped_child_cpu_delta_seconds'],0)
+
 
 class Attempts(unittest.TestCase):
     def test_wrong_tool_one_call_and_no_retry(self):

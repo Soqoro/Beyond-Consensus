@@ -1,5 +1,32 @@
 # Implementation status and handoff
 
+## Worker-selection child-CPU diagnostic — 2026-10-18
+
+User-supplied report for job 1099758 / experiment
+`a35a048d57dc7fe455205115316f70555a844db84cf0e8c77ba2fa5490d688eb`
+records Coder loading on four A100-SXM4-80GB devices (49.9 seconds model load),
+then first SQL qualification failing with “Untracked inference child CPU;
+comparison blocked”. Three probes were unrun; 4159 tokens remain uncertain.
+This is not a competence result or full-memory qualification. The old report
+contains neither child CPU magnitude nor process attribution; its zero uncertain
+CPU field does not establish complete accounting.
+
+Added diagnostic-only before/after RUSAGE_CHILDREN values and delta, plus
+best-effort Linux boundary child PID/name snapshots. No command lines or
+process environments are collected. Exited children may evade snapshots;
+attribution remains unresolved, and these observations are not silently added
+to task CPU. The qualification error retains this evidence and explicitly marks
+CPU accounting incomplete. The original generation error, rejection guard,
+uncertain token reservation and stop-on-first-failure behavior remain intact.
+Historical reports are unchanged. Fresh native CPU qualification and a new
+hash-bound proposal are required; no GPU retry or task run was submitted.
+
+Validation: 630 tests, 594 passed, 36 skipped; focused 38 tests, 37 passed
+and one optional executor skip. Shell checks (11), compilation, stdlib-only CLI
+help and whitespace checks passed. New regressions cover reaped-child CPU
+evidence, live-child rejection, and preservation of original inference errors.
+
+
 ## Worker-selection proposal token-ID correction — 2026-10-18
 
 User reports staging job 1099588 and Coder CPU-native qualification job 1099681

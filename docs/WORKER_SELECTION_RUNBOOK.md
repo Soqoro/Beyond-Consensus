@@ -543,3 +543,28 @@ test_actual_restricted_reference_mutants (test_worker_selection.Design.test_actu
 ```
 
 </details>
+
+
+## Child-CPU failure diagnostic — 18 October 2026
+
+Preserve failed Q experiment `a35a048d57dc7fe455205115316f70555a844db84cf0e8c77ba2fa5490d688eb`
+and its started marker. Do not resubmit it. Loading four GPUs succeeded in that
+observation; no qualification case passed and three were unrun.
+
+The updated profile saves `inference_child_cpu` on qualification failure:
+reaped-child user/system CPU before and after generation, their delta, and
+best-effort boundary child PID/name snapshots. These are diagnostic observations,
+not a continuous process trace or attribution to a compiler/library. No command
+lines or environments are saved. `cpu_accounting_complete: false` is explicit;
+parent CPU debit and uncertain token reservation retain their existing meaning.
+No child CPU is silently charged or waived, and the guard remains enforced.
+
+After pushing this change, use a fresh preparation directory and frozen source.
+Run the CPU controls and `worker_selection.py native` again using the existing
+staged asset lock and isolated Python environment (no weight download). Changing
+worker_profiles.py invalidates the old native qualification hash. Build and
+review a fresh stage-Q proposal with that renewed lock. Its exact approval must
+refer to the new proposal; the failed run's approval is not a retry permission.
+Only then submit via the shared registry. This remains at most four synthetic
+calls, stopping on the first failure, with no task branches. If child CPU recurs,
+inspect the new evidence before specifying any changed accounting contract.

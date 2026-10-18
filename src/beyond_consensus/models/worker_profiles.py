@@ -153,6 +153,41 @@ def inference_processes():
                 trusted_tool_children='separately measured outside model generation')
 
 
+def child_process_observation():
+    """Best-effort boundary snapshot, not continuous process attribution.
+
+    Never collect command lines or environments. Short-lived/reaped children may
+    be absent; RUSAGE_CHILDREN remains a separate cumulative CPU observation.
+    """
+    result=dict(children=[],errors=[],complete=True)
+    try:
+        tids=list(Path('/proc/self/task').iterdir())
+        children=set()
+        for task in tids:
+            try:children.update((task/'children').read_text().split())
+            except FileNotFoundError:continue
+        for pid in sorted(children, key=int)[:64]:
+            row=dict(pid=int(pid))
+            try:row['comm']=(Path('/proc')/pid/'comm').read_text().strip()[:128]
+            except OSError as exc:row['read_error']=type(exc).__name__
+            result['children'].append(row)
+        result['truncated']=len(children)>64
+        result['complete']=not result['truncated']
+    except (OSError,ValueError) as exc:
+        result['errors'].append(type(exc).__name__);result['complete']=False
+    return result
+
+
+def child_cpu_observation(before,after,start,end):
+    return dict(schema='rr-inference-child-cpu-observation-v1',
+        before=dict(user_seconds=before.ru_utime,system_seconds=before.ru_stime),
+        after=dict(user_seconds=after.ru_utime,system_seconds=after.ru_stime),
+        reaped_child_cpu_delta_seconds=(after.ru_utime+after.ru_stime)-(before.ru_utime+before.ru_stime),
+        boundary_before=start,boundary_after=end,
+        attribution='unresolved_boundary_snapshots_not_continuous_trace',
+        accounting='diagnostic_only_not_added_to_task_cpu',cpu_accounting_complete=False)
+
+
 class WorkerBackend(TransformersBackend):
     """Same generate/mask/parser path, explicit placement and model-correct template."""
     def __init__(self,p,lock_path):
@@ -195,13 +230,25 @@ class WorkerBackend(TransformersBackend):
         if hasattr(model,'_cache'):model._cache=None
         for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
         start=time.monotonic()
-        g=super().generate(messages,max_new_tokens,seed)
-        for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
-        elapsed=time.monotonic()-start
-        inference_processes()
-        children_after=resource.getrusage(resource.RUSAGE_CHILDREN)
-        if (children_after.ru_utime+children_after.ru_stime)-(children_before.ru_utime+children_before.ru_stime)>1e-9:
-            raise BCError('Untracked inference child CPU; comparison blocked')
+        boundary_before=child_process_observation()
+        try:
+            g=super().generate(messages,max_new_tokens,seed)
+            for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
+            elapsed=time.monotonic()-start
+            children_after=resource.getrusage(resource.RUSAGE_CHILDREN)
+            evidence=child_cpu_observation(children_before,children_after,boundary_before,child_process_observation())
+            try:
+                inference_processes()
+                if evidence['reaped_child_cpu_delta_seconds']>1e-9:
+                    raise BCError('Untracked inference child CPU; comparison blocked')
+            except BCError as exc:
+                exc.inference_child_cpu=evidence
+                raise
+        except BaseException as exc:
+            if not hasattr(exc,'inference_child_cpu'):
+                exc.inference_child_cpu=child_cpu_observation(children_before,
+                    resource.getrusage(resource.RUSAGE_CHILDREN),boundary_before,child_process_observation())
+            raise
         g.diagnostics.update(inference_cpu_scope=scope,
             peak_reserved_bytes_by_device=[self.torch.cuda.max_memory_reserved(i) for i in range(self.profile['physical_gpus'])],allocated_task_gpu_seconds=elapsed*self.profile['physical_gpus'],actual_gpus=self.profile['physical_gpus'],
             all_device_wall_seconds=elapsed,occupancy_not_flops=True)
