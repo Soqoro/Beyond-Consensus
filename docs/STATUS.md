@@ -1,5 +1,37 @@
 # Implementation status and handoff
 
+## Worker-selection process-launch attribution — 2026-10-19
+
+User-reported job 1099768, experiment
+`b2b0fc4f2c24fe515c8c06bb8c7a3da866160e5c98b101d8bbdc739dc39e4a08`,
+again stopped on its first SQL qualification call. The saved child CPU delta was
+0.011835 seconds (user 0.002693, system 0.009142), with no children visible at
+boundary snapshots. Attribution remains unknown. No probe passed; three were
+unrun and 4159 tokens remain uncertain. Small CPU usage is not grounds to waive
+the accounting contract. Historical runs remain unchanged.
+
+New prospective instrumentation uses a bounded Python audit hook active only
+inside worker-profile generation. It records at most 64 launch attempts and 12
+caller locations per attempt, with executable basenames for Popen/spawn/exec.
+It excludes arguments, shell strings, environments, source text and frame locals.
+It observes other Python threads in the interpreter; direct native launches may
+be invisible. Events are attempts, not evidence of successful launch, child PID
+or attribution of the measured CPU delta. The hook is installed once and remains
+inactive outside the generation scope. Errors retain both launch observations
+and child-CPU diagnostics; passing calls retain launch observations too.
+
+The live/reaped child guard, CPU charging and token uncertainty are unchanged.
+The tracing module is included in native qualification implementation hashes.
+Fresh CPU native qualification and a separately reviewed GPU proposal are needed;
+no GPU job was submitted and task experiments remain blocked.
+
+Validation: 635 tests, 599 passed, 36 skipped; focused 43 tests, 42 passed
+and one optional executor skip. Shell checks (11), compilation, stdlib-only CLI
+help and whitespace checks passed. CPU tests cover a real short-lived child,
+failed launch, thread events, privacy exclusions, bounded capture, scope cleanup
+and preservation of launch evidence alongside the accounting failure.
+
+
 ## Worker-selection child-CPU diagnostic — 2026-10-18
 
 User-supplied report for job 1099758 / experiment

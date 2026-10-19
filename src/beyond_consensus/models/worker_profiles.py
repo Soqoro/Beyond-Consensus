@@ -8,6 +8,7 @@ import json
 import os
 import time
 from ..util import BCError, digest, file_hash, read_json
+from .process_trace import process_launch_trace
 from .transformers_backend import TransformersBackend, generation_tokens, verify_thinking_template, require_allocation
 
 MODE='reporecourse-json-unique-v1-pool-7'
@@ -34,7 +35,7 @@ def profile(name):
 
 def implementation():
     root=Path(__file__).resolve().parents[3]
-    names=['src/beyond_consensus/models/'+s+'.py' for s in ('worker_profiles','constrained','unique_keys','action_schema','transformers_backend')]
+    names=['src/beyond_consensus/models/'+s+'.py' for s in ('worker_profiles','process_trace','constrained','unique_keys','action_schema','transformers_backend')]
     names+=['src/reporecourse/action_schema.py']
     return {n:file_hash(root/n) for n in names}
 
@@ -231,25 +232,28 @@ class WorkerBackend(TransformersBackend):
         for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
         start=time.monotonic()
         boundary_before=child_process_observation()
-        try:
-            g=super().generate(messages,max_new_tokens,seed)
-            for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
-            elapsed=time.monotonic()-start
-            children_after=resource.getrusage(resource.RUSAGE_CHILDREN)
-            evidence=child_cpu_observation(children_before,children_after,boundary_before,child_process_observation())
+        with process_launch_trace() as launch_trace:
             try:
-                inference_processes()
-                if evidence['reaped_child_cpu_delta_seconds']>1e-9:
-                    raise BCError('Untracked inference child CPU; comparison blocked')
-            except BCError as exc:
-                exc.inference_child_cpu=evidence
+                g=super().generate(messages,max_new_tokens,seed)
+                for i in range(self.profile['physical_gpus']):self.torch.cuda.synchronize(i)
+                elapsed=time.monotonic()-start
+                children_after=resource.getrusage(resource.RUSAGE_CHILDREN)
+                evidence=child_cpu_observation(children_before,children_after,boundary_before,child_process_observation())
+                try:
+                    inference_processes()
+                    if evidence['reaped_child_cpu_delta_seconds']>1e-9:
+                        raise BCError('Untracked inference child CPU; comparison blocked')
+                except BCError as exc:
+                    evidence['process_launch_trace']=launch_trace
+                    exc.inference_child_cpu=evidence
+                    raise
+            except BaseException as exc:
+                if not hasattr(exc,'inference_child_cpu'):
+                    exc.inference_child_cpu=child_cpu_observation(children_before,
+                        resource.getrusage(resource.RUSAGE_CHILDREN),boundary_before,child_process_observation())
+                exc.inference_child_cpu['process_launch_trace']=launch_trace
                 raise
-        except BaseException as exc:
-            if not hasattr(exc,'inference_child_cpu'):
-                exc.inference_child_cpu=child_cpu_observation(children_before,
-                    resource.getrusage(resource.RUSAGE_CHILDREN),boundary_before,child_process_observation())
-            raise
-        g.diagnostics.update(inference_cpu_scope=scope,
+        g.diagnostics.update(inference_cpu_scope=scope,process_launch_trace=launch_trace,
             peak_reserved_bytes_by_device=[self.torch.cuda.max_memory_reserved(i) for i in range(self.profile['physical_gpus'])],allocated_task_gpu_seconds=elapsed*self.profile['physical_gpus'],actual_gpus=self.profile['physical_gpus'],
             all_device_wall_seconds=elapsed,occupancy_not_flops=True)
         # A single-device CUDA event is not aggregate sharded-device work.

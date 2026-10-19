@@ -162,14 +162,19 @@ class Deployments(unittest.TestCase):
         b.count_input=lambda messages:63
         b.torch=SimpleNamespace(cuda=SimpleNamespace(synchronize=lambda i:None))
         g=Generation('{}',2,0,None,{})
+        def generated(*args):
+            sys.audit('subprocess.Popen', '/bin/diagnostic-test', ['private'], None, {})
+            return g
         usage=[SimpleNamespace(ru_utime=1.,ru_stime=2.),SimpleNamespace(ru_utime=1.25,ru_stime=2.5)]
         with patch('resource.getrusage',side_effect=usage), patch.object(p,'inference_processes',return_value={}), patch.object(p,'child_process_observation',return_value={'children':[]}):
-            with patch('beyond_consensus.models.transformers_backend.TransformersBackend.generate',return_value=g):
+            with patch('beyond_consensus.models.transformers_backend.TransformersBackend.generate',side_effect=generated):
                 row=w.qualification_call(b,dict(id='sql',messages=[],input_tokens=63))
         self.assertFalse(row['passed']);self.assertFalse(row['cpu_accounting_complete'])
         self.assertEqual(row['inference_child_cpu']['reaped_child_cpu_delta_seconds'],.75)
         self.assertEqual(row['resources']['uncertain_tokens'],4159)
         self.assertNotIn('generation',row)
+
+        self.assertEqual(row['inference_child_cpu']['process_launch_trace']['events'][0]['executable'],'diagnostic-test')
 
     def test_generation_failure_keeps_original_error_and_child_observation(self):
         b=p.WorkerBackend.__new__(p.WorkerBackend);b.profile=p.profile('coder')

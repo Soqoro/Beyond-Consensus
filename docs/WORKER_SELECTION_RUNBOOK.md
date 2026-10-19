@@ -568,3 +568,25 @@ refer to the new proposal; the failed run's approval is not a retry permission.
 Only then submit via the shared registry. This remains at most four synthetic
 calls, stopping on the first failure, with no task branches. If child CPU recurs,
 inspect the new evidence before specifying any changed accounting contract.
+
+
+## Process-launch attribution — 19 October 2026
+
+The second failed Q run (`b2b0fc4f2c24fe515c8c06bb8c7a3da866160e5c98b101d8bbdc739dc39e4a08`)
+measured 11.835 ms reaped-child CPU but no child at either boundary. Preserve it;
+do not replay or rescore it. The new `process_launch_trace` field records Python
+audit launch attempts during inference, including basename and bounded calling
+locations. It does not capture command arguments, environment values, shell
+strings, source lines or locals. A launch attempt can fail; it is not a PID or
+proof that a particular child consumed the measured CPU. Native-library launches
+can bypass these hooks, so an empty trace does not establish absence of children.
+
+Use the same fresh-directory CPU controls/native/proposal/review sequence with
+this newly committed source and the staged model assets. Native implementation
+hashes now include process_trace.py, so older locks cannot be reused unchanged.
+Inspect the new exact Q proposal before approval/submission. Existing approvals
+cover completed attempts only. No GPU rerun or task execution is authorized by
+these instrumentation changes. On failure export each row's entire
+`inference_child_cpu` (including nested `process_launch_trace`); on successful
+calls the trace is in generation diagnostics. Trace overhead remains in measured
+parent CPU; child CPU stays diagnostic-only and the guard remains enforced.
