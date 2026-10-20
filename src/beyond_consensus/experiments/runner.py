@@ -22,7 +22,7 @@ def run_manifest(manifest: dict[str, Any], output: Path, root: Path, *, shard: i
                  backend: Backend | None = None, model_lock: Path | None = None,
                  retry_failures: bool = False) -> list[dict[str, Any]]:
     if manifest.get("schema") == "rr-worker-selection-v1":
-        if backend is not None or manifest["stage"] == "Q":raise BCError("Approved task adapter only; no injection")
+        if backend is not None or manifest["stage"] in ("Q","N"):raise BCError("Approved task adapter only; no injection")
         from .worker_selection import run
         return run(manifest,output,root,model_lock=model_lock,shard=shard,retry_failures=retry_failures)
     if manifest.get('schema') == 'rr-decoder-diagnostic-v1':

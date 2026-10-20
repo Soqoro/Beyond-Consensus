@@ -629,3 +629,58 @@ unknown usage on interruption. Moving work outside a call cannot make its cost
 disappear. Existing failures and uncertain usage must not be rescored. Current
 implementation deliberately keeps the guard pending that separately specified
 and tested contract; the present work only improves failure evidence.
+
+
+## Raw-forward contrast: stage N — 20 October 2026
+
+The latest traced Q failed on NaNs entering the second mask, after the first
+committed `{`. It did not demonstrate duplicate-key overrestriction. A renewed Q
+now records raw model logits before processing. Prefer the separately bounded
+stage N for the next diagnosis: it runs exactly three **forward calls**, not
+three generations: cache prefill of the synthetic SQL prompt, one supplied `{`
+using the returned cache, then full-prefix recomputation with use_cache=False
+and no past_key_values. No logits processors or task execution are involved.
+
+The explicit forward inputs follow the pinned
+[Transformers 5.3.0 Qwen3Next implementation](https://raw.githubusercontent.com/huggingface/transformers/v5.3.0/src/transformers/models/qwen3_next/modeling_qwen3_next.py):
+cache creation on cached prefill, cache_position/position_ids, and last-position
+logits. This is a direct-forward contrast, not an assertion of identical generate
+internals. It can distinguish observed cached/uncached finiteness at this prefix,
+not establish a universal cache bug or a fix. Same process, fixed order, cache
+warmth and diagnostic overhead are explicit limitations.
+
+Prepare a **fresh committed source snapshot and native CPU lock** using the
+existing staged assets/environment. In its CPU allocation, after controls/native:
+
+```bash
+"$BC_MODEL_PYTHON" -I scripts/worker_selection.py proposal \
+  --profile coder --stage N \
+  --model-lock "$BC_RAW/model-lock.json" \
+  --output "$BC_RAW/proposal.json"
+
+"$BC_MODEL_PYTHON" -I scripts/worker_selection.py review \
+  --manifest "$BC_RAW/proposal.json" \
+  --output "$BC_RAW/review.json"
+```
+
+Review maximum_calls=3, maximum_branches=0, four physical GPUs, and stage N.
+Its approved manifest must use the shared `submit --mode preflight` path, not
+`run`. Existing Q approvals cannot authorize it. No further download or package,
+precision, attention-backend or mask changes are part of this diagnostic.
+
+Raw finite/NaN/infinity counts are observations, never semantic scores. Even if
+all three calls are finite, qualification_passed and task_execution_allowed stay
+false. `status=completed` means all three observations were collected, not that
+the model qualified. Raw nonfinite observations continue through the prescribed
+contrast; exceptions stop, retain uncertain dispatched inputs, and leave later
+calls unrun. Stage N cannot serve as the Q prerequisite for A/B/C.
+
+The separate N ledger sums actual inputs processed (prefill length, 1 cached
+input, full-prefix length) with zero generated tokens. Each row's resources is
+**cumulative**; use the last row, never sum row totals. Parent setup and forward
+CPU are charged against a shared 1200-second admission/scoring cap. Child CPU
+and Python launches remain diagnostic-only and cpu_accounting_complete remains
+false. This does not relax the normal qualification guard. Hardware/loading and
+allocation costs remain separately reported. Export all rows, including raw_logits,
+cache_returned, resources, and inference_child_cpu. Do not infer a root cause
+from an empty launch trace, a successful model load, or a single finite contrast.

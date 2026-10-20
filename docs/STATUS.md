@@ -1,5 +1,50 @@
 # Implementation status and handoff
 
+## Worker raw-output / fixed-prefix diagnostic — 2026-10-20
+
+User report for experiment
+`96616665b384f5c38739eaaae1ee6a76530d8df9dc1aaeaeab84846730a9082d`
+(job 1101093) narrows the observed SQL failure: first native-mask input had
+151936 finite scores, native masking left four choices, and uniqueness blocked
+zero. Committed action token 90 was `{`. At the second forward, mask-input
+inspection raised nan_logits before that step's native mask was applied.
+This does not prove which upstream computation produced NaNs or establish the
+cause of earlier runs. Parent CPU was 19.505332709 seconds; child delta 0.00822;
+4159 tokens remain uncertain and three probes were unrun. Historical failures
+remain unchanged.
+
+Q traces now inspect last-position raw model logits in the forward hook, before
+logits processors, reporting finite/NaN/+Inf/-Inf counts without values or
+sanitization. Nonfinite raw output stops Q with a distinct diagnostic error.
+Added separately approved synthetic stage N (Coder only): exactly three direct
+forward calls, prompt prefill with cache, one teacher-forced `{` with that cache,
+and full prompt+`{` with no cache. No generate(), grammar masking, selection,
+sampling or task tools. Pinned BF16 weights, explicit placement and SDPA remain
+unchanged. N's maximum three calls and fixed contract are hash-bound; it is
+preflight-only and cannot supply Q qualification, task approval or comparison.
+
+N observes nonfinite values and proceeds to the next prescribed forward; any
+exception stops without retry. It charges cumulative actual forward input tokens
+(0 generated tokens), parent preparation/forward CPU, and retains uncertain input
+usage on interruption. Child CPU/launches are recorded as incomplete diagnostic
+accounting, never a qualification pass. This intentionally separate diagnostic
+contract does not remove Q's live/reaped-child guard. CPU limit is 1200 seconds
+with admission estimates, not hard process preemption; token cap is 16384.
+Cumulative row ledgers must not be summed as independent costs. Observations use
+one model instance in fixed order and are not a fresh-process causal experiment.
+
+No GPU run was submitted. Fresh CPU native qualification, actual fixed-prefix
+footprint and exact stage-N approval remain necessary. Stage N and traced Q are
+neither task competence nor worst-case memory qualification.
+
+Validation: 647 tests, 611 passed, 36 skipped. Focused worker/decoder tests:
+55 tests, 54 passed and one optional executor skip. Shell checks (11),
+compilation, both stdlib-only CLI helps and whitespace checks passed. CPU doubles
+cover raw nonfinite detection before processors, hook removal, exact cached and
+uncached inputs, cumulative ledgers, exception/no-retry behavior and rejection
+of task or qualification reuse. No actual raw-forward GPU result exists yet.
+
+
 ## Worker-selection decoder intersection evidence — 2026-10-20
 
 User report for experiment

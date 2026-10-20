@@ -214,6 +214,13 @@ class TransformersBackend:
                 length=int(ids.shape[-1]) if ids is not None else None
                 trace.begin('prefill_model_forward' if trace.steps==0 else 'model_forward', input_length=length)
             def after(module, args, kwargs, output):
+                if getattr(trace,'capture_raw_logits',False):
+                    from .forward_probe import raw_logits_summary
+                    raw=raw_logits_summary(getattr(output,'logits',None))
+                    trace.end('raw_model_logits',**raw)
+                    if not raw['all_finite']:
+                        from .decoder_trace import MaskDiagnosticError
+                        raise MaskDiagnosticError('nonfinite_raw_model_logits')
                 trace.end('prefill_model_forward' if trace.steps==0 else 'model_forward')
                 trace.steps+=1
             handles=[self.model.register_forward_pre_hook(before,with_kwargs=True),

@@ -1,5 +1,26 @@
 # Research protocol implemented here
 
+## Bounded numerical diagnostic, stage N (2026-10-20)
+
+Following mask-input NaNs after the first fixed SQL action byte, stage N is a
+separate prospective Coder-only synthetic diagnostic: three raw forwards on the
+frozen SQL probe, cache prefill, cached `{`, and uncached prompt+`{`. No generated
+answer, grammar mask, task branch or correctness score. Preserve all raw
+nonfinite observations; no NaN replacement or precision change. Continue after
+a recorded nonfinite output only to complete the prescribed contrast; stop on
+exceptions without retry. Same loaded model/fixed order is a limitation, not an
+independent replication. The pinned native forward cache contract is used; no
+claim is made that direct-forward numerical behavior exactly reproduces generate.
+
+A stage-N approval is distinct from Q and cannot unlock A/B/C. Shared Slurm
+registry, one node/four physical GPUs and fresh exact native locks still apply.
+Parent CPU and repeated teacher-forced inputs are charged; child CPU observations
+remain separately incomplete, with no waiver for Q. The raw diagnostic may observe
+all three calls despite that incompleteness, but cannot report qualification or
+comparative resource success. A future accounting contract requires separate
+review; historical failed attempts are never rescored.
+
+
 ## Synthetic semantic runner (2026-10-16)
 
 The passed seven-case CPU production report motivates a separate prospective

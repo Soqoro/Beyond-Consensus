@@ -73,6 +73,7 @@ def controls():
 
 
 def grid(stage,presentation=None,configurations=None):
+    if stage=='N':return [dict(id=x,kind='raw_forward_diagnostic') for x in ('cache_prefill','cached_token','full_prefix')]
     if stage=='Q':return [dict(id=x,kind='qualification') for x in ('sql','schema','mapping','long')]
     if stage in ('A','B'):
         selected=[c for c in design.cases() if c['split']==('screen' if stage=='A' else 'confirm')]
@@ -141,7 +142,8 @@ def footprint(p,lock,stage,rows,configs=(),publics=None):
     from transformers import AutoTokenizer
     tokenizer=AutoTokenizer.from_pretrained(lock['tokenizer_path'],local_files_only=True,trust_remote_code=False)
     prompts=[];outputs=[]
-    if stage=='Q':prompts=[(r['id'],probe_prompt(r['id'],tokenizer,p)) for r in rows]
+    if stage=='N':prompts=[(r['id'],probe_prompt('sql',tokenizer,p)) for r in rows]
+    elif stage=='Q':prompts=[(r['id'],probe_prompt(r['id'],tokenizer,p)) for r in rows]
     elif stage in ('A','B'):
         by={c['id']:c for c in design.cases()}
         prompts=[(r['id'],render(messages(by[r['case']]),r['presentation'])) for r in rows if r['model']==p['name']]
@@ -168,16 +170,23 @@ def footprint(p,lock,stage,rows,configs=(),publics=None):
     for identity,prompt in prompts:
         ids=prompt_token_ids(tokenizer,p,prompt)
         result.append(dict(id=identity,messages_hash=digest(prompt),input_tokens=len(ids),rendered_ids_hash=digest(ids),
-            prompt_bytes=len(json.dumps(prompt).encode()),passed=0<len(ids)<=12288,**({'messages':prompt} if stage=='Q' else {})))
+            prompt_bytes=len(json.dumps(prompt).encode()),passed=0<len(ids)<=12288,**({'messages':prompt} if stage in ('Q','N') else {})))
+    if stage=='N':
+        prefix=tokenizer.encode('{',add_special_tokens=False)
+        require(len(prefix)==1,'Expected one fixed brace token')
+        for row in result:
+            row['fixed_prefix_ids']=prefix
+            row['forward_input_tokens']=1 if row['id']=='cached_token' else row['input_tokens']+(row['id']=='full_prefix')
     return dict(schema='rr-worker-footprint-v1',stage=stage,profile=p['name'],lock_hash=digest(lock),implementation=hashes(),
         cases=result,reference_outputs=outputs,status='passed' if result and all(x['passed'] for x in result+outputs) else 'failed',
         worst_case_fit_established=False,model_executed=False)
 
 
 def build(root,name,lock,stage,controls_record=None,qualification=None,prior=None,catalog=None,sources=None):
-    require(stage in ('Q','A','B','C'),'Unknown stage');p=profiles.profile(name);profiles.require_qualified(p,lock)
+    require(stage in ('Q','N','A','B','C'),'Unknown stage');p=profiles.profile(name);profiles.require_qualified(p,lock)
+    require(stage!='N' or name=='coder','Raw forward diagnostic is Coder-only')
     st=study(root);configs=[];bindings={};publics=None;presentation=None
-    if stage!='Q':
+    if stage not in ('Q','N'):
         require(controls_record and controls_record.get('status')=='passed' and controls_record.get('implementation')==hashes() and
             controls_record.get('case_set_id')==st['case_set_id'] and controls_record.get('runtime_versions')==runtime_versions() and
             [(r.get('case'),r.get('negative')) for r in controls_record.get('cases',[])]==[(c['id'],n) for c in design.cases() for n in (False,True)] and
@@ -208,31 +217,41 @@ def build(root,name,lock,stage,controls_record=None,qualification=None,prior=Non
         controls=controls_record,qualification=qualification,prior=prior,footprint=measured,configurations=configs,
         sources=str(sources) if sources else None,bindings=bindings,targets=targets,
         presentation=presentation,approval=None,task_execution_allowed=False,physical_gpus=p['physical_gpus'])
+    if stage=='N':
+        from ..models.forward_probe import contract
+        m['forward_contract']=contract()
     seal(m);validate(m);return m
 
 
 def approval_template(m):
     return dict(schema='rr-worker-selection-approval-v1',proposal_id=m['experiment_id'],stage=m['stage'],profile=m['profile']['name'],
-        maximum_calls=4 if m['stage']=='Q' else 24 if m['stage']=='A' else 12 if m['stage']=='B' else None,
+        maximum_calls=3 if m['stage']=='N' else 4 if m['stage']=='Q' else 24 if m['stage']=='A' else 12 if m['stage']=='B' else None,
         maximum_branches=12 if m['stage']=='C' else 0,physical_gpus=m['physical_gpus'],
-        limitations_accepted=LIMITATIONS,decision='pending',reviewer=None,reviewed_at=None)
+        limitations_accepted=LIMITATIONS+(['raw_forward_not_qualification','fixed_prefix_no_generation_no_mask','child_cpu_observed_not_qualified'] if m['stage']=='N' else []),decision='pending',reviewer=None,reviewed_at=None)
 
 
 def validate(m):
     require(m.get('schema')==SCHEMA and m.get('experiment_id')==digest({k:v for k,v in m.items() if k!='experiment_id'}),'Manifest identity changed')
     p=profiles.profile(m['profile']['name']);require(m['profile']==p and m['model']==p['model'] and m['physical_gpus']==p['physical_gpus'],'Profile changed')
     require(m['rows']==grid(m['stage'],m['presentation'],m['configurations']) and m['shards']==1 and m['episodes']==[],'Finite grid changed')
-    f=m['footprint'];expected_ids=[r['id'] for r in m['rows'] if m['stage']=='Q' or r['model']==p['name']]
+    require(m['stage']!='N' or p['name']=='coder','Raw forward diagnostic is Coder-only')
+    f=m['footprint'];expected_ids=[r['id'] for r in m['rows'] if m['stage'] in ('Q','N') or r['model']==p['name']]
     require(f.get('stage')==m['stage'] and f.get('profile')==p['name'] and f.get('lock_hash')==m['model_lock_sha256'] and
         f.get('status')=='passed' and f.get('implementation')==m['implementation'] and
         all(x.get('passed') is True and type(x.get('input_tokens')) is int and 0<x['input_tokens']<=12288 for x in f.get('cases',[])), 'Footprint contract changed')
     if m['stage']!='C':require([x['id'] for x in f['cases']]==expected_ids,'Footprint case scope changed')
+    if m['stage']=='N':
+        from ..models.forward_probe import contract
+        require(m.get('forward_contract')==contract(),'Raw forward contract changed')
+        require(all(x.get('forward_input_tokens')==(1 if x['id']=='cached_token' else x['input_tokens']+(x['id']=='full_prefix')) for x in f['cases']),'Raw forward token scope changed')
+        require(all(x.get('messages')==f['cases'][0]['messages'] and x.get('rendered_ids_hash')==f['cases'][0]['rendered_ids_hash'] and x.get('fixed_prefix_ids')==f['cases'][0]['fixed_prefix_ids'] for x in f['cases']),'Raw forward inputs differ')
+        require(len(f['cases'][0]['fixed_prefix_ids'])==1,'One fixed prefix token required')
     if m['approval']:
         original=deepcopy(m);original.update(approval=None,task_execution_allowed=False);seal(original)
         expected=approval_template(original);a=m['approval']
         require(set(a)==set(expected) and all(a[k]==v for k,v in expected.items() if k not in ('decision','reviewer','reviewed_at')) and
             a['decision']=='approved' and all(isinstance(a[k],str) and a[k].strip() for k in ('reviewer','reviewed_at')) and
-            m['task_execution_allowed']==(m['stage']!='Q'),'Exact scope approval required')
+            m['task_execution_allowed']==(m['stage'] not in ('Q','N')),'Exact scope approval required')
     else:require(m['task_execution_allowed'] is False,'Unapproved execution')
     return SimpleNamespace(model=SimpleNamespace(**p['model']),shards=1,task_kind='worker_selection')
 
@@ -241,7 +260,7 @@ def verify(m,root,lock):
     validate(m);profiles.require_qualified(m['profile'],lock)
     require(m['source_revision']==source_revision(root) and m['implementation']==hashes() and m['study']==study(root),'Frozen code/cases/renderer changed')
     require(m['model_lock_sha256']==digest(lock) and m['footprint']['lock_hash']==digest(lock) and m['footprint']['status']=='passed','Lock/footprint changed')
-    if m['stage']!='Q':
+    if m['stage'] not in ('Q','N'):
         c=m['controls'];q=m['qualification']
         require(c['status']=='passed' and c['implementation']==hashes() and c['runtime_versions']==runtime_versions(), 'Case controls changed')
         require(q['status']=='completed' and q['stage']=='Q' and q['lock_hash']==digest(lock) and q['implementation']==hashes() and q['profile']==m['profile'] and
@@ -263,12 +282,12 @@ def verify(m,root,lock):
 
 def authorize(m,a,root,lock):
     verify(m,root,lock);require(m['approval'] is None,'Already approved')
-    result=deepcopy(m);result.update(approval=a,task_execution_allowed=m['stage']!='Q');seal(result);validate(result);return result
+    result=deepcopy(m);result.update(approval=a,task_execution_allowed=m['stage'] not in ('Q','N'));seal(result);validate(result);return result
 
 
 def submission(m,root,lock,mode,concurrency,output):
     verify(m,root,lock)
-    require(m['approval'] is not None and concurrency==1 and mode==('preflight' if m['stage']=='Q' else 'run'),'Exact approved block, concurrency one')
+    require(m['approval'] is not None and concurrency==1 and mode==('preflight' if m['stage'] in ('Q','N') else 'run'),'Exact approved block, concurrency one')
     require(not (Path(output)/'worker-started.json').exists(),'Attempt already started; status/export only, no retry')
 
 
@@ -335,6 +354,7 @@ def qualification_call(backend,entry,save=lambda r:None):
     previous_trace=getattr(backend,'diagnostic_trace',None)
     had_trace=hasattr(backend,'diagnostic_trace')
     trace=Trace(capture_unique_prefix=True)
+    trace.capture_raw_logits=True
     backend.diagnostic_trace=trace
     start=time.process_time();key=None
     try:
@@ -367,7 +387,7 @@ def qualification_call(backend,entry,save=lambda r:None):
 
 def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
     require(shard in (None,0) and not retry_failures,'One block; no retry')
-    output=Path(output);lock=load(model_lock);submission(m,root,lock,'preflight' if m['stage']=='Q' else 'run',1,output)
+    output=Path(output);lock=load(model_lock);submission(m,root,lock,'preflight' if m['stage'] in ('Q','N') else 'run',1,output)
     require(os.environ.get('CUDA_LAUNCH_BLOCKING','0') in ('0',''),'Normal mode only')
     output.mkdir(parents=True,exist_ok=True)
     if (output/'manifest.json').exists():require(digest(load(output/'manifest.json'))==digest(m),'Output manifest changed')
@@ -386,7 +406,7 @@ def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
     save()
     try:
         backend=profiles.WorkerBackend(m['profile'],model_lock);report['runtime']=backend.runtime
-        if m['stage']!='Q':
+        if m['stage'] not in ('Q','N'):
             require(backend.runtime['hardware']==m['qualification']['runtime']['hardware'] or
                 [(h['name'],h['total_bytes'],h['capability']) for h in backend.runtime['hardware']]==
                 [(h['name'],h['total_bytes'],h['capability']) for h in m['qualification']['runtime']['hardware']],'Hardware differs from qualification')
@@ -400,6 +420,17 @@ def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
                 def checkpoint_q(r):report['rows'][-1]=r;save()
                 row=qualification_call(backend,item,checkpoint_q);report['rows'][-1]=row;save()
                 if not row['passed']:break
+        elif m['stage']=='N':
+            from ..models.forward_probe import run as raw_run
+            entry=m['footprint']['cases'][0]
+            require(entry['messages']==probe_prompt('sql',backend.tokenizer,m['profile']),'Raw forward prompt changed')
+            def checkpoint_raw(row):
+                if report['rows'] and report['rows'][-1]['id']==row['id']:report['rows'][-1]=row
+                else:report['rows'].append(row)
+                save()
+            raw_run(backend,entry,checkpoint_raw)
+            report['diagnostic_only']=True
+            report['qualification_passed']=False
         elif m['stage'] in ('A','B'):
             by={c['id']:c for c in design.cases()}
             for item in m['rows']:
@@ -427,7 +458,7 @@ def run(m,output,root,*,model_lock,shard=None,retry_failures=False):
                 row['generation_costs']=calls
                 report['rows'].append(dict(configuration_id=c['configuration_id'],task=c['task'],model=m['profile']['name'],result=row));save()
                 if row['status'] in ('paused','interrupted','infrastructure_failed'):break
-        expected=4 if m['stage']=='Q' else 24 if m['stage']=='A' else 12 if m['stage']=='B' else 6
+        expected=3 if m['stage']=='N' else 4 if m['stage']=='Q' else 24 if m['stage']=='A' else 12 if m['stage']=='B' else 6
         report['status']='completed' if len(report['rows'])==expected and all(r.get('status',r.get('result',{}).get('status')) not in ('infrastructure_failed','paused','interrupted','started') for r in report['rows']) else 'incomplete'
     except BaseException as exc:
         report.update(status='infrastructure_failed',error_type=type(exc).__name__);save();raise

@@ -35,7 +35,7 @@ def profile(name):
 
 def implementation():
     root=Path(__file__).resolve().parents[3]
-    names=['src/beyond_consensus/models/'+s+'.py' for s in ('worker_profiles','process_trace','decoder_trace','constrained','unique_keys','action_schema','transformers_backend')]
+    names=['src/beyond_consensus/models/'+s+'.py' for s in ('worker_profiles','process_trace','decoder_trace','forward_probe','constrained','unique_keys','action_schema','transformers_backend')]
     names+=['src/reporecourse/action_schema.py']
     return {n:file_hash(root/n) for n in names}
 

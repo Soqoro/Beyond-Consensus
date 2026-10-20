@@ -351,7 +351,7 @@ def dispatch(args: argparse.Namespace) -> Any:
         frozen = read_json(args.manifest)
         if frozen.get("schema") == "rr-worker-selection-v1":
             from .experiments.worker_selection import run
-            if frozen["stage"] != "Q":raise BCError("Task stage cannot be a preflight")
+            if frozen["stage"] not in ("Q","N"):raise BCError("Task stage cannot be a preflight")
             result = run(frozen,args.output.parent,ROOT,model_lock=args.model_lock)[0]
             result["command_failed"] = result["status"] != "completed"
             atomic_json(args.output, result)

@@ -21,7 +21,7 @@ def main():
         if name=='stage':q.add_argument('--approval',type=Path)
         if name in ('native','proposal','approve'):q.add_argument('--model-lock',type=Path,required=True)
         if name=='proposal':
-            q.add_argument('--stage',choices=('Q','A','B','C'),required=True)
+            q.add_argument('--stage',choices=('Q','N','A','B','C'),required=True)
             for key in ('controls','qualification','prior','catalog','sources'):q.add_argument('--'+key,type=Path)
         if name in ('review','approve'):q.add_argument('--manifest',type=Path,required=True)
         if name=='approve':q.add_argument('--approval',type=Path,required=True)
