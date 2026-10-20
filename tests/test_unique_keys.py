@@ -179,5 +179,24 @@ class ProcessorTests(unittest.TestCase):
         self.assertEqual(bytes.fromhex(details['decoded_utf8_hex']), b'changed')
         self.assertEqual(bytes.fromhex(details['expected_utf8_hex']).decode(), synthetic_controls()[0][0])
 
+    def test_empty_intersection_keeps_action_prefix_and_exclusions(self):
+        from beyond_consensus.models.decoder_trace import Trace
+        vocab=[b'{"x":1,',b'"x":2}',b'EOS']
+        with patch.dict('sys.modules',torch=TORCH):
+            processor=self.processor(vocab)
+            processor(IDs([98765]),Scores([0,float('-inf'),float('-inf')]))
+            trace=Trace(capture_unique_prefix=True);processor.trace=trace
+            with self.assertRaisesRegex(BCError,'empty_allowed_intersection'):
+                processor(IDs([98765,0]),Scores([float('-inf'),0,float('-inf')]))
+        saved=trace.snapshot()
+        self.assertEqual(saved['unique_prefix']['action_token_tail'],[0])
+        self.assertEqual(bytes.fromhex(saved['unique_prefix']['action_tail_hex']),vocab[0])
+        failure=saved['unique_key_failure']
+        self.assertEqual(failure['blocked_count'],1)
+        self.assertEqual(failure['blocked'][0]['token_id'],1)
+        self.assertEqual(failure['finite_quote_candidates_count'],1)
+        self.assertEqual(failure['state']['top_scope_key_count'],1)
+        self.assertEqual(failure['native_grammar']['status'],'unavailable')
+
     def test_bad_vocabulary_is_rejected(self):
         with self.assertRaises(BCError):self.processor(['decoded-as-text', b'EOS'])

@@ -590,3 +590,42 @@ these instrumentation changes. On failure export each row's entire
 `inference_child_cpu` (including nested `process_launch_trace`); on successful
 calls the trace is in generation diagnostics. Trace overhead remains in measured
 parent CPU; child CPU stays diagnostic-only and the guard remains enforced.
+
+
+## Empty intersection diagnostic — 20 October 2026
+
+Run `7c0bfe681598f2c0bdda25420310e71dfad1aa13205780571fb8a544e755126b`
+failed inside the decoder before its child-CPU postcheck. Four Python launch
+attempts were recorded (ldconfig, file, ptxas, ptxas), and reaped-child CPU was
+8.132 ms. Do not promote this to qualification or attribute all CPU to those
+attempts. The 500.484-second parent debit is retained, including the admission
+estimate overrun; it does not exceed the 1200-second episode cap.
+
+Fresh synthetic Q reports now include `rows[].decoder_trace`, even if generation
+raises. Inspect `last_started_stage`, `last_completed_stage`, `unique_prefix`,
+`unique_key_failure` and the bounded events. Action prefix is captured only after
+the reasoning gate activates; counts are committed action-prefix observations,
+not recovered generation totals. Failure samples distinguish grammar permission,
+finite quote candidates before duplicate-key masking, and blocked candidates.
+The CPU-native bitmask may be unavailable; this is reported, never inferred.
+No mask is relaxed and no response is repaired. Normal task calls do not enable
+this prefix capture. A Trace is restored/removed at the end of each Q call.
+
+Use a fresh source snapshot, CPU controls/native qualification and Q proposal.
+Updated decoder/native implementation hashes invalidate old qualified locks.
+Review the exact new proposal before a GPU submission; do not resubmit any of
+the historical started attempts. Include both full decoder_trace and
+inference_child_cpu when exporting the next diagnostic. No environment change,
+cache clearing, dependency upgrade or model download is required by this change.
+
+### Child-CPU accounting decision remains open
+
+Process names alone cannot authorize a whitelist or establish complete child
+accounting. A future change must define whether runtime discovery/compilation is
+measured setup or call work, consistently for both model profiles, including
+cold/warm cache behavior. It must reconcile reaped-child deltas without double
+counting trusted tool CPU, detect surviving/unobserved children and preserve
+unknown usage on interruption. Moving work outside a call cannot make its cost
+disappear. Existing failures and uncertain usage must not be rescored. Current
+implementation deliberately keeps the guard pending that separately specified
+and tested contract; the present work only improves failure evidence.

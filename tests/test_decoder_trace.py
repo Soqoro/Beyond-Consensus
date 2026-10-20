@@ -6,6 +6,28 @@ from beyond_consensus.models.decoder_trace import Trace,score_summary,MaskDiagno
 from beyond_consensus.models.unique_keys import KeyState,synthetic_controls
 
 class TraceTests(unittest.TestCase):
+    def test_prefix_evidence_opt_in_and_bounded(self):
+        self.assertIsNone(Trace().snapshot()['unique_prefix'])
+        trace=Trace(capture_unique_prefix=True)
+        for i in range(100):trace.unique_prefix.feed(i,b'x'*100)
+        saved=trace.snapshot()['unique_prefix']
+        self.assertEqual(saved['action_tokens_committed'],100)
+        self.assertEqual(saved['action_bytes_committed'],10000)
+        self.assertEqual(len(bytes.fromhex(saved['action_tail_hex'])),2048)
+        self.assertEqual(len(saved['action_token_tail']),64)
+        self.assertTrue(saved['action_tail_truncated'])
+
+    def test_native_bitmask_signed_words_and_padding(self):
+        from types import SimpleNamespace
+        from beyond_consensus.models.decoder_trace import native_allowed_snapshot
+        class Mask:
+            device='cpu'
+            def __getitem__(self,index):return SimpleNamespace(tolist=lambda:[-1,-1,-1])
+        result=native_allowed_snapshot(SimpleNamespace(token_bitmask=Mask()),70)
+        self.assertEqual(result['allowed_count'],70)
+        self.assertEqual(result['token_ids'],list(range(64)))
+        self.assertTrue(result['truncated'])
+
     def test_negative_infinity_is_mask_not_failure(self):
         self.assertEqual(score_summary([-math.inf,0.,-2.],3)['usable_scores'],2)
     def test_empty_invalid_bounds_nan_and_positive_infinity_fail_closed(self):

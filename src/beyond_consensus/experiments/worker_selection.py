@@ -331,6 +331,11 @@ def attempt(backend,case,presentation,save,expected=None):
 def qualification_call(backend,entry,save=lambda r:None):
     from ..models.action_schema import validate_action
     r=Resources(16384,1200);row=dict(id=entry['id'],passed=False,dispatched=False,status='started')
+    from ..models.decoder_trace import Trace
+    previous_trace=getattr(backend,'diagnostic_trace',None)
+    had_trace=hasattr(backend,'diagnostic_trace')
+    trace=Trace(capture_unique_prefix=True)
+    backend.diagnostic_trace=trace
     start=time.process_time();key=None
     try:
         count=backend.count_input(entry['messages']);require(count==entry['input_tokens'],'Qualification prompt changed')
@@ -353,6 +358,10 @@ def qualification_call(backend,entry,save=lambda r:None):
             row['inference_child_cpu']=deepcopy(exc.inference_child_cpu)
             row['cpu_accounting_complete']=False
         row.update(status='infrastructure_failed',error_type=type(exc).__name__,error_category=str(exc)[:160])
+    finally:
+        row['decoder_trace']=trace.snapshot()
+        if had_trace:backend.diagnostic_trace=previous_trace
+        else:del backend.diagnostic_trace
     row['resources']=r.summary();return row
 
 

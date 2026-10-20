@@ -123,6 +123,8 @@ class UniqueKeyProcessor:
                     raise BCError('Unique-key token_index_bounds')
                 if token in self.stops:
                     raise BCError('Generation continued after EOS')
+                if self.trace and getattr(self.trace,'unique_prefix',None) is not None:
+                    self.trace.unique_prefix.feed(token,self.vocab[token])
                 try:
                     self.state.feed(self.vocab[token])
                 except (ValueError, UnicodeError, IndexError) as exc:
@@ -152,6 +154,13 @@ class UniqueKeyProcessor:
                 masked[0, blocked] = float('-inf')
                 self.blocked_tokens += len(blocked)
             if not torch.isfinite(masked).any().item():
+                if self.trace and getattr(self.trace,'unique_prefix',None) is not None:
+                    from .decoder_trace import unique_failure_snapshot
+                    try:
+                        self.trace.unique_key_failure=unique_failure_snapshot(
+                            self.state,candidates,blocked,self.vocab,self.inner,size)
+                    except Exception as exc:
+                        self.trace.unique_key_failure=dict(capture_error=type(exc).__name__)
                 raise BCError('Unique-key empty_allowed_intersection')
             if self.trace:
                 from .decoder_trace import tensor_summary

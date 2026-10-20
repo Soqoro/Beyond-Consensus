@@ -1,5 +1,42 @@
 # Implementation status and handoff
 
+## Worker-selection decoder intersection evidence — 2026-10-20
+
+User report for experiment
+`7c0bfe681598f2c0bdda25420310e71dfad1aa13205780571fb8a544e755126b`
+(job 1101018) records first SQL call failing with
+`Unique-key empty_allowed_intersection`, before the post-generation child guard.
+Launch attempts include ldconfig, file, and ptxas twice; caller stacks include
+driver discovery, architecture detection, compiler version/cache checks and
+apply_token_bitmask_inplace_triton. This supports runtime setup/compiler activity,
+not exact child PID/exit/CPU attribution. Child delta: 0.008132 seconds. Parent CPU
+debit: 500.484061506 seconds against a 31-second estimate and 1200-second cap;
+tokens uncertain: 4159. Three probes unrun; no qualification pass. Historical
+scores and reports remain unchanged.
+
+Synthetic worker Q calls now attach a fresh bounded decoder Trace, restored on
+exit. Opt-in action-prefix evidence stores the last 64 action token IDs, last
+2048 action bytes in hex, total prefix counts and a full-prefix SHA-256; no
+prompt or reasoning token IDs enter that buffer. Unique-key empty intersection
+adds finite quote candidates, blocked token samples (64 each, 128 bytes/token),
+lexical state metadata and a CPU-native grammar bitmask count/sample when
+available. Candidate finite scores and grammar permission are distinguished.
+Trace failures do not replace the original empty-intersection error. Other
+trace consumers retain prefix capture disabled by default. Tracing overhead is
+inside the task CPU interval and native hashes include decoder_trace.py.
+
+These are prospective synthetic diagnostics, not a decoder fix or child-CPU
+waiver. Native launch attempts may remain invisible. The live/reaped-child guard
+is unchanged. Fresh native CPU controls and a new exact Q proposal are required;
+no GPU job submitted and no task competence established.
+
+Validation: 639 tests, 603 passed, 36 skipped. Focused decoder/worker tests:
+60 tests, 59 passed and one optional executor skip. Shell checks (11),
+compilation, stdlib-only CLI help and whitespace checks passed. New controls
+cover prefix privacy/bounds, signed native bitmask padding, actual empty-mask
+wrapper evidence and qualification trace cleanup with uncertain tokens retained.
+
+
 ## Worker-selection process-launch attribution — 2026-10-19
 
 User-reported job 1099768, experiment

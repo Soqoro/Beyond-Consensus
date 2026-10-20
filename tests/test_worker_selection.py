@@ -195,6 +195,22 @@ class Deployments(unittest.TestCase):
 
 
 class Attempts(unittest.TestCase):
+    def test_qualification_trace_survives_failure_and_restores_backend(self):
+        prior=object()
+        class Backend:
+            diagnostic_trace=prior
+            def count_input(self,m):return 63
+            def generate(self,*args):
+                self.diagnostic_trace.unique_prefix.feed(3,b'{')
+                self.diagnostic_trace.begin('unique_key_mask')
+                raise BCError('Unique-key empty_allowed_intersection')
+        backend=Backend()
+        row=w.qualification_call(backend,dict(id='sql',messages=[],input_tokens=63))
+        self.assertIs(backend.diagnostic_trace,prior)
+        self.assertFalse(row['passed'])
+        self.assertEqual(row['decoder_trace']['unique_prefix']['action_token_tail'],[3])
+        self.assertEqual(row['resources']['uncertain_tokens'],4159)
+
     def test_wrong_tool_one_call_and_no_retry(self):
         class Backend:
             calls=0

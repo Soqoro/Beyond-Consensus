@@ -1,5 +1,6 @@
 """Bounded, synthetic-only decoder metadata; imports remain standard-library only."""
 from collections import deque
+import hashlib
 import math
 import re
 import traceback
@@ -28,8 +29,58 @@ def exception_record(exc):
     return chain
 
 
+class UniquePrefixEvidence:
+    """Explicit synthetic-only action bytes; prompt/reasoning are never fed here."""
+    def __init__(self):
+        self.tokens=deque(maxlen=64);self.tail=b'';self.count=0;self.byte_count=0
+        self.hash=hashlib.sha256()
+    def feed(self, token, piece):
+        self.count+=1;self.byte_count+=len(piece);self.hash.update(piece)
+        self.tokens.append(token);self.tail=(self.tail+piece)[-2048:]
+    def snapshot(self):
+        return dict(action_tokens_committed=self.count,action_bytes_committed=self.byte_count,
+            action_prefix_sha256=self.hash.hexdigest(),action_tail_hex=self.tail.hex(),
+            action_tail_truncated=self.byte_count>2048,action_token_tail=list(self.tokens),
+            action_token_tail_truncated=self.count>64,
+            meaning='JSON action prefix only; not total generated tokens or completed response')
+
+
+def native_allowed_snapshot(inner, vocab_size):
+    # ObservedProcessor wraps the native matcher. Inspect CPU metadata only.
+    native=getattr(inner,'inner',inner)
+    mask=getattr(native,'token_bitmask',None)
+    if mask is None or str(mask.device)!='cpu':
+        return dict(status='unavailable',reason='no_cpu_native_bitmask')
+    words=mask[0].tolist();count=0;sample=[]
+    for index,word in enumerate(words):
+        width=min(32,max(0,vocab_size-index*32))
+        bits=int(word)&((1<<width)-1)
+        count+=bits.bit_count()
+        if len(sample)<64:
+            sample.extend(index*32+i for i in range(width) if bits&(1<<i))
+            sample=sample[:64]
+    return dict(status='observed',allowed_count=count,token_ids=sample,truncated=count>64,
+                meaning='native grammar bitmask; does not establish finite model scores')
+
+
+def unique_failure_snapshot(state, candidates, blocked, vocab, inner, size):
+    def sample(ids):
+        return [dict(token_id=i,piece_hex=vocab[i][:128].hex(),piece_truncated=len(vocab[i])>128)
+                for i in ids[:64]]
+    return dict(input_sequence_length=size,
+        finite_quote_candidates_count=len(candidates),finite_quote_candidates=sample(candidates),
+        finite_quote_candidates_truncated=len(candidates)>64,
+        blocked_count=len(blocked),blocked=sample(blocked),blocked_truncated=len(blocked)>64,
+        native_grammar=native_allowed_snapshot(inner,len(vocab)),
+        state=dict(depth=len(state.frames),in_string=state.in_string,is_key=state.is_key,
+            escaped=state.escaped,key_tail_hex=state.key[-256:].hex(),key_truncated=len(state.key)>256,
+            top_scope_key_count=len(state.frames[-1][2]) if state.frames else 0),
+        interpretation='no finite score after unique mask; candidates are finite quote tokens before unique mask, not all grammar tokens')
+
+
 class Trace:
-    def __init__(self, limit=32):
+    def __init__(self, limit=32, *, capture_unique_prefix=False):
+        self.unique_prefix = UniquePrefixEvidence() if capture_unique_prefix else None
         self.events=deque(maxlen=limit);self.count=0;self.last_started=None;self.last_completed=None;self.steps=0
     def begin(self, stage, **metadata):
         self.last_started=stage;self._event(stage,'started',metadata)
@@ -38,7 +89,9 @@ class Trace:
     def _event(self, stage, status, metadata):
         self.count+=1;self.events.append(dict(sequence=self.count,stage=stage,status=status,**metadata))
     def snapshot(self):
-        return dict(last_started_stage=self.last_started,last_completed_stage=self.last_completed,
+        return dict(unique_key_failure=getattr(self,'unique_key_failure',None),
+            unique_prefix=self.unique_prefix.snapshot() if self.unique_prefix else None,
+            last_started_stage=self.last_started,last_completed_stage=self.last_completed,
             observed_token_steps=self.steps,token_step_observation='completed_forward_count; emitted tokens unknown until generation returns',events=list(self.events),events_seen=self.count,event_buffer_limit=self.events.maxlen,
             native_completion=getattr(self,'native_completion',None),
             native_completion_basis='native CPU stop-token bitmask acceptance before choice, not strict parsing or matcher termination',
