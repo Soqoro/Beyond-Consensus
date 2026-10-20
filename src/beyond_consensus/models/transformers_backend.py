@@ -210,6 +210,9 @@ class TransformersBackend:
         if trace is not None:
             def before(module, args, kwargs):
                 if trace.steps:trace.end('token_choice', observation='next_forward_started; selected_token_not_exported')
+                if getattr(trace,'capture_forward_inputs',False) and trace.steps < 2:
+                    from .forward_probe import forward_input_summary
+                    trace.forward_inputs.append(dict(step=trace.steps, **forward_input_summary(args,kwargs)))
                 ids=kwargs.get('input_ids')
                 length=int(ids.shape[-1]) if ids is not None else None
                 trace.begin('prefill_model_forward' if trace.steps==0 else 'model_forward', input_length=length)

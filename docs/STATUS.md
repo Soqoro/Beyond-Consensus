@@ -1,5 +1,14 @@
 # Implementation status and handoff
 
+## Raw-forward result and generation-input tracing — 2026-10-20
+
+User-supplied stage N report 536ad7047310cf4c54015ad09cfaa975c11c3d1a23c08fa40fac167eab4ba3a7 (job 1101100) observed 151936 finite last-position logits and zero NaN/infinities in all three forwards. Cached and uncached finiteness does not establish numerical agreement or reproduce the earlier generation failure. Cumulative input usage was 128, generated tokens zero, parent CPU 29.427791902 seconds, process wall 435.9566323678009 seconds. Reaped child delta was zero; accounting remains incomplete and qualification false. This is supplied evidence, not an independent snapshot audit.
+
+Prospective Q tracing now retains the first two forward inputs separately from the rolling event buffer: bounded synthetic token/mask/position values and hashes, shapes/dtypes/devices, cache class/presence and scalar cache options. No cache tensors are read, no inputs are changed, and no retry or task eligibility is added. Normal task traces leave capture disabled. Raw logits remain inspected before processors. Fresh exact native locks, CPU footprint and new Q approval are required before GPU execution; stage N approval does not authorize Q.
+
+
+Validation: 649 tests ran, 613 passed and 36 skipped for existing optional dependencies/gates. All 10 focused forward-probe tests passed. Shell checks (11 files), stdlib-only worker CLI help and whitespace checks passed. No GPU execution was performed by this implementation.
+
 ## Worker raw-output / fixed-prefix diagnostic — 2026-10-20
 
 User report for experiment

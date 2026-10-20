@@ -1,5 +1,10 @@
 # Research protocol implemented here
 
+## Synthetic generation-input observation — 2026-10-20
+
+Following finite direct stage-N forwards, prospective synthetic Q diagnostics may retain first-two-forward input IDs, attention masks, positions and cache metadata to contrast actual generation with the explicit forward contract. Only tensors with at most 16384 elements are transferred for hashing; values are exported only up to 128 elements. Cache contents are not inspected. These observations are not causal proof, task competence, or permission to waive child-CPU accounting. Historical attempts and scores remain unchanged.
+
+
 ## Bounded numerical diagnostic, stage N (2026-10-20)
 
 Following mask-input NaNs after the first fixed SQL action byte, stage N is a

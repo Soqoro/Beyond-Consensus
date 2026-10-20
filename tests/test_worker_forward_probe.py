@@ -66,6 +66,53 @@ class ForwardProbeTests(unittest.TestCase):
         self.assertEqual(trace.snapshot()['events'][-1]['stage'],'raw_model_logits')
         self.assertEqual(trace.snapshot()['events'][-1]['nan'],1)
 
+    def test_forward_input_metadata_bounds_and_no_cache_inspection(self):
+        class Tensor:
+            dtype='torch.int64';device='cuda:0'
+            def __init__(self, shape, data):self.shape=shape;self.data=data
+            def tolist(self):return self.data
+        class Cache:
+            def get_seq_length(self):raise AssertionError('must not inspect cache')
+        ids=Tensor((1,1),[[90]])
+        row=f.forward_input_summary((ids,),dict(
+            attention_mask=Tensor((1,64),[[1]*64]),
+            position_ids=Tensor((1,1),[[63]]),
+            cache_position=Tensor((1,),[63]),past_key_values=Cache(),use_cache=True))
+        self.assertEqual(row['input_ids']['values'],[[90]])
+        self.assertEqual(row['cache'],dict(present=True,type='Cache'))
+        self.assertEqual(row['cache_position']['values'],[63])
+        self.assertEqual(row['input_ids']['sha256'],digest([[90]]))
+        medium=Tensor((1,129),[[1]*129])
+        self.assertNotIn('values',f.forward_input_summary((),{'input_ids':medium})['input_ids'])
+        large=Tensor((1,16385),None)
+        large.tolist=lambda: self.fail('unbounded transfer')
+        self.assertTrue(f.forward_input_summary((),{'attention_mask':large})['attention_mask']['hash_omitted'])
+        self.assertIsNone(f.forward_input_summary((),{})['cache_position'])
+
+    def test_forward_inputs_are_opt_in_and_first_two_only(self):
+        from beyond_consensus.models.transformers_backend import TransformersBackend
+        from beyond_consensus.models.decoder_trace import Trace
+        hooks={};removed=[]
+        class Model:
+            def register_forward_pre_hook(self,fn,**kw):
+                hooks['before']=fn
+                return SimpleNamespace(remove=lambda:removed.append('before'))
+            def register_forward_hook(self,fn,**kw):
+                hooks['after']=fn
+                return SimpleNamespace(remove=lambda:removed.append('after'))
+        backend=TransformersBackend.__new__(TransformersBackend);backend.model=Model()
+        def generate(*args):
+            for i in range(3):
+                hooks['before'](backend.model,(),{})
+                hooks['after'](backend.model,(),{},None)
+        backend._generate=generate
+        for enabled in (False,True):
+            trace=Trace(limit=1);trace.capture_forward_inputs=enabled
+            backend.diagnostic_trace=trace
+            backend.generate([],4,0)
+            self.assertEqual(len(trace.snapshot()['forward_inputs']),2 if enabled else 0)
+        self.assertEqual(removed,['before','after']*2)
+
     def test_raw_counts_do_not_sanitize_nonfinite_or_cast_dtype(self):
         with patch.dict('sys.modules',torch=TORCH):
             report=f.raw_logits_summary(Logits([1.,math.nan,math.inf,-math.inf]))

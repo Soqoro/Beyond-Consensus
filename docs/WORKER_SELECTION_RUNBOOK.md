@@ -1,5 +1,10 @@
 # Bounded worker selection — 16 October 2026
 
+## Generation-input comparison follow-up
+
+Use fresh CPU native qualification and a new stage Q proposal after this tracing change. Review and approve its exact four-call synthetic scope before submission. Do not rerun the completed stage N manifest. Inspect rows[].decoder_trace.forward_inputs alongside raw_model_logits events; the first two inputs survive event-buffer rollover. The finite direct-forward result does not qualify the worker. No GPU job was submitted by this implementation.
+
+
 ## Status and evidence boundary
 
 This is a prospective engineering comparison. **No new model was staged or run by

@@ -81,6 +81,7 @@ def unique_failure_snapshot(state, candidates, blocked, vocab, inner, size):
 class Trace:
     def __init__(self, limit=32, *, capture_unique_prefix=False):
         self.unique_prefix = UniquePrefixEvidence() if capture_unique_prefix else None
+        self.forward_inputs=[]
         self.events=deque(maxlen=limit);self.count=0;self.last_started=None;self.last_completed=None;self.steps=0
     def begin(self, stage, **metadata):
         self.last_started=stage;self._event(stage,'started',metadata)
@@ -89,7 +90,7 @@ class Trace:
     def _event(self, stage, status, metadata):
         self.count+=1;self.events.append(dict(sequence=self.count,stage=stage,status=status,**metadata))
     def snapshot(self):
-        return dict(unique_key_failure=getattr(self,'unique_key_failure',None),
+        return dict(forward_inputs=self.forward_inputs,unique_key_failure=getattr(self,'unique_key_failure',None),
             unique_prefix=self.unique_prefix.snapshot() if self.unique_prefix else None,
             last_started_stage=self.last_started,last_completed_stage=self.last_completed,
             observed_token_steps=self.steps,token_step_observation='completed_forward_count; emitted tokens unknown until generation returns',events=list(self.events),events_seen=self.count,event_buffer_limit=self.events.maxlen,

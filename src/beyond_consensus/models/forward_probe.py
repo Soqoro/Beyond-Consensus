@@ -107,3 +107,39 @@ def run(backend, entry, save=lambda row:None):
         if row['status']=='infrastructure_failed':break
     cache=None
     return rows
+
+
+def forward_input_summary(args, kwargs):
+    """Bounded synthetic-only input metadata; never inspect cache tensors."""
+    result = {}
+    for name in ('input_ids', 'attention_mask', 'position_ids', 'cache_position'):
+        value = kwargs.get(name)
+        if name == 'input_ids' and value is None and args:
+            value = args[0]
+        if value is None:
+            result[name] = None
+            continue
+        shape = list(value.shape)
+        count = 1
+        for size in shape:
+            count *= size
+        item = dict(shape=shape, dtype=str(value.dtype), device=str(value.device))
+        # No unbounded host transfer, including unusual attention masks.
+        if count <= 16384:
+            data = value.tolist()
+            item['sha256'] = digest(data)
+            if count <= 128:
+                item['values'] = data
+            else:
+                item['values_omitted'] = True
+        else:
+            item['values_omitted'] = True
+            item['hash_omitted'] = True
+        result[name] = item
+    cache = kwargs.get('past_key_values')
+    result['cache'] = dict(present=cache is not None,
+        type=type(cache).__name__ if cache is not None else None)
+    for name in ('use_cache', 'logits_to_keep', 'return_dict'):
+        value = kwargs.get(name)
+        result[name] = value if type(value) in (bool, int, str) or value is None else 'non_scalar'
+    return result

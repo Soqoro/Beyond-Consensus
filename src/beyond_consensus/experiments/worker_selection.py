@@ -355,6 +355,7 @@ def qualification_call(backend,entry,save=lambda r:None):
     had_trace=hasattr(backend,'diagnostic_trace')
     trace=Trace(capture_unique_prefix=True)
     trace.capture_raw_logits=True
+    trace.capture_forward_inputs=True
     backend.diagnostic_trace=trace
     start=time.process_time();key=None
     try:
