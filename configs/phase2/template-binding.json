@@ -1,0 +1,5 @@
+{
+  "source": "PILOT_MANIFEST_V3.yaml",
+  "sha256": "f4f8bb6ccfe5cb7315b16c824b43c048737bf0c57d41e3ff44d95cbc0d37da5f",
+  "conversion": "restricted stdlib YAML subset; no overrides; JSON numeric map keys represented as strings"
+}

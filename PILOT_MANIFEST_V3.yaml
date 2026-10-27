@@ -1,0 +1,380 @@
+# Version 3 reviewed planning template. No real execution is authorised.
+protocol: beyond_consensus_phase2
+version: '3.0'
+created: '2026-10-26'
+status: planning_and_offline_implementation_only
+execution:
+  default_mode: mock_cpu
+  real_model_calls_enabled: false
+  api_calls_enabled: false
+  local_model_inference_enabled: false
+  downloads_enabled: false
+  cluster_submission_enabled: false
+  git_write_actions_enabled: false
+  preserve_phase1_results: true
+  scheduler: slurm
+  max_concurrent_gpus: 4
+  source_commit: null
+  code_snapshot_digest: null
+  worker_image_digest: null
+  approval_record: null
+  real_backends_registered_in_this_handoff: false
+  approval_record_is_sufficient_to_enable_real_backend: false
+models:
+  decomposition_planner_snapshot: null
+  allocation_planner_snapshot: null
+  primary_executor_snapshot: null
+  secondary_executor_snapshot: null
+  attacker_snapshot_or_policy_version: null
+  sampling_configuration: null
+  seed_support_verified: false
+budgets:
+  currency: null
+  total_campaign_cap: null
+  per_stage_caps: {}
+  max_calls_per_task: null
+  max_tokens_per_call: null
+  max_tool_calls_per_task: null
+  max_owner_attack_calls: null
+  reservation_policy_version: null
+  retry_policy_version: null
+  price_schedule_version: null
+  enforce_atomic_reservations: true
+  unresolved_usage_blocks_further_remote_calls: true
+  predicted_incident_budget: null
+  predicted_incident_budget_is_hard_realised_guarantee: false
+  predicted_incident_budget_scope: solver_tests_only_for_current_handoff
+scientific_scope:
+  agent_counts:
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  ownership_cap: 2
+  task_count_constraint: n <= m <= 2*n
+  eligible_n_rule: max(4, ceil(m/2)) <= n <= min(10, m)
+  main_comparison_requires_m_greater_than_n: true
+  fixed_required_task_set: true
+  graph_frozen_before_allocation: true
+  task_boundaries_fixed: true
+  owners_interchangeable: true
+  one_executor_model_within_team: true
+  fault_domain: logical_owner_output_boundary
+  shared_model_checkpoint_compromise: out_of_scope
+  task_contexts: isolated
+  hidden_owner_memory: prohibited
+  task_resumption_allowed: true
+  compromise_detection: oracle
+  compromise_unit: all_declared_outputs_of_one_owner
+  incident_reset: independent
+  immutable_evaluator: true
+  writes: resettable_sandbox_only
+  repair_policy: common_selective_dependency_closure
+  physical_replay_required: true
+  use_evaluation_realised_costs_for_allocation: false
+trace_design:
+  primary_clean_mode: shared_only_after_invariance_qualification
+  ownership_hidden_from_task_payloads: true
+  task_schedule: stable_task_id_topological_order
+  allocations_frozen_before_clean_trace: true
+  shared_clean_qualification_digest: null
+  automatic_fallback_to_method_specific_clean: false
+  generation_key_includes_owner_label: false
+  generation_key_includes_allocator_name: false
+  reuse_affected_clean_outputs_for_repair: false
+  identical_partition_deduplication_requires_record: true
+  claim_deterministic_provider_sampling: false
+  deployment_charge_full_clean_execution_per_method: true
+  mutate_original_provenance_on_rebinding: false
+  ownership_binding_views_separate_from_artifacts: true
+datasets:
+  math500:
+    source: HuggingFaceH4/MATH-500
+    enabled_for_local_adapter_design: true
+    version: null
+    selected_ids_manifest: null
+    evaluator_version: null
+    input_policy: explicit_allowlist_without_gold
+  gpqa:
+    source: idavidrein/gpqa
+    enabled_for_local_adapter_design: true
+    subset: null
+    version: null
+    selected_ids_manifest: null
+    evaluator_version: null
+    choice_permutation: deterministic_by_source_problem_not_method
+    raw_answer_field_names_visible: false
+  gaia:
+    source: gaia-benchmark/GAIA
+    enabled_for_local_adapter_design: true
+    split: validation
+    access_terms_accepted: false
+    version: null
+    selected_ids_manifest: null
+    evaluator_version: null
+    public_raw_redistribution: false
+  arc100:
+    enabled: false
+    intended_dataset_identity: unresolved
+  multiagentbench:
+    enabled: false
+    role: optional_later_extension
+sampling:
+  development_target_total: 24
+  provisional_test_target_total: 60
+  original_source_problem_is_split_unit: true
+  test_items_disjoint_from_development: true
+  test_selection_depends_on_optimizer_gain: false
+  task_padding_allowed: false
+  eligibility_rules_version: null
+  source_split_manifest: null
+  estimator_version: null
+  primary_n_assignment_manifest: null
+  within_workload_n_sweep_manifest: null
+stages:
+  offline_validation:
+    authorised_by_codex_handoff: true
+    worker_backend: mock_only
+    remote_calls: false
+    infer_real_model_costs: false
+    original_source_binding_status: pending_repository_inspection
+    independent_reference_enumeration_required: true
+  calibration:
+    authorised: false
+    requires_fitted_estimator: false
+    collection_policy_version: null
+    default_allocation_policy: precommitted_uniform_random
+    needs_scale_coverage_before_main: true
+  smoke:
+    authorised: false
+    proposed_workflows: 3
+    proposed_n: 4
+    required_task_count_range:
+    - 5
+    - 8
+    proposed_repeats: 1
+    outputs:
+    - llm_mean
+    - matching_mean
+    nominal_shared_clean_traces: 3
+    nominal_repair_sessions: 24
+    nominal_total_sessions_shared_mode: 27
+  pilot:
+    authorised: false
+    proposed_workflows: 12
+    proposed_repeats: 2
+    outputs:
+    - direct_workload_balance
+    - greedy_mean
+    - llm_mean
+    - llm_worst
+    - matching_mean
+    - matching_worst
+    nominal_shared_clean_traces: 24
+    nominal_repair_sessions: 1008
+    nominal_total_sessions_shared_mode: 1032
+    proposed_primary_n_counts:
+      4: 4
+      7: 4
+      10: 4
+    require_meaningful_m_in_n_plus_1_to_2n: true
+    budget_change_requires_review: true
+    unsupported_size_band_action: document_gap_and_narrow_scope_or_request_amendment
+  main:
+    authorised: false
+    proposed_test_workflows: 60
+    final_sample_size: null
+    proposed_repeats: 3
+    outputs:
+    - random_valid
+    - direct_workload_balance
+    - greedy_mean
+    - greedy_worst
+    - llm_mean
+    - llm_worst
+    - matching_mean
+    - matching_worst
+    all_owners_per_selected_configuration: true
+    finalise_after_pilot_before_test_results: true
+    illustrative_mean_agent_count: 7
+    illustrative_shared_clean_traces: 180
+    illustrative_repair_sessions: 10080
+    illustrative_total_sessions_shared_mode: 10260
+  unit_cost_ablation:
+    authorised: false
+    proposed_test_subset: 12
+    subset_manifest: null
+    preselect_before_allocator_outcomes: true
+    outputs:
+    - matching_mean_unit
+    - matching_worst_unit
+    proposed_repeats: 3
+    all_owners_per_selected_configuration: true
+    reuse_qualified_clean_traces: true
+    illustrative_mean_agent_count: 7
+    illustrative_additional_repairs: 504
+  corruption:
+    authorised: false
+    proposed_test_subset: 12
+    subset_manifest: null
+    preselect_before_allocator_outcomes: true
+    proposed_repeats: 3
+    outputs:
+    - llm_mean
+    - llm_worst
+    - matching_mean
+    - matching_worst
+    families:
+    - plausible_wrong_artifact
+    - goal_deviating_artifact
+    detection_boundary: completion_or_prespecified_terminal_failure
+    fork_point: before_selected_owner_first_task
+    intervention_scope: selected_owner_outputs_only
+    budget_scope: fixed_total_per_owner_incident_plus_per_task_limits
+    sham_control_required: true
+    clean_trace_as_sham_requires_qualified_reuse: true
+    downstream_consumption_required_for_downstream_exposure_claim: true
+    terminal_output_attack_valid_without_descendants: true
+    protected_infrastructure_attacks: prohibited
+    retries_until_attack_success: prohibited
+    count_failed_attacks_in_denominator: true
+    separate_completion_from_reconstruction_work: true
+    all_owners_per_selected_configuration: true
+    recovery_task_set_after_abort: D_i union (V minus E_committed_artifact_tasks)
+    preserved_artifact_tasks: E_committed_artifact_tasks minus D_i
+    completion_includes_missing_unaffected_tasks: true
+    task_counts_as_completed_only_with_schema_valid_committed_artifact: true
+baselines:
+  random_sampler: uniform_shuffle_then_pairs_and_singletons
+  direct_workload_objective: minimise_maximum_sum_of_owned_estimated_replay_costs
+  direct_workload_tie_break: stable_without_recovery_information
+  greedy_initialisation: same_as_seeded_random_control
+  greedy_moves:
+  - pair_to_singleton_transfer
+  - inter_group_task_exchange
+  greedy_max_accepted_moves: 20
+  greedy_selection: best_strict_lexicographic_improvement
+  greedy_tie_break: stable_task_ids
+  greedy_exact_solver_fallback: false
+  llm_inputs_include_group_cost_table: true
+  llm_max_structural_corrections: 1
+  invalid_llm_plan_fallback_to_matching: false
+  direct_workload_solver: exact_bottleneck_matching_on_singleton_pair_sums
+  llm_group_score_table_policy: always_include_complete_table_in_primary_baseline
+  tie_break_uses_realised_costs: false
+analysis:
+  cluster: original_source_problem
+  primary_mean: mean_over_owner_mean_complete_repair_expenditure
+  primary_worst: max_over_owner_mean_complete_repair_expenditure_plugin
+  full_metrics_require_balanced_complete_owner_repeat_matrix: true
+  partial_repair_bill_is_complete_cost: false
+  missing_or_unknown_cost_is_zero: false
+  report_attempted_spend_separately: true
+  report_all_planned_incident_outcomes: true
+  observed_maximum_reported_separately: true
+  success_only_primary_analysis: false
+  quality_margin: null
+  multiplicity_rule: null
+  main_sample_size_rule: null
+  worst_owner_uncertainty_method: null
+  savings_required_to_pass_instrumentation_gate: false
+  final_correctness_certifies_all_artifact_semantics: false
+  separate_research_deployment_reconstruction_ledgers: true
+  different_partitions_can_be_execution_replicates: false
+  paired_full_cost_cohort: common_complete_matrices_for_compared_methods
+  complete_case_population_claim: conditional_only_with_coverage_and_selection_caveat
+  budget_status_values:
+  - within
+  - exceeded
+  - unknown
+  - not_applicable
+  semantic_status_values:
+  - valid
+  - invalid
+  - unknown
+  unknown_budget_can_count_as_pass: false
+  no_launch_is_semantic_failure: false
+  report_not_run_and_invalid_plan_separately: true
+  missingness_identification_bounds_are_confidence_intervals: false
+stage_gate_requirements:
+  offline_validation:
+  - local_repository_policy
+  - no_remote_or_model_side_effects
+  - mock_fixtures_marked_synthetic
+  all_model_execution:
+  - code_snapshot_and_explicit_stage_approval
+  - immutable_model_snapshots_and_sampling_configuration
+  - dataset_access_versions_and_allowed_inputs
+  - source_problem_development_test_split
+  - evaluator_and_task_schema_versions
+  - stage_spending_task_limits_and_usage_accounting
+  - reservation_and_retry_policy
+  calibration:
+  - development_collection_policy
+  smoke_and_pilot:
+  - frozen_development_estimator_and_baseline_prompts
+  - shared_clean_qualification_or_separately_approved_design
+  main:
+  - final_estimator_and_sampling_manifest
+  - final_sample_size_repetitions_analysis_and_quality_criterion
+  - exact_method_and_ablation_scope
+  - pilot_scale_and_failure_coverage_or_explicit_restricted_scope
+  - allocation_identity_and_resume_contract
+  - frozen_trial_order_and_missingness_cohort_rules
+  corruption:
+  - attack_policy_owner_budget_sham_and_detection_boundary
+supersedes:
+- PHASE2_PLAN_V2.md
+- PILOT_MANIFEST_V2.yaml
+- CODEX_PROMPT_PHASE2.md (v2)
+comparative_run:
+  predicted_incident_budget: null
+  budget_constrained_comparative_arm_enabled: false
+  measured_reporting_thresholds: null
+  counterfactual_owners_are_alternative_incidents: true
+allocation_identity:
+  draws_per_method_condition: 1
+  freeze_before_first_evaluation_trace: true
+  redraw_per_execution_repetition: false
+  refit_estimator_per_execution_repetition: false
+  owner_key: sorted_member_task_ids_within_canonical_partition
+  partition_key: workflow_digest_n_canonical_groups
+  new_partition_requires_new_condition: true
+  estimator_and_prompt_bindings_required: true
+  compare_owner_labels_across_methods: false
+  future_multiple_draw_analysis: compute_fixed_partition_owner_metrics_then_summarise_over_draws
+randomness:
+  mock_clean_key:
+  - workflow_digest
+  - executor_digest
+  - execution_repetition
+  - task_id
+  - phase
+  - attempt_id
+  mock_repair_key:
+  - workflow_digest
+  - executor_digest
+  - partition_digest
+  - compromised_group_digest
+  - execution_repetition
+  - task_id
+  - phase
+  - attempt_id
+  exclude_arbitrary_owner_names_and_loop_order: true
+  worker_rng_independence_proven_by_seed_flag: false
+  sham_attack_common_randomness: only_under_declared_pairing_policy
+  fresh_invocations_for_nonidentical_partitions: true
+schedule:
+  freeze_before_evaluation: true
+  method_order: balanced_interleaving_of_objective_matched_methods
+  owner_order: prespecified_seeded_permutation
+  depends_on_predicted_gain_or_outcomes: false
+  stop_policy: halt_preserve_all_remaining_slots
+  pending_status: not_run_due_campaign_stop
+  logical_slot_idempotency: true
+  physical_attempts_append_only: true
+  resume_requires_identical_specification: true
+  semantic_or_schema_retry_until_success: false

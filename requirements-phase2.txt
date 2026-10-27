@@ -1,0 +1,3 @@
+# Optional local exact solver; no installation/download is authorized by the handoff.
+# Historical Phase I pins remain unchanged.
+networkx==3.4.2

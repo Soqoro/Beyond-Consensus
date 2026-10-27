@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:beyond-consensus:phase2:mock-report:v3",
+  "title": "Phase II v3 offline mock report",
+  "type": "object",
+  "required": ["schema", "spec", "synthetic", "model_executed", "registry", "outcomes", "summaries", "accounting"],
+  "properties": {
+    "schema": {"const": "phase2-mock-report-v3"},
+    "spec": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "synthetic": {"const": true},
+    "model_executed": {"const": false},
+    "registry": {"type": "object", "required": ["slots", "conditions", "digest", "executor", "estimator"]},
+    "outcomes": {"type": "array", "items": {"$ref": "#/$defs/outcome"}},
+    "summaries": {"type": "object"},
+    "accounting": {"type": "object", "required": ["unit", "known_research_spend", "physical_clean_sessions", "physical_repair_sessions"]}
+  },
+  "$defs": {
+    "outcome": {
+      "type": "object",
+      "required": ["slot", "method", "repeat", "execution", "schema", "semantic", "usage", "full_cost", "unit"],
+      "properties": {
+        "execution": {"enum": ["completed", "task_error", "resource_stopped", "infrastructure_failure", "no_clean_snapshot", "invalid_allocation", "not_run_due_campaign_stop", "protocol_violation"]},
+        "schema": {"enum": ["valid", "invalid", "unknown"]},
+        "semantic": {"enum": ["valid", "invalid", "unknown"]},
+        "usage": {"enum": ["complete", "pending", "missing"]},
+        "full_cost": {"type": ["integer", "null"], "minimum": 0},
+        "unit": {"const": "synthetic_work"}
+      }
+    }
+  }
+}
