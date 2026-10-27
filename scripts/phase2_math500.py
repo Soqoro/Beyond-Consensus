@@ -6,19 +6,22 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from bc_phase2.math500 import inspect_local
+from bc_phase2.math500 import inspect_local, development_proposal
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--development-proposal', action='store_true',
+                        help='Propose two sources per subject with fixed seed 0; no execution')
     args = parser.parse_args()
-    report = inspect_local(args.data)
+    report = development_proposal(args.data) if args.development_proposal else inspect_local(args.data)
     with args.output.open('x') as handle:
         json.dump(report, handle, indent=2)
         handle.write('\n')
-    print(json.dumps({'report': str(args.output), **report}, indent=2))
+    summary = {k: v for k, v in report.items() if k != 'reserved_source_ids'}
+    print(json.dumps({'report': str(args.output), **summary}, indent=2))
 
 
 if __name__ == '__main__':

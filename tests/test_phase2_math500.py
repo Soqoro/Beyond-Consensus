@@ -7,7 +7,8 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from bc_phase2.math500 import _read_records, inspect_local, normalize_record
+from bc_phase2.math500 import (_read_records, inspect_local, normalize_record,
+    _development_proposal, development_proposal, SUBJECTS)
 from bc_phase2.model import Invalid
 
 
@@ -60,6 +61,41 @@ class Math500(unittest.TestCase):
             path.write_text(json.dumps(self.row()))
             with self.assertRaisesRegex(Invalid, 'hash mismatch'):
                 inspect_local(path)
+            with self.assertRaisesRegex(Invalid, 'hash mismatch'):
+                development_proposal(path)
+
+    def fixtures(self):
+        return tuple(normalize_record({**self.row(), 'subject': subject,
+                      'unique_id': f'synthetic/{subject}/{i}'})
+                     for subject in SUBJECTS for i in range(4))
+
+    def test_split_deterministic_and_disjoint(self):
+        records = self.fixtures()
+        proposal = _development_proposal(records)
+        self.assertEqual(proposal, _development_proposal(tuple(reversed(records))))
+        self.assertEqual(proposal['development_count'], 14)
+        chosen = {r['source_id'] for r in proposal['development']}
+        reserved = set(proposal['reserved_source_ids'])
+        self.assertFalse(chosen & reserved)
+        self.assertEqual(chosen | reserved, {r.source_id for r in records})
+        for subject in SUBJECTS:
+            self.assertEqual(sum(r['subject'] == subject for r in proposal['development']), 2)
+        self.assertFalse(proposal['task_execution_allowed'])
+        self.assertFalse(proposal['final_test_selected'])
+
+    def test_split_independent_of_gold_and_difficulty(self):
+        from dataclasses import replace
+        records = self.fixtures()
+        changed = tuple(replace(r, answer='changed', solution='changed', problem='changed', level=5)
+                        for r in records)
+        self.assertEqual(_development_proposal(records), _development_proposal(changed))
+        self.assertNotIn('GOLD', json.dumps(_development_proposal(records)))
+
+    def test_split_missing_subject_or_duplicate_rejected(self):
+        records = self.fixtures()
+        for bad in (records[4:], records + (records[0],), records[:1] + records[4:]):
+            with self.assertRaises(Invalid):
+                _development_proposal(bad)
 
 
 if __name__ == '__main__':
