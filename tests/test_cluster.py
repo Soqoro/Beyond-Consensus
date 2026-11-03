@@ -23,6 +23,31 @@ def site_config(root):
 
 
 class GuardTests(unittest.TestCase):
+    def test_array_job_id_does_not_split_resource_record(self):
+        # Field-preserving excerpt of the failed D1 job's user-supplied
+        # scontrol output. Scheduler calls are mocked, including the queue.
+        details = ('JobId=1114910 ArrayJobId=1114910 ArrayTaskId=0 '
+                   'ArrayTaskThrottle=1 JobName=bc-preflight JobState=FAILED '
+                   'ReqTRES=cpu=4,mem=128G,node=1,billing=4,gres/gpu=1 '
+                   'AllocTRES=cpu=4,node=1,billing=4,gres/gpu=1')
+        with patch.object(cluster, 'command', side_effect=['1114910_0', details]):
+            self.assertEqual(cluster.active_gpu_jobs(), {'1114910': 1})
+
+    def test_multiple_array_records_keep_separate_resource_counts(self):
+        for separator in (' ', '\n', '\n\n'):
+            details = ('JobId=21 ArrayJobId=20 ArrayTaskId=0 ReqTRES=cpu=4,gres/gpu=1'
+                       + separator +
+                       'JobId=22 ArrayJobId=20 ArrayTaskId=1 ReqTRES=cpu=8,gres/gpu=2')
+            with self.subTest(separator=separator), patch.object(
+                    cluster, 'command', side_effect=['20_0', details]):
+                self.assertEqual(cluster.active_gpu_jobs(), {'21': 1, '22': 2})
+
+    def test_array_missing_request_tres_still_rejected(self):
+        details = 'JobId=21 ArrayJobId=20 ArrayTaskId=0 AllocTRES=cpu=4,gres/gpu=1'
+        with patch.object(cluster, 'command', side_effect=['20_0', details]):
+            with self.assertRaisesRegex(BCError, 'Unknown GPU accounting'):
+                cluster.active_gpu_jobs()
+
     def test_pending_arrays_expand_and_still_block_unregistered_gpu_jobs(self):
         inspected=[]
         def fake(argv):

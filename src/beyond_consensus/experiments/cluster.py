@@ -89,7 +89,9 @@ def active_gpu_jobs() -> dict[str, int]:
         if not re.fullmatch(r"[0-9]+(?:_[0-9]+)?", identifier):
             raise BCError("Unrecognized squeue job ID; cannot establish global GPU usage")
         details = command(["scontrol", "show", "job", "--oneliner", identifier])
-        records = re.split(r"(?=JobId=)", details)
+        # Only a standalone field starts a record: ArrayJobId= contains the
+        # same suffix and must remain attached to its ReqTRES accounting.
+        records = re.split(r"(?<!\S)(?=JobId=)", details)
         parsed = False
         for record in records:
             if not record.startswith("JobId="):
