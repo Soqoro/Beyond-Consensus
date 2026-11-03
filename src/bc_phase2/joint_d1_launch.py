@@ -2,6 +2,7 @@
 from copy import deepcopy
 from datetime import datetime, timezone
 import getpass
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -16,6 +17,16 @@ from beyond_consensus.experiments.manifest import source_revision
 from beyond_consensus.util import atomic_json, directory_lock, plain, read_json
 
 APPROVED_SCOPE = '057793e3479c14cfa4f6ec3d5add628a53ce8fbfe8629bef17815d68079ca6ad'
+FAILED_ATTEMPT = {
+    'job_id':'1114910',
+    'output':'/dataset/suaq0001/beyond-consensus/diagnostics/d1-approved-release.R9AsNb/outputs/d1-'+APPROVED_SCOPE,
+    'release_digest':'6caba3722b901b5ff4d940fffa1e00170744ea12d2f283cb52a50066c990b9ab',
+    'scope_digest':APPROVED_SCOPE,
+    'snapshot':'/dataset/suaq0001/beyond-consensus/snapshots/4018c235c8d7be5d8fa2ad4ffe2d5d995e101484cd59a9474c21000b8d71b2b5',
+    'state':'submitted_no_retry',
+}
+FAILED_STDERR_SHA256='5d20c4b1dd77c5a173bc540f354a6900dfd422ec2b5cdaf540788f4305f2dc0f'
+FAILED_REGISTRY_SHA256='ad1b0c2d1ad4bf595a8a53eec59db8d6c9b17bc01da4aa51ff40d9077cc8479e'
 PARENT_RUNTIME = {
   "src/bc_phase2/joint_d1_qwen.py": "2e4938f9ad13c557ba2a3963d1e82e7126efdfe9aaa3e0e50ae010c2b7576a89",
   "src/bc_phase2/joint_d1_readiness.py": "bc9441eacc78f8410c563b3ae034586b23815a0a58141dcbf4aed2ea1089f2f4",
@@ -67,8 +78,9 @@ def prepare(root, manifest, *, reviewer):
 
 
 def validate_authorization(root, value):
-    require(type(value) is dict and set(value)=={'schema','manifest','runtime_implementation',
-        'authorization_basis','later_stages_enabled','release_digest'}, 'release fields')
+    fields={'schema','manifest','runtime_implementation','authorization_basis','later_stages_enabled','release_digest'}
+    require(type(value) is dict and set(value) in (fields,fields|{'replacement'}), 'release fields')
+    if 'replacement' in value:validate_replacement(value['replacement'])
     require(value['schema']=='joint-d1-scoped-release-v1' and value['later_stages_enabled'] is False,
             'D1-only release')
     require(value['authorization_basis']=='explicit_user_proceed_after_exact_D1_scope_review','approval basis')
@@ -81,12 +93,96 @@ def validate_authorization(root, value):
     return value['manifest']['scope']
 
 
+def validate_failure_report(report):
+    """Only the reviewed pre-dispatch failure, never a general retry policy."""
+    require(type(report) is dict and set(report)=={
+        'status','scope_digest','failed_attempt','snapshot_inventory_verified',
+        'snapshot_output_manifest_match','terminal_failure_verified',
+        'expected_accounting_trace_present','execution_directory_exists','stderr_sha256',
+        'scheduler_accounting','registry_sha256','registry_changed','replacement_submitted',
+        'replacement_authorized_by_this_check'}, 'reconciliation fields')
+    require(report['status']=='pre_dispatch_failure_verified_for_replacement_review' and
+            report['scope_digest']==APPROVED_SCOPE and report['failed_attempt']==FAILED_ATTEMPT,
+            'only job 1114910 replacement is approved')
+    require(all(report[k] is True for k in ('snapshot_inventory_verified','snapshot_output_manifest_match',
+        'terminal_failure_verified','expected_accounting_trace_present')), 'unverified failed attempt')
+    require(all(report[k] is False for k in ('execution_directory_exists','registry_changed',
+        'replacement_submitted','replacement_authorized_by_this_check')), 'not a pre-dispatch failure')
+    require(report['stderr_sha256']==FAILED_STDERR_SHA256 and report['registry_sha256']==FAILED_REGISTRY_SHA256,
+            'reviewed failure evidence changed')
+    _failed_accounting(report['scheduler_accounting'])
+
+
+def _failed_accounting(text):
+    require(type(text) is str,'scheduler accounting text required')
+    rows=[r.strip().split('|') for r in text.splitlines() if r.strip()]
+    jobs=[r for r in rows if '.' not in r[0]]
+    require(len(jobs)==1 and jobs[0][:3]==[FAILED_ATTEMPT['job_id']+'_0','FAILED','1:0'],
+            'exact failed terminal job required')
+
+
+def validate_replacement(value):
+    require(type(value) is dict and set(value)=={'schema','maximum_replacements','decision','reviewer',
+        'reviewed_at','authorization_basis','reconciliation','reconciliation_digest'},'replacement fields')
+    require(value['schema']=='joint-d1-single-replacement-v1' and value['decision']=='approved' and
+            type(value['maximum_replacements']) is int and value['maximum_replacements']==1 and
+            value['authorization_basis']=='explicit_user_proceed_after_1114910_reconciliation',
+            'single replacement authorization required')
+    require(all(type(value[k]) is str and bool(value[k].strip()) for k in ('reviewer','reviewed_at')),
+            'replacement reviewer/time required')
+    validate_failure_report(value['reconciliation'])
+    require(value['reconciliation_digest']==digest(value['reconciliation']),'reconciliation digest changed')
+
+
+def recheck_failed_attempt(report, state):
+    """Read-only checks repeated under the submission lock before replacement."""
+    validate_failure_report(report)
+    require(not state.get('uncertain_submission'),'uncertain submission must remain blocked')
+    require(state.get('d1_scopes',{}).get(APPROVED_SCOPE)==FAILED_ATTEMPT,'prior attempt changed')
+    require(APPROVED_SCOPE not in state.get('d1_replacements',{}),'single replacement already consumed')
+    require(not state.get('d1_attempt_history',{}).get(APPROVED_SCOPE),'unexpected prior D1 history')
+    snapshot=Path(FAILED_ATTEMPT['snapshot']);output=Path(FAILED_ATTEMPT['output'])
+    require(not os.path.lexists(output/'execution'),'dispatch evidence exists; replacement forbidden')
+    marker=verify_snapshot(snapshot)
+    old=release.read_evidence(snapshot/'resolved/manifest.json')
+    require(old==release.read_evidence(output/'manifest.json') and marker['manifest_hash']==digest(old),
+            'failed snapshot/output manifest mismatch')
+    previous=old['release']
+    require(previous['release_digest']==FAILED_ATTEMPT['release_digest'] and
+            digest({k:v for k,v in previous.items() if k!='release_digest'})==previous['release_digest'],
+            'failed release binding')
+    require(previous['manifest']['scope_digest']==APPROVED_SCOPE and
+            digest(previous['manifest']['scope'])==APPROVED_SCOPE,'failed scope binding')
+    stderr=output/'logs'/f"{FAILED_ATTEMPT['job_id']}_0.err"
+    require(local.file_hash(stderr)==FAILED_STDERR_SHA256,'failed traceback changed')
+    accounting=cluster.command(['sacct','--noheader','--parsable2','--jobs',FAILED_ATTEMPT['job_id'],
+                                '--format=JobID,State,ExitCode'])
+    _failed_accounting(accounting)
+
+
+def prepare_replacement(root, manifest, reconciliation, *, reviewer):
+    require(not os.environ.get('SLURM_JOB_ID'),'no batch replacement preparation')
+    validate_failure_report(reconciliation)
+    registry=cluster.registry_root()
+    with directory_lock(registry/'.submission.lock'):
+        recheck_failed_attempt(reconciliation,read_json(registry/'registry.json'))
+    value=prepare(root,manifest,reviewer=reviewer)
+    value['replacement']={'schema':'joint-d1-single-replacement-v1','maximum_replacements':1,
+        'decision':'approved','reviewer':reviewer,'reviewed_at':datetime.now(timezone.utc).isoformat(),
+        'authorization_basis':'explicit_user_proceed_after_1114910_reconciliation',
+        'reconciliation':deepcopy(reconciliation),'reconciliation_digest':digest(reconciliation)}
+    value['release_digest']=digest({k:v for k,v in value.items() if k!='release_digest'})
+    validate_authorization(root,value)
+    return value
+
+
 def summary(root, value):
     scope=validate_authorization(root,value)
     return {'status':'D1_SCOPED_RELEASE_PREPARED','scope_digest':APPROVED_SCOPE,
             'release_digest':value['release_digest'],'source_ids':scope['source_ids'],
             'limits':scope['limits'],'model':scope['model'],
             'approval_matches':True,'submitted':False,'model_executed':False,
+            'replacement_of':FAILED_ATTEMPT['job_id'] if 'replacement' in value else None,
             'D2_D6_enabled':False,'scheduler_and_allocation_checks_pending':True}
 
 
@@ -109,7 +205,11 @@ def submit(root, value, statements, config, *, dry_run=True):
     def action():
         state=read_json(state_path) if state_path.exists() else {'jobs':[]}
         cluster.guard(state)
-        require(APPROVED_SCOPE not in state.get('d1_scopes',{}),'D1 scope already submitted/uncertain; no automatic repeat')
+        if 'replacement' in value:
+            recheck_failed_attempt(value['replacement']['reconciliation'],state)
+            require(output.resolve()!=Path(FAILED_ATTEMPT['output']).resolve(),'replacement requires fresh output')
+        else:
+            require(APPROVED_SCOPE not in state.get('d1_scopes',{}),'D1 scope already submitted/uncertain; no automatic repeat')
         require(not output.exists(),'D1 output exists; preserve evidence and reconcile before any action')
         cluster.validate_site(config)
         snapshot=Path(config.snapshot_root)/'SNAPSHOT_CREATED_AT_SUBMISSION'
@@ -134,6 +234,14 @@ def submit(root, value, statements, config, *, dry_run=True):
         state['jobs']=[]
         reservation={'scope_digest':APPROVED_SCOPE,'release_digest':value['release_digest'],
                      'snapshot':str(snapshot),'output':str(output),'state':'submission_uncertain'}
+        if 'replacement' in value:
+            # Preserve the complete prior record atomically with the new
+            # reservation, before invoking sbatch. Never delete/reset history.
+            state.setdefault('d1_attempt_history',{})[APPROVED_SCOPE]=[deepcopy(FAILED_ATTEMPT)]
+            state.setdefault('d1_replacements',{})[APPROVED_SCOPE]={
+                'failed_attempt':deepcopy(FAILED_ATTEMPT),'release_digest':value['release_digest'],
+                'reconciliation':deepcopy(value['replacement']['reconciliation']),
+                'maximum_replacements':1,'state':'consumed_before_submission'}
         state.setdefault('d1_scopes',{})[APPROVED_SCOPE]=reservation
         state['uncertain_submission']=dict(reservation)
         atomic_json(state_path,state)
@@ -170,6 +278,13 @@ def run_allocated(root, output):
     with directory_lock(cluster.registry_root()/'.submission.lock'):
         state=read_json(cluster.registry_root()/'registry.json')
     record=state.get('d1_scopes',{}).get(APPROVED_SCOPE,{})
+    if 'replacement' in value:
+        consumed=state.get('d1_replacements',{}).get(APPROVED_SCOPE,{})
+        require(consumed.get('release_digest')==value['release_digest'] and
+                consumed.get('failed_attempt')==FAILED_ATTEMPT and
+                consumed.get('state')=='consumed_before_submission' and
+                state.get('d1_attempt_history',{}).get(APPROVED_SCOPE)==[FAILED_ATTEMPT],
+                'replacement history/consumption binding')
     require(record.get('job_id')==job and record.get('state')=='submitted_no_retry' and
             record.get('release_digest')==value['release_digest'] and
             Path(record.get('snapshot','')).resolve()==Path(root).resolve() and

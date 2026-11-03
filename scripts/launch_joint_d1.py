@@ -17,6 +17,8 @@ def main():
     sub=parser.add_subparsers(dest='command',required=True)
     p=sub.add_parser('prepare');p.add_argument('--manifest',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p=sub.add_parser('prepare-replacement');p.add_argument('--manifest',type=Path,required=True)
+    p.add_argument('--reconciliation',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p=sub.add_parser('submit');p.add_argument('--release',type=Path,required=True)
     p.add_argument('--statements',type=Path,required=True);p.add_argument('--cluster',type=Path,required=True)
     p.add_argument('--dry-run',action='store_true');p.add_argument('--output',type=Path,required=True)
@@ -29,7 +31,11 @@ def main():
     # Exclusive creation happens before any possible submission. An ambiguous
     # failure leaves the record and shared registry for manual reconciliation.
     with args.output.open('x') as handle:
-        if args.command=='prepare':
+        if args.command=='prepare-replacement':
+            result=launch.prepare_replacement(ROOT,read_evidence(args.manifest),
+                read_evidence(args.reconciliation),reviewer=getpass.getuser())
+            summary=launch.summary(ROOT,result)
+        elif args.command=='prepare':
             result=launch.prepare(ROOT,read_evidence(args.manifest),reviewer=getpass.getuser())
             summary=launch.summary(ROOT,result)
         else:
