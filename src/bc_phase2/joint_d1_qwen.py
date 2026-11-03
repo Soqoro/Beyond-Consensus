@@ -134,22 +134,35 @@ class JointQwenSession(MockPlannerSession):
         require(type(records) is list and len(records)==3,'three synthetic requests')
         requests=[mock_request(r) for r in records]
         require(len({r['payload']['source']['id'] for r in requests})==3,'unique sources')
+        self._initialize(directory,requests,transport)
+
+    def _initialize(self,directory,requests,transport,scope_binding=None,started_at=None):
         self.transport=transport
         self.binding=dict(schema='joint-d1-qwen-offline-binding-v1',requests=requests,
                           transport=deepcopy(transport.binding),settings=settings(),limits=limits(),
                           implementation=implementation(Path(__file__).resolve().parents[2]),
                           real_execution_allowed=False)
+        if scope_binding is not None:self.binding['execution_scope']=deepcopy(scope_binding)
         require(len(_encoded(self.binding))<MAX_LEDGER_BYTES//2,'binding too large')
         self.root=Path(directory);self.root.mkdir(parents=True,exist_ok=True)
         with self._locked():
             if self.path.exists():self._read()
             else:self._save(dict(schema='joint-d1-qwen-offline-ledger-v1',binding=self.binding,
-                                 binding_digest=digest(self.binding),attempts=[],started_at=time.time(),
-                                 model_executed=False,task_execution_allowed=False,evidence='injected_offline_double'))
+                                 binding_digest=digest(self.binding),attempts=[],started_at=time.time() if started_at is None else started_at,
+                                 model_executed=False,task_execution_allowed=False,evidence=self.transport.evidence))
 
-    def advance(self,source_id):
+    def _check_transport(self):
         require(type(self.transport) is QwenTransport and self.transport.evidence=='injected_offline_double'
                 and self.transport.binding==self.binding['transport'],'transport changed')
+
+    def _model_executed(self):
+        return False
+
+    def _render_request(self,request):
+        return self.transport.render(request)
+
+    def advance(self,source_id):
+        self._check_transport()
         with self._locked():
             state=self._read();attempts=state['attempts']
             require(all(a['state']=='completed' for a in attempts),'unresolved/violated usage; no replay')
@@ -166,14 +179,18 @@ class JointQwenSession(MockPlannerSession):
                 outbound['payload'].update(correction_prompt=CORRECTION_PROMPT,
                     first_response=prior[0]['raw'],structural_error=prior[0]['review']['history'][0]['structural_error'])
                 outbound['payload_digest']=digest(outbound['payload'])
-            rendered=self.transport.render(outbound)
+            rendered=self._render_request(outbound)
             count=rendered['input_tokens'];require(type(count) is int and 0<count<=CONTEXT-OUTPUT,'input cap')
             reservation=count+OUTPUT
-            require(self._totals(state)['simulated_actual_tokens']+reservation<=6*CONTEXT,'campaign token cap')
+            require(sum(a['actual_tokens'] or 0 for a in attempts)+reservation<=6*CONTEXT,'campaign token cap')
             a=dict(source_id=source_id,attempt=len(prior),state='reserved',outbound_payload=outbound['payload'],
                    payload_digest=outbound['payload_digest'],rendered=rendered,input_tokens=count,
                    reservation_tokens=reservation,actual_tokens=None,raw=None,reserved_at=datetime.now(timezone.utc).isoformat())
-            attempts.append(a);self._save(state)
+            attempts.append(a)
+            if self._model_executed():
+                state['model_executed']=None
+                state['model_dispatch_attempted']=True
+            self._save(state)
             # No retry/catch-reset. A failure here preserves the durable reservation.
             observed=self.transport.generate(rendered)
             a['observation']=deepcopy(observed)
@@ -199,8 +216,9 @@ class JointQwenSession(MockPlannerSession):
             a['review']=generate_neutral(req['payload']['source'],4,2,
                 [p['raw'] for p in prior]+[a['raw'] or ''],synthetic=False)
             a['admitted']=False
+            state['model_executed']=self._model_executed()
             a['observed_at']=datetime.now(timezone.utc).isoformat()
             if time.time()-state['started_at']>=limits()['campaign_wall_seconds']:
                 a['state']='wall_limit_exceeded'
             self._save(state)
-            return deepcopy(dict(a,totals=self._totals(state),model_executed=False))
+            return deepcopy(dict(a,totals=self._totals(state),model_executed=self._model_executed()))
