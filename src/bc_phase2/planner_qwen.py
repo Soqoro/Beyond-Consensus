@@ -81,12 +81,20 @@ def verify_local_inventory(lock):
     return root
 
 
-def open_local(lock):
-    """Unavailable until explicit execution-release review; no imports before gate."""
+def open_local(lock, *, authorization=None):
+    """No imports before the default gate or exact D1 release validation."""
     if not _REAL_EXECUTION_RELEASED:
-        raise Invalid('real planner loading disabled: exact execution/qualification release pending')
-    # Intentionally no public CLI exposes an enabling flag. This unreachable
-    # loader path is prepared for later release, not qualified by offline tests.
+        if authorization is None:
+            raise Invalid('real planner loading disabled: exact execution/qualification release pending')
+        from .joint_d1_launch import validate_authorization
+        scope = validate_authorization(Path(__file__).resolve().parents[2], authorization)
+        report = scope['verification']
+        expected = {'checkpoint': CHECKPOINT, 'revision': REVISION,
+                    'local_path': report['local_path'], 'files': report['inventory']['files']}
+        if lock != expected:
+            raise Invalid('D1 authorized inventory mismatch')
+    # No CLI or environment switch unlocks arbitrary scopes. Offline tests do
+    # not qualify this loader's model competence or worst-case memory fit.
     from beyond_consensus.models.transformers_backend import require_allocation
     require_allocation()
     root = verify_local_inventory(lock)
@@ -94,6 +102,8 @@ def open_local(lock):
     from transformers import AutoTokenizer, Qwen3_5ForConditionalGeneration
     if torch.cuda.device_count() != 1:
         raise Invalid('local planner placement requires one visible GPU; no automatic sharding')
+    if authorization is not None and torch.cuda.get_device_properties(0).total_memory < 80_000_000_000:
+        raise Invalid('D1 requires an 80GB-class GPU before loading')
     tokenizer = AutoTokenizer.from_pretrained(str(root), local_files_only=True, trust_remote_code=False)
     model = Qwen3_5ForConditionalGeneration.from_pretrained(str(root),
         local_files_only=True, trust_remote_code=False, use_safetensors=True,

@@ -1,4 +1,4 @@
-"""Frozen D1 scope binding and prepared orchestration; real entry point disabled."""
+"""Frozen D1 scope binding; only a separately validated exact release may dispatch."""
 from copy import deepcopy
 import hashlib
 import json
@@ -54,7 +54,15 @@ def _request(record):
 
 def runtime_identity(root):
     result=implementation(root)
-    for p in ('src/bc_phase2/joint_d1_release.py','scripts/freeze_joint_d1_scope.py'):
+    for p in ('src/bc_phase2/joint_d1_release.py','scripts/freeze_joint_d1_scope.py',
+              'src/bc_phase2/joint_d1_launch.py','scripts/launch_joint_d1.py',
+              'experiments/run_joint_d1.sbatch',
+              'src/beyond_consensus/experiments/cluster.py',
+              'src/beyond_consensus/experiments/snapshot.py',
+              'src/beyond_consensus/experiments/manifest.py',
+              'src/beyond_consensus/util.py',
+              'src/bc_phase1/core.py', 'src/bc_phase2/planner_first.py',
+              'src/bc_phase2/response_boundary.py','src/bc_phase2/joint_pipeline_sources.py'):
         result[p]=local.file_hash(Path(root)/p)
     return result
 
@@ -81,8 +89,12 @@ def validate_verification(root,receipt,report):
     recorded=report['implementation']
     require(recorded==VERIFIED_BASE_IMPLEMENTATION or recorded==current,'unreviewed verification implementation')
     # No broad compatibility waiver: all verifier/parser/rendering dependencies must still match.
-    require(all(current[p]==h for p,h in recorded.items() if p!='src/bc_phase2/joint_d1_qwen.py'),
+    require(all(current[p]==h for p,h in recorded.items()
+                if p not in ('src/bc_phase2/joint_d1_qwen.py','src/bc_phase2/planner_qwen.py')),
             'verification dependency changed; new review needed')
+    require(recorded['src/bc_phase2/planner_qwen.py'] in
+            (VERIFIED_BASE_IMPLEMENTATION['src/bc_phase2/planner_qwen.py'],current['src/bc_phase2/planner_qwen.py']),
+            'unreviewed loader verification')
     accounting=report['accounting']
     require(type(accounting) is dict and set(accounting)=={'ledger','cpu_seconds','wall_seconds'}
             and accounting['ledger']=='offline_preparation_not_model_usage','preparation accounting')
@@ -140,7 +152,9 @@ def validate_frozen(root,manifest):
     scope=manifest['scope'];require(type(scope) is dict,'scope object')
     require(manifest['scope_digest']==digest(scope),'scope hash changed')
     require(scope.get('stage')=='D1' and scope.get('source_ids')==list(SMOKE),'D1 source/stage binding')
-    require(scope.get('runtime_implementation')==runtime_identity(root),'runtime changed since freeze')
+    if scope.get('runtime_implementation')!=runtime_identity(root):
+        from .joint_d1_launch import validate_parent_runtime
+        validate_parent_runtime(root,manifest)
     base=configuration(root)['scope']
     require(scope.get('model')==settings() and scope.get('limits')==limits() and
             scope.get('pilot')==base['pilot'] and scope.get('identities')==base['identities'],'settings/prompt/capacity binding')
@@ -180,14 +194,20 @@ def review(root,manifest):
 
 
 class BoundD1Session(JointQwenSession):
-    """Shared durable dispatch state machine. Only mock IDs/doubles allowed today."""
-    def __init__(self,directory,scope,records,transport,*,manifest=None,root=None,started_at=None):
+    """Durable dispatch: synthetic doubles or the exact approved D1 release."""
+    def __init__(self,directory,scope,records,transport,*,manifest=None,root=None,started_at=None,authorization=None):
         require(type(transport) is QwenTransport,'Qwen transport required')
+        self._authorized_live=False
+        if authorization is not None:
+            from .joint_d1_launch import validate_authorization
+            require(validate_authorization(root,authorization)==scope,'authorized session scope')
+            require(authorization['manifest']==manifest,'authorized session manifest')
+            self._authorized_live=True
         if transport.evidence=='injected_offline_double':
             require(all(type(r) is dict and type(r.get('id')) is str and r['id'].startswith('mock:') for r in records),
                     'offline bound session requires synthetic source IDs')
         else:
-            require(LIVE_RELEASED and transport.evidence=='local_runtime_unqualified','bound session live transport disabled')
+            require((LIVE_RELEASED or self._authorized_live) and transport.evidence=='local_runtime_unqualified','bound session live transport disabled')
             require(manifest is not None and approval_matches(root,manifest,manifest['approval']),'exact live approval required')
             require(scope==manifest['scope'],'live scope binding')
             require(all(hashlib.sha256(r['problem'].encode('utf8')).hexdigest()==local.STATEMENT_HASHES[r['id']] for r in records),'live statement hashes')
@@ -200,7 +220,7 @@ class BoundD1Session(JointQwenSession):
     def _check_transport(self):
         require(type(self.transport) is QwenTransport and self.transport.binding==self.binding['transport'],'transport changed')
         require(self.transport.evidence=='injected_offline_double' or
-                (LIVE_RELEASED and self.transport.evidence=='local_runtime_unqualified'),'live release disabled')
+                ((LIVE_RELEASED or self._authorized_live) and self.transport.evidence=='local_runtime_unqualified'),'live release disabled')
         for k,v in {'checkpoint':CHECKPOINT,'revision':REVISION,'context_limit':16384,
                     'output_cap':6144,'thinking':True,'do_sample':False}.items():
             require(self.transport.binding.get(k)==v,'bound model/settings mismatch')
@@ -259,13 +279,18 @@ def drive_session(session):
             'execution_allowed':False,'next_stage_authorized':False}
 
 
-def dispatch_live(root,manifest,statements_path,directory):
-    """Prepared allocated-job body, not exposed as a CLI or enabled by a receipt.
+def dispatch_live(root,manifest,statements_path,directory,*,authorization=None):
+    """Allocated-job body; a generic approval receipt cannot open the code gates.
 
-    Both this release and the existing Qwen loader retain independent code gates.
+    The explicit authorization path validates the separate exact-scope release.
     The startup record forbids automatic repeat even when loading was interrupted.
     """
-    require(LIVE_RELEASED,'D1 live dispatch release disabled; exact scope approval and release review required')
+    if authorization is not None:
+        from .joint_d1_launch import validate_authorization
+        validate_authorization(root,authorization)
+        require(authorization['manifest']==manifest,'dispatch authorization mismatch')
+    else:
+        require(LIVE_RELEASED,'D1 live dispatch release disabled; exact scope approval and release review required')
     scope=validate_frozen(root,manifest)
     require(approval_matches(root,manifest,manifest['approval']),'exact D1 approval required')
     from beyond_consensus.models.transformers_backend import require_allocation
@@ -285,17 +310,18 @@ def dispatch_live(root,manifest,statements_path,directory):
     # A killed process leaves startup/reservations intact; never catch and replay it.
     watchdog=threading.Timer(scope['limits']['campaign_wall_seconds'],lambda:os.kill(os.getpid(),signal.SIGKILL))
     watchdog.daemon=True;watchdog.start()
+    session=None
     try:
         report=scope['verification']
         lock={'checkpoint':CHECKPOINT,'revision':REVISION,'local_path':report['local_path'],
               'files':report['inventory']['files']}
-        transport=open_local(lock)  # existing loader is separately release-disabled
+        transport=open_local(lock,authorization=authorization) if authorization is not None else open_local(lock)
         require(transport.template==report['template'] and transport.tokens==report['generation_tokens'],
                 'loaded template/stops differ from frozen verification')
         props=transport.torch.cuda.get_device_properties(0)
         require(props.total_memory>=80_000_000_000,'80GB-class GPU required')
         session=BoundD1Session(directory/'requests',scope,records,transport,
-                               manifest=manifest,root=root,started_at=started)
+                               manifest=manifest,root=root,started_at=started,authorization=authorization)
         result=drive_session(session)
         result['stage_resources']={'cpu_seconds':time.process_time()-cpu_start,
                                    'wall_seconds':time.monotonic()-wall_start,
@@ -303,4 +329,15 @@ def dispatch_live(root,manifest,statements_path,directory):
         with (directory/'result.json').open('x') as handle:
             json.dump(result,handle,indent=2);handle.write('\n');handle.flush();os.fsync(handle.fileno())
         return result
+    except Exception as exc:
+        failure={'status':'dispatch_failed_no_retry','error_type':type(exc).__name__,
+                 'scope_digest':manifest['scope_digest'],
+                 'model_executed':False if session is None else session.snapshot()['model_executed'],
+                 'sources':[{'source_id':s,'status':'unrun'} for s in scope['source_ids']] if session is None else None,
+                 'ledger':session.snapshot() if session is not None else None,
+                 'cpu_seconds':time.process_time()-cpu_start,'wall_seconds':time.monotonic()-wall_start,
+                 'next_stage_authorized':False}
+        with (directory/'failure.json').open('x') as handle:
+            json.dump(failure,handle,indent=2);handle.write('\n');handle.flush();os.fsync(handle.fileno())
+        raise
     finally:watchdog.cancel()
