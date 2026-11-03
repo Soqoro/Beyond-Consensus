@@ -99,7 +99,7 @@ class LocalD1(unittest.TestCase):
         model_root=self.root/local.REVISION;model_root.mkdir()
         (model_root/'fixture.safetensors').write_bytes(b'artificial-weight-bytes')
         (model_root/'model.safetensors.index.json').write_text(json.dumps({'weight_map':{'x':'fixture.safetensors'}}))
-        (model_root/'generation_config.json').write_text(json.dumps({'eos_token_id':[248046,248044],'pad_token_id':248044}))
+        (model_root/'generation_config.json').write_text(json.dumps({'eos_token_id':[248046,248044],'pad_token_id':248044,'temperature':0.7,'top_p':0.8}))
         meta={p.name:local.file_hash(p) for p in model_root.iterdir() if p.suffix=='.json'}
         statements=self.root/'statements.json'
         statements.write_text(json.dumps([{'id':'mock:only','problem':'synthetic'}]))
@@ -119,6 +119,31 @@ class LocalD1(unittest.TestCase):
         self.assertFalse(report['model_executed']);self.assertFalse(report['execution_allowed'])
         self.assertFalse(report['inventory']['trusted_weight_reference_compared'])
         self.assertNotIn('synthetic',json.dumps(report))
+
+    def test_finite_model_metadata_does_not_relax_joint_json(self):
+        path=self.root/'generation_config.json'
+        path.write_text('{"temperature":0.7,"top_p":0.8,"nested":{"scale":1e-3},"eos_token_id":[248046,248044]}')
+        row=local.read_model_metadata(path)
+        self.assertEqual(row['temperature'],0.7)
+        self.assertEqual(row['nested']['scale'],0.001)
+        self.assertEqual(row['eos_token_id'],[248046,248044])
+        with self.assertRaises(Invalid):local.read_json(path)
+        from bc_phase2.joint_schema import decode
+        with self.assertRaises(Invalid):decode(path.read_text())
+
+    def test_model_metadata_rejects_ambiguous_nonfinite_or_unbounded_inputs(self):
+        path=self.root/'generation_config.json'
+        cases=['{"x":NaN}','{"x":Infinity}','{"x":-Infinity}','{"x":1e400}',
+               '{"x":-1e400}','{"x":1,"x":2}','{"outer":{"x":1,"x":2}}',
+               '[]','null','{"broken":','['*2000+'0'+']'*2000]
+        for text in cases:
+            with self.subTest(text=text[:50]):
+                path.write_text(text)
+                with self.assertRaises(Invalid):local.read_model_metadata(path)
+        path.write_bytes(b'{"x":"\xff"}')
+        with self.assertRaises(Invalid):local.read_model_metadata(path)
+        path.write_text('{"x":123}')
+        with self.assertRaises(Invalid):local.read_model_metadata(path,cap=4)
 
     def test_prepared_loader_uses_existing_single_device_pattern_with_doubles(self):
         # Temporarily exercise unreachable branch with fully injected modules, no real import.

@@ -6,6 +6,7 @@ The CLI uses local AutoTokenizer only, never AutoModel or generation.
 import hashlib
 import importlib.metadata
 import json
+import math
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -15,7 +16,7 @@ from .joint_d1_readiness import SMOKE, NEUTRAL_PROMPT, PROMPT_VERSION
 from .joint_pipeline_contracts import planner_payload
 from .joint_d1_qwen import configuration, implementation
 from .planner_qwen import CHECKPOINT, REVISION, render_qwen_request
-from .model import digest
+from .model import digest, Invalid
 
 DATASET_HASH='35dc41080a3680858b27fa7e0533d2d547825316fc5dafe5d316f4ccc5a06132'
 STATEMENTS_HASH='2fa5ec1bb789920d11cbf991707aeb5a65529a2b7f8e4aed9a65b021bd4cdc66'
@@ -48,6 +49,35 @@ def read_json(path,cap=2*1024*1024):
     with Path(path).open('rb') as handle:raw=handle.read(cap+1)
     require(len(raw)<=cap,'input byte bound')
     return decode(raw.decode('utf8'))
+
+
+def read_model_metadata(path,cap=65536):
+    """Separate model-file boundary: finite JSON floats are legitimate metadata.
+
+    Never use this loader for blueprints, statements or approval/configuration
+    records. Duplicate keys, nonfinite numbers and oversized files still fail.
+    """
+    with Path(path).open('rb') as handle:raw=handle.read(cap+1)
+    require(len(raw)<=cap,'model metadata byte bound')
+    def pairs(items):
+        result={}
+        for key,value in items:
+            require(key not in result,'duplicate model metadata key')
+            result[key]=value
+        return result
+    def finite_float(value):
+        number=float(value)
+        require(math.isfinite(number),'nonfinite model metadata number')
+        return number
+    def constant(value):
+        raise Invalid('nonfinite model metadata constant')
+    try:
+        value=json.loads(raw.decode('utf8'),object_pairs_hook=pairs,
+                         parse_float=finite_float,parse_constant=constant)
+    except (ValueError,UnicodeError,RecursionError) as exc:
+        raise Invalid('invalid bounded model metadata JSON') from exc
+    require(type(value) is dict,'model metadata object required')
+    return value
 
 
 def validate_receipt(receipt):
@@ -149,7 +179,7 @@ def verify_local(receipt,statements,tokenizer_loader):
     from beyond_consensus.models.transformers_backend import verify_thinking_template,generation_tokens
     template=verify_thinking_template(tokenizer,True)
     require(template['template_hash']==TEMPLATE_HASH,'runtime template mismatch')
-    gc=read_json(root/'generation_config.json')
+    gc=read_model_metadata(root/'generation_config.json')
     tokens=generation_tokens(tokenizer,SimpleNamespace(eos_token_id=gc.get('eos_token_id'),pad_token_id=gc.get('pad_token_id')))
     require(tokens=={'eos_token_id':[248046,248044],'pad_token_id':248044},'stop configuration changed')
     closing=tokenizer.convert_tokens_to_ids('</think>')
