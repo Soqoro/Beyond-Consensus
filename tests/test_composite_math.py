@@ -74,6 +74,14 @@ class CompositeTests(unittest.TestCase):
  def test_bad_profile_stops_without_prices(self):
   j=self.journal(Fake(lambda i:{'final_text':'bad'} if i==0 else {}));r=c.run_recipe(j,self.sources,self.root,retained)
   self.assertEqual(r['status'],'profile_failed');self.assertEqual(r['evidence'],'synthetic_mock');self.assertFalse(r['model_executed']);self.assertEqual(json.loads((self.root/'recipe-state.json').read_text())['slots']['profile'],'unusable_artifact');self.assertIn('artifact_error',r['profile']['trace'][0]);self.assertFalse((self.root/'prices.frozen.json').exists());self.assertEqual(len(j.snapshot()['attempts']),1)
+ def test_truncated_profile_charged_without_salvage_or_retry(self):
+  f=Fake(lambda i:dict(output_tokens=3072,finish_reason='length_limit',final_text='{"bound":"unknown","derivation":"unfinished'))
+  j=self.journal(f);r=c.run_recipe(j,self.sources,self.root,retained)
+  self.assertEqual(r['status'],'profile_failed');self.assertEqual(len(f.calls),1)
+  self.assertEqual(j.snapshot()['totals'],dict(actual_tokens=3142,reserved_tokens=0,calls=1))
+  self.assertFalse((self.root/'prices.frozen.json').exists())
+  self.assertFalse((self.root/'selection.frozen.json').exists())
+  self.assertEqual(f.calls[0]['instruction'],c.blueprint()['prompt'])
  def test_bad_clean_skips_incidents(self):
   j=self.journal(Fake(lambda i:{'final_text':'bad'} if i==5 else {}));r=c.run_recipe(j,self.sources,self.root,retained)
   rows=r['methods']['neutral']['repairs'];self.assertTrue(all(x['status']=='no_clean_snapshot' for x in rows))
@@ -112,6 +120,12 @@ class CompositeTests(unittest.TestCase):
 if __name__=='__main__':unittest.main()
 
 class GuardTests(unittest.TestCase):
+ def test_previous_condition_qualification_rejected(self):
+  old=dict(schema='composite-json-cpu-v1',condition='composite-math-r0-b-dev-v3-json',status='passed')
+  with self.assertRaisesRegex(Invalid,'decoder qualification'):launch.check_decoder_qualification(old)
+  old_scope=dict(condition='composite-math-r0-b-dev-v3-json',blueprint=c.blueprint(),limits=c.LIMITS)
+  with self.assertRaisesRegex(Invalid,'frozen recipe'):
+   launch.validate_manifest(dict(schema='composite-r0-manifest-v1',scope=old_scope,scope_digest=c.digest(old_scope)))
  def test_prior_screen_approval_not_worker_approval(self):
   m={'scope_digest':'x','blockers':[],'scope':{'decoder_qualification':{'template':'mock'},'model':{'non_thinking_verification':'mock'}}}
   old={'schema':'D1-math500-screen-v1-approval','decision':'approved','scope_digest':'x'}

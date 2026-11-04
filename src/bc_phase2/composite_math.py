@@ -14,11 +14,11 @@ from .joint_pipeline_runtime import Engine, Artifact, recover, snapshot_digest
 from .d1_natural_screen import NaturalMockSession, NaturalTransport, reliable_terminal
 from beyond_consensus.util import atomic_json, plain
 
-CONDITION='composite-math-r0-b-dev-v3-json'
+CONDITION='composite-math-r0-b-dev-v4-concise-json'
 IDS=('test/intermediate_algebra/1166.json','test/counting_and_probability/1003.json')
 HASHES=('199e104d517ec67e4f167c49f035776c7bdaf933e41971c80716e26979d3a9a8','d4e914d360a34942f21e2a635cd2c97d3b6cec1a1f2ced16de22d6fd1b5712d0')
 RAW_PLAN_HASHES=['9a1a0f405abc9a011c35f67f0b8ef11db2ddb55c8e8fc55bed09f57fc6304a5d', '4eaae1878a8dc422b893ee3fb13d185df4b5170e3e252977621c49f1fe2069be']
-PROMPT='''Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one JSON object with exactly the named string fields. Give the mathematical derivation and all conditions needed by consumers, not a plan for future work. Do not solve another task, call tools, or invent missing parent results. No markdown fences. An unsupported derivation must be stated honestly in its field; no retry will occur.'''
+PROMPT='''Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.'''
 # Source content and answers are never embedded in these contracts.
 TASKS=[
  dict(id='t0',source=0,parents=[],responsibility='Reformulate the expression as needed and prove a global lower bound for all positive a,b,c. State every inequality and its equality conditions. Do not claim attainability without a witness.',fields=['bound','derivation','equality_conditions']),
