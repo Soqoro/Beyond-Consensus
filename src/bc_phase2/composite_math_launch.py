@@ -19,17 +19,17 @@ from beyond_consensus.experiments.manifest import source_revision
 from beyond_consensus.util import read_json,atomic_json,directory_lock,plain
 
 KEY=recipe.CONDITION
-EXPECTED_PACKAGES={'torch':'2.10.0+cu126','transformers':'5.3.0','tokenizers':'0.22.2','safetensors':'0.7.0','ortools':'9.14.6206'}
+EXPECTED_PACKAGES={'torch':'2.10.0+cu126','transformers':'5.3.0','tokenizers':'0.22.2','safetensors':'0.7.0','ortools':'9.14.6206','xgrammar':'0.1.32'}
 
 def identity():
     root=Path(__file__).resolve().parents[2]
     files=set(previous.identity())|{str(p.relative_to(root)) for p in (root/'src/bc_phase2').glob('joint_*.py')}|{
-        'src/bc_phase2/composite_math.py','src/bc_phase2/composite_math_launch.py','scripts/composite_math_pilot.py','experiments/run_composite_math.sbatch'}
+        'src/bc_phase2/composite_math.py','src/bc_phase2/composite_math_decoder.py','src/beyond_consensus/models/constrained.py','src/beyond_consensus/models/action_schema.py','src/bc_phase2/composite_math_launch.py','scripts/composite_math_pilot.py','experiments/run_composite_math.sbatch'}
     return {p:previous.local.file_hash(root/p) for p in sorted(files)}
 
 def deployment():
     packages={}
-    for name in ('torch','transformers','tokenizers','safetensors','ortools'):
+    for name in ('torch','transformers','tokenizers','safetensors','ortools','xgrammar'):
         try:packages[name]=importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:packages[name]=None
     try:
@@ -39,7 +39,7 @@ def deployment():
     return dict(python=str(Path(sys.executable).resolve()),packages=packages,solver_importable=ready,
                 gpu_execution_verified=False,model_executed=False)
 
-def prepare(screen_release,source_path,config_data,screen_result_path):
+def prepare(screen_release,source_path,config_data,screen_result_path,decoder_qualification=None):
     # Completed screening configuration supplies provenance, never worker approval.
     old=previous.validate_release(screen_release)
     require(previous.local.file_hash(screen_result_path)=='ee6d947dee83acad37809ad458f03f0169f7d6ceface4d54386f25d56c9f00af','completed screening result hash')
@@ -50,7 +50,7 @@ def prepare(screen_release,source_path,config_data,screen_result_path):
     config=cluster.ClusterConfig(**config_data)
     require(config.partition=='NA100q' and config.time=='04:00:00' and config.memory_gb==128 and config.activation_script is None,'proposed allocation')
     dep=deployment();require(str(Path(config.python).resolve())==dep['python'],'inspect execution Python itself')
-    scope=dict(screen_result_sha256=previous.local.file_hash(screen_result_path),condition=KEY,blueprint=recipe.blueprint(),model=deepcopy(old['model']),cluster=config_data,
+    scope=dict(decoder_qualification=decoder_qualification,screen_result_sha256=previous.local.file_hash(screen_result_path),condition=KEY,blueprint=recipe.blueprint(),model=deepcopy(old['model']),cluster=config_data,
         source_package=dict(path=str(Path(source_path).resolve()),sha256=previous.local.file_hash(source_path)),
         runtime_identity=identity(),deployment=dep,limits=recipe.LIMITS,
         grade='blinded human review; all validity unknown until reviewed; no model judge',
@@ -58,6 +58,8 @@ def prepare(screen_release,source_path,config_data,screen_result_path):
         monetary_cost='unverified local allocation; no cloud service',D2_D6_campaign_enabled=False)
     blockers=[] if dep['solver_importable'] else ['execution_python_ortools_unavailable']
     blockers += ['execution_package_mismatch:'+k for k,v in EXPECTED_PACKAGES.items() if dep['packages'].get(k)!=v]
+    if decoder_qualification is None:blockers.append('composite_json_cpu_qualification_pending')
+    else:check_decoder_qualification(decoder_qualification)
     return dict(schema='composite-r0-manifest-v1',scope=scope,scope_digest=digest(scope),blockers=blockers,execution_allowed=False)
 
 def validate_manifest(m):
@@ -71,8 +73,20 @@ def validate_manifest(m):
     require(c.time=='04:00:00' and c.partition=='NA100q' and c.memory_gb==128 and c.activation_script is None,'resources')
     return s
 
+def check_decoder_qualification(q):
+    from .composite_math_decoder import schema
+    require(q['schema']=='composite-json-cpu-v1' and q['condition']==KEY and q['status']=='passed','decoder qualification')
+    require(q['runtime_identity']==identity() and q['xgrammar_version']=='0.1.32','decoder qualification source binding')
+    require(q['metadata']==previous.local.METADATA and q['model_executed'] is False,'decoder metadata binding')
+    require([r['task'] for r in q['rows']]==[t['id'] for t in recipe.TASKS],'all task grammars')
+    for task,row in zip(recipe.TASKS,q['rows']):
+        require(row['schema_hash']==digest(schema(task)) and all(row[k] is True for k in ('escaped_text_accepted','extra_key_rejected','malformed_rejected')),'grammar controls')
+
+
 def approve(m,a):
     validate_manifest(m);require(not m['blockers'],'deployment blocker')
+    check_decoder_qualification(m['scope']['decoder_qualification'])
+    require(m['scope']['decoder_qualification']['template']==m['scope']['model']['non_thinking_verification'],'qualified template binding')
     require(set(a)=={'schema','scope_digest','decision','reviewer','reviewed_at','source_worker_transmission','contract_accepted','gpu_recipe_authorized'},'external nonrecursive approval')
     require(a['schema']=='composite-r0-approval-v1' and a['scope_digest']==m['scope_digest'] and a['decision']=='approved','exact worker recipe approval')
     require(all(a[k] is True for k in ('source_worker_transmission','contract_accepted','gpu_recipe_authorized')),'all actual decisions required')
@@ -106,7 +120,8 @@ def open_transport(v):
     model=Qwen3_5ForConditionalGeneration.from_pretrained(str(root),local_files_only=True,trust_remote_code=False,
         use_safetensors=True,dtype=torch.bfloat16,attn_implementation='sdpa')
     model.to(torch.device('cuda:0'));model.requires_grad_(False);model.eval()
-    transport=screen.NaturalTransport(tokenizer,model,torch)
+    from .composite_math_decoder import TaskTransport
+    transport=TaskTransport(tokenizer,model,torch)
     require(transport.tokens==s['model']['generation_tokens'],'EOS/pad binding')
     transport.binding.update(evidence='real_composite_worker_development',inventory_digest=digest(pilot.lock_for(s)))
     return transport

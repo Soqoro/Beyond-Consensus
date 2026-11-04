@@ -14,7 +14,7 @@ from .joint_pipeline_runtime import Engine, Artifact, recover, snapshot_digest
 from .d1_natural_screen import NaturalMockSession, NaturalTransport, reliable_terminal
 from beyond_consensus.util import atomic_json, plain
 
-CONDITION='composite-math-r0-b-dev-v2'
+CONDITION='composite-math-r0-b-dev-v3-json'
 IDS=('test/intermediate_algebra/1166.json','test/counting_and_probability/1003.json')
 HASHES=('199e104d517ec67e4f167c49f035776c7bdaf933e41971c80716e26979d3a9a8','d4e914d360a34942f21e2a635cd2c97d3b6cec1a1f2ced16de22d6fd1b5712d0')
 RAW_PLAN_HASHES=['9a1a0f405abc9a011c35f67f0b8ef11db2ddb55c8e8fc55bed09f57fc6304a5d', '4eaae1878a8dc422b893ee3fb13d185df4b5170e3e252977621c49f1fe2069be']
@@ -42,7 +42,7 @@ def blueprint():
                 profile_rule='one same-instance neutral profile; input+generated token prices; no content/grades to selector',
                 schedule=['profile','neutral/clean','selected/clean']+[f'{m}/owner/o{i}' for i in range(4) for m in ('neutral','selected')],
                 identical_design='one evaluation clean and four repairs, explicitly shared method observations',
-                prompt=PROMPT,limits=LIMITS)
+                prompt=PROMPT,limits=LIMITS,decoder='task-fields-xgrammar-v1',decoder_cpu_seconds_per_call=30)
 
 def statements(path):
     rows=json.loads(Path(path).read_text())
@@ -160,7 +160,9 @@ class MathEngine(Engine):
             try:
                 require(obs['finish_reason']=='eos' and not obs.get('boundary_error'),'unusable response')
                 value=parse_artifact(obs.get('final_text'),task)
-            except (Invalid,TypeError):status='unusable_artifact';break
+            except (Invalid,TypeError) as exc:
+                trace[-1]['artifact_error']={'type':type(exc).__name__,'message':str(exc),'cause':str(exc.__cause__) if exc.__cause__ else None}
+                status='unusable_artifact';break
             artifacts[op.id]=Artifact(op.output,value,row['id'],execution.organisation_id);trace[-1]['committed']=True
         complete=status=='complete' and needed<=set(artifacts)
         row=dict(slot=slot,organisation=execution.organisation_id,status=status,complete=complete,
@@ -200,7 +202,11 @@ def run_recipe(journal,sources,out,solver=None):
     engine=MathEngine(journal,sources,out)
     profile=engine.run(ex,'profile',phase='profile')
     if not profile['complete']:
-        return dict(status='profile_failed',profile=serial(profile),comparisons='unrun',totals=journal.snapshot()['totals'])
+        slots={k:'unrun' for k in b['schedule']};slots['profile']=profile['status']
+        atomic_json(out/'recipe-state.json',dict(status='profile_failed',slots=slots))
+        evidence=journal.binding['transport'].get('evidence')
+        return dict(status='profile_failed',evidence=evidence,model_executed=evidence=='real_composite_worker_development' and bool(profile['invocations']),
+                    profile=serial(profile),comparisons='unrun',totals=journal.snapshot()['totals'])
     prices=[next(t['usage'] for t in profile['trace'] if t['event']==f'e{i}') for i in range(5)]
     # No profile content or correctness crosses the solver interface.
     frozen=dict(rule=b['profile_rule'],prices=prices,invocations=profile['invocations'],blueprint_digest=digest(b))

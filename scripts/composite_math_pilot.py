@@ -10,17 +10,29 @@ def main():
  p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='command',required=True)
  a=sub.add_parser('prepare')
  for name in ('screen-release','screen-result','statements','cluster','output'):a.add_argument('--'+name,required=True,type=Path)
+ a.add_argument('--decoder-qualification',type=Path)
+ a=sub.add_parser('qualify-json');a.add_argument('--snapshot',required=True,type=Path);a.add_argument('--output',required=True,type=Path)
  a=sub.add_parser('approve')
  for name in ('manifest','approval','output'):a.add_argument('--'+name,required=True,type=Path)
  a=sub.add_parser('submit');a.add_argument('--release',required=True,type=Path);a.add_argument('--dry-run',action='store_true');a.add_argument('--output',required=True,type=Path)
  a=sub.add_parser('run-allocated');a.add_argument('--output',required=True,type=Path)
  sub.add_parser('deployment')
  args=p.parse_args()
+ if args.command=='qualify-json':
+  import signal
+  from bc_phase2.composite_math_decoder import qualify
+  signal.signal(signal.SIGALRM,lambda *a:(_ for _ in ()).throw(TimeoutError('300-second CPU qualification wall bound')))
+  signal.alarm(300)
+  try:
+   with args.output.open('x') as f:
+    value=qualify(args.snapshot);json.dump(value,f,indent=2);f.write('\n')
+  finally:signal.alarm(0)
+  print(json.dumps(dict(report=str(args.output),status=value['status'],model_executed=False),indent=2));return int(value['status']!='passed')
  if args.command=='deployment':print(json.dumps(l.deployment(),indent=2));return 0
  if args.command=='run-allocated':
   result=l.run_allocated(ROOT,args.output);print(json.dumps({k:result.get(k) for k in ('status','totals','identical_design')},indent=2));return 0
  if args.command=='prepare':
-  v=l.prepare(read_evidence(args.screen_release),args.statements,read_evidence(args.cluster),args.screen_result)
+  v=l.prepare(read_evidence(args.screen_release),args.statements,read_evidence(args.cluster),args.screen_result,read_evidence(args.decoder_qualification) if args.decoder_qualification else None)
   args.output.mkdir(exist_ok=False)
   pending=dict(schema='composite-r0-approval-v1',scope_digest=v['scope_digest'],decision='pending',reviewer=None,reviewed_at=None,source_worker_transmission=False,contract_accepted=False,gpu_recipe_authorized=False)
   for name,data in [('COMPOSITE_R0_MANIFEST.json',v),('COMPOSITE_BLUEPRINT.json',r.blueprint()),('approval.pending.json',pending)]:

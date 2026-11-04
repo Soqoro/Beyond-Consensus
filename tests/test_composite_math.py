@@ -73,7 +73,7 @@ class CompositeTests(unittest.TestCase):
   self.assertNotEqual(ex.groups,compile_organisation(d,c.selection(d,changed)).groups)
  def test_bad_profile_stops_without_prices(self):
   j=self.journal(Fake(lambda i:{'final_text':'bad'} if i==0 else {}));r=c.run_recipe(j,self.sources,self.root,retained)
-  self.assertEqual(r['status'],'profile_failed');self.assertFalse((self.root/'prices.frozen.json').exists());self.assertEqual(len(j.snapshot()['attempts']),1)
+  self.assertEqual(r['status'],'profile_failed');self.assertEqual(r['evidence'],'synthetic_mock');self.assertFalse(r['model_executed']);self.assertEqual(json.loads((self.root/'recipe-state.json').read_text())['slots']['profile'],'unusable_artifact');self.assertIn('artifact_error',r['profile']['trace'][0]);self.assertFalse((self.root/'prices.frozen.json').exists());self.assertEqual(len(j.snapshot()['attempts']),1)
  def test_bad_clean_skips_incidents(self):
   j=self.journal(Fake(lambda i:{'final_text':'bad'} if i==5 else {}));r=c.run_recipe(j,self.sources,self.root,retained)
   rows=r['methods']['neutral']['repairs'];self.assertTrue(all(x['status']=='no_clean_snapshot' for x in rows))
@@ -113,14 +113,14 @@ if __name__=='__main__':unittest.main()
 
 class GuardTests(unittest.TestCase):
  def test_prior_screen_approval_not_worker_approval(self):
-  m={'scope_digest':'x','blockers':[]}
+  m={'scope_digest':'x','blockers':[],'scope':{'decoder_qualification':{'template':'mock'},'model':{'non_thinking_verification':'mock'}}}
   old={'schema':'D1-math500-screen-v1-approval','decision':'approved','scope_digest':'x'}
-  with patch.object(launch,'validate_manifest',return_value={}):
+  with patch.object(launch,'validate_manifest',return_value={}),patch.object(launch,'check_decoder_qualification'):
    with self.assertRaises(Invalid):launch.approve(m,old)
  def test_approval_nonrecursive_and_exact(self):
-  m={'scope_digest':'x','blockers':[]}
+  m={'scope_digest':'x','blockers':[],'scope':{'decoder_qualification':{'template':'mock'},'model':{'non_thinking_verification':'mock'}}}
   a=dict(schema='composite-r0-approval-v1',scope_digest='x',decision='approved',reviewer='synthetic',reviewed_at='synthetic',source_worker_transmission=True,contract_accepted=True,gpu_recipe_authorized=True)
-  with patch.object(launch,'validate_manifest',return_value={}):
+  with patch.object(launch,'validate_manifest',return_value={}),patch.object(launch,'check_decoder_qualification'):
    r=launch.approve(m,a);self.assertEqual(launch.validate_release(r),{})
    bad=deepcopy(r);bad['approval']['scope_digest']='y'
    with self.assertRaises(Invalid):launch.validate_release(bad)
