@@ -9,7 +9,9 @@ from beyond_consensus.models.action_schema import DECODER_CPU_SECONDS
 
 
 def schema(task):
-    return {'type':'object','properties':{k:{'type':'string','minLength':1} for k in task['fields']},
+    # XGrammar 0.1.32 minLength rejects legal escapes in the observed controls.
+    # This is a decoding superset; parse_artifact still rejects empty/blank fields.
+    return {'type':'object','properties':{k:{'type':'string'} for k in task['fields']},
             'required':list(task['fields']),'additionalProperties':False}
 
 

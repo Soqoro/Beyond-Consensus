@@ -15,6 +15,16 @@ class DecoderTests(unittest.TestCase):
   self.assertEqual(json.loads(c.parse_artifact(text,c.TASKS[0]))['bound'],'24')
   malformed='{"bound":"24","derivation":"The text says "minimum".","equality_conditions":"unverified"}'
   with self.assertRaises(Invalid):c.parse_artifact(malformed,c.TASKS[0])
+ def test_decoder_superset_preserves_strict_artifact_contract(self):
+  for task in c.TASKS:
+   self.assertTrue(all(v=={'type':'string'} for v in d.schema(task)['properties'].values()))
+   valid={f:'Synthetic "quote", backslash \\ and newline\n.' for f in task['fields']}
+   self.assertEqual(json.loads(c.parse_artifact(json.dumps(valid),task)),valid)
+   for bad in ('','   ','\n'):
+    invalid=dict(valid);invalid[task['fields'][0]]=bad
+    with self.assertRaises(Invalid):c.parse_artifact(json.dumps(invalid),task)
+   for invalid in ({**valid,'extra':'x'},{k:v for k,v in valid.items() if k!=task['fields'][0]}):
+    with self.assertRaises(Invalid):c.parse_artifact(json.dumps(invalid),task)
  def test_fresh_matcher_cached_grammar_same_generation(self):
   compiled=[];inners=[];invocations=[]
   class Compiler:
