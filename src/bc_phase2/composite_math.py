@@ -97,9 +97,10 @@ class Halt(Invalid):pass
 
 class Journal(NaturalMockSession):
     """Reuse fsync, locking, bounded integrity envelope; one reservation per task call."""
-    def __init__(self,path,transport,scope,check_source):
+    def __init__(self,path,transport,scope,check_source,*,condition=CONDITION,limits=None):
         self.transport=transport;self.check_source=check_source
-        self.binding=dict(condition=CONDITION,scope=scope,transport=deepcopy(transport.binding))
+        self.limits=deepcopy(LIMITS if limits is None else limits)
+        self.binding=dict(condition=condition,scope=scope,transport=deepcopy(transport.binding))
         self.root=Path(path);self.root.mkdir(exist_ok=False)
         with self._locked():self._save(dict(binding=self.binding,binding_digest=digest(self.binding),attempts=[],started_at=time.time()))
     def invoke(self,req,slot,event):
@@ -108,14 +109,14 @@ class Journal(NaturalMockSession):
         with self._locked():
             s=self._read();a=s['attempts']
             if any(not reliable_terminal(x) for x in a):raise Halt('unresolved dispatch/usage; no replay')
-            if len(a)>=55 or time.time()-s['started_at']>=14400:raise Halt('resource ceiling')
+            if len(a)>=self.limits['maximum_calls'] or time.time()-s['started_at']>=self.limits['wall_seconds']:raise Halt('resource ceiling')
             require(not any(x['slot']==slot and x['event']==event for x in a),'no retries')
             try:r=self.transport.render(req)
             except Invalid as exc:
                 if str(exc)=='input overflow; never truncate':return None
                 raise Halt('render integrity failure') from exc
             n=r['input_tokens'];require(type(n) is int and 0<n<=13312,'input cap')
-            if sum(x['actual_tokens'] for x in a)+n+3072>901120:raise Halt('aggregate token cap')
+            if sum(x['actual_tokens'] for x in a)+n+3072>self.limits['token_cap']:raise Halt('aggregate token cap')
             x=dict(slot=slot,event=event,id=f'call-{len(a)}',state='reserved',input_tokens=n,
                    actual_tokens=None,reservation_tokens=n+3072,request=req,rendered=r)
             a.append(x);self._save(s)
@@ -136,6 +137,8 @@ class MathEngine(Engine):
     """String artifacts with the accepted recover()/snapshot-role/closure machinery."""
     def __init__(self,journal,sources,out):
         super().__init__();self.journal=journal;self.sources=sources;self.out=Path(out)
+    def task_for_operation(self,op):
+        return TASKS[int(op.host[1:])]
     def run(self,execution,slot,worker=None,*,store=None,required=None,phase='clean',**unused):
         require(slot not in self.slots,'no slot replay')
         needed=set(o.id for o in execution.operations) if required is None else set(required)
@@ -144,7 +147,7 @@ class MathEngine(Engine):
         require(needed<=set(o.id for o in execution.operations),'frozen operations only')
         for op in execution.operations:
             if op.id not in needed:continue
-            task=TASKS[int(op.host[1:])];reads=[]
+            task=self.task_for_operation(op);reads=[]
             for r in op.reads:
                 if r.event:
                     require(r.event in artifacts,'missing parent')

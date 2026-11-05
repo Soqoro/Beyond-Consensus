@@ -106,8 +106,9 @@ def arguments(c,snapshot,output):
     argv[-6:]=[str(snapshot/'experiments/run_composite_math.sbatch'),str(snapshot),str(output),c.python]
     return argv
 
-def open_transport(v):
-    s=validate_release(v)
+def open_transport(v,*,protocol=None):
+    p=protocol or sys.modules[__name__]
+    s=p.validate_release(v)
     require(deployment()==s['deployment'] and s['deployment']['solver_importable'],'execution host deployment mismatch')
     require(s['deployment']['packages']==EXPECTED_PACKAGES,'qualified package versions')
     from beyond_consensus.models.transformers_backend import require_allocation
@@ -126,21 +127,22 @@ def open_transport(v):
     transport.binding.update(evidence='real_composite_worker_development',inventory_digest=digest(pilot.lock_for(s)))
     return transport
 
-def dispatch(v,directory):
-    s=validate_release(v);out=Path(directory);out.mkdir(exist_ok=False)
+def dispatch(v,directory,*,protocol=None):
+    p=protocol or sys.modules[__name__];implementation=p.recipe
+    s=p.validate_release(v);out=Path(directory);out.mkdir(exist_ok=False)
     wall=time.monotonic();cpu=time.process_time()
     atomic_json(out/'startup.json',dict(scope_digest=digest(s),state='started_no_retry'))
     timer=threading.Timer(14400,lambda:os.kill(os.getpid(),signal.SIGKILL));timer.daemon=True;timer.start()
     journal=None
     try:
-        sources=source_records(s);transport=open_transport(v)
-        journal=recipe.Journal(out/'journal',transport,digest(s),lambda:source_records(s))
-        result=recipe.run_recipe(journal,sources,out)
+        sources=p.source_records(s);transport=p.open_transport(v)
+        journal=implementation.Journal(out/'journal',transport,digest(s),lambda:p.source_records(s))
+        result=implementation.run_recipe(journal,sources,out)
         result['stage_resources']=dict(wall_seconds=time.monotonic()-wall,cpu_seconds=time.process_time()-cpu)
         atomic_json(out/'result.json',result)
         return result
     except BaseException as e:
-        state=read_json(out/'recipe-state.json') if (out/'recipe-state.json').exists() else {'slots':{k:'unrun' for k in recipe.blueprint()['schedule']}}
+        state=read_json(out/'recipe-state.json') if (out/'recipe-state.json').exists() else {'slots':{k:'unrun' for k in implementation.blueprint()['schedule']}}
         attempts=journal.snapshot()['attempts'] if journal else []
         for slot in state['slots']:
             saved=out/(slot.replace('/','_')+'.json')
@@ -153,29 +155,30 @@ def dispatch(v,directory):
     finally:timer.cancel()
 
 
-def submit(root,value,*,dry_run=True):
+def submit(root,value,*,dry_run=True,protocol=None):
+    p=protocol or sys.modules[__name__]
     require(not os.environ.get('SLURM_JOB_ID'),'no batch self-submission')
-    scope=validate_release(value);key=value['manifest']['scope_digest']
-    config=cluster.ClusterConfig(**scope['cluster']);source_records(scope)
+    scope=p.validate_release(value);key=value['manifest']['scope_digest']
+    config=cluster.ClusterConfig(**scope['cluster']);p.source_records(scope)
     output=Path(config.output_root)/('composite-'+key)
     registry=cluster.registry_root();state_path=registry/'registry.json'
     def action():
         state=read_json(state_path) if state_path.exists() else {'jobs':[]}
         cluster.guard(state)
         # A second bind/output directory must not allow repeating this cohort's attempt.
-        require(KEY not in state.get('composite_math_attempts',{}),'cohort already submitted/uncertain; no retry')
+        require(p.KEY not in state.get('composite_math_attempts',{}),'cohort already submitted/uncertain; no retry')
         require(not output.exists(),'preserve existing output')
         cluster.validate_site(config)
         snapshot=Path(config.snapshot_root)/'SNAPSHOT_CREATED_AT_SUBMISSION'
-        if dry_run:return {'submitted':False,'dry_run':True,'scope_digest':key,'argv':arguments(config,snapshot,output)}
+        if dry_run:return {'submitted':False,'dry_run':True,'scope_digest':key,'argv':p.arguments(config,snapshot,output)}
         manifest={'schema':'composite-r0-slurm-v1','source_revision':source_revision(root),'release':value}
         snapshot=create_snapshot(root,Path(config.snapshot_root),manifest,plain(config),pilot.lock_for(scope))
         for name,h in scope['runtime_identity'].items():require(previous.local.file_hash(snapshot/name)==h,'committed source binding')
         (output/'logs').mkdir(parents=True,exist_ok=False);atomic_json(output/'manifest.json',manifest)
-        argv=arguments(config,snapshot,output);cluster.command([argv[0],'--test-only',*argv[1:]])
+        argv=p.arguments(config,snapshot,output);cluster.command([argv[0],'--test-only',*argv[1:]])
         reservation={'scope_digest':key,'release_digest':value['release_digest'],'snapshot':str(snapshot),
                      'output':str(output),'state':'submission_uncertain'}
-        state.setdefault('composite_math_attempts',{})[KEY]=reservation
+        state.setdefault('composite_math_attempts',{})[p.KEY]=reservation
         state['uncertain_submission']=dict(reservation);atomic_json(state_path,state)
         response=cluster.command(argv);job=response.split(';',1)[0]
         require(re.fullmatch('[0-9]+',job) is not None,'uncertain submission retained')
@@ -194,12 +197,13 @@ def check_allocation(record):
     require(fields.get('TimeLimit')=='04:00:00','allocated wall limit')
     pilot.check_allocation_record(record.replace('TimeLimit=04:00:00','TimeLimit=01:00:00'))
 
-def run_allocated(root,output):
+def run_allocated(root,output,*,protocol=None):
+    p=protocol or sys.modules[__name__]
     require(os.environ.get('SLURM_JOB_ID'),'allocation required')
     root=Path(root);output=Path(output);marker=verify_snapshot(root)
     manifest=read_json(root/'resolved/manifest.json')
     require(manifest.get('schema')=='composite-r0-slurm-v1','expanded snapshot required')
-    value=manifest['release'];scope=validate_release(value);key=value['manifest']['scope_digest']
+    value=manifest['release'];scope=p.validate_release(value);key=value['manifest']['scope_digest']
     config=cluster.ClusterConfig(**scope['cluster'])
     require(read_json(root/'resolved/cluster.json')==plain(config),'cluster binding')
     require(output.resolve()==(Path(config.output_root)/('composite-'+key)).resolve(),'output binding')
@@ -208,7 +212,7 @@ def run_allocated(root,output):
     require(os.environ.get('SLURM_ARRAY_TASK_ID','0')=='0','single array task')
     with directory_lock(cluster.registry_root()/'.submission.lock'):
         state=read_json(cluster.registry_root()/'registry.json')
-    record=state.get('composite_math_attempts',{}).get(KEY,{})
+    record=state.get('composite_math_attempts',{}).get(p.KEY,{})
     require(record.get('job_id')==job and record.get('state')=='submitted_no_retry'
             and record.get('release_digest')==value['release_digest'] and record.get('scope_digest')==key
             and Path(record.get('snapshot','')).resolve()==root.resolve()
@@ -217,4 +221,4 @@ def run_allocated(root,output):
     active=cluster.active_gpu_jobs()
     require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
     require(environment_inventory(config.python)==read_json(root/'resolved/environment.json'),'environment changed')
-    return dispatch(value,output/'execution')
+    return p.dispatch(value,output/'execution')
