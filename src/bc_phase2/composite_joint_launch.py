@@ -13,7 +13,8 @@ PARENT_SCOPE='4cddbe4903c48ceb150ddaa9d36777a9d1d53966d5fe2dd8eb536a989c028f34'
 def identity():
     root=Path(__file__).resolve().parents[2];files=set(base.identity())|{
         'src/bc_phase2/composite_joint.py','src/bc_phase2/composite_joint_launch.py',
-        'scripts/composite_joint_pilot.py','experiments/run_composite_joint.sbatch'}
+        'scripts/composite_joint_pilot.py','experiments/run_composite_joint.sbatch',
+        'src/bc_phase2/composite_joint_replacement.py','scripts/reconcile_composite_joint_failure.py'}
     return {p:base.previous.local.file_hash(root/p) for p in sorted(files)}
 
 def qualify(snapshot):

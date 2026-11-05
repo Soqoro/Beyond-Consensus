@@ -116,6 +116,7 @@ def open_transport(v,*,protocol=None):
     import torch
     from transformers import AutoTokenizer,Qwen3_5ForConditionalGeneration
     require(torch.cuda.device_count()==1 and torch.cuda.get_device_properties(0).total_memory>=80000000000,'one >=80GB GPU')
+    if hasattr(p,'check_cuda'):p.check_cuda(torch)
     tokenizer=AutoTokenizer.from_pretrained(str(root),local_files_only=True,trust_remote_code=False)
     require(screen.verify_non_thinking(tokenizer)==s['model']['non_thinking_verification'],'template verification')
     model=Qwen3_5ForConditionalGeneration.from_pretrained(str(root),local_files_only=True,trust_remote_code=False,
@@ -165,6 +166,7 @@ def submit(root,value,*,dry_run=True,protocol=None):
     def action():
         state=read_json(state_path) if state_path.exists() else {'jobs':[]}
         cluster.guard(state)
+        if hasattr(p,'submission_check'):p.submission_check(value,state)
         # A second bind/output directory must not allow repeating this cohort's attempt.
         require(p.KEY not in state.get('composite_math_attempts',{}),'cohort already submitted/uncertain; no retry')
         require(not output.exists(),'preserve existing output')
