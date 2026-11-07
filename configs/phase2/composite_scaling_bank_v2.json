@@ -1,0 +1,700 @@
+{
+  "schema": "composite-scaling-bank-v2",
+  "seed_root": "bc-composite-scaling-v1",
+  "review_limit": 6,
+  "review_priority": [
+    "test/precalculus/675.json",
+    "test/geometry/965.json",
+    "test/number_theory/533.json",
+    "test/geometry/880.json",
+    "test/geometry/1097.json",
+    "test/precalculus/190.json",
+    "test/number_theory/45.json",
+    "test/number_theory/572.json",
+    "test/counting_and_probability/190.json",
+    "test/prealgebra/105.json",
+    "test/intermediate_algebra/1300.json",
+    "test/counting_and_probability/508.json",
+    "test/algebra/101.json",
+    "test/intermediate_algebra/1210.json",
+    "test/number_theory/914.json",
+    "test/intermediate_algebra/1555.json",
+    "test/algebra/524.json",
+    "test/algebra/634.json",
+    "test/counting_and_probability/666.json",
+    "test/algebra/2743.json",
+    "test/precalculus/697.json"
+  ],
+  "components": [
+    {
+      "source_id": "test/algebra/101.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": null,
+      "raw_plan_sha256": null,
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "algebra"
+    },
+    {
+      "source_id": "test/algebra/2743.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": null,
+      "raw_plan_sha256": null,
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "algebra"
+    },
+    {
+      "source_id": "test/algebra/524.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "83864f8749594ce401668e94215e18631f899ca2e8f1da9c0ab889a10699b4d2",
+      "raw_plan_sha256": "4eee4f390a8044be94f10d051b973b5575ed927a6e68c78dad9919f0689d65fe",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "algebra"
+    },
+    {
+      "source_id": "test/algebra/634.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "8e94732caeed5f9b9d98ac7fbaa126963bdd0858a74c2dd7f2b34ea1ceb6155a",
+      "raw_plan_sha256": "22bc374691b4747bb82605f3a68a90549f7b33a94f4b399a8c3728b3258ac3a4",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "algebra"
+    },
+    {
+      "source_id": "test/counting_and_probability/1003.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "d4e914d360a34942f21e2a635cd2c97d3b6cec1a1f2ced16de22d6fd1b5712d0",
+      "raw_plan_sha256": "4eaae1878a8dc422b893ee3fb13d185df4b5170e3e252977621c49f1fe2069be",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t2",
+          "parents": [],
+          "responsibility": "Parameterise the six face probabilities using the heavy face probability and its opposite. Record normalization, opposite-face pairing, and every admissibility constraint. Use a symbolic heavy-face label if its number is unspecified.",
+          "fields": [
+            "probabilities",
+            "pairing",
+            "constraints",
+            "derivation"
+          ]
+        },
+        {
+          "id": "t3",
+          "parents": [
+            "t2"
+          ],
+          "responsibility": "Use the supplied probabilities to derive the two-roll sum-of-seven probability, including ordered outcomes. Form the equation using the probability in the original statement. Preserve the probability constraints; do not solve the equation yet.",
+          "fields": [
+            "event_probability",
+            "equation",
+            "constraints",
+            "derivation"
+          ]
+        },
+        {
+          "id": "t4",
+          "parents": [
+            "t3"
+          ],
+          "responsibility": "Solve the supplied equation under its constraints and the original statement. Reject inadmissible roots with reasons. Express the required probability in lowest terms and compute the requested numerator-plus-denominator answer.",
+          "fields": [
+            "roots",
+            "admissibility",
+            "reduced_fraction",
+            "final_answer",
+            "justification"
+          ]
+        }
+      ],
+      "outputs": [
+        "t4"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "Existing composite v4 and AB contracts reused unchanged",
+      "issues": [
+        "Incorrect historical final fields and intermediate inconsistencies retained; no automatic correction.",
+        "Dice parameterisation historically overstepped into solving; retain task boundary concern."
+      ],
+      "contract_id": "2c5e442b271daa9d5c9afadf91fbf44a989ca786e28f9ffadac20d8d67243c16",
+      "namespace": "c2c5e442b27",
+      "subject_bucket": "counting_and_probability"
+    },
+    {
+      "source_id": "test/counting_and_probability/190.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "9ae18bc14bcf30c1e46ca2d4d5896d14f3f4abc83849e1a2a6d1c40bbd30f6be",
+      "raw_plan_sha256": "64e2896800e8c811ad7135283f6fa547778b4aa0fe4f261cf579b5b4c4b9f414",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "counting_and_probability"
+    },
+    {
+      "source_id": "test/counting_and_probability/508.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": null,
+      "raw_plan_sha256": null,
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "counting_and_probability"
+    },
+    {
+      "source_id": "test/counting_and_probability/666.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "707c6d6754da13d7309321574496d7d8aff61a2b7c392078ff495fa64464620b",
+      "raw_plan_sha256": "d3646721e04177bf1d40872cd75594ae1e6b569e593331665b65f6a3662d5e17",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "counting_and_probability"
+    },
+    {
+      "source_id": "test/geometry/1097.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "a6309a04df98dba13a191d05ed8c9d4fdaf3de7c78dbc9e033f049844e339b72",
+      "raw_plan_sha256": "cb123be54cc46097566ffdd3b909121c46bf4a8a951c2a85db076eaf238ed7c5",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the integer-coordinate ranges strictly inside the original rectangle, count the pairs, and justify boundary exclusion.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": []
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "One-task plan retained; not artificially split into coordinate-count and multiplication agents.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "db7bcc19d0e18a3a43ec5c2cb9181c9ad2f53b14966ba845c580ddf4242339c9",
+      "namespace": "cdb7bcc19d0",
+      "subject_bucket": "geometry"
+    },
+    {
+      "source_id": "test/geometry/880.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "88bd1d429ff4da88607a105612c2de0c8e98bd61cfdfa852a96a537fea183c3b",
+      "raw_plan_sha256": "c854bfcc6b48a9e4ccaa014be695500b2deedcf8ddda269b384fd0333d8ddaa2",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Construct and justify a complete sufficient set of candidate surface routes and planar unfoldings connecting the two specified points. Exclude the floor and invalid boundary crossings. Supply endpoint coordinates and surface-transition conditions for each candidate, with a completeness argument. If completeness cannot be established, explicitly report the gap.",
+          "fields": [
+            "routes",
+            "completeness",
+            "derivation"
+          ],
+          "parents": []
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied route candidates, coordinates and transition conditions, verify straight segments are valid on their allowed surfaces, compare lengths, and state the globally shortest path in simplest radical form only if the completeness argument supports it. Preserve any unresolved route-completeness gap.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": [
+            "t0"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "Merge distance evaluation and minimum selection. Retain substantive unfolding/completeness work; model competence in route completeness remains unverified.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "a835779e749c9cb69a0879d16ed8ddd0d1ada4f7049349ba6e87f386b74ed5d7",
+      "namespace": "ca835779e74",
+      "subject_bucket": "geometry"
+    },
+    {
+      "source_id": "test/geometry/965.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "0f8a7867d1de477aed3aadc72d34fa0a6247f830111831a3d05d0456d03f87a0",
+      "raw_plan_sha256": "cbc4ffe64a7ac24529b8d06e59d42a505357686d97e95a4282ea3cad75e878d2",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive geometric relations sufficient to relate the target triangle area to the trapezoid area. Justify all angle, length and height relations using the original conditions; do not assume lengths from a drawing.",
+          "fields": [
+            "relations",
+            "derivation"
+          ],
+          "parents": []
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied geometric relations and original conditions, derive and justify the area ratio, then compute the requested area from the given total area.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": [
+            "t0"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "Retain geometric inference; merge area equation and numerical substitution. Text contains all defining conditions; no diagram measurements.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "91143224d07a5cee7336c1cd39bed4ce83eed46644f71593f7e28835fbb42bc6",
+      "namespace": "c91143224d0",
+      "subject_bucket": "geometry"
+    },
+    {
+      "source_id": "test/intermediate_algebra/1166.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "199e104d517ec67e4f167c49f035776c7bdaf933e41971c80716e26979d3a9a8",
+      "raw_plan_sha256": "9a1a0f405abc9a011c35f67f0b8ef11db2ddb55c8e8fc55bed09f57fc6304a5d",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "parents": [],
+          "responsibility": "Reformulate the expression as needed and prove a global lower bound for all positive a,b,c. State every inequality and its equality conditions. Do not claim attainability without a witness.",
+          "fields": [
+            "bound",
+            "derivation",
+            "equality_conditions"
+          ]
+        },
+        {
+          "id": "t1",
+          "parents": [
+            "t0"
+          ],
+          "responsibility": "Using the supplied bound and equality conditions, determine whether the bound is attainable. Produce positive values or a positive family satisfying all conditions and check the original expression. State the minimum with a complete justification, or explicitly report that the claimed bound is not attained/proven.",
+          "fields": [
+            "witness",
+            "attainment_check",
+            "final_answer",
+            "justification"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "original",
+        "algebraic"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "original",
+      "review_provenance": "Existing composite v4 and AB contracts reused unchanged",
+      "issues": [
+        "Historical bound field conflicts with derivation; contract requires consistency but worker competence failed. No solved value injected."
+      ],
+      "contract_id": "eb78443cc5ef42c1bae12797f103f4f7846d31d5a8645f6be8e6f5619e4ea3af",
+      "namespace": "ceb78443cc5",
+      "subject_bucket": "intermediate_algebra"
+    },
+    {
+      "source_id": "test/intermediate_algebra/1210.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "4e66c645d2a3df8631036d0cd802eb1230bfef6605b665e71e11a7cd85e278d2",
+      "raw_plan_sha256": "b455c4b6416a6e6e854e41685a495fde68443f290f67ad422664a6ed8ff8a0c1",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "intermediate_algebra"
+    },
+    {
+      "source_id": "test/intermediate_algebra/1300.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "550b1a4c6ea77399326894f15265b5fe8dfa8c23d3697caf0dc7121081946a36",
+      "raw_plan_sha256": "ccfb497858c197deacaabc728ccbf912f43d92fdb43bfb9b962a04cd23b02557",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "intermediate_algebra"
+    },
+    {
+      "source_id": "test/intermediate_algebra/1555.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "a862cde66761d9868dd8b9772b8e8f8cfaa3b5e060ffd85c029747e85906bcd5",
+      "raw_plan_sha256": "88816ffefd527b4ecdbbb81cb0dbc804937757e40933f7a486ec5395f1b02414",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "intermediate_algebra"
+    },
+    {
+      "source_id": "test/number_theory/45.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "e8bbc51e4f0cedba36262f97fad41f97059c8e6ad037d851dd35f3afe17cd5e3",
+      "raw_plan_sha256": "56c7c88580256e4c6cd6edc17de7de71b30a77dca615f3f81117ad5eca63254c",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "number_theory"
+    },
+    {
+      "source_id": "test/number_theory/533.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "71eae2be9ad19da74cc73b8bb6b7525b8c3f03ce365ee6116c091849f7e65f80",
+      "raw_plan_sha256": "21ef838fc14ee351502e54fd4e35a8b473016aa3cb5f76bc28a60845f7ceb201",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Convert the repeating decimal in the original statement to a rational number, reduce it to lowest terms with justification, and compute the requested numerator-plus-denominator sum.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": []
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "Merge decimal conversion, reduction and trivial addition into one whole-question task.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "6c0da2202fdcb55395bff1abf4591924d1e4853148fa4b9ff232755fe9d95f16",
+      "namespace": "c6c0da2202f",
+      "subject_bucket": "number_theory"
+    },
+    {
+      "source_id": "test/number_theory/572.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "32c3cda4fa5ff5d18cbac4e45b23dcf4833ddf37179609d1614e2403e68096ef",
+      "raw_plan_sha256": "56d0a4e001387c47cfbfb3ee200e7f58c9ee7c17abc539a4f543007d0eaa8185",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "number_theory"
+    },
+    {
+      "source_id": "test/number_theory/914.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "6195174aabf201f980ec3ad6dab33d49f8000c45f2b6af357b819784239790b1",
+      "raw_plan_sha256": "4aaeba58375cef9fe0bc3886bce3a5f3b235ef7ac527fcc146cd815c978336ab",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "number_theory"
+    },
+    {
+      "source_id": "test/prealgebra/105.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "ecdad8d7b2a1a13309f7bb82a6f1657912ba05844f278b6af22e19c5f442761e",
+      "raw_plan_sha256": "dfb965843f229d2143f3082a583187d12b7365992c45b3099f3a779b331f6687",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "prealgebra"
+    },
+    {
+      "source_id": "test/prealgebra/1646.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": null,
+      "raw_plan_sha256": null,
+      "status": "diagram_blocked",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "prealgebra"
+    },
+    {
+      "source_id": "test/prealgebra/1930.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": null,
+      "raw_plan_sha256": null,
+      "status": "diagram_blocked",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "prealgebra"
+    },
+    {
+      "source_id": "test/precalculus/1303.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "749e32e330be86cd9012734dbfd98280aa37c89d9b44dd4922ff18d8c4f27245",
+      "raw_plan_sha256": null,
+      "status": "diagram_blocked",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "precalculus"
+    },
+    {
+      "source_id": "test/precalculus/190.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [
+        "test/precalculus/697.json"
+      ],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "d3823d137562e66d61543fc61fdd8a3551a53cc33ba49981c7682c5a44917fca",
+      "raw_plan_sha256": "9054c2c6f782e03bbef743552b332992580c4e4a1fce9685120a058badc59c6e",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Apply trigonometric symmetries to the product in the original statement. Produce a mathematically equivalent reduced expression with all multiplicities and constant factors, and justify the transformation.",
+          "fields": [
+            "expression",
+            "derivation"
+          ],
+          "parents": []
+        },
+        {
+          "id": "t1",
+          "responsibility": "Evaluate the supplied equivalent product using a justified trigonometric identity or roots-of-unity argument. Preserve every constant factor and multiplicity and give the value of the original product.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": [
+            "t0"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "Retain symmetry reduction followed by identity evaluation; clarify raw final_numerator_value as the value of the product. Known family overlap with precalculus/697 retained.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "bfea18d0e482aea5b44870ad159c48498fc1cc58284e395d7dd10329e75a51f7",
+      "namespace": "cbfea18d0e4",
+      "subject_bucket": "precalculus"
+    },
+    {
+      "source_id": "test/precalculus/675.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "a74e5ed137114c6b15052fac1e98a5ed0c73dc43f30845f84b670abd498737c4",
+      "raw_plan_sha256": "cf615d2ef547671ed56523479c5e8cb50fbd22e16fd603c78565f32759e8aceb",
+      "status": "reviewed_development",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Find the smallest norm-bound constant for the matrix in the original statement. Derive the spectral or equivalent inequality bound and establish its attainability for a nonzero vector.",
+          "fields": [
+            "final_answer",
+            "justification"
+          ],
+          "parents": []
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "review_provenance": "2026-11-08 bounded statement-grounded assistant review; new authored contract, not autonomous planner evidence",
+      "issues": [
+        "Merge singular-value computation and trivial maximum selection into one complete whole-question task.",
+        "Mathematical competence and expanded live permission remain unverified."
+      ],
+      "contract_id": "a78bab9f4e7059e471f143b5135f2517805fbfb432504ddb283047764469affa",
+      "namespace": "ca78bab9f4e",
+      "subject_bucket": "precalculus"
+    },
+    {
+      "source_id": "test/precalculus/697.json",
+      "source_family": "unresolved_except_recorded_overlap_flags",
+      "family_overlap": [],
+      "family_review": "not a held-out split; semantic family completeness unverified",
+      "source_permission": "existing user-supplied review text; expanded worker transmission pending",
+      "statement_sha256": "3b4ca6dce0a0858be513be5a8ee4881acb12fb36ae71d85ab6fb020c98ef93a3",
+      "raw_plan_sha256": "465a9358053abfbbefc77f51ae144d030cae588a23157ddf80f6d2b8fe6665d4",
+      "status": "pending_review",
+      "semantic_validity": "unmeasured",
+      "execution": "unrun",
+      "subject_bucket": "precalculus"
+    }
+  ],
+  "source_universe": [
+    "test/algebra/101.json",
+    "test/algebra/2743.json",
+    "test/algebra/524.json",
+    "test/algebra/634.json",
+    "test/counting_and_probability/1003.json",
+    "test/counting_and_probability/190.json",
+    "test/counting_and_probability/508.json",
+    "test/counting_and_probability/666.json",
+    "test/geometry/1097.json",
+    "test/geometry/880.json",
+    "test/geometry/965.json",
+    "test/intermediate_algebra/1166.json",
+    "test/intermediate_algebra/1210.json",
+    "test/intermediate_algebra/1300.json",
+    "test/intermediate_algebra/1555.json",
+    "test/number_theory/45.json",
+    "test/number_theory/533.json",
+    "test/number_theory/572.json",
+    "test/number_theory/914.json",
+    "test/prealgebra/105.json",
+    "test/prealgebra/1646.json",
+    "test/prealgebra/1930.json",
+    "test/precalculus/1303.json",
+    "test/precalculus/190.json",
+    "test/precalculus/675.json",
+    "test/precalculus/697.json"
+  ],
+  "review_rule": "Existing two first, then first six stable ID-hash priorities; no outcome-driven replacement.",
+  "worker_policy": {
+    "checkpoint": "Qwen/Qwen3.5-27B",
+    "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+    "dtype": "bfloat16",
+    "attention": "sdpa",
+    "thinking": false,
+    "do_sample": false,
+    "context": 16384,
+    "output": 3072,
+    "decoder": "task-fields-xgrammar-v1",
+    "xgrammar": "0.1.32",
+    "fresh_context": true,
+    "retry": false
+  },
+  "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+  "bank_id": "eeab9a54d182f2b4458c2ecf5045a65f3ebb339fc92285e332945424efbbe58d"
+}

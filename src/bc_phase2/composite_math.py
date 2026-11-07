@@ -139,6 +139,8 @@ class MathEngine(Engine):
         super().__init__();self.journal=journal;self.sources=sources;self.out=Path(out)
     def task_for_operation(self,op):
         return TASKS[int(op.host[1:])]
+    def make_request(self,task,store):
+        return request(task,self.sources,store)
     def run(self,execution,slot,worker=None,*,store=None,required=None,phase='clean',**unused):
         require(slot not in self.slots,'no slot replay')
         needed=set(o.id for o in execution.operations) if required is None else set(required)
@@ -155,7 +157,7 @@ class MathEngine(Engine):
                     require(item.organisation==execution.organisation_id and item.contract==r.artifact,'foreign artifact')
                     if r.event in needed:require(item.invocation in calls,'affected parent must be current fork')
                     reads.append(dict(event=r.event,invocation=item.invocation))
-            req=request(task,self.sources,artifacts)
+            req=self.make_request(task,artifacts)
             row=self.journal.invoke(req,slot,op.id)
             if row is None:status='input_overflow';break
             calls.append(row['id']);cost+=row['actual_tokens'];obs=row['observation']

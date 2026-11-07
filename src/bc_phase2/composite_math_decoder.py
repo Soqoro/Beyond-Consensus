@@ -1,5 +1,6 @@
 """Opt-in flat task-artifact grammar. Syntax constraints are not mathematical grading."""
 import time
+from copy import deepcopy
 from . import composite_math as recipe
 from .d1_natural_screen import NaturalTransport
 from .model import digest
@@ -24,27 +25,32 @@ class InjectProcessor:
 
 
 class TaskTransport(NaturalTransport):
-    def __init__(self,tokenizer,model,torch):
+    def __init__(self,tokenizer,model,torch,*,tasks=None):
+        self.tasks=deepcopy(recipe.TASKS if tasks is None else tasks)
+        self.catalog={self.task_key(t):t for t in self.tasks}
+        require(len(self.catalog)==len(self.tasks),'unique decoder task contracts')
         super().__init__(tokenizer,model,torch)
         self.compiled={}
         self.binding.update(decoder='task-fields-xgrammar-v1',xgrammar_version='0.1.32',
-                            schema_hashes={t['id']:digest(schema(t)) for t in recipe.TASKS},
+                            schema_hashes={self.task_key(t):digest(schema(t)) for t in self.tasks},
                             decoder_cpu_seconds_per_call=DECODER_CPU_SECONDS)
+    @staticmethod
+    def task_key(t):return (t['source_id']+':' if 'source_id' in t else '')+t['id']
     def render(self,req):
-        task=next(t for t in recipe.TASKS if t['id']==req['payload']['task_id'])
+        task=next(t for t in self.tasks if t['id']==req['payload']['task_id'] and ('source_id' not in t or t['source_id']==req['payload']['source']['id']))
         require(req['payload']['required_string_fields']==task['fields'],'task output contract changed')
-        rendered=super().render(req);rendered['decoder_task_id']=task['id'];return rendered
+        rendered=super().render(req);rendered['decoder_task_id']=self.task_key(task);return rendered
     def generate(self,rendered):
-        start=time.process_time();task=next(t for t in recipe.TASKS if t['id']==rendered['decoder_task_id'])
+        start=time.process_time();task=self.catalog[rendered['decoder_task_id']]
         original=self.model
-        if task['id'] not in self.compiled:
+        if self.task_key(task) not in self.compiled:
             xgr,processor_class=load_xgrammar()
             size=original.get_output_embeddings().weight.shape[0]
             info=xgr.TokenizerInfo.from_huggingface(self.tokenizer,vocab_size=size,stop_token_ids=self.tokens['eos_token_id'])
             compiler=xgr.GrammarCompiler(info,max_threads=1,cache_enabled=False)
             grammar=compiler.compile_json_schema(schema(task),any_whitespace=True,max_whitespace_cnt=2,strict_mode=True)
-            self.compiled[task['id']]=(grammar,processor_class)
-        grammar,processor_class=self.compiled[task['id']]
+            self.compiled[self.task_key(task)]=(grammar,processor_class)
+        grammar,processor_class=self.compiled[self.task_key(task)]
         # New matching state on every physical call, including every replay.
         processor=ReasoningGate(processor_class(grammar),len(rendered['input_ids']),None)
         processor.cpu_seconds=time.process_time()-start
@@ -58,7 +64,7 @@ class TaskTransport(NaturalTransport):
         finally:self.model=original
 
 
-def qualify(snapshot):
+def qualify(snapshot,*,tasks=None):
     """Five fixed CPU grammar controls; local tokenizer only, no weights or statements."""
     import json
     from pathlib import Path
@@ -75,7 +81,7 @@ def qualify(snapshot):
     start=time.process_time();rows=[]
     info=xgr.TokenizerInfo.from_huggingface(tokenizer,vocab_size=size,stop_token_ids=eos)
     compiler=xgr.GrammarCompiler(info,max_threads=1,cache_enabled=False)
-    for task in recipe.TASKS:
+    for task in (recipe.TASKS if tasks is None else tasks):
         grammar=compiler.compile_json_schema(schema(task),any_whitespace=True,max_whitespace_cnt=2,strict_mode=True)
         text=json.dumps({f:'Synthetic "quoted" text; backslash \\ and newline\nUnicode π.' for f in task['fields']},ensure_ascii=False)
         ids=tokenizer.encode(text,add_special_tokens=False);matcher=xgr.GrammarMatcher(grammar)
@@ -87,7 +93,7 @@ def qualify(snapshot):
         negative=xgr.GrammarMatcher(grammar)
         malformed_rejected=not (negative.accept_string(malformed) and negative.accept_token(eos[0]))
         recipe.parse_artifact(text,task)
-        rows.append(dict(task=task['id'],schema_hash=digest(schema(task)),escaped_text_accepted=valid,
+        rows.append(dict(task=TaskTransport.task_key(task),schema_hash=digest(schema(task)),escaped_text_accepted=valid,
                          extra_key_rejected=rejected,malformed_rejected=malformed_rejected,synthetic_tokens=len(ids)+1))
     return dict(schema='composite-json-cpu-v1',condition=recipe.CONDITION,
         status='passed' if all(r['escaped_text_accepted'] and r['extra_key_rejected'] and r['malformed_rejected'] for r in rows) else 'failed',

@@ -123,7 +123,7 @@ def open_transport(v,*,protocol=None):
         use_safetensors=True,dtype=torch.bfloat16,attn_implementation='sdpa')
     model.to(torch.device('cuda:0'));model.requires_grad_(False);model.eval()
     from .composite_math_decoder import TaskTransport
-    transport=TaskTransport(tokenizer,model,torch)
+    transport=TaskTransport(tokenizer,model,torch,**({'tasks':p.transport_tasks(s)} if hasattr(p,'transport_tasks') else {}))
     require(transport.tokens==s['model']['generation_tokens'],'EOS/pad binding')
     transport.binding.update(evidence='real_composite_worker_development',inventory_digest=digest(pilot.lock_for(s)))
     return transport

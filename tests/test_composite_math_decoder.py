@@ -36,14 +36,14 @@ class DecoderTests(unittest.TestCase):
    def get_output_embeddings(self):return SimpleNamespace(weight=SimpleNamespace(shape=(100,)))
    def generate(self,**kw):invocations.append(kw);return {'output_tokens':4}
   xgr=SimpleNamespace(TokenizerInfo=SimpleNamespace(from_huggingface=lambda *a,**kw:None),GrammarCompiler=Compiler)
-  t=d.TaskTransport.__new__(d.TaskTransport);t.model=Model();original=t.model;t.tokenizer=object();t.tokens={'eos_token_id':[1]};t.compiled={}
+  t=d.TaskTransport.__new__(d.TaskTransport);t.catalog={x['id']:x for x in c.TASKS};t.model=Model();original=t.model;t.tokenizer=object();t.tokens={'eos_token_id':[1]};t.compiled={}
   def parent(self,r):return self.model.generate(do_sample=False,max_new_tokens=3072)
   with patch.object(d,'load_xgrammar',return_value=(xgr,Inner)),patch.object(NaturalTransport,'generate',parent):
    for _ in range(2):t.generate({'decoder_task_id':'t0','input_ids':[2,3]})
   self.assertEqual(len(compiled),1);self.assertEqual(len(inners),2);self.assertIsNot(inners[0],inners[1]);self.assertIs(t.model,original)
   self.assertTrue(all(k['max_new_tokens']==3072 and k['do_sample'] is False for k in invocations))
  def test_generation_exception_no_retry_or_fallback(self):
-  original=SimpleNamespace();t=d.TaskTransport.__new__(d.TaskTransport);t.model=original;t.compiled={'t0':('g',lambda _:object())}
+  original=SimpleNamespace();t=d.TaskTransport.__new__(d.TaskTransport);t.catalog={x['id']:x for x in c.TASKS};t.model=original;t.compiled={'t0':('g',lambda _:object())}
   with patch.object(NaturalTransport,'generate',side_effect=RuntimeError('GPU failed')) as call:
    with self.assertRaises(RuntimeError):t.generate({'decoder_task_id':'t0','input_ids':[1]})
    self.assertEqual(call.call_count,1)
