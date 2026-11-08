@@ -112,3 +112,59 @@ class Replacement(unittest.TestCase):
     def test_submission_consumes_once_preserves_original(self):self.submit_case()
     def test_uncertain_sbatch_consumes_once_preserves_original(self):self.submit_case(True)
 
+
+    def placement(self):
+        p=dict(partition='HPCAIq',node='node14',hardware_required='NVIDIA A100 80GB PCIe',
+               partition_record='PartitionName=HPCAIq Nodes=node14 State=UP',
+               node_record='NodeName=node14 Partitions=HPCAIq Gres=gpu:8(S:0-7) State=MIXED RealMemory=11146248')
+        p['binding_digest']=digest(p);return p
+    def test_hp_partition_only_amendment_preserves_wave_and_qualification(self):
+        with patch.object(r.original,'validate_release',return_value=self.old):
+            m=self.manifest();m['scope']['cluster']['partition']='HPCAIq'
+            m['scope']['replacement']['placement']=self.placement();m['scope_digest']=digest(m['scope'])
+            r.validate_manifest(m)
+            self.assertEqual(m['scope']['wave'],self.old['wave'])
+            self.assertEqual(m['scope']['decoder_qualification'],self.old['decoder_qualification'])
+            for mutate in (lambda s:s['cluster'].update(time='08:00:00'),lambda s:s['limits'].update(maximum_calls=186),lambda s:s['cluster'].update(partition='PA100q')):
+                bad=deepcopy(m);mutate(bad['scope']);bad['scope_digest']=digest(bad['scope'])
+                with self.assertRaises(Invalid):r.validate_manifest(bad)
+    def test_placement_evidence_does_not_authorise_drain_or_other_node(self):
+        p=self.placement();r.validate_placement(p)
+        for field,text in [('node_record',p['node_record'].replace('MIXED','DRAIN')),('partition_record',p['partition_record'].replace('node14','node04')),('hardware_required','different GPU')]:
+            bad=deepcopy(p);bad[field]=text;bad['binding_digest']=digest({k:v for k,v in bad.items() if k!='binding_digest'})
+            with self.assertRaises(Invalid):r.validate_placement(bad)
+    def test_allocation_matches_approved_partition_and_limits(self):
+        record='Partition=HPCAIq NodeList=node14 NumNodes=1 NumCPUs=4 TimeLimit=04:00:00 ReqTRES=cpu=4,mem=128G,gres/gpu=1'
+        r.check_allocation(record,'HPCAIq')
+        for before,after in [('HPCAIq','NA100q'),('node14','node04'),('NumCPUs=4','NumCPUs=8'),('gpu=1','gpu=2'),('128G','64G'),('04:00:00','08:00:00')]:
+            with self.assertRaises(Invalid):r.check_allocation(record.replace(before,after),'HPCAIq')
+        r.check_allocation(record.replace('HPCAIq','NA100q').replace('node14','node01'),'NA100q')
+    def test_hp_gpu_type_checked_before_probe(self):
+        from unittest.mock import Mock
+        token=r.original._scope.set({'cluster':{'partition':'HPCAIq'}})
+        try:
+            torch=Mock();torch.cuda.get_device_properties.return_value.name='NVIDIA A100 80GB PCIe'
+            with patch.object(r.probe,'check_cuda') as probe:
+                r.check_cuda(torch);probe.assert_called_once_with(torch)
+                torch.cuda.get_device_properties.return_value.name='NVIDIA A100 40GB'
+                with self.assertRaises(Invalid):r.check_cuda(torch)
+                self.assertEqual(probe.call_count,1)
+        finally:r.original._scope.reset(token)
+    def test_allocated_entry_retains_registry_environment_and_partition_checks(self):
+        import os
+        output=self.root/'freshoutputs/composite-new';output.mkdir(parents=True)
+        cfg=dict(partition='HPCAIq',time='04:00:00',memory_gb=128,python='/env/python',storage_root='/dataset',cache_root='/dataset/cache',snapshot_root=str(self.root/'snapshots'),output_root=str(output.parent))
+        cfg=r.base.plain(r.base.cluster.ClusterConfig(**cfg))
+        value={'manifest':{'scope_digest':'new'},'release_digest':'replacement'}
+        manifest={'schema':'composite-r0-slurm-v1','release':value}
+        self.put(self.snap/'resolved/manifest.json',manifest);self.put(output/'manifest.json',manifest)
+        self.put(self.snap/'resolved/cluster.json',cfg);self.put(self.snap/'resolved/environment.json',{'fixture':True})
+        state=deepcopy(self.state);state['composite_math_attempts'][r.KEY]=dict(job_id='123',state='submitted_no_retry',release_digest='replacement',scope_digest='new',snapshot=str(self.snap),output=str(output))
+        self.put(self.registry,state)
+        record='Partition=HPCAIq NodeList=node14 NumNodes=1 NumCPUs=4 TimeLimit=04:00:00 ReqTRES=cpu=4,mem=128G,gres/gpu=1'
+        with patch.dict(os.environ,{'SLURM_JOB_ID':'123','SLURM_ARRAY_JOB_ID':'123','SLURM_ARRAY_TASK_ID':'0'}),patch.object(r,'verify_snapshot',return_value={'manifest_hash':digest(manifest)}),patch.object(r,'validate_release',return_value={'cluster':cfg}),patch.object(r.base.cluster,'registry_root',return_value=self.root),patch.object(r.base.cluster,'command',return_value=record) as command,patch.object(r.base.cluster,'active_gpu_jobs',return_value={'123_0':1}),patch.object(r.base,'environment_inventory',return_value={'fixture':True}),patch.object(r,'dispatch',return_value={'status':'mock'}) as dispatch:
+            self.assertEqual(r.run_allocated(self.snap,output),{'status':'mock'})
+            dispatch.assert_called_once_with(value,output/'execution')
+            command.return_value=record.replace('HPCAIq','NA100q')
+            with self.assertRaises(Invalid):r.run_allocated(self.snap,output)
+            self.assertEqual(dispatch.call_count,1)

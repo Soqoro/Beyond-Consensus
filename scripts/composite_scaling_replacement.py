@@ -16,7 +16,7 @@ def write(path,value):
 def main():
     p=argparse.ArgumentParser(description=__doc__);sub=p.add_subparsers(dest='command',required=True)
     a=sub.add_parser('reconcile');a.add_argument('--run',type=Path,required=True);a.add_argument('--output',type=Path,required=True)
-    a=sub.add_parser('prepare')
+    a=sub.add_parser('prepare');a.add_argument('--partition',choices=('NA100q','HPCAIq'),default=None)
     for name in ('previous-release','reconciliation','output'):a.add_argument('--'+name,type=Path,required=True)
     a=sub.add_parser('approve')
     for name in ('manifest','approval','output'):a.add_argument('--'+name,type=Path,required=True)
@@ -28,10 +28,10 @@ def main():
     r.require(not args.output.exists(),'preserve existing output/receipt')
     if args.command=='reconcile':value=r.inspect(args.run,r.base.cluster.registry_root()/'registry.json',r.accounting())
     elif args.command=='prepare':
-        value=r.prepare(read_evidence(args.previous_release),read_evidence(args.reconciliation),args.output.parent/'outputs')
+        value=r.prepare(read_evidence(args.previous_release),read_evidence(args.reconciliation),args.output.parent/'outputs',partition=args.partition)
         args.output.mkdir();write(args.output/'SCALING_REPLACEMENT_MANIFEST.disabled.json',value)
         write(args.output/'approval.pending.json',dict(schema='composite-scaling-replacement-approval-v1',scope_digest=value['scope_digest'],decision='pending',reviewer=None,reviewed_at=None,source_worker_transmission=False,contract_accepted=False,gpu_recipe_authorized=False))
-        print(json.dumps(dict(directory=str(args.output),scope_digest=value['scope_digest'],blockers=value['blockers'],limits=value['scope']['limits'],wave_id=value['scope']['wave']['wave_id'],execution_allowed=False),indent=2));return
+        print(json.dumps(dict(directory=str(args.output),scope_digest=value['scope_digest'],blockers=value['blockers'],limits=value['scope']['limits'],wave_id=value['scope']['wave']['wave_id'],partition=value['scope']['cluster']['partition'],execution_allowed=False),indent=2));return
     elif args.command=='approve':value=r.approve(read_evidence(args.manifest),read_evidence(args.approval))
     else:value=r.submit(ROOT,read_evidence(args.release),dry_run=args.dry_run)
     write(args.output,value);print(json.dumps(value,indent=2))

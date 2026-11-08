@@ -2,6 +2,8 @@
 from copy import deepcopy
 import hashlib
 import json
+import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -132,7 +134,7 @@ def prior_scope(v):
     return original.validate_release(v)
 
 
-def prepare(previous,report,output_root):
+def prepare(previous,report,output_root,*,partition=None):
     old=prior_scope(previous)
     recheck(report,read_json(base.cluster.registry_root()/'registry.json'))
     require(report['failed_attempt']['release_digest']==previous['release_digest'],'failed release binding')
@@ -140,6 +142,10 @@ def prepare(previous,report,output_root):
     original.source_records(old)
     s=deepcopy(old);s['cluster']['output_root']=str(Path(output_root).resolve());s['runtime_identity']=identity()
     s['replacement']=dict(maximum_replacements=1,previous_release=previous,reconciliation=report)
+    if partition not in (None,old['cluster']['partition']):
+        require(partition=='HPCAIq','only the reviewed HPCAIq alternative')
+        s['cluster']['partition']=partition
+        s['replacement']['placement']=capture_placement()
     m=dict(schema='composite-scaling-replacement-manifest-v1',scope=s,scope_digest=digest(s),blockers=[],execution_allowed=False)
     validate_manifest(m);return m
 
@@ -148,12 +154,17 @@ def validate_manifest(m):
     require(m['schema']=='composite-scaling-replacement-manifest-v1' and m['scope_digest']==digest(m['scope']),'replacement scope integrity')
     require(not m['blockers'] and m['execution_allowed'] is False,'disabled manifest')
     s=m['scope'];r=s['replacement']
-    require(set(r)=={'maximum_replacements','previous_release','reconciliation'} and type(r['maximum_replacements']) is int and r['maximum_replacements']==1,'single replacement')
+    require(set(r) in ({'maximum_replacements','previous_release','reconciliation'},{'maximum_replacements','previous_release','reconciliation','placement'}) and type(r['maximum_replacements']) is int and r['maximum_replacements']==1,'single replacement')
     old=prior_scope(r['previous_release'])
     exclude={'cluster','runtime_identity','replacement'}
     require({k:v for k,v in old.items() if k not in exclude}=={k:v for k,v in s.items() if k not in exclude},'wave, qualification or resources changed')
     require(s['runtime_identity']==identity(),'replacement implementation changed')
-    require({k:v for k,v in old['cluster'].items() if k!='output_root'}=={k:v for k,v in s['cluster'].items() if k!='output_root'},'cluster changed')
+    allowed={'output_root'}
+    if 'placement' in r:
+        validate_placement(r['placement'])
+        require(old['cluster']['partition']=='NA100q' and s['cluster']['partition']=='HPCAIq','exact partition amendment')
+        allowed.add('partition')
+    require({k:v for k,v in old['cluster'].items() if k not in allowed}=={k:v for k,v in s['cluster'].items() if k not in allowed},'cluster changed')
     require(Path(s['cluster']['output_root']).resolve()!=Path(old['cluster']['output_root']).resolve(),'fresh output root required')
     report=r['reconciliation']
     require(report['status']=='verified_for_replacement_review' and not report['blockers']
@@ -175,10 +186,15 @@ def validate_release(v):
     require(v==approve(v['manifest'],v['approval']),'release integrity');return validate_manifest(v['manifest'])
 
 
-def submission_check(v,state):recheck(validate_release(v)['replacement']['reconciliation'],state)
+def submission_check(v,state):
+    s=validate_release(v);recheck(s['replacement']['reconciliation'],state)
+    if 'placement' in s['replacement']:capture_placement()
 def source_records(s):return original.source_records(s)
 def transport_tasks(s):return original.transport_tasks(s)
-def check_cuda(torch):return probe.check_cuda(torch)
+def check_cuda(torch):
+    if original._scope.get()['cluster']['partition']=='HPCAIq':
+        require(torch.cuda.get_device_properties(0).name=='NVIDIA A100 80GB PCIe','approved HPCAIq GPU model changed')
+    return probe.check_cuda(torch)
 def open_transport(v):return base.open_transport(v,protocol=sys.modules[__name__])
 def arguments(c,snapshot,output):
     argv=base.arguments(c,snapshot,output);argv[-4]=str(snapshot/'experiments/run_composite_scaling_replacement.sbatch');return argv
@@ -188,4 +204,63 @@ def dispatch(v,directory):
     try:return base.dispatch(v,directory,protocol=sys.modules[__name__])
     finally:original._scope.reset(token);probe._probe_output.reset(pt)
 def submit(root,v,*,dry_run=True):return base.submit(root,v,dry_run=dry_run,protocol=sys.modules[__name__])
-def run_allocated(root,output):return base.run_allocated(root,output,protocol=sys.modules[__name__])
+
+
+
+def fields(record):return dict(re.findall(r'(\w+)=([^\s]+)',record))
+
+
+def validate_placement(p):
+    require(set(p)=={'partition','node','partition_record','node_record','hardware_required','binding_digest'},'placement fields')
+    require(p['binding_digest']==digest({k:v for k,v in p.items() if k!='binding_digest'}),'placement digest')
+    require(p['partition']=='HPCAIq' and p['node']=='node14' and p['hardware_required']=='NVIDIA A100 80GB PCIe','reviewed placement only')
+    part=fields(p['partition_record']);node=fields(p['node_record'])
+    require(part.get('PartitionName')=='HPCAIq' and part.get('Nodes')=='node14' and part.get('State')=='UP','partition record')
+    require(node.get('NodeName')=='node14' and 'HPCAIq' in node.get('Partitions','').split(',') and 'gpu:8' in node.get('Gres',''),'node membership')
+    require(node.get('State') in ('IDLE','MIXED','ALLOCATED'),'node down/draining/unavailable')
+    require(int(node.get('RealMemory','0'))>=128*1024,'host memory capacity')
+    # FreeMem/GPU counts are transient observations, not promises of allocation/access.
+
+
+def capture_placement():
+    p=dict(partition='HPCAIq',node='node14',hardware_required='NVIDIA A100 80GB PCIe',
+        partition_record=base.cluster.command(['scontrol','show','partition','HPCAIq','-o']),
+        node_record=base.cluster.command(['scontrol','show','node','node14','-o']))
+    p['binding_digest']=digest(p);validate_placement(p);return p
+
+
+def check_allocation(record,partition):
+    f=fields(record)
+    require(partition in ('NA100q','HPCAIq') and f.get('Partition')==partition,'allocated partition differs from approval')
+    if partition=='HPCAIq':require(f.get('NodeList')=='node14','approved HPCAIq node changed')
+    require(f.get('NumNodes')=='1' and f.get('NumCPUs')=='4' and f.get('TimeLimit')=='04:00:00','allocated scheduler resources changed')
+    tres=dict(item.split('=',1) for item in f.get('ReqTRES','').split(',') if '=' in item)
+    require(tres.get('cpu')=='4' and tres.get('gres/gpu')=='1' and tres.get('mem') in ('128G','131072M'),'requested resources changed')
+
+
+def run_allocated(root,output):
+    # Same snapshot/registry/environment guards as the accepted launcher, with
+    # the exact approved partition checked instead of its historical NA100q literal.
+    require(os.environ.get('SLURM_JOB_ID'),'allocation required')
+    root=Path(root);output=Path(output);marker=verify_snapshot(root)
+    manifest=read_json(root/'resolved/manifest.json')
+    require(manifest.get('schema')=='composite-r0-slurm-v1','expanded snapshot required')
+    value=manifest['release'];scope=validate_release(value);key=value['manifest']['scope_digest']
+    config=base.cluster.ClusterConfig(**scope['cluster'])
+    require(read_json(root/'resolved/cluster.json')==base.plain(config),'cluster binding')
+    require(output.resolve()==(Path(config.output_root)/('composite-'+key)).resolve(),'output binding')
+    require(read_json(output/'manifest.json')==manifest and marker['manifest_hash']==digest(manifest),'snapshot manifest binding')
+    job=os.environ.get('SLURM_ARRAY_JOB_ID',os.environ['SLURM_JOB_ID'])
+    require(os.environ.get('SLURM_ARRAY_TASK_ID','0')=='0','single array task')
+    with base.directory_lock(base.cluster.registry_root()/'.submission.lock'):
+        state=read_json(base.cluster.registry_root()/'registry.json')
+    record=state.get('composite_math_attempts',{}).get(KEY,{})
+    require(record.get('job_id')==job and record.get('state')=='submitted_no_retry'
+            and record.get('release_digest')==value['release_digest'] and record.get('scope_digest')==key
+            and Path(record.get('snapshot','')).resolve()==root.resolve()
+            and Path(record.get('output','')).resolve()==output.resolve(),'registered expanded job')
+    check_allocation(base.cluster.command(['scontrol','show','job',os.environ['SLURM_JOB_ID'],'-o']),config.partition)
+    active=base.cluster.active_gpu_jobs()
+    require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
+    require(base.environment_inventory(config.python)==read_json(root/'resolved/environment.json'),'environment changed')
+    return dispatch(value,output/'execution')
