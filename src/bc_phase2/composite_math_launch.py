@@ -219,7 +219,9 @@ def run_allocated(root,output,*,protocol=None):
             and record.get('release_digest')==value['release_digest'] and record.get('scope_digest')==key
             and Path(record.get('snapshot','')).resolve()==root.resolve()
             and Path(record.get('output','')).resolve()==output.resolve(),'registered expanded job')
-    check_allocation(cluster.command(['scontrol','show','job',os.environ['SLURM_JOB_ID'],'-o']))
+    allocation_record=cluster.command(['scontrol','show','job',os.environ['SLURM_JOB_ID'],'-o'])
+    if hasattr(p,'check_scoped_allocation'):p.check_scoped_allocation(allocation_record,scope)
+    else:check_allocation(allocation_record)
     active=cluster.active_gpu_jobs()
     require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
     require(environment_inventory(config.python)==read_json(root/'resolved/environment.json'),'environment changed')
