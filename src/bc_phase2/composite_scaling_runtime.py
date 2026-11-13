@@ -122,10 +122,11 @@ def persist(out,name,value):
     atomic_json(path,base.serial(value))
 
 
-def run_wave(journal,sources,out,wave,solver=None):
+def run_wave(journal,sources,out,wave,solver=None,*,interface=None):
     from .joint_solver import solve
     out=Path(out);out.mkdir(exist_ok=True);solver=solver or solve
-    components=wave['components'];engine=Engine(journal,sources,out,components)
+    policy=interface or spec
+    components=wave['components'];engine=(interface.Engine if interface else Engine)(journal,sources,out,components)
     prices=deepcopy(wave['reused_profiles']);validate_receipts(prices,wave['profile_coverage'])
     result=dict(schema='composite-scaling-result-v2',wave_id=wave['wave_id'],status='running',methods=list(spec.METHODS),
         evidence=journal.binding['transport'].get('evidence','unclassified'),model_executed=False,conditions=[],rows=pending_rows(wave),profile_records=[],totals=journal.snapshot()['totals'],quality='pending_blinded_review',later_waves_enabled=False)
@@ -141,7 +142,7 @@ def run_wave(journal,sources,out,wave,solver=None):
         for s in wave['profile_schedule']:
             c=next(c for c in components if c['namespace']==s['component'])
             # Use a containing frozen bundle for valid owner/task counts; execute only this component.
-            b=next(b for b in wave['bundles'] if c['source_id'] in b['sources']);d=spec.domain(b['components'],b['n'])
+            b=next(b for b in wave['bundles'] if c['source_id'] in b['sources']);d=policy.domain(b['components'],b['n'])
             a=deepcopy(b['neutral']['A'])
             if len(c['A_modes'])>1:a[c['namespace']+'_proof']=s['mode']
             ex=compile_organisation(d,explicit_selection(d,a,{},b['neutral']['ownership']))
@@ -149,20 +150,23 @@ def run_wave(journal,sources,out,wave,solver=None):
             result['profile_records'].append(base.serial(row));save()
             if not row['complete']:continue
             for t in c['tasks']:
-                k=spec.key(c,t,s['mode'])
+                k=policy.key(c,t,s['mode'])
                 if k in prices:continue # prerequisite generation does not replace earlier prices
                 tr=next(tr for tr in row['trace'] if tr['event']==c['namespace']+'_e'+t['id'][1:])
-                prices[k]=dict(key=k,tokens=tr['usage'],kind='new_profile',invocation=tr['invocation'],descriptor=spec.descriptor(c,t,s['mode']),wave_id=wave['wave_id'])
+                prices[k]=dict(key=k,tokens=tr['usage'],kind='new_profile',invocation=tr['invocation'],descriptor=policy.descriptor(c,t,s['mode']),wave_id=wave['wave_id'])
+                if interface:
+                    prices[k]['ledger_digest']=digest(journal.snapshot())
+                    interface.check_profile(prices[k],next(e for e in wave['profile_coverage'] if e['key']==k))
         persist(out,'prices.frozen.json',dict(receipts=prices,consumers=wave['profile_consumers'],physical_new_profile_tokens=sum(r['known_attempted_spend'] for r in result['profile_records']),historical_reused_profile_tokens=sum(r['tokens'] for r in wave['reused_profiles'].values())))
         for b in wave['bundles']:
             bid=b['preprice_id'];prefix='condition-'+bid
-            needed={r['key'] for r in spec.coverage(b['components'])}
+            needed={r['key'] for r in policy.coverage(b['components'])}
             cond=dict(preprice_id=bid,n=b['n'],slot=b['slot'],source_ids=b['sources'],m=b['m'],q=b['q'],K=2,methods={},status='pending',profile_keys=sorted(needed))
             if not needed<=prices.keys():
                 cond.update(status='blocked_profile_coverage',missing_profile_keys=sorted(needed-prices.keys()))
                 for method in spec.METHODS:cond['methods'][method]=dict(status='unrun',replay_mean=None)
             else:
-                d=spec.domain(b['components'],b['n'],{k:prices[k]['tokens'] for k in needed})
+                d=policy.domain(b['components'],b['n'],{k:prices[k]['tokens'] for k in needed})
                 ns=explicit_selection(d,b['neutral']['A'],{},b['neutral']['ownership'])
                 start=time.monotonic();cpu=time.process_time();cert=solver(d,seed=ns,seconds=30,threads=1,random_seed=0)
                 chosen=ab.checked_candidate(d,cert,ns)
