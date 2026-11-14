@@ -141,6 +141,8 @@ class MathEngine(Engine):
         return TASKS[int(op.host[1:])]
     def make_request(self,task,store):
         return request(task,self.sources,store)
+    def parse_artifact(self,text,task):
+        return parse_artifact(text,task)
     def run(self,execution,slot,worker=None,*,store=None,required=None,phase='clean',**unused):
         require(slot not in self.slots,'no slot replay')
         needed=set(o.id for o in execution.operations) if required is None else set(required)
@@ -164,7 +166,7 @@ class MathEngine(Engine):
             trace.append(dict(event=op.id,invocation=row['id'],payload_digest=req['payload_digest'],reads=reads,usage=row['actual_tokens'],committed=False))
             try:
                 require(obs['finish_reason']=='eos' and not obs.get('boundary_error'),'unusable response')
-                value=parse_artifact(obs.get('final_text'),task)
+                value=self.parse_artifact(obs.get('final_text'),task)
             except (Invalid,TypeError) as exc:
                 trace[-1]['artifact_error']={'type':type(exc).__name__,'message':str(exc),'cause':str(exc.__cause__) if exc.__cause__ else None}
                 status='unusable_artifact';break
