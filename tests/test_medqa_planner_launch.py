@@ -79,6 +79,29 @@ class MedqaLaunch(unittest.TestCase):
                 self.assertTrue(m.bind(*args)['blockers'])
                 with self.assertRaises(Invalid):release(args)
 
+    def test_explicit_user_mirror_policy_preserves_facts_and_caps(self):
+        with patch.object(m,'source_records',return_value=records()):
+            args=fixture();r=args[-1]
+            r.update(authors_archive_equivalence='not_independently_verified',rights_review='unresolved',
+                admission_exception=dict(policy=m.MIRROR_POLICY,authorization_quote=m.MIRROR_AUTHORIZATION,
+                                         scope='frozen_12_source_planner_only'))
+            value=release(args);scope=m.validate_release(value);summary=m.review(value['manifest'])
+            self.assertEqual(scope['source_review']['rights_review'],'unresolved')
+            self.assertEqual(scope['source_review']['authors_archive_equivalence'],'not_independently_verified')
+            self.assertEqual(scope['resources']['maximum_calls'],12)
+            self.assertFalse(scope['worker_execution_allowed'])
+            self.assertIn('pinned_mirror_accepted_by_user_not_independently_verified',summary['limitations'])
+            self.assertFalse(summary['execution_allowed'])
+            for field,bad in [('cohort_digest','changed'),('dataset_sha256','changed'),
+                              ('authors_archive_equivalence','verified'),('rights_review','permitted_for_scoped_development')]:
+                changed=deepcopy(args);changed[-1][field]=bad
+                with self.subTest(field=field),self.assertRaises(Invalid):release(changed)
+            for field in ('policy','authorization_quote','scope'):
+                changed=deepcopy(args);changed[-1]['admission_exception'][field]='changed'
+                with self.subTest(field=field),self.assertRaises(Invalid):release(changed)
+            changed=deepcopy(args);changed[-1]['reviewer']=''
+            with self.assertRaises(Invalid):release(changed)
+
     def test_changed_fit_settings_or_prompt_rejected(self):
         with patch.object(m,'source_records',return_value=records()):
             for kind in ('order','payload','render','tokens','sum','thinking','inventory','time','partition','interface'):

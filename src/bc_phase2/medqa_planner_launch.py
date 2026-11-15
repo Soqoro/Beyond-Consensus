@@ -24,6 +24,8 @@ PUBLIC_HASH='c38c5fd2b9b4d5661810fe4eac0f267490244ccdbe6ac6d1a360fa8ce16edb4b'
 SOURCES=tuple('dev/row/'+str(n) for n in (339,80,970,87,479,358,164,645,25,82,714,241))
 CAP=196608
 APPROVAL_SCHEMA='medqa-planner-v1-approval'
+MIRROR_POLICY='user-authorized-pinned-medqa-development-v1'
+MIRROR_AUTHORIZATION='just treat this as the original medqa and proceed with the experiments.'
 
 
 def identity():
@@ -58,12 +60,19 @@ def source_blockers(review):
     # This is a review record, not a license inference from a mirror's code license.
     expected={'cohort_digest','dataset_sha256','authors_archive_equivalence',
               'rights_review','evidence_reference','reviewer','reviewed_at'}
-    require(type(review)is dict and set(review)==expected,'source review fields')
+    require(type(review)is dict and set(review) in (expected,expected|{'admission_exception'}),'source review fields')
     require(review['cohort_digest']==COHORT and review['dataset_sha256']==
         '774bbd90103af43badbe8d5294e336443573fc37b918763920b8fc3b3df581d9','review source binding')
     blockers=[]
-    if review['authors_archive_equivalence']!='verified':blockers.append('authors_archive_equivalence_unresolved')
-    if review['rights_review']!='permitted_for_scoped_development':blockers.append('source_usage_review_unresolved')
+    exception=review.get('admission_exception')
+    if exception is not None:
+        require(exception=={'policy':MIRROR_POLICY,'authorization_quote':MIRROR_AUTHORIZATION,
+                            'scope':'frozen_12_source_planner_only'},'exact user source-policy exception')
+        require(review['authors_archive_equivalence']=='not_independently_verified'
+                and review['rights_review']=='unresolved','retain unverified source facts under exception')
+    else:
+        if review['authors_archive_equivalence']!='verified':blockers.append('authors_archive_equivalence_unresolved')
+        if review['rights_review']!='permitted_for_scoped_development':blockers.append('source_usage_review_unresolved')
     if not all(type(review[k])is str and review[k].strip() for k in ('evidence_reference','reviewer','reviewed_at')):
         blockers.append('documented_source_review_missing')
     return blockers
@@ -141,8 +150,12 @@ def review(manifest):
         approval_template=dict(schema=APPROVAL_SCHEMA,decision='pending',scope_digest=manifest['scope_digest'],
             reviewer=None,reviewed_at=None,statement_transmission_authorized=False,GPU_spending_authorized=False),
         model_executed=False,execution_allowed=False,worker_execution_allowed=False,
+        source_admission=scope['source_review'].get('admission_exception',{'policy':'verified_source_review'}),
         limitations=['observed_request_fit_not_GPU_memory_qualification','one_hour_may_leave_unrun_sources',
-                     'local_fees_unverified','plans_require_human_review_not_automatic_admission'])
+                     'local_fees_unverified','plans_require_human_review_not_automatic_admission']+
+                    (['pinned_mirror_accepted_by_user_not_independently_verified',
+                      'underlying_usage_rights_unresolved_not_certified_by_approval']
+                     if 'admission_exception' in scope['source_review'] else []))
 
 
 def approve(manifest,approval):
