@@ -10,7 +10,7 @@ from . import composite_scaling_runtime as runtime, composite_math as worker
 from . import composite_scaling_replacement as placement
 from .joint_schema import require,decode
 from .model import digest
-KEY='medqa-first-worker-composite-v1'
+KEY='medqa-first-worker-role-specific-v2'
 ROOT=Path(__file__).resolve().parents[2]
 CONFIG='configs/phase2/medqa_worker_first_v1.json'
 _scope=ContextVar(KEY)
@@ -23,13 +23,57 @@ def identity():
         'scripts/medqa_worker.py','experiments/run_medqa_worker.sbatch',CONFIG}
     return {p:base.previous.local.file_hash(ROOT/p) for p in sorted(names)}
 
+
+# Prospective interface v2. The old shared prompt in medqa_development is
+# preserved for the planner bindings and historical worker records.
+INTERMEDIATE_PROMPT = """This is an intermediate task, not the final answer task.
+Perform only the declared responsibility using the original exam question,
+all four unmarked options and the supplied parent artifacts. No external tools.
+Return one completed JSON object with exactly two string fields in this order:
+derivation, artifact. Give concise finished reasoning in derivation and the
+requested intermediate result in artifact. Your consumer will make the final
+choice; do not answer the original multiple-choice question or debate that choice.
+Stop after completing the two fields. If unable to complete the responsibility,
+state the limitation rather than inventing intermediate facts."""
+TERMINAL_PROMPT = """This is a terminal task.
+Perform only the declared responsibility using the original exam question,
+all four unmarked options and the supplied parent artifacts. No external tools.
+Return one completed JSON object with exactly two string fields in this order:
+justification, option_label. Give concise finished reasoning in justification;
+option_label must be exactly A, B, C or D. Do not add an answer-text field.
+Stop after completing the two fields. If unable to complete the responsibility,
+state the limitation rather than inventing facts."""
+
+def role_prompt(t):
+    require(t['fields'] in (['derivation','artifact'],['justification','option_label']), 'known task role fields')
+    return TERMINAL_PROMPT if t['fields']==['justification','option_label'] else INTERMEDIATE_PROMPT
+
+def worker_request(c,t,sources,parents):
+    req=adapter.worker_request(c,t,sources,parents)
+    req['payload']['instruction']=role_prompt(t)
+    req['payload_digest']=digest(req['payload'])
+    return req
+
+def descriptor(c,t,mode):
+    value=adapter.descriptor(c,t,mode)
+    value.update(prompt=role_prompt(t),adapter=KEY)
+    return value
+
+def key(c,t,mode):return digest(descriptor(c,t,mode))
+def coverage(cs):
+    return [dict(key=key(c,t,'base'),historical_key=spec.key(c,t,'base'),component=c['namespace'],
+        source_id=c['source_id'],task=t['id'],mode='base',descriptor=descriptor(c,t,'base')) for c in cs for t in c['tasks']]
+def domain(cs,n,prices=None):
+    translated=None if prices is None else {e['historical_key']:prices[e['key']] for e in coverage(cs)}
+    return spec.domain(cs,n,translated)
+
 def wave():
     cfg=frozen();cs=cfg['components'];b=spec.neutral(cs,4)
     b.update(slot=1,status='supported_frozen',components=cs,sources=[c['source_id'] for c in cs],call_bounds=spec.call_bounds(cs,4))
-    coverage=adapter.coverage(cs);schedule=runtime.schedule_profiles(cs,{})
+    entries=coverage(cs);schedule=runtime.schedule_profiles(cs,{})
     require(sum(s['calls'] for s in schedule)==5 and b['call_bounds']['evaluation_calls']==28,'exact single-composite ceiling')
     w=dict(condition=KEY,components=cs,bundles=[b],matrix=[dict(n=4,slot=1,status='supported_frozen')],
-        profile_coverage=coverage,profile_schedule=schedule,profile_consumers={e['key']:[b['preprice_id']] for e in coverage},
+        profile_coverage=entries,profile_schedule=schedule,profile_consumers={e['key']:[b['preprice_id']] for e in entries},
         reused_profiles={},limits=cfg['limits'],execution_allowed=False)
     w['wave_id']=digest(w);return w
 
@@ -75,7 +119,7 @@ def prepare(parent,config,q):
     for c in s['wave']['components']:
         for t in c['tasks']:
             if t['parents']:continue # Generated parent contents do not exist yet.
-            req=adapter.worker_request(c,t,records,{})
+            req=worker_request(c,t,records,{})
             row=render_request(tokenizer,req,s['model']['non_thinking_verification']['template_hash'])
             measured.append(dict(source_id=c['source_id'],task=t['id'],input_tokens=row['input_tokens'],rendered_ids_digest=row['rendered_ids_digest'],payload_digest=req['payload_digest']))
     s['initial_request_fit']=measured;s['dependent_fit']='checked_at_each_dispatch_not_worst_case_qualified'
@@ -107,14 +151,14 @@ def validate_release(v):
     require(v==approve(v['manifest'],v['approval']),'release integrity');return validate_manifest(v['manifest'])
 
 class Engine(adapter.Engine):
+    def make_request(self,t,store):
+        c=self.components[t['_component']]
+        parents={p:json.loads(store[c['namespace']+'_e'+p[1:]].value) for p in t['parents']}
+        return worker_request(c,t,self.sources,parents)
     def parse_artifact(self,text,task):
         value=super().parse_artifact(text,task)
         if 'option_label' in task['fields']:require(decode(value)['option_label'] in adapter.LABELS,'exact terminal option label')
         return value
-coverage=adapter.coverage
-key=adapter.key
-domain=adapter.domain
-descriptor=adapter.descriptor
 check_profile=adapter.check_profile
 class Journal(worker.Journal):
     def __init__(self,path,transport,scope,check_source):super().__init__(path,transport,scope,check_source,condition=KEY,limits=_scope.get()['limits'])

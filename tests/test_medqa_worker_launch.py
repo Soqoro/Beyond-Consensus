@@ -107,3 +107,37 @@ class MedqaWorker(unittest.TestCase):
                 self.assertFalse(result['submitted']);guard.assert_called_once_with({'jobs':[]},allow_accounted_overlap=True,requested_gpus=1);command.assert_not_called()
                 (Path(td)/'registry.json').write_text(json.dumps({'jobs':[],'composite_math_attempts':{l.KEY:{'state':'submitted_no_retry'}}}))
                 with self.assertRaises(Invalid):base.submit(Path(td),value,protocol=proto)
+    def test_role_specific_prompts_and_all_fresh_price_keys(self):
+        cfg,sources=self.synthetic()
+        with patch.object(l,'frozen',return_value=cfg):
+            for c in cfg['components']:
+                for t in c['tasks']:
+                    parents={p:{'derivation':'synthetic','artifact':'synthetic'} for p in t['parents']}
+                    new=l.worker_request(c,t,sources,parents)
+                    old=m.worker_request(c,t,sources,parents)
+                    self.assertEqual({k:v for k,v in new['payload'].items() if k!='instruction'},
+                                     {k:v for k,v in old['payload'].items() if k!='instruction'})
+                    self.assertEqual(new['payload_digest'],digest(new['payload']))
+                    prompt=new['payload']['instruction']
+                    if t['id'] in c['outputs']:
+                        self.assertIn('This is a terminal task.',prompt)
+                        self.assertIn('option_label',prompt)
+                    else:
+                        self.assertIn('This is an intermediate task',prompt)
+                        self.assertNotIn('option_label',prompt)
+                        self.assertNotIn('For a terminal task',prompt)
+                    self.assertNotEqual(l.key(c,t,'base'),m.key(c,t,'base'))
+                    self.assertEqual(l.descriptor(c,t,'base')['prompt'],prompt)
+            w=l.wave();self.assertEqual(w['reused_profiles'],{})
+            self.assertEqual(sum(s['calls'] for s in w['profile_schedule']),5)
+            self.assertEqual(w['bundles'][0]['neutral'],l.spec.neutral(cfg['components'],4)['neutral'])
+    def test_real_call_path_uses_role_specific_prompt_in_every_phase(self):
+        result,journal,fake=self.run_case()
+        self.assertGreater(len(fake.calls),5)
+        for payload in fake.calls:
+            self.assertEqual(payload['instruction'],l.role_prompt({'fields':payload['required_string_fields']}))
+    def test_old_version_approval_is_not_transferable(self):
+        dep=dict(packages=l.base.EXPECTED_PACKAGES,solver_importable=True)
+        with patch.object(l,'validate_manifest',return_value={'deployment':dep}):
+            a=dict(schema='medqa-first-worker-composite-v1-approval',scope_digest='x',decision='approved',reviewer='test',reviewed_at='now',source_worker_transmission=True,contract_accepted=True,gpu_recipe_authorized=True)
+            with self.assertRaises(Invalid):l.approve({'scope_digest':'x','blockers':[]},a)

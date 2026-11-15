@@ -1,3 +1,5 @@
+> Historical v1 launch packet. Job 1122728 is preserved as profile-blocked. For the new disabled role-specific scope, use [MEDQA_WORKER_ROLE_V2.md](MEDQA_WORKER_ROLE_V2.md).
+
 # MedQA first worker composite: bounded launch packet
 
 Exactly one composite: dev/row/339 (one task), dev/row/970 (two), dev/row/479 (two). Contracts are in `configs/phase2/medqa_worker_first_v1.json`. They are reviewer-authored, solution-free translations of the original plans. Contract acceptance is recorded with the final scope approval, not fabricated by preparation.
