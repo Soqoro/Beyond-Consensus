@@ -1,0 +1,790 @@
+{
+  "schema": "prospective-exposure-v1",
+  "cutoff": "2026-11-15-before-prospective-selection",
+  "coverage": "named local historical receipts and supplied frozen-screen/family-review attachments; not an exhaustive remote storage inventory",
+  "records": [
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/101.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/2743.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/508.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/666.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/1097.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/880.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1210.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1555.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/45.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/914.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1646.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1930.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/675.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/697.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/25149.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1217.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/199.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/190.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "configs/phase2/composite_scaling_bank_v2.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/681.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/164",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/241",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/25",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/339",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json",
+        "configs/phase2/medqa_worker_first_v1.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/358",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/479",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json",
+        "configs/phase2/medqa_worker_first_v1.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/645",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/714",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/80",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/82",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/87",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json"
+      ]
+    },
+    {
+      "dataset": "medqa",
+      "source_id": "dev/row/970",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "outputs/medqa-planner-review/review.json",
+        "configs/phase2/medqa_worker_first_v1.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/524.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/634.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/1003.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/190.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/965.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1166.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1300.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/533.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/572.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/105.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/1303.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "configs/phase2/composite_scaling_bank_v2.json"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/1078.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/1339.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/170.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/1796.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/2036.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/224.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/2476.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/2570.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/algebra/694.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/1014.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/159.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/230.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/counting_and_probability/525.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/283.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/627.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/geometry/846.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/1981.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/intermediate_algebra/662.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/1002.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/1201.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/132.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/156.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/number_theory/627.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1003.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1247.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1640.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1655.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/1907.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/192.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/prealgebra/378.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/1300.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/145.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/441.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    },
+    {
+      "dataset": "math500",
+      "source_id": "test/precalculus/989.json",
+      "phase": "historical",
+      "reason": "earlier selection, review or component record; conservative exclusion",
+      "evidence": [
+        "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "path": "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+      "sha256": "b187531a06a57bdea43255f7a1bac2b1c7c39ce7bf054dc77ba0266bb5f6a3d3"
+    },
+    {
+      "path": "outputs/phase2-math500-content-review-2026-10-27/review.json",
+      "sha256": "a6f64760cfc8827db9ec64cc71fbf1326db4f925261c2918c272944632177dcc"
+    },
+    {
+      "path": "outputs/medqa-planner-review/review.json",
+      "sha256": "5ee21072dcf9162bb14a9c186e80c7b40887b248aee368fc5f5bcaf72cfed340"
+    },
+    {
+      "path": "configs/phase2/composite_scaling_bank_v2.json",
+      "sha256": "8b4c15ae2813443c17a119b2b61b43a5d4c3987b604ccf306362d5395a984eb2"
+    },
+    {
+      "path": "configs/phase2/medqa_worker_first_v1.json",
+      "sha256": "b325408a2183cc9e1de4c24e3615e500b5363557f7d7f5a523e1a06b89c634e8"
+    },
+    {
+      "path": "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt",
+      "sha256": "1744c731739e63383b4cdde165e020bc84da2090a597b42970afbc1405edcce2"
+    },
+    {
+      "path": "/home/gnoriq/.codex/attachments/087e6b76-5716-428a-ae1d-89047c94e8dd/Pasted text.txt",
+      "sha256": "d288aedcdd29d0f9962a9fd1c66320473513926d1a856f847e8ceb57982fd608"
+    }
+  ],
+  "aliases": [],
+  "family_decisions": [],
+  "qualification": [],
+  "prospective": [],
+  "catalogued_or_reserved_is_not_exposure": true,
+  "limitations": [
+    "No exact unused count certified.",
+    "Family-review counterpart IDs conservatively excluded; automatic all-record text processing is not model exposure.",
+    "Cross-release statement duplicate and family review required at source binding.",
+    "No pretraining decontamination claim."
+  ],
+  "access": {
+    "math500": "previous pinned local extraction; new pool binding must use authorised local file",
+    "medqa": "only pinned dev mirror available; official test access or explicit pool amendment required",
+    "aime2025": "no authorised package available",
+    "aime2026": "no authorised package available",
+    "gpqa": "no gated Diamond package/access approval available"
+  }
+}

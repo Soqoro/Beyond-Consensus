@@ -1,0 +1,1402 @@
+{
+  "math500": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "math500",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary mathematical work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific mathematical output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "6b9e50c64b3809139cf1dfabb2a58a0a829c4fb903788460cd55eaa8ae61981c"
+  },
+  "medqa": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "medqa",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary exam-question work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific intermediate output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.\nThe original question and all four unmarked options are public. problem_statement\nmeans that complete public source. Do not identify an answer or supply a diagnosis\nas an already solved fact in a task responsibility. Do not force parallelism or\nmultiple tasks. This is closed-book exam work: no retrieval or external tools.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "28f6d65693024a03dae9d3c748851ea581b251f28e292e3ac19750ed3e2d8090"
+  },
+  "aime2025": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "aime2025",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary mathematical work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific mathematical output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "2dab4e8b3f0928b780257ec6651ae22e1a4205b3a4af004392fc70ffa2e2b2cf"
+  },
+  "aime2026": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "aime2026",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary mathematical work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific mathematical output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "6167d81357e094dffe1385a4f29b5100d0a450ab81e3b2a7ade4a469c337b4f9"
+  },
+  "gpqa": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "gpqa",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary science-question work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific intermediate output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.\nThe original question and all four unmarked options are public. problem_statement\nmeans that complete public source. Do not identify an answer or supply a diagnosis\nas an already solved fact in a task responsibility. Do not force parallelism or\nmultiple tasks. This is closed-book exam work: no retrieval or external tools.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "441e1a883954858f8f96014835e34103580154e4002f29473f74dc5859692dc7"
+  }
+}

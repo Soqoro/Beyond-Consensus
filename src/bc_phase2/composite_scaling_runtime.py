@@ -212,7 +212,7 @@ def run_wave(journal,sources,out,wave,solver=None,*,interface=None):
             persist(out,prefix+'/result.json',cond);save()
             # Append-only per-size report after each pair, equal-bundle estimand only.
             done=[c for c in result['conditions'] if c['n']==b['n'] and c.get('paired_saving') is not None]
-            persist(out,'per-n-'+str(b['n'])+'-after-slot-'+str(b['slot'])+'.json',dict(n=b['n'],complete_pairs=len(done),planned_slots=3,frozen_slots=sum(x['n']==b['n'] for x in wave['bundles']),equal_bundle_mean=str(sum(Fraction(c['paired_saving']) for c in done)/len(done)) if done else None,independent_samples=False))
+            persist(out,'per-n-'+str(b['n'])+'-after-slot-'+str(b['slot'])+'.json',dict(n=b['n'],complete_pairs=len(done),planned_slots=wave.get('planned_slots',3),frozen_slots=sum(x['n']==b['n'] for x in wave['bundles']),equal_bundle_mean=str(sum(Fraction(c['paired_saving']) for c in done)/len(done)) if done else None,independent_samples=False))
         result['status']='completed_wave_recipe';save();return result
     except BaseException:
         result['status']='halted';save();raise
