@@ -1,0 +1,2486 @@
+{
+  "schema": "prospective-math-block1-source-review-v1",
+  "exposure": {
+    "schema": "prospective-exposure-v1",
+    "cutoff": "2026-11-15-before-prospective-selection",
+    "coverage": "named local historical receipts and supplied frozen-screen/family-review attachments; not an exhaustive remote storage inventory",
+    "records": [
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/101.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/101.json",
+        "exact_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9",
+        "normalized_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2743.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2743.json",
+        "exact_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44",
+        "normalized_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/508.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/508.json",
+        "exact_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828",
+        "normalized_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/666.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/666.json",
+        "exact_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709",
+        "normalized_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/1097.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/1097.json",
+        "exact_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809",
+        "normalized_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/880.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/880.json",
+        "exact_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975",
+        "normalized_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1210.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1210.json",
+        "exact_hash": "33cbe3f3518da918e16e682faaf706f86127863917da96c585f002cdf6689d7f",
+        "normalized_hash": "22827648350aea1f45562b7fb08e7c82b545402d1e3d5e2de6c45c7967b08cae"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1555.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1555.json",
+        "exact_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96",
+        "normalized_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/45.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/45.json",
+        "exact_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644",
+        "normalized_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/914.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/914.json",
+        "exact_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41",
+        "normalized_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1646.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1646.json",
+        "exact_hash": "906fd16a1a41b1bc53d4f23650f0933a8b3f4a9506b63cceaf6d148a35ca26d8",
+        "normalized_hash": "908c449cc12eee2869d739323b2101db467287909ed214781a4297316a2a1008"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1930.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1930.json",
+        "exact_hash": "b30994b6be8f54c2342b0e3c60bd7659ef438e831b85fa68708e2e04ebabd930",
+        "normalized_hash": "c498455724cf30d22984f80c7524991cb76d03a3774f783b6950e0248e58dd9a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/675.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/675.json",
+        "exact_hash": "4bc2416506f30285fad41b8e880925a039d369a4720dab29e570980171735d13",
+        "normalized_hash": "235aefbe4d51d90944c4a2187aaaf6f9b3c05b0e17d196112a605bcce2d17db0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/697.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/697.json",
+        "exact_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d",
+        "normalized_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/25149.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/25149.json",
+        "exact_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0",
+        "normalized_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1217.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1217.json",
+        "exact_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a",
+        "normalized_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/199.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/199.json",
+        "exact_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7",
+        "normalized_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/190.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/190.json",
+        "exact_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0",
+        "normalized_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/681.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/681.json",
+        "exact_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1",
+        "normalized_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1"
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/164",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/241",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/25",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/339",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/358",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/479",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/645",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/714",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/80",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/82",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/87",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/970",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/524.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/algebra/524.json",
+        "exact_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0",
+        "normalized_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/634.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/algebra/634.json",
+        "exact_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052",
+        "normalized_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/1003.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/1003.json",
+        "exact_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0",
+        "normalized_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/190.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/190.json",
+        "exact_hash": "3aefdbdc9f7fda4ebef05b4d4d01e3b41fc1473aaf6e0ac5431d6d4d5c3aecd5",
+        "normalized_hash": "7bb7800821b1d0fb78029d836aeb0f37053fcb28a61c6c0951e24fb1afc6c1d5"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/965.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/geometry/965.json",
+        "exact_hash": "506f868535cd4efebdf9e417f2e385ef66d73b7a185bba6da23cadb38ed5b6a0",
+        "normalized_hash": "377f8b6f61a25088b2adebf9b217bcd6eebaa3901967504700f1c7d227c25954"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1166.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1166.json",
+        "exact_hash": "9fbb2cbb2a135b624237dc2ac85629a7d6b11208761466b712ed3020f31f39e0",
+        "normalized_hash": "67bea13277d311ada9e933d81e7621602619ab07a6c395aaccfc0ff9e6acae67"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1300.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1300.json",
+        "exact_hash": "1609d2d9867f8b3cf73acf2f9f2abc1b732a86e9e8b30ae2b803e2838dfa0314",
+        "normalized_hash": "f65bcb8049433b38ee1f5b64679f561a9c127d7c57acfced7dcf7fa64bce2b81"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/533.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/number_theory/533.json",
+        "exact_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034",
+        "normalized_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/572.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/number_theory/572.json",
+        "exact_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299",
+        "normalized_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/105.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/prealgebra/105.json",
+        "exact_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b",
+        "normalized_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/1303.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/precalculus/1303.json",
+        "exact_hash": "22dbb96a5f5771a6870b11920533d4e0e021baa3bc501e50c4f22fe5998910fe",
+        "normalized_hash": "0876dec75aab58ba49c25230a1baa44ff97afa603f65ab141922c4a0deabb6f1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1078.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1078.json",
+        "exact_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3",
+        "normalized_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1339.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1339.json",
+        "exact_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c",
+        "normalized_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/170.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/170.json",
+        "exact_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc",
+        "normalized_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1796.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1796.json",
+        "exact_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3",
+        "normalized_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2036.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2036.json",
+        "exact_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859",
+        "normalized_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/224.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/224.json",
+        "exact_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2",
+        "normalized_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2476.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2476.json",
+        "exact_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0",
+        "normalized_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2570.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2570.json",
+        "exact_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52",
+        "normalized_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/694.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/694.json",
+        "exact_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09",
+        "normalized_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/1014.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/1014.json",
+        "exact_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03",
+        "normalized_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/159.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/159.json",
+        "exact_hash": "64fd8da65d154bca46e73cb3e54106212175bdf0734d120317a5efac40898c66",
+        "normalized_hash": "ada5398c30c00525b6001899ab6fb3f1440ab50729be256282fdb39032c07927"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/230.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/230.json",
+        "exact_hash": "f538634a8192c24a2fde1c17e8dbbedcbc7db94943b2a9d5e14a2b17dac761a9",
+        "normalized_hash": "79e71ed079d46b239ba1daf1eca3ef1da531065c4d09934e26cf3dba711a5f86"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/525.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/525.json",
+        "exact_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7",
+        "normalized_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/283.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/283.json",
+        "exact_hash": "eaaf4a9c61771031c744e2f952b631d066132154edeac9262ae320214cb54499",
+        "normalized_hash": "a119fe2fb6680dbffd4e8c6b7489728ea7d96c3905b12dbfee06bcde75d3711b"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/627.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/627.json",
+        "exact_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3",
+        "normalized_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/846.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/846.json",
+        "exact_hash": "19c7ba3c3882d9f2160c3ad3c1f6e46178fc51199dd1f6fc5c50708a7a0fca29",
+        "normalized_hash": "2f68649da67237a3f033c39e06726f7ff820e2917218cb25f9414c21eb7b9189"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1981.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1981.json",
+        "exact_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16",
+        "normalized_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/662.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/662.json",
+        "exact_hash": "bac631fc4856bee71a4ea5645c6c32dc184ff35f5b1976f55108a6a7e39f9611",
+        "normalized_hash": "297d7c794f8968e1514a2cda8d4cc30986a4ea0b2c58af9217cb66a0d009a7b1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/1002.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/1002.json",
+        "exact_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06",
+        "normalized_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/1201.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/1201.json",
+        "exact_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953",
+        "normalized_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/132.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/132.json",
+        "exact_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c",
+        "normalized_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/156.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/156.json",
+        "exact_hash": "bb50a48bf9dc9d56e99d8aaa2e65374f71970fe0b86acc1403676257330d1415",
+        "normalized_hash": "2c4af654386b609813a66995277fd6d226f84778a88d2390d92d8102a5977cd1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/627.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/627.json",
+        "exact_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf",
+        "normalized_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1003.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1003.json",
+        "exact_hash": "75fccd59f6a9ffcd2d879b136cf49250b039e1b7ec4c695735c3c80aa3677d77",
+        "normalized_hash": "a437f8b77d3b6c911f61dba2f01585de4f3dd6648a02933192339f0155eb7fac"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1247.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1247.json",
+        "exact_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6",
+        "normalized_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1640.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1640.json",
+        "exact_hash": "2ec5a789310410bf90359d110e41d32c3038744474e33906046b1b43ecc6ad02",
+        "normalized_hash": "b9729e0db8b4efad55f5c3357df77e06b1928ca407d91aea23934082e3d6e964"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1655.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1655.json",
+        "exact_hash": "edcea0eb60a9c2e7a602d27b5e0bb3cc04afdc3de18f9c2d0d90fb24bfd7660e",
+        "normalized_hash": "dabdf1e3d98113b7cf5a15704a7c1544627d519863d70522cd9802cfc8fe3e2e"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1907.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1907.json",
+        "exact_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39",
+        "normalized_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/192.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/192.json",
+        "exact_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047",
+        "normalized_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/378.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/378.json",
+        "exact_hash": "502b6dd44da8ece7df3aaf5a15d3053a3cb55e7902ed6cf433206b0180fc854c",
+        "normalized_hash": "8848045f65a7a28f8e24fe9bfb662601518f98fa17877874763c07217c453939"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/1300.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/1300.json",
+        "exact_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0",
+        "normalized_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/145.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/145.json",
+        "exact_hash": "639c76616cd066e2be7a9ecdb87c9689e8ada4bf9883b0a65bcec051cc4ce060",
+        "normalized_hash": "9ad469d505cd4bcc11f8e6f36a87a0e90a99d804ab757fd1a4cd3067c55e4ed9"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/441.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/441.json",
+        "exact_hash": "08947c4d7acc7f25a982074e61ca94093492477665e9b63f982d0cf27141037b",
+        "normalized_hash": "24de5d4f2a07b57feb5a8521132b35cd3f5adf645ba7f3f2f4020ad9c306828a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/989.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/989.json",
+        "exact_hash": "d6f8e5c66f4315d5a3abee90106127104289022d69be95224d6f3fe6108d9140",
+        "normalized_hash": "4a169fb73e63f4ab3f386312b60f8e5811578a18b1a1764176ed7e878098674f"
+      }
+    ],
+    "receipts": [
+      {
+        "path": "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "sha256": "b187531a06a57bdea43255f7a1bac2b1c7c39ce7bf054dc77ba0266bb5f6a3d3"
+      },
+      {
+        "path": "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "sha256": "a6f64760cfc8827db9ec64cc71fbf1326db4f925261c2918c272944632177dcc"
+      },
+      {
+        "path": "outputs/medqa-planner-review/review.json",
+        "sha256": "5ee21072dcf9162bb14a9c186e80c7b40887b248aee368fc5f5bcaf72cfed340"
+      },
+      {
+        "path": "configs/phase2/composite_scaling_bank_v2.json",
+        "sha256": "8b4c15ae2813443c17a119b2b61b43a5d4c3987b604ccf306362d5395a984eb2"
+      },
+      {
+        "path": "configs/phase2/medqa_worker_first_v1.json",
+        "sha256": "b325408a2183cc9e1de4c24e3615e500b5363557f7d7f5a523e1a06b89c634e8"
+      },
+      {
+        "path": "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt",
+        "sha256": "1744c731739e63383b4cdde165e020bc84da2090a597b42970afbc1405edcce2"
+      },
+      {
+        "path": "/home/gnoriq/.codex/attachments/087e6b76-5716-428a-ae1d-89047c94e8dd/Pasted text.txt",
+        "sha256": "d288aedcdd29d0f9962a9fd1c66320473513926d1a856f847e8ceb57982fd608"
+      }
+    ],
+    "aliases": [],
+    "family_decisions": [],
+    "qualification": [],
+    "prospective": [],
+    "catalogued_or_reserved_is_not_exposure": true,
+    "limitations": [
+      "No exact unused count certified.",
+      "Family-review counterpart IDs conservatively excluded; automatic all-record text processing is not model exposure.",
+      "Cross-release statement duplicate and family review required at source binding.",
+      "No pretraining decontamination claim."
+    ],
+    "access": {
+      "math500": "previous pinned local extraction; new pool binding must use authorised local file",
+      "medqa": "only pinned dev mirror available; official test access or explicit pool amendment required",
+      "aime2025": "no authorised package available",
+      "aime2026": "no authorised package available",
+      "gpqa": "no gated Diamond package/access approval available"
+    }
+  },
+  "family_review": {
+    "dataset": "math500",
+    "revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "inventory_digest": "9d8dc3eb403b4519d737242a8008cf557fa48d191374930ba0c8ebb2dc357fb5",
+    "reviewer": "Codex AI-assisted statement-only review; not independent human certification",
+    "reviewed_at": "2026-11-15",
+    "decisions": {
+      "test/algebra/2277.json": "clear",
+      "test/counting_and_probability/870.json": "clear",
+      "test/counting_and_probability/761.json": "clear",
+      "test/precalculus/24313.json": "clear",
+      "test/prealgebra/1227.json": "clear",
+      "test/algebra/1936.json": "clear",
+      "test/algebra/246.json": "clear",
+      "test/intermediate_algebra/428.json": "clear"
+    },
+    "prior_selected": [],
+    "reviewer_kind": "AI-assisted",
+    "review_packet_digest": "dcec123b5c66992d7319cc7e5c2ee8ea74448803bde9247e5ff681cf6dd3d30a",
+    "evidence_attachment_sha256": "d7ed45e231285ba2c92b94df54e404ae2ef4ec416d1c9e06a6a3bb422ab65577",
+    "limitations": [
+      "Ranked lexical retrieval plus supplied statements; not exhaustive semantic comparison of 668 pairs.",
+      "No pretraining decontamination or researcher independence claim.",
+      "Known-family decisions may require amendment if later evidence identifies an alias; no replacement."
+    ],
+    "source_review_exposure_ids": [
+      "test/algebra/1098.json",
+      "test/algebra/1936.json",
+      "test/algebra/2064.json",
+      "test/algebra/2277.json",
+      "test/algebra/246.json",
+      "test/algebra/2743.json",
+      "test/algebra/634.json",
+      "test/algebra/694.json",
+      "test/counting_and_probability/1014.json",
+      "test/counting_and_probability/159.json",
+      "test/counting_and_probability/761.json",
+      "test/counting_and_probability/870.json",
+      "test/geometry/627.json",
+      "test/geometry/686.json",
+      "test/intermediate_algebra/1210.json",
+      "test/intermediate_algebra/1217.json",
+      "test/intermediate_algebra/1300.json",
+      "test/intermediate_algebra/1467.json",
+      "test/intermediate_algebra/1555.json",
+      "test/intermediate_algebra/428.json",
+      "test/intermediate_algebra/662.json",
+      "test/intermediate_algebra/834.json",
+      "test/number_theory/1201.json",
+      "test/number_theory/410.json",
+      "test/prealgebra/1227.json",
+      "test/prealgebra/1247.json",
+      "test/prealgebra/1655.json",
+      "test/prealgebra/1907.json",
+      "test/prealgebra/192.json",
+      "test/prealgebra/996.json",
+      "test/precalculus/24313.json",
+      "test/precalculus/989.json"
+    ]
+  },
+  "cohort": {
+    "schema": "bc-prospective-source-disjoint-v1",
+    "dataset": "math500",
+    "revision": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+    "exposure_digest": "2d1260b5d75739620049b94456bd41d0aca9c52239496b747435f2452b56b68b",
+    "procedure_digest": "6b9e50c64b3809139cf1dfabb2a58a0a829c4fb903788460cd55eaa8ae61981c",
+    "inventory_digest": "9d8dc3eb403b4519d737242a8008cf557fa48d191374930ba0c8ebb2dc357fb5",
+    "family_review_digest": "8b573df535dcfdef88a7215665c85a5817323ee4a56672c8d17cb423ec94e911",
+    "blocks": [
+      {
+        "slot": 1,
+        "records": [
+          {
+            "source_id": "test/algebra/2277.json",
+            "canonical_id": "math500:test/algebra/2277.json",
+            "exact_hash": "b5e90256f53c16058ad755e690365dd8f9afda3ec8ffd39f6cdbb6fbc8eb70fe",
+            "normalized_hash": "1932e5b84b4bf3f51084cec168ac1359cad6bbdc1d4be7549521d01eac4785bc",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/counting_and_probability/870.json",
+            "canonical_id": "math500:test/counting_and_probability/870.json",
+            "exact_hash": "38574ca076472bf0700f6950f0db85aa5c3ba0d4756a02cfe8e8bd050cdb1a6e",
+            "normalized_hash": "38574ca076472bf0700f6950f0db85aa5c3ba0d4756a02cfe8e8bd050cdb1a6e",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/counting_and_probability/761.json",
+            "canonical_id": "math500:test/counting_and_probability/761.json",
+            "exact_hash": "5cf988b66193c44602b7e50c246a7285fe3ff94e77f9293ac75f4d120bf4d324",
+            "normalized_hash": "5cf988b66193c44602b7e50c246a7285fe3ff94e77f9293ac75f4d120bf4d324",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/precalculus/24313.json",
+            "canonical_id": "math500:test/precalculus/24313.json",
+            "exact_hash": "c60e99066af0db66bbb8b2c358efa9798dfefebb2faa05a20460b77914fd2be6",
+            "normalized_hash": "d6247de9e0f09b7860debb176cc2df0a53833696705dbc921d7366cbd07454d2",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/prealgebra/1227.json",
+            "canonical_id": "math500:test/prealgebra/1227.json",
+            "exact_hash": "8fe430185aad9b07271a1176f7bbcd3b9ad368b8582b5f37200b30b03fa1c176",
+            "normalized_hash": "8fe430185aad9b07271a1176f7bbcd3b9ad368b8582b5f37200b30b03fa1c176",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/algebra/1936.json",
+            "canonical_id": "math500:test/algebra/1936.json",
+            "exact_hash": "eb9f4f78c2ce150fddab75ee9636dd2fe6c49868bfbae9001f3d11f2ec8c6f48",
+            "normalized_hash": "d57e1d7d64c3e71e95163832658ee6a74b92c0677fe298316e05c0d8bca6ad9f",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/algebra/246.json",
+            "canonical_id": "math500:test/algebra/246.json",
+            "exact_hash": "d7e44ae75b1e2f7df8d26a91525d0ccdbab12107f1ae42fcf090ed78c795f70d",
+            "normalized_hash": "d7e44ae75b1e2f7df8d26a91525d0ccdbab12107f1ae42fcf090ed78c795f70d",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "test/intermediate_algebra/428.json",
+            "canonical_id": "math500:test/intermediate_algebra/428.json",
+            "exact_hash": "135228bc6c41cb566cea5ca0fcdb4dc1fbb01f70ca0152eae2a3771f55fdebd8",
+            "normalized_hash": "135228bc6c41cb566cea5ca0fcdb4dc1fbb01f70ca0152eae2a3771f55fdebd8",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          }
+        ],
+        "status": "frozen_pending_planning",
+        "composite": null
+      },
+      {
+        "slot": 2,
+        "records": [
+          {
+            "source_id": "test/counting_and_probability/23957.json",
+            "canonical_id": "math500:test/counting_and_probability/23957.json",
+            "exact_hash": "40b3e38ff9ffb5bda6a3dd2ee18297a7501563573c63c9963830d91e999ca1c0",
+            "normalized_hash": "40b3e38ff9ffb5bda6a3dd2ee18297a7501563573c63c9963830d91e999ca1c0",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/precalculus/625.json",
+            "canonical_id": "math500:test/precalculus/625.json",
+            "exact_hash": "ec8fc77b600fe0912ab51d2e48f18d69e2fd4930b0541f55da3f373fe466bf7b",
+            "normalized_hash": "ec8fc77b600fe0912ab51d2e48f18d69e2fd4930b0541f55da3f373fe466bf7b",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/algebra/1098.json",
+            "canonical_id": "math500:test/algebra/1098.json",
+            "exact_hash": "a345ed9254bea077a47470cbee975297dd7ddf4d4a1f15474a743b864998e47f",
+            "normalized_hash": "a345ed9254bea077a47470cbee975297dd7ddf4d4a1f15474a743b864998e47f",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/prealgebra/996.json",
+            "canonical_id": "math500:test/prealgebra/996.json",
+            "exact_hash": "307f54153fb55f62639d45b541dab4778e5189b7fde070dc2d4f37802402a195",
+            "normalized_hash": "307f54153fb55f62639d45b541dab4778e5189b7fde070dc2d4f37802402a195",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/geometry/686.json",
+            "canonical_id": "math500:test/geometry/686.json",
+            "exact_hash": "c9fc45158adf80e9d1156c5254454e722107973dc5c8c7c806f5e013f93b5c16",
+            "normalized_hash": "129d8c52bebc4c80fffb876be90402960c9c984d84195bfa3963c96bff0a3895",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/precalculus/398.json",
+            "canonical_id": "math500:test/precalculus/398.json",
+            "exact_hash": "6f4898e8f134fddfc3d70db643d87975fb49c5a2b2b35cb48cd3a55cddd9f02f",
+            "normalized_hash": "146deaa52e680ddc16ebf4745e4dbaf1166ece892bc98c054c668434cdcca222",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/intermediate_algebra/1467.json",
+            "canonical_id": "math500:test/intermediate_algebra/1467.json",
+            "exact_hash": "b59c5ee6416f92efec7d731f8c50c60db946afa6a1c1fbfd44c7e25aef1252da",
+            "normalized_hash": "90d170b9a02fc5e4b12bdc3ab3c5e3fd1b9db426ff81e691c99dadd0546fc340",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/intermediate_algebra/1544.json",
+            "canonical_id": "math500:test/intermediate_algebra/1544.json",
+            "exact_hash": "3d88d8a8e4db4e00c4c0654f17c76409196884b96d86b16cde5d1fcdf61131ce",
+            "normalized_hash": "3d88d8a8e4db4e00c4c0654f17c76409196884b96d86b16cde5d1fcdf61131ce",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          }
+        ],
+        "status": "frozen_pending_planning",
+        "composite": null
+      },
+      {
+        "slot": 3,
+        "records": [
+          {
+            "source_id": "test/intermediate_algebra/1232.json",
+            "canonical_id": "math500:test/intermediate_algebra/1232.json",
+            "exact_hash": "dbc3a678f9e8544295202eee737308a779927e1281ff9b3043b6da3e85256714",
+            "normalized_hash": "dbc3a678f9e8544295202eee737308a779927e1281ff9b3043b6da3e85256714",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/algebra/1837.json",
+            "canonical_id": "math500:test/algebra/1837.json",
+            "exact_hash": "3703e5827fe558187c29d47b06442854f066e68236b5daa3ab5ce9f509ce3529",
+            "normalized_hash": "3703e5827fe558187c29d47b06442854f066e68236b5daa3ab5ce9f509ce3529",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/algebra/2064.json",
+            "canonical_id": "math500:test/algebra/2064.json",
+            "exact_hash": "3714a820794d0546777fca940a55b97ced5814f0fe4e1906eaf2a1d8ee02ad5e",
+            "normalized_hash": "3714a820794d0546777fca940a55b97ced5814f0fe4e1906eaf2a1d8ee02ad5e",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/intermediate_algebra/1791.json",
+            "canonical_id": "math500:test/intermediate_algebra/1791.json",
+            "exact_hash": "4326033fe5c082bc850e2397609e7a4d913c5da58ebdbaf010f7d96f90a432ae",
+            "normalized_hash": "a5fc6e57b303d0933bdf0ffdb4ffe9dfbc522fb69a320c1855e58a0b3fdcd954",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/algebra/1282.json",
+            "canonical_id": "math500:test/algebra/1282.json",
+            "exact_hash": "5d1958219aae1e124d01002c93d131ed4484d2b1991cb1ea1ed3324483e9eeb5",
+            "normalized_hash": "5d1958219aae1e124d01002c93d131ed4484d2b1991cb1ea1ed3324483e9eeb5",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/number_theory/410.json",
+            "canonical_id": "math500:test/number_theory/410.json",
+            "exact_hash": "b1a2d2162b35c3d0f67dd307cc25732be4e559fa5a214f98c2961f8cf31fd2cf",
+            "normalized_hash": "b1a2d2162b35c3d0f67dd307cc25732be4e559fa5a214f98c2961f8cf31fd2cf",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/intermediate_algebra/752.json",
+            "canonical_id": "math500:test/intermediate_algebra/752.json",
+            "exact_hash": "3d5227c348d77c728dace4b3ea553ce1951b2b43491bd21bb597d91d4f855eb3",
+            "normalized_hash": "3d5227c348d77c728dace4b3ea553ce1951b2b43491bd21bb597d91d4f855eb3",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "test/intermediate_algebra/834.json",
+            "canonical_id": "math500:test/intermediate_algebra/834.json",
+            "exact_hash": "2e3125ef83b900e97218efdd011c39c0bf2700e06c6f1edd6d64b13435de3afb",
+            "normalized_hash": "2e3125ef83b900e97218efdd011c39c0bf2700e06c6f1edd6d64b13435de3afb",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          }
+        ],
+        "status": "frozen_pending_planning",
+        "composite": null
+      }
+    ],
+    "excluded": [
+      {
+        "source_id": "test/intermediate_algebra/1217.json",
+        "canonical_id": "math500:test/intermediate_algebra/1217.json",
+        "exact_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a",
+        "normalized_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/846.json",
+        "canonical_id": "math500:test/geometry/846.json",
+        "exact_hash": "19c7ba3c3882d9f2160c3ad3c1f6e46178fc51199dd1f6fc5c50708a7a0fca29",
+        "normalized_hash": "2f68649da67237a3f033c39e06726f7ff820e2917218cb25f9414c21eb7b9189",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/1300.json",
+        "canonical_id": "math500:test/intermediate_algebra/1300.json",
+        "exact_hash": "1609d2d9867f8b3cf73acf2f9f2abc1b732a86e9e8b30ae2b803e2838dfa0314",
+        "normalized_hash": "f65bcb8049433b38ee1f5b64679f561a9c127d7c57acfced7dcf7fa64bce2b81",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/1303.json",
+        "canonical_id": "math500:test/precalculus/1303.json",
+        "exact_hash": "22dbb96a5f5771a6870b11920533d4e0e021baa3bc501e50c4f22fe5998910fe",
+        "normalized_hash": "0876dec75aab58ba49c25230a1baa44ff97afa603f65ab141922c4a0deabb6f1",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/533.json",
+        "canonical_id": "math500:test/number_theory/533.json",
+        "exact_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034",
+        "normalized_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/666.json",
+        "canonical_id": "math500:test/counting_and_probability/666.json",
+        "exact_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709",
+        "normalized_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1640.json",
+        "canonical_id": "math500:test/prealgebra/1640.json",
+        "exact_hash": "2ec5a789310410bf90359d110e41d32c3038744474e33906046b1b43ecc6ad02",
+        "normalized_hash": "b9729e0db8b4efad55f5c3357df77e06b1928ca407d91aea23934082e3d6e964",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/675.json",
+        "canonical_id": "math500:test/precalculus/675.json",
+        "exact_hash": "4bc2416506f30285fad41b8e880925a039d369a4720dab29e570980171735d13",
+        "normalized_hash": "235aefbe4d51d90944c4a2187aaaf6f9b3c05b0e17d196112a605bcce2d17db0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/132.json",
+        "canonical_id": "math500:test/number_theory/132.json",
+        "exact_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c",
+        "normalized_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/1300.json",
+        "canonical_id": "math500:test/precalculus/1300.json",
+        "exact_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0",
+        "normalized_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/525.json",
+        "canonical_id": "math500:test/counting_and_probability/525.json",
+        "exact_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7",
+        "normalized_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/1981.json",
+        "canonical_id": "math500:test/intermediate_algebra/1981.json",
+        "exact_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16",
+        "normalized_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/190.json",
+        "canonical_id": "math500:test/precalculus/190.json",
+        "exact_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0",
+        "normalized_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/1796.json",
+        "canonical_id": "math500:test/algebra/1796.json",
+        "exact_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3",
+        "normalized_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/1210.json",
+        "canonical_id": "math500:test/intermediate_algebra/1210.json",
+        "exact_hash": "33cbe3f3518da918e16e682faaf706f86127863917da96c585f002cdf6689d7f",
+        "normalized_hash": "22827648350aea1f45562b7fb08e7c82b545402d1e3d5e2de6c45c7967b08cae",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/159.json",
+        "canonical_id": "math500:test/counting_and_probability/159.json",
+        "exact_hash": "64fd8da65d154bca46e73cb3e54106212175bdf0734d120317a5efac40898c66",
+        "normalized_hash": "ada5398c30c00525b6001899ab6fb3f1440ab50729be256282fdb39032c07927",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/170.json",
+        "canonical_id": "math500:test/algebra/170.json",
+        "exact_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc",
+        "normalized_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/1339.json",
+        "canonical_id": "math500:test/algebra/1339.json",
+        "exact_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c",
+        "normalized_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/101.json",
+        "canonical_id": "math500:test/algebra/101.json",
+        "exact_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9",
+        "normalized_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/627.json",
+        "canonical_id": "math500:test/geometry/627.json",
+        "exact_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3",
+        "normalized_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/2476.json",
+        "canonical_id": "math500:test/algebra/2476.json",
+        "exact_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0",
+        "normalized_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1655.json",
+        "canonical_id": "math500:test/prealgebra/1655.json",
+        "exact_hash": "edcea0eb60a9c2e7a602d27b5e0bb3cc04afdc3de18f9c2d0d90fb24bfd7660e",
+        "normalized_hash": "dabdf1e3d98113b7cf5a15704a7c1544627d519863d70522cd9802cfc8fe3e2e",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/2743.json",
+        "canonical_id": "math500:test/algebra/2743.json",
+        "exact_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44",
+        "normalized_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/1201.json",
+        "canonical_id": "math500:test/number_theory/1201.json",
+        "exact_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953",
+        "normalized_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/105.json",
+        "canonical_id": "math500:test/prealgebra/105.json",
+        "exact_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b",
+        "normalized_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/697.json",
+        "canonical_id": "math500:test/precalculus/697.json",
+        "exact_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d",
+        "normalized_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/634.json",
+        "canonical_id": "math500:test/algebra/634.json",
+        "exact_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052",
+        "normalized_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/156.json",
+        "canonical_id": "math500:test/number_theory/156.json",
+        "exact_hash": "bb50a48bf9dc9d56e99d8aaa2e65374f71970fe0b86acc1403676257330d1415",
+        "normalized_hash": "2c4af654386b609813a66995277fd6d226f84778a88d2390d92d8102a5977cd1",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/283.json",
+        "canonical_id": "math500:test/geometry/283.json",
+        "exact_hash": "eaaf4a9c61771031c744e2f952b631d066132154edeac9262ae320214cb54499",
+        "normalized_hash": "a119fe2fb6680dbffd4e8c6b7489728ea7d96c3905b12dbfee06bcde75d3711b",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1907.json",
+        "canonical_id": "math500:test/prealgebra/1907.json",
+        "exact_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39",
+        "normalized_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/1078.json",
+        "canonical_id": "math500:test/algebra/1078.json",
+        "exact_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3",
+        "normalized_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/192.json",
+        "canonical_id": "math500:test/prealgebra/192.json",
+        "exact_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047",
+        "normalized_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1247.json",
+        "canonical_id": "math500:test/prealgebra/1247.json",
+        "exact_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6",
+        "normalized_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/224.json",
+        "canonical_id": "math500:test/algebra/224.json",
+        "exact_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2",
+        "normalized_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/572.json",
+        "canonical_id": "math500:test/number_theory/572.json",
+        "exact_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299",
+        "normalized_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/45.json",
+        "canonical_id": "math500:test/number_theory/45.json",
+        "exact_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644",
+        "normalized_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/199.json",
+        "canonical_id": "math500:test/intermediate_algebra/199.json",
+        "exact_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7",
+        "normalized_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/662.json",
+        "canonical_id": "math500:test/intermediate_algebra/662.json",
+        "exact_hash": "bac631fc4856bee71a4ea5645c6c32dc184ff35f5b1976f55108a6a7e39f9611",
+        "normalized_hash": "297d7c794f8968e1514a2cda8d4cc30986a4ea0b2c58af9217cb66a0d009a7b1",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/441.json",
+        "canonical_id": "math500:test/precalculus/441.json",
+        "exact_hash": "08947c4d7acc7f25a982074e61ca94093492477665e9b63f982d0cf27141037b",
+        "normalized_hash": "24de5d4f2a07b57feb5a8521132b35cd3f5adf645ba7f3f2f4020ad9c306828a",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/378.json",
+        "canonical_id": "math500:test/prealgebra/378.json",
+        "exact_hash": "502b6dd44da8ece7df3aaf5a15d3053a3cb55e7902ed6cf433206b0180fc854c",
+        "normalized_hash": "8848045f65a7a28f8e24fe9bfb662601518f98fa17877874763c07217c453939",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/230.json",
+        "canonical_id": "math500:test/counting_and_probability/230.json",
+        "exact_hash": "f538634a8192c24a2fde1c17e8dbbedcbc7db94943b2a9d5e14a2b17dac761a9",
+        "normalized_hash": "79e71ed079d46b239ba1daf1eca3ef1da531065c4d09934e26cf3dba711a5f86",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/1097.json",
+        "canonical_id": "math500:test/geometry/1097.json",
+        "exact_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809",
+        "normalized_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1646.json",
+        "canonical_id": "math500:test/prealgebra/1646.json",
+        "exact_hash": "906fd16a1a41b1bc53d4f23650f0933a8b3f4a9506b63cceaf6d148a35ca26d8",
+        "normalized_hash": "908c449cc12eee2869d739323b2101db467287909ed214781a4297316a2a1008",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/681.json",
+        "canonical_id": "math500:test/precalculus/681.json",
+        "exact_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1",
+        "normalized_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/2570.json",
+        "canonical_id": "math500:test/algebra/2570.json",
+        "exact_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52",
+        "normalized_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/1003.json",
+        "canonical_id": "math500:test/counting_and_probability/1003.json",
+        "exact_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0",
+        "normalized_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/627.json",
+        "canonical_id": "math500:test/number_theory/627.json",
+        "exact_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf",
+        "normalized_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/914.json",
+        "canonical_id": "math500:test/number_theory/914.json",
+        "exact_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41",
+        "normalized_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/694.json",
+        "canonical_id": "math500:test/algebra/694.json",
+        "exact_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09",
+        "normalized_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/508.json",
+        "canonical_id": "math500:test/counting_and_probability/508.json",
+        "exact_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828",
+        "normalized_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/1014.json",
+        "canonical_id": "math500:test/counting_and_probability/1014.json",
+        "exact_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03",
+        "normalized_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/989.json",
+        "canonical_id": "math500:test/precalculus/989.json",
+        "exact_hash": "d6f8e5c66f4315d5a3abee90106127104289022d69be95224d6f3fe6108d9140",
+        "normalized_hash": "4a169fb73e63f4ab3f386312b60f8e5811578a18b1a1764176ed7e878098674f",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/precalculus/145.json",
+        "canonical_id": "math500:test/precalculus/145.json",
+        "exact_hash": "639c76616cd066e2be7a9ecdb87c9689e8ada4bf9883b0a65bcec051cc4ce060",
+        "normalized_hash": "9ad469d505cd4bcc11f8e6f36a87a0e90a99d804ab757fd1a4cd3067c55e4ed9",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/965.json",
+        "canonical_id": "math500:test/geometry/965.json",
+        "exact_hash": "506f868535cd4efebdf9e417f2e385ef66d73b7a185bba6da23cadb38ed5b6a0",
+        "normalized_hash": "377f8b6f61a25088b2adebf9b217bcd6eebaa3901967504700f1c7d227c25954",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/190.json",
+        "canonical_id": "math500:test/counting_and_probability/190.json",
+        "exact_hash": "3aefdbdc9f7fda4ebef05b4d4d01e3b41fc1473aaf6e0ac5431d6d4d5c3aecd5",
+        "normalized_hash": "7bb7800821b1d0fb78029d836aeb0f37053fcb28a61c6c0951e24fb1afc6c1d5",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/counting_and_probability/25149.json",
+        "canonical_id": "math500:test/counting_and_probability/25149.json",
+        "exact_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0",
+        "normalized_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/1555.json",
+        "canonical_id": "math500:test/intermediate_algebra/1555.json",
+        "exact_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96",
+        "normalized_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/intermediate_algebra/1166.json",
+        "canonical_id": "math500:test/intermediate_algebra/1166.json",
+        "exact_hash": "9fbb2cbb2a135b624237dc2ac85629a7d6b11208761466b712ed3020f31f39e0",
+        "normalized_hash": "67bea13277d311ada9e933d81e7621602619ab07a6c395aaccfc0ff9e6acae67",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1003.json",
+        "canonical_id": "math500:test/prealgebra/1003.json",
+        "exact_hash": "75fccd59f6a9ffcd2d879b136cf49250b039e1b7ec4c695735c3c80aa3677d77",
+        "normalized_hash": "a437f8b77d3b6c911f61dba2f01585de4f3dd6648a02933192339f0155eb7fac",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/number_theory/1002.json",
+        "canonical_id": "math500:test/number_theory/1002.json",
+        "exact_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06",
+        "normalized_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/2036.json",
+        "canonical_id": "math500:test/algebra/2036.json",
+        "exact_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859",
+        "normalized_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/geometry/880.json",
+        "canonical_id": "math500:test/geometry/880.json",
+        "exact_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975",
+        "normalized_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/algebra/524.json",
+        "canonical_id": "math500:test/algebra/524.json",
+        "exact_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0",
+        "normalized_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      },
+      {
+        "source_id": "test/prealgebra/1930.json",
+        "canonical_id": "math500:test/prealgebra/1930.json",
+        "exact_hash": "b30994b6be8f54c2342b0e3c60bd7659ef438e831b85fa68708e2e04ebabd930",
+        "normalized_hash": "c498455724cf30d22984f80c7524991cb76d03a3774f783b6950e0248e58dd9a",
+        "family_id": "",
+        "status": "eligible",
+        "reasons": [
+          "historical_record",
+          "duplicate_or_family"
+        ]
+      }
+    ],
+    "reserved_ids": [
+      "test/number_theory/183.json",
+      "test/precalculus/881.json",
+      "test/intermediate_algebra/102.json",
+      "test/counting_and_probability/731.json",
+      "test/counting_and_probability/134.json",
+      "test/intermediate_algebra/894.json",
+      "test/intermediate_algebra/1408.json",
+      "test/intermediate_algebra/101.json",
+      "test/number_theory/521.json",
+      "test/geometry/248.json",
+      "test/counting_and_probability/737.json",
+      "test/number_theory/368.json",
+      "test/number_theory/1257.json",
+      "test/number_theory/928.json",
+      "test/prealgebra/874.json",
+      "test/algebra/1265.json",
+      "test/precalculus/499.json",
+      "test/algebra/1457.json",
+      "test/counting_and_probability/199.json",
+      "test/number_theory/89.json",
+      "test/algebra/1842.json",
+      "test/number_theory/515.json",
+      "test/intermediate_algebra/1247.json",
+      "test/algebra/668.json",
+      "test/prealgebra/1302.json",
+      "test/algebra/187.json",
+      "test/intermediate_algebra/1837.json",
+      "test/intermediate_algebra/515.json",
+      "test/algebra/2470.json",
+      "test/intermediate_algebra/1102.json",
+      "test/prealgebra/1113.json",
+      "test/algebra/2779.json",
+      "test/number_theory/483.json",
+      "test/prealgebra/260.json",
+      "test/algebra/2592.json",
+      "test/intermediate_algebra/362.json",
+      "test/geometry/473.json",
+      "test/number_theory/516.json",
+      "test/prealgebra/1298.json",
+      "test/intermediate_algebra/1994.json",
+      "test/prealgebra/631.json",
+      "test/prealgebra/1742.json",
+      "test/prealgebra/1512.json",
+      "test/prealgebra/2037.json",
+      "test/counting_and_probability/119.json",
+      "test/intermediate_algebra/446.json",
+      "test/counting_and_probability/51.json",
+      "test/geometry/817.json",
+      "test/intermediate_algebra/776.json",
+      "test/number_theory/1128.json",
+      "test/geometry/73.json",
+      "test/intermediate_algebra/345.json",
+      "test/prealgebra/1114.json",
+      "test/algebra/864.json",
+      "test/intermediate_algebra/1779.json",
+      "test/precalculus/43.json",
+      "test/geometry/477.json",
+      "test/intermediate_algebra/1365.json",
+      "test/precalculus/96.json",
+      "test/prealgebra/1807.json",
+      "test/algebra/1425.json",
+      "test/precalculus/768.json",
+      "test/intermediate_algebra/2022.json",
+      "test/precalculus/1252.json",
+      "test/algebra/1332.json",
+      "test/algebra/853.json",
+      "test/prealgebra/1995.json",
+      "test/precalculus/986.json",
+      "test/algebra/1082.json",
+      "test/precalculus/285.json",
+      "test/number_theory/488.json",
+      "test/algebra/2735.json",
+      "test/geometry/347.json",
+      "test/prealgebra/1187.json",
+      "test/intermediate_algebra/1063.json",
+      "test/precalculus/807.json",
+      "test/prealgebra/1834.json",
+      "test/counting_and_probability/1114.json",
+      "test/intermediate_algebra/1354.json",
+      "test/prealgebra/977.json",
+      "test/intermediate_algebra/47.json",
+      "test/algebra/425.json",
+      "test/intermediate_algebra/1000.json",
+      "test/geometry/702.json",
+      "test/precalculus/1082.json",
+      "test/prealgebra/930.json",
+      "test/algebra/2199.json",
+      "test/intermediate_algebra/960.json",
+      "test/intermediate_algebra/955.json",
+      "test/number_theory/342.json",
+      "test/algebra/1072.json",
+      "test/algebra/972.json",
+      "test/counting_and_probability/389.json",
+      "test/precalculus/779.json",
+      "test/number_theory/234.json",
+      "test/number_theory/417.json",
+      "test/number_theory/820.json",
+      "test/number_theory/612.json",
+      "test/counting_and_probability/10.json",
+      "test/algebra/1787.json",
+      "test/prealgebra/2057.json",
+      "test/intermediate_algebra/1508.json",
+      "test/geometry/221.json",
+      "test/intermediate_algebra/1462.json",
+      "test/intermediate_algebra/1849.json",
+      "test/prealgebra/1908.json",
+      "test/intermediate_algebra/2015.json",
+      "test/intermediate_algebra/1714.json",
+      "test/precalculus/1199.json",
+      "test/algebra/109.json",
+      "test/algebra/2427.json",
+      "test/precalculus/44.json",
+      "test/precalculus/1291.json",
+      "test/precalculus/1201.json",
+      "test/prealgebra/1730.json",
+      "test/prealgebra/914.json",
+      "test/geometry/795.json",
+      "test/intermediate_algebra/1111.json",
+      "test/intermediate_algebra/1806.json",
+      "test/geometry/711.json",
+      "test/number_theory/149.json",
+      "test/number_theory/634.json",
+      "test/precalculus/1202.json",
+      "test/intermediate_algebra/117.json",
+      "test/algebra/1349.json",
+      "test/prealgebra/1572.json",
+      "test/algebra/1255.json",
+      "test/precalculus/477.json",
+      "test/counting_and_probability/282.json",
+      "test/precalculus/580.json",
+      "test/prealgebra/1238.json",
+      "test/algebra/2391.json",
+      "test/prealgebra/1747.json",
+      "test/precalculus/801.json",
+      "test/algebra/769.json",
+      "test/algebra/2517.json",
+      "test/precalculus/819.json",
+      "test/algebra/722.json",
+      "test/precalculus/902.json",
+      "test/prealgebra/805.json",
+      "test/precalculus/452.json",
+      "test/prealgebra/1804.json",
+      "test/intermediate_algebra/1151.json",
+      "test/prealgebra/1784.json",
+      "test/algebra/988.json",
+      "test/prealgebra/954.json",
+      "test/geometry/947.json",
+      "test/counting_and_probability/14.json",
+      "test/geometry/547.json",
+      "test/algebra/2058.json",
+      "test/algebra/2264.json",
+      "test/prealgebra/1297.json",
+      "test/intermediate_algebra/183.json",
+      "test/algebra/849.json",
+      "test/algebra/567.json",
+      "test/algebra/1199.json",
+      "test/intermediate_algebra/1014.json",
+      "test/prealgebra/2086.json",
+      "test/algebra/2214.json",
+      "test/geometry/456.json",
+      "test/prealgebra/1761.json",
+      "test/intermediate_algebra/1422.json",
+      "test/number_theory/911.json",
+      "test/precalculus/1281.json",
+      "test/intermediate_algebra/1797.json",
+      "test/intermediate_algebra/1388.json",
+      "test/intermediate_algebra/1454.json",
+      "test/algebra/297.json",
+      "test/prealgebra/465.json",
+      "test/algebra/346.json",
+      "test/precalculus/1105.json",
+      "test/counting_and_probability/116.json",
+      "test/geometry/226.json",
+      "test/number_theory/691.json",
+      "test/algebra/2023.json",
+      "test/precalculus/703.json",
+      "test/geometry/826.json",
+      "test/intermediate_algebra/1930.json",
+      "test/precalculus/659.json",
+      "test/algebra/2043.json",
+      "test/counting_and_probability/339.json",
+      "test/prealgebra/1924.json",
+      "test/intermediate_algebra/1350.json",
+      "test/intermediate_algebra/431.json",
+      "test/algebra/518.json",
+      "test/intermediate_algebra/690.json",
+      "test/prealgebra/1044.json",
+      "test/geometry/434.json",
+      "test/prealgebra/1922.json",
+      "test/prealgebra/1787.json",
+      "test/prealgebra/1458.json",
+      "test/algebra/1035.json",
+      "test/precalculus/1289.json",
+      "test/precalculus/263.json",
+      "test/intermediate_algebra/591.json",
+      "test/counting_and_probability/803.json",
+      "test/intermediate_algebra/2196.json",
+      "test/counting_and_probability/238.json",
+      "test/algebra/841.json",
+      "test/precalculus/34.json",
+      "test/geometry/465.json",
+      "test/algebra/2551.json",
+      "test/geometry/178.json",
+      "test/prealgebra/153.json",
+      "test/number_theory/459.json",
+      "test/prealgebra/2066.json",
+      "test/algebra/892.json",
+      "test/algebra/2193.json",
+      "test/intermediate_algebra/966.json",
+      "test/algebra/114.json",
+      "test/intermediate_algebra/190.json",
+      "test/precalculus/1313.json",
+      "test/prealgebra/2019.json",
+      "test/prealgebra/1743.json",
+      "test/intermediate_algebra/1197.json",
+      "test/algebra/621.json",
+      "test/algebra/2789.json",
+      "test/algebra/2102.json",
+      "test/counting_and_probability/913.json",
+      "test/algebra/1184.json",
+      "test/intermediate_algebra/1279.json",
+      "test/geometry/483.json",
+      "test/prealgebra/1139.json",
+      "test/intermediate_algebra/558.json",
+      "test/algebra/2251.json",
+      "test/algebra/24.json",
+      "test/algebra/351.json",
+      "test/number_theory/1000.json",
+      "test/prealgebra/65.json",
+      "test/intermediate_algebra/1992.json",
+      "test/number_theory/357.json",
+      "test/number_theory/255.json",
+      "test/prealgebra/1961.json",
+      "test/intermediate_algebra/232.json",
+      "test/intermediate_algebra/2046.json",
+      "test/intermediate_algebra/623.json",
+      "test/algebra/2176.json",
+      "test/counting_and_probability/430.json",
+      "test/number_theory/239.json",
+      "test/precalculus/1056.json",
+      "test/algebra/1214.json",
+      "test/intermediate_algebra/964.json",
+      "test/prealgebra/1233.json",
+      "test/algebra/1553.json",
+      "test/precalculus/1133.json",
+      "test/algebra/1529.json",
+      "test/algebra/2157.json",
+      "test/geometry/538.json",
+      "test/precalculus/742.json",
+      "test/number_theory/1172.json",
+      "test/precalculus/1146.json",
+      "test/algebra/907.json",
+      "test/number_theory/1065.json",
+      "test/number_theory/679.json",
+      "test/intermediate_algebra/1898.json",
+      "test/intermediate_algebra/1407.json",
+      "test/algebra/1547.json",
+      "test/algebra/1275.json",
+      "test/prealgebra/1973.json",
+      "test/number_theory/769.json",
+      "test/geometry/254.json",
+      "test/intermediate_algebra/158.json",
+      "test/number_theory/631.json",
+      "test/geometry/843.json",
+      "test/intermediate_algebra/860.json",
+      "test/prealgebra/1353.json",
+      "test/prealgebra/1128.json",
+      "test/algebra/1343.json",
+      "test/algebra/858.json",
+      "test/number_theory/847.json",
+      "test/algebra/305.json",
+      "test/geometry/1108.json",
+      "test/number_theory/13.json",
+      "test/algebra/2486.json",
+      "test/counting_and_probability/181.json",
+      "test/counting_and_probability/71.json",
+      "test/prealgebra/1733.json",
+      "test/algebra/2584.json",
+      "test/number_theory/978.json",
+      "test/algebra/529.json",
+      "test/algebra/975.json",
+      "test/geometry/967.json",
+      "test/intermediate_algebra/991.json",
+      "test/number_theory/737.json",
+      "test/geometry/229.json",
+      "test/algebra/776.json",
+      "test/number_theory/1055.json",
+      "test/prealgebra/1388.json",
+      "test/counting_and_probability/188.json",
+      "test/intermediate_algebra/1405.json",
+      "test/algebra/2253.json",
+      "test/intermediate_algebra/607.json",
+      "test/algebra/2080.json",
+      "test/algebra/435.json",
+      "test/precalculus/927.json",
+      "test/prealgebra/1272.json",
+      "test/algebra/1338.json",
+      "test/intermediate_algebra/986.json",
+      "test/algebra/824.json",
+      "test/prealgebra/1622.json",
+      "test/algebra/893.json",
+      "test/prealgebra/1356.json",
+      "test/precalculus/117.json",
+      "test/algebra/2780.json",
+      "test/number_theory/753.json",
+      "test/number_theory/838.json",
+      "test/intermediate_algebra/956.json",
+      "test/intermediate_algebra/1510.json",
+      "test/intermediate_algebra/1566.json",
+      "test/precalculus/695.json",
+      "test/prealgebra/1686.json",
+      "test/algebra/2593.json",
+      "test/prealgebra/1317.json",
+      "test/intermediate_algebra/754.json",
+      "test/algebra/661.json",
+      "test/precalculus/826.json",
+      "test/number_theory/1032.json",
+      "test/algebra/2626.json",
+      "test/prealgebra/572.json",
+      "test/number_theory/22.json",
+      "test/algebra/791.json",
+      "test/intermediate_algebra/582.json",
+      "test/algebra/2430.json",
+      "test/algebra/733.json",
+      "test/algebra/1578.json",
+      "test/geometry/615.json",
+      "test/algebra/1004.json",
+      "test/number_theory/427.json",
+      "test/geometry/172.json",
+      "test/precalculus/541.json",
+      "test/prealgebra/1203.json",
+      "test/precalculus/356.json",
+      "test/prealgebra/1555.json",
+      "test/intermediate_algebra/2146.json",
+      "test/prealgebra/1251.json",
+      "test/geometry/1140.json",
+      "test/number_theory/1185.json",
+      "test/intermediate_algebra/337.json",
+      "test/intermediate_algebra/279.json",
+      "test/algebra/291.json",
+      "test/intermediate_algebra/1410.json",
+      "test/prealgebra/1558.json",
+      "test/algebra/1519.json",
+      "test/number_theory/1287.json",
+      "test/intermediate_algebra/128.json",
+      "test/counting_and_probability/1060.json",
+      "test/algebra/1143.json",
+      "test/intermediate_algebra/2152.json",
+      "test/intermediate_algebra/121.json",
+      "test/number_theory/109.json",
+      "test/intermediate_algebra/134.json",
+      "test/algebra/1960.json",
+      "test/intermediate_algebra/90.json",
+      "test/counting_and_probability/1009.json",
+      "test/algebra/1814.json",
+      "test/intermediate_algebra/149.json",
+      "test/number_theory/686.json",
+      "test/prealgebra/993.json",
+      "test/geometry/561.json",
+      "test/prealgebra/1840.json",
+      "test/prealgebra/951.json",
+      "test/number_theory/1090.json",
+      "test/geometry/353.json",
+      "test/algebra/1937.json",
+      "test/intermediate_algebra/1126.json",
+      "test/precalculus/323.json",
+      "test/algebra/2232.json",
+      "test/prealgebra/307.json",
+      "test/intermediate_algebra/1572.json",
+      "test/intermediate_algebra/207.json",
+      "test/algebra/2257.json",
+      "test/algebra/276.json",
+      "test/number_theory/72.json",
+      "test/number_theory/466.json",
+      "test/counting_and_probability/765.json",
+      "test/algebra/1031.json",
+      "test/intermediate_algebra/1168.json",
+      "test/algebra/509.json",
+      "test/algebra/686.json",
+      "test/prealgebra/1865.json",
+      "test/number_theory/864.json",
+      "test/geometry/106.json",
+      "test/precalculus/990.json",
+      "test/algebra/251.json",
+      "test/algebra/2700.json",
+      "test/intermediate_algebra/1411.json",
+      "test/intermediate_algebra/1123.json",
+      "test/algebra/1303.json",
+      "test/prealgebra/1436.json",
+      "test/algebra/873.json",
+      "test/algebra/2680.json",
+      "test/precalculus/1172.json",
+      "test/number_theory/931.json",
+      "test/geometry/183.json",
+      "test/algebra/2046.json",
+      "test/prealgebra/1423.json",
+      "test/geometry/802.json",
+      "test/counting_and_probability/216.json",
+      "test/algebra/1934.json",
+      "test/number_theory/46.json",
+      "test/counting_and_probability/377.json",
+      "test/algebra/478.json",
+      "test/counting_and_probability/894.json",
+      "test/algebra/2159.json",
+      "test/number_theory/598.json",
+      "test/geometry/65.json",
+      "test/prealgebra/846.json",
+      "test/prealgebra/1991.json",
+      "test/prealgebra/1252.json",
+      "test/precalculus/920.json",
+      "test/prealgebra/505.json",
+      "test/number_theory/203.json"
+    ],
+    "execution_allowed": false,
+    "limitations": [
+      "project source separation only; no pretraining or independence claim"
+    ],
+    "cohort_digest": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133"
+  },
+  "source_review_only": true,
+  "workflow_admitted": false,
+  "execution_allowed": false,
+  "review_bundle_digest": "e7640c8601255120cd35b2831324a636999a83a21f1050967eaf79ab47e341e7"
+}
