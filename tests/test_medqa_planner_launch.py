@@ -229,6 +229,32 @@ class MedqaLaunch(unittest.TestCase):
         for before,after in [('HPCAIq','NA100q'),('NumNodes=1','NumNodes=2'),('gres/gpu=1','gres/gpu=2'),('128G','256G'),('01:00:00','02:00:00')]:
             with self.assertRaises(Invalid):m.check_allocation(record.replace(before,after))
 
+    def test_accounted_overlap_at_runtime(self):
+        m.check_active_allocation({'100_0':1,'1122666':1},'100')
+        m.check_active_allocation({'100':1,'200':3},'100')
+        for active in ({'100':1,'200':4},{'200':1},{'100':2},
+                       {'100_0':1,'100_1':1},{'100':1,'200':None}):
+            with self.assertRaises(Invalid):m.check_active_allocation(active,'100')
+
+    def test_submission_preserves_other_registered_jobs(self):
+        with tempfile.TemporaryDirectory() as d,patch.object(m,'source_records',return_value=records()):
+            root=Path(d);reg=root/'registry';reg.mkdir();args=fixture();args[3]['output_root']=str(root/'out')
+            prior={'job_id':'1122666','mode':'other','reserved_physical_gpus':1}
+            (reg/'registry.json').write_text(json.dumps({'jobs':[prior]}))
+            value=release(args)
+            with patch.dict(os.environ,{},clear=True),patch.object(m.cluster,'registry_root',return_value=reg), \
+                 patch.object(m.cluster,'guard') as guard,patch.object(m.cluster,'validate_site'), \
+                 patch.object(m,'source_revision',return_value='synthetic'),patch.object(m,'create_snapshot',return_value=ROOT), \
+                 patch.object(m.cluster,'command',return_value='12345'):
+                result=m.submit(ROOT,value,dry_run=False)
+            self.assertTrue(result['submitted'])
+            guard.assert_called_once()
+            self.assertEqual(guard.call_args.kwargs,{'allow_accounted_overlap':True,'requested_gpus':1})
+            saved=json.loads((reg/'registry.json').read_text())
+            self.assertEqual(saved['jobs'][0],prior)
+            self.assertEqual(saved['jobs'][1]['job_id'],'12345')
+            self.assertNotIn(prior,saved.get('completed_jobs',[]))
+
     def test_argv_and_no_allocation_rejected(self):
         c=m.cluster.ClusterConfig(**fixture()[3]);argv=m.arguments(c,Path('/snapshot'),Path('/output'))
         for flag in ('--partition=HPCAIq','--gres=gpu:1','--time=01:00:00','--mem=128G'):self.assertIn(flag,argv)

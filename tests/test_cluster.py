@@ -23,6 +23,27 @@ def site_config(root):
 
 
 class GuardTests(unittest.TestCase):
+    def test_opt_in_accounted_overlap_counts_physical_gpus(self):
+        with patch.object(cluster,'active_gpu_jobs',return_value={'1122666':1}):
+            self.assertEqual(cluster.guard({'jobs':[]},allow_accounted_overlap=True,requested_gpus=1),[])
+            with self.assertRaises(BCError):cluster.guard({'jobs':[]})
+        with patch.object(cluster,'active_gpu_jobs',return_value={'1_0':2,'1_1':1}):
+            self.assertEqual(cluster.guard({},allow_accounted_overlap=True,requested_gpus=1),[])
+            with self.assertRaises(BCError):cluster.guard({},allow_accounted_overlap=True,requested_gpus=2)
+        with patch.object(cluster,'active_gpu_jobs',return_value={'1':4}):
+            with self.assertRaises(BCError):cluster.guard({},allow_accounted_overlap=True)
+
+    def test_overlap_does_not_bypass_uncertainty_or_missing_registry_jobs(self):
+        with patch.object(cluster,'active_gpu_jobs',return_value={'1':1}), \
+             patch.object(cluster,'terminal_accounting',return_value=False):
+            with self.assertRaises(BCError):cluster.guard({'jobs':[{'job_id':'2'}]},allow_accounted_overlap=True)
+            with self.assertRaises(BCError):cluster.guard({'uncertain_submission':True},allow_accounted_overlap=True)
+            with self.assertRaises(BCError):cluster.guard({},allow_accounted_overlap=True,serialize=True)
+            for amount in (0,5,True):
+                with self.assertRaises(BCError):cluster.guard({},allow_accounted_overlap=True,requested_gpus=amount)
+        with patch.object(cluster,'active_gpu_jobs',side_effect=BCError('unknown ReqTRES')):
+            with self.assertRaises(BCError):cluster.guard({},allow_accounted_overlap=True)
+
     def test_array_job_id_does_not_split_resource_record(self):
         # Field-preserving excerpt of the failed D1 job's user-supplied
         # scontrol output. Scheduler calls are mocked, including the queue.

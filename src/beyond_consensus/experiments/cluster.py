@@ -125,11 +125,27 @@ def terminal_accounting(job: str) -> bool:
     return bool(lines) and all(len(parts) >= 2 and parts[1].split()[0].rstrip("+") in terminal for parts in lines)
 
 
-def guard(registry: dict[str, Any], *, serialize: bool = False) -> list[str]:
+def guard(registry: dict[str, Any], *, serialize: bool = False,
+          allow_accounted_overlap: bool = False, requested_gpus: int = 1) -> list[str]:
     if registry.get("uncertain_submission"):
         raise BCError("A prior submission has an uncertain outcome. Reconcile squeue/sacct and registry before retrying")
     active = active_gpu_jobs()
     known = {r["job_id"] for r in registry.get("jobs", [])}
+    if allow_accounted_overlap:
+        if serialize:
+            raise BCError("Accounted overlap and serialization are separate policies")
+        if type(requested_gpus) is not int or not 1 <= requested_gpus <= 4:
+            raise BCError("Requested physical GPUs must be 1..4")
+        # Count every reported active/pending array element conservatively.
+        # Unknown scheduler accounting remains an error in active_gpu_jobs().
+        if any(type(count) is not int or count < 1 for count in active.values()):
+            raise BCError("Invalid active GPU accounting")
+        for job in known:
+            if not any(j.split("_")[0] == job for j in active) and not terminal_accounting(job):
+                raise BCError(f"Registered job {job} is absent from squeue but not confirmed terminal")
+        if sum(active.values()) + requested_gpus > 4:
+            raise BCError("Active/pending GPU reservations plus this submission exceed four")
+        return []
     unaccounted = [job for job in active if job.split("_")[0] not in known]
     if unaccounted:
         raise BCError(f"Other/unknown GPU jobs are active or pending: {unaccounted}. Finish them before submitting this campaign")

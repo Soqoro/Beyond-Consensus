@@ -126,6 +126,8 @@ def bind(cohort_path,verification,inventory_report,config_data,partition_record,
                  'non_thinking_verification':deepcopy(template),'thinking':False,'do_sample':False,
                  'dtype':'bfloat16','attention':'sdpa'},
         'resources':deepcopy(medqa.PLAN_LIMITS),'cluster':deepcopy(config_data),
+        'scheduler_policy':{'version':'accounted-overlap-four-gpu-v1','maximum_user_gpus':4,
+                            'requested_gpus':1,'allow_accounted_external_jobs':True},
         'partition_record':partition_record,'runtime_identity':identity(),
         'retry_policy':'one_per_source_no_retry_no_correction',
         'stop_policy':screen.disabled_manifest()['scope']['stop_policy'],
@@ -192,7 +194,7 @@ def submit(root,value,*,dry_run=True):
     registry=cluster.registry_root();state_path=registry/'registry.json'
     def action():
         state=read_json(state_path) if state_path.exists() else {'jobs':[]}
-        cluster.guard(state)
+        cluster.guard(state,allow_accounted_overlap=True,requested_gpus=1)
         # A second bind/output directory must not allow repeating this cohort's attempt.
         require(COHORT not in state.get('medqa_planner_attempts',{}),'cohort already submitted/uncertain; no retry')
         require(not output.exists(),'preserve existing output')
@@ -211,9 +213,10 @@ def submit(root,value,*,dry_run=True):
         response=cluster.command(argv);job=response.split(';',1)[0]
         require(re.fullmatch('[0-9]+',job) is not None,'uncertain submission retained')
         reservation.update(job_id=job,state='submitted_no_retry');state['uncertain_submission']=None
-        state['completed_jobs']=(state.get('completed_jobs',[])+state.get('jobs',[]))[-100:]
-        state['jobs']=[{'job_id':job,'manifest_hash':digest(manifest),'snapshot':str(snapshot),'output':str(output),
-                       'concurrency':1,'physical_gpus_per_job':1,'reserved_physical_gpus':1,'mode':'D1-medqa-planner'}]
+        # Other registered jobs may still be active under the overlap policy.
+        # Preserve them rather than falsely moving them to completed history.
+        state.setdefault('jobs',[]).append({'job_id':job,'manifest_hash':digest(manifest),'snapshot':str(snapshot),'output':str(output),
+                       'concurrency':1,'physical_gpus_per_job':1,'reserved_physical_gpus':1,'mode':'D1-medqa-planner'})
         atomic_json(state_path,state)
         return {'job_id':job,'snapshot':str(snapshot),'output':str(output),'scope_digest':key,'submitted':True}
     if dry_run:return action()
@@ -355,6 +358,13 @@ def run_allocated(root,output):
     allocation=cluster.command(['scontrol','show','job',os.environ['SLURM_JOB_ID'],'-o'])
     check_allocation(allocation)
     active=cluster.active_gpu_jobs()
-    require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
+    check_active_allocation(active,job)
     require(environment_inventory(config.python)==read_json(root/'resolved/environment.json'),'environment changed')
     return dispatch(value,output/'execution')
+
+
+def check_active_allocation(active,job):
+    own={j:count for j,count in active.items() if j.split('_')[0]==job}
+    require(len(own)==1 and list(own.values())==[1],'registered single-GPU allocation')
+    require(all(type(count)is int and count>0 for count in active.values())
+            and sum(active.values())<=4,'combined active/pending GPU ceiling')
