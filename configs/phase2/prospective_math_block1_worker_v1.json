@@ -1,0 +1,3135 @@
+{
+  "schema": "prospective-math-block1-worker-contracts-v1",
+  "cohort_digest": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+  "planner_scope": "97d489086be8b8e807b6b7924f3cb3f6c155e33d499e40402d480de972ae54e7",
+  "planner_result_sha256": "d04ad57f589ead0135da636fa121a1ad1759a3c93ede78c03bbd84f7c347303f",
+  "planner_attachment_sha256": "cee16a96e9f254b6574ab480b0aedab905ad888481da709070a84eb9756b6989",
+  "reviews": {
+    "test/algebra/2277.json": {
+      "public_digest": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "inverse_value",
+            "branch_conditions"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.616355+00:00",
+      "plan_digest": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Retain the two inverse-value subproblems; merge the arithmetic-only T3 into the second. This introduces a genuine final-use dependency, not a claim that solving the second inverse intrinsically needs the first."
+    },
+    "test/counting_and_probability/870.json": {
+      "public_digest": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "sample_space",
+            "total_count",
+            "symmetry_convention"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.629091+00:00",
+      "plan_digest": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Keep sample-space modelling and crossing-event analysis; absorb the arithmetic-only ratio T3 into the event analysis. Bind the same symmetry convention to both tasks; do not independently count incompatible quotients."
+    },
+    "test/counting_and_probability/761.json": {
+      "public_digest": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.636497+00:00",
+      "plan_digest": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge inclusion-exclusion and subtraction: the final subtraction is not a separate substantive task."
+    },
+    "test/precalculus/24313.json": {
+      "public_digest": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.643066+00:00",
+      "plan_digest": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge the four elementary symbolic transformations. Retaining domain restrictions clarifies the existing obligation; it is not a new checking task."
+    },
+    "test/prealgebra/1227.json": {
+      "public_digest": "fa8bb503d583264bd44c60232f2506d87fb7dc9b9a312dff0e6bcf5c828facf2",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Count the handshakes under all of the stated group interaction restrictions and justify the count.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.648930+00:00",
+      "plan_digest": "18dc009c9b70a7a22bfd8508cdccdd217df2d4c812e2cb40bcb090b477222591",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Retain the planner single task unchanged in substance; no extra aggregation or verification task."
+    },
+    "test/algebra/1936.json": {
+      "public_digest": "be7b949ddfe5ab266d4c817076251b119ef7431be4ab9cf15ab70ad4226ca7da",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Use the two function definitions and the composition constraint to determine the requested parameter, with a concise derivation.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.653982+00:00",
+      "plan_digest": "21c5e48527788b15ee4a3907f90f21905d15f21a5cc76193840ed5584f47e682",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge elementary substitution, composition and solving one linear equation into one substantive responsibility."
+    },
+    "test/algebra/246.json": {
+      "public_digest": "e86df7d9fe448d3ffeb58c9794162c5245976e427c019ce2053a8d89830e5876",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Use the polynomial definition and its given evaluation to determine the requested evaluation, with a concise derivation retaining the shared coefficient relation.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.659679+00:00",
+      "plan_digest": "fd33f310084b05167e294123a93e9ee4b7b55248497cf1ab2a9f444b310ca856",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge the paired evaluations and reuse of their shared coefficient relation; a small substitution is not a separate owner workload."
+    },
+    "test/intermediate_algebra/428.json": {
+      "public_digest": "f88bff08b75b758898b2b1e306f22153128b17ef5b8add2bd8ec900dde5862fd",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the complete set of roots of the stated cubic equation using a valid algebraic reduction, retaining equivalence and all root cases in the justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-15T13:25:29.668625+00:00",
+      "plan_digest": "45ce73b06d21d0f64db1fb43bc44974655aa023fda8add453ea74b4487263205",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge identifying the affine relation, applying the cubic identity and extracting linear factors. The raw planner already supplied an algebraic lemma; preserve that raw evidence, but do not present it as a reviewer-derived answer or add artificial root-checking tasks."
+    }
+  },
+  "dispositions": {
+    "test/algebra/2277.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/2277.json",
+        "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "inverse_value",
+              "branch_conditions"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+        "review": {
+          "public_digest": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "inverse_value",
+                "branch_conditions"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.616355+00:00",
+          "plan_digest": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the two inverse-value subproblems; merge the arithmetic-only T3 into the second. This introduces a genuine final-use dependency, not a claim that solving the second inverse intrinsically needs the first."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+        "namespace": "ca5fdfb81b2"
+      }
+    },
+    "test/counting_and_probability/870.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/counting_and_probability/870.json",
+        "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space",
+              "total_count",
+              "symmetry_convention"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+        "review": {
+          "public_digest": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space",
+                "total_count",
+                "symmetry_convention"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.629091+00:00",
+          "plan_digest": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Keep sample-space modelling and crossing-event analysis; absorb the arithmetic-only ratio T3 into the event analysis. Bind the same symmetry convention to both tasks; do not independently count incompatible quotients."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+        "namespace": "ce8aecfd42d"
+      }
+    },
+    "test/counting_and_probability/761.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/counting_and_probability/761.json",
+        "statement_sha256": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+        "review": {
+          "public_digest": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.636497+00:00",
+          "plan_digest": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge inclusion-exclusion and subtraction: the final subtraction is not a separate substantive task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "65a2d47ae33ab6c473ea49435f6d8f9500342ff7b0ddb867e1b2371eae02de64",
+        "namespace": "c65a2d47ae3"
+      }
+    },
+    "test/precalculus/24313.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/precalculus/24313.json",
+        "statement_sha256": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+        "review": {
+          "public_digest": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.643066+00:00",
+          "plan_digest": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge the four elementary symbolic transformations. Retaining domain restrictions clarifies the existing obligation; it is not a new checking task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "82dd765a3068033b5b5c98c581f93071ccd3e17112cb2f93d52317da3a7e88f8",
+        "namespace": "c82dd765a30"
+      }
+    },
+    "test/prealgebra/1227.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/prealgebra/1227.json",
+        "statement_sha256": "fa8bb503d583264bd44c60232f2506d87fb7dc9b9a312dff0e6bcf5c828facf2",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Count the handshakes under all of the stated group interaction restrictions and justify the count.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "18dc009c9b70a7a22bfd8508cdccdd217df2d4c812e2cb40bcb090b477222591",
+        "review": {
+          "public_digest": "fa8bb503d583264bd44c60232f2506d87fb7dc9b9a312dff0e6bcf5c828facf2",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Count the handshakes under all of the stated group interaction restrictions and justify the count.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.648930+00:00",
+          "plan_digest": "18dc009c9b70a7a22bfd8508cdccdd217df2d4c812e2cb40bcb090b477222591",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the planner single task unchanged in substance; no extra aggregation or verification task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "1a189e65beee729d30a8b5385223418beb73263b154ab651d02e427911203d55",
+        "namespace": "c1a189e65be"
+      }
+    },
+    "test/algebra/1936.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/1936.json",
+        "statement_sha256": "be7b949ddfe5ab266d4c817076251b119ef7431be4ab9cf15ab70ad4226ca7da",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the two function definitions and the composition constraint to determine the requested parameter, with a concise derivation.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "21c5e48527788b15ee4a3907f90f21905d15f21a5cc76193840ed5584f47e682",
+        "review": {
+          "public_digest": "be7b949ddfe5ab266d4c817076251b119ef7431be4ab9cf15ab70ad4226ca7da",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the two function definitions and the composition constraint to determine the requested parameter, with a concise derivation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.653982+00:00",
+          "plan_digest": "21c5e48527788b15ee4a3907f90f21905d15f21a5cc76193840ed5584f47e682",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge elementary substitution, composition and solving one linear equation into one substantive responsibility."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "b37d6e55ab3e87d9afd13ff469ed04ad861e19b6ac10521ad905c96f105da4fe",
+        "namespace": "cb37d6e55ab"
+      }
+    },
+    "test/algebra/246.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/246.json",
+        "statement_sha256": "e86df7d9fe448d3ffeb58c9794162c5245976e427c019ce2053a8d89830e5876",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the polynomial definition and its given evaluation to determine the requested evaluation, with a concise derivation retaining the shared coefficient relation.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "fd33f310084b05167e294123a93e9ee4b7b55248497cf1ab2a9f444b310ca856",
+        "review": {
+          "public_digest": "e86df7d9fe448d3ffeb58c9794162c5245976e427c019ce2053a8d89830e5876",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the polynomial definition and its given evaluation to determine the requested evaluation, with a concise derivation retaining the shared coefficient relation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.659679+00:00",
+          "plan_digest": "fd33f310084b05167e294123a93e9ee4b7b55248497cf1ab2a9f444b310ca856",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge the paired evaluations and reuse of their shared coefficient relation; a small substitution is not a separate owner workload."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "01e1ced6025fbb0c2aa8d066a866cdf85d8203d1b118a6d217f4d7919f6e095c",
+        "namespace": "c01e1ced602"
+      }
+    },
+    "test/intermediate_algebra/428.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/intermediate_algebra/428.json",
+        "statement_sha256": "f88bff08b75b758898b2b1e306f22153128b17ef5b8add2bd8ec900dde5862fd",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the complete set of roots of the stated cubic equation using a valid algebraic reduction, retaining equivalence and all root cases in the justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "45ce73b06d21d0f64db1fb43bc44974655aa023fda8add453ea74b4487263205",
+        "review": {
+          "public_digest": "f88bff08b75b758898b2b1e306f22153128b17ef5b8add2bd8ec900dde5862fd",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the complete set of roots of the stated cubic equation using a valid algebraic reduction, retaining equivalence and all root cases in the justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.668625+00:00",
+          "plan_digest": "45ce73b06d21d0f64db1fb43bc44974655aa023fda8add453ea74b4487263205",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge identifying the affine relation, applying the cubic identity and extracting linear factors. The raw planner already supplied an algebraic lemma; preserve that raw evidence, but do not present it as a reviewer-derived answer or add artificial root-checking tasks."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "43f86df87aa50106ccc143139c26de1a73a4afa7687e8da712a05af7ed90bfdc",
+        "namespace": "c43f86df87a"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+    "components": [
+      {
+        "source_id": "test/algebra/2277.json",
+        "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "inverse_value",
+              "branch_conditions"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+        "review": {
+          "public_digest": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "inverse_value",
+                "branch_conditions"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.616355+00:00",
+          "plan_digest": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the two inverse-value subproblems; merge the arithmetic-only T3 into the second. This introduces a genuine final-use dependency, not a claim that solving the second inverse intrinsically needs the first."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+        "namespace": "ca5fdfb81b2"
+      },
+      {
+        "source_id": "test/counting_and_probability/870.json",
+        "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space",
+              "total_count",
+              "symmetry_convention"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+        "review": {
+          "public_digest": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space",
+                "total_count",
+                "symmetry_convention"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.629091+00:00",
+          "plan_digest": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Keep sample-space modelling and crossing-event analysis; absorb the arithmetic-only ratio T3 into the event analysis. Bind the same symmetry convention to both tasks; do not independently count incompatible quotients."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+        "namespace": "ce8aecfd42d"
+      },
+      {
+        "source_id": "test/counting_and_probability/761.json",
+        "statement_sha256": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+        "review": {
+          "public_digest": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.636497+00:00",
+          "plan_digest": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge inclusion-exclusion and subtraction: the final subtraction is not a separate substantive task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "65a2d47ae33ab6c473ea49435f6d8f9500342ff7b0ddb867e1b2371eae02de64",
+        "namespace": "c65a2d47ae3"
+      },
+      {
+        "source_id": "test/precalculus/24313.json",
+        "statement_sha256": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+        "review": {
+          "public_digest": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-15T13:25:29.643066+00:00",
+          "plan_digest": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge the four elementary symbolic transformations. Retaining domain restrictions clarifies the existing obligation; it is not a new checking task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+        "contract_id": "82dd765a3068033b5b5c98c581f93071ccd3e17112cb2f93d52317da3a7e88f8",
+        "namespace": "c82dd765a30"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "c1ac36c2ca5ea82337b1f40704c6a5a44dac2ea897569fd52f2eeaabed8e550b",
+        "domain_structure_id": "8bfbd52fbbe826d5c1030482e923b8886553329b8762fe8afe19d3143ba42b6c",
+        "preprice_specification": {
+          "work_id": "c1ac36c2ca5ea82337b1f40704c6a5a44dac2ea897569fd52f2eeaabed8e550b",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "8bb17c830ff00b9c479fbc9193c1214344005d21c4b9ef0e75672af33ccbe707",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c65a2d47ae3_t0",
+                "instruction": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c65a2d47ae3_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c65a2d47ae3_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c65a2d47ae3_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c82dd765a30_t0",
+                "instruction": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c82dd765a30_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c82dd765a30_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c82dd765a30_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ca5fdfb81b2_t0",
+                "instruction": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ca5fdfb81b2_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ca5fdfb81b2_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ca5fdfb81b2_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ca5fdfb81b2_t1",
+                "instruction": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ca5fdfb81b2_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ca5fdfb81b2_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ca5fdfb81b2_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ce8aecfd42d_t0",
+                "instruction": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ce8aecfd42d_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ce8aecfd42d_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ce8aecfd42d_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ce8aecfd42d_t1",
+                "instruction": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ce8aecfd42d_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ce8aecfd42d_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ce8aecfd42d_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c65a2d47ae3_s0",
+                "artifact": {
+                  "artifact": "c65a2d47ae3_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c82dd765a30_s0",
+                "artifact": {
+                  "artifact": "c82dd765a30_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ca5fdfb81b2_s0",
+                "artifact": {
+                  "artifact": "ca5fdfb81b2_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ca5fdfb81b2_s1",
+                "artifact": {
+                  "artifact": "ca5fdfb81b2_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ce8aecfd42d_s0",
+                "artifact": {
+                  "artifact": "ce8aecfd42d_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ce8aecfd42d_s1",
+                "artifact": {
+                  "artifact": "ce8aecfd42d_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c65a2d47ae3_e0",
+                "host": "c65a2d47ae3_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c65a2d47ae3_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c65a2d47ae3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c65a2d47ae3_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c65a2d47ae3_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c82dd765a30_e0",
+                "host": "c82dd765a30_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c82dd765a30_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c82dd765a30_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c82dd765a30_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c82dd765a30_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ca5fdfb81b2_e0",
+                "host": "ca5fdfb81b2_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ca5fdfb81b2_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ca5fdfb81b2_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ca5fdfb81b2_s0",
+                  "ca5fdfb81b2_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ca5fdfb81b2_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ca5fdfb81b2_e1",
+                "host": "ca5fdfb81b2_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ca5fdfb81b2_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "ca5fdfb81b2_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ca5fdfb81b2_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ca5fdfb81b2_s0",
+                  "ca5fdfb81b2_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ca5fdfb81b2_s1_read",
+                      "t0": "ca5fdfb81b2_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ce8aecfd42d_e0",
+                "host": "ce8aecfd42d_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ce8aecfd42d_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ce8aecfd42d_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ce8aecfd42d_s0",
+                  "ce8aecfd42d_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ce8aecfd42d_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ce8aecfd42d_e1",
+                "host": "ce8aecfd42d_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ce8aecfd42d_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "ce8aecfd42d_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ce8aecfd42d_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ce8aecfd42d_s0",
+                  "ce8aecfd42d_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ce8aecfd42d_s1_read",
+                      "t0": "ce8aecfd42d_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c65a2d47ae3_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c65a2d47ae3_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c65a2d47ae3_s0_read",
+                "producer": {
+                  "source": "c65a2d47ae3_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c82dd765a30_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c82dd765a30_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c82dd765a30_s0_read",
+                "producer": {
+                  "source": "c82dd765a30_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca5fdfb81b2_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "ca5fdfb81b2_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca5fdfb81b2_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "ca5fdfb81b2_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca5fdfb81b2_s0_read",
+                "producer": {
+                  "source": "ca5fdfb81b2_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca5fdfb81b2_s1_read",
+                "producer": {
+                  "source": "ca5fdfb81b2_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ce8aecfd42d_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "ce8aecfd42d_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ce8aecfd42d_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "ce8aecfd42d_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ce8aecfd42d_s0_read",
+                "producer": {
+                  "source": "ce8aecfd42d_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ce8aecfd42d_s1_read",
+                "producer": {
+                  "source": "ce8aecfd42d_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "ca5fdfb81b2_e0",
+                "ca5fdfb81b2_e1",
+                "ce8aecfd42d_e0",
+                "ce8aecfd42d_e1",
+                "c65a2d47ae3_e0",
+                "c82dd765a30_e0"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c65a2d47ae3_t0_answer",
+                "artifact": {
+                  "artifact": "c65a2d47ae3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c65a2d47ae3_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c82dd765a30_t0_answer",
+                "artifact": {
+                  "artifact": "c82dd765a30_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c82dd765a30_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ca5fdfb81b2_t1_answer",
+                "artifact": {
+                  "artifact": "ca5fdfb81b2_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "ca5fdfb81b2_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ce8aecfd42d_t1_answer",
+                "artifact": {
+                  "artifact": "ce8aecfd42d_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "ce8aecfd42d_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a",
+        "neutral_seed": "91765473808944716386563820122430556393790448074494330247392479719608550663163",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c65a2d47ae3_t0": "o0",
+            "c82dd765a30_t0": "o1",
+            "ca5fdfb81b2_t0": "o1",
+            "ca5fdfb81b2_t1": "o2",
+            "ce8aecfd42d_t0": "o3",
+            "ce8aecfd42d_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 4,
+        "slot": 1,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "test/algebra/2277.json",
+            "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "inverse_value",
+                  "branch_conditions"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+            "review": {
+              "public_digest": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "inverse_value",
+                    "branch_conditions"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-15T13:25:29.616355+00:00",
+              "plan_digest": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Retain the two inverse-value subproblems; merge the arithmetic-only T3 into the second. This introduces a genuine final-use dependency, not a claim that solving the second inverse intrinsically needs the first."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+            "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+            "namespace": "ca5fdfb81b2"
+          },
+          {
+            "source_id": "test/counting_and_probability/870.json",
+            "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "sample_space",
+                  "total_count",
+                  "symmetry_convention"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+            "review": {
+              "public_digest": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "sample_space",
+                    "total_count",
+                    "symmetry_convention"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-15T13:25:29.629091+00:00",
+              "plan_digest": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Keep sample-space modelling and crossing-event analysis; absorb the arithmetic-only ratio T3 into the event analysis. Bind the same symmetry convention to both tasks; do not independently count incompatible quotients."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+            "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+            "namespace": "ce8aecfd42d"
+          },
+          {
+            "source_id": "test/counting_and_probability/761.json",
+            "statement_sha256": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+            "review": {
+              "public_digest": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-15T13:25:29.636497+00:00",
+              "plan_digest": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Merge inclusion-exclusion and subtraction: the final subtraction is not a separate substantive task."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+            "contract_id": "65a2d47ae33ab6c473ea49435f6d8f9500342ff7b0ddb867e1b2371eae02de64",
+            "namespace": "c65a2d47ae3"
+          },
+          {
+            "source_id": "test/precalculus/24313.json",
+            "statement_sha256": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+            "review": {
+              "public_digest": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-15T13:25:29.643066+00:00",
+              "plan_digest": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Merge the four elementary symbolic transformations. Retaining domain restrictions clarifies the existing obligation; it is not a new checking task."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+            "contract_id": "82dd765a3068033b5b5c98c581f93071ccd3e17112cb2f93d52317da3a7e88f8",
+            "namespace": "c82dd765a30"
+          }
+        ],
+        "sources": [
+          "test/algebra/2277.json",
+          "test/counting_and_probability/870.json",
+          "test/counting_and_probability/761.json",
+          "test/precalculus/24313.json"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 32,
+          "isolation_verified": true,
+          "evaluation_calls": 32
+        }
+      }
+    ],
+    "planned_slots": 3,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 1,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "9d549aceeb3c56fd918163a7142d3e7374c1b49119e35f0d3a3ff972a05bd733",
+        "historical_key": "283d15d935f19c8390de55bf2de91a17347e1b2afe24eb9c3db8f52e27f9bf12",
+        "component": "ca5fdfb81b2",
+        "source_id": "test/algebra/2277.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+          "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+          "source_id": "test/algebra/2277.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "inverse_value",
+              "branch_conditions"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "526207fb4fc3dba51e5f4801e18dc45be5aa918bc5ce13809d121a166196f8f3",
+        "historical_key": "38c002e41e3a6a1f10fb57404428c254cecfe1b8e7fdb3c1d6d3e524c75143af",
+        "component": "ca5fdfb81b2",
+        "source_id": "test/algebra/2277.json",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+          "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+          "source_id": "test/algebra/2277.json",
+          "task": {
+            "id": "t1",
+            "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "1035ea4d494d5ffc62db32cbd937e38a487fc4cf66c738f7680f7228448b6cf7",
+        "historical_key": "c27b62255da99019b6da92658361afa270c0ec7bee392af9f168f13dcdc497a7",
+        "component": "ce8aecfd42d",
+        "source_id": "test/counting_and_probability/870.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+          "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+          "source_id": "test/counting_and_probability/870.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space",
+              "total_count",
+              "symmetry_convention"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "5a6324ef4e6bd3ffe80619b451b77a80c698b3843b6a2b383a8b829d3096656e",
+        "historical_key": "7e18e74cab01a2626a96d7a4aeaa1ec4b2d2497415deb2668dcab07bc2458349",
+        "component": "ce8aecfd42d",
+        "source_id": "test/counting_and_probability/870.json",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+          "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+          "source_id": "test/counting_and_probability/870.json",
+          "task": {
+            "id": "t1",
+            "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "cc91474b493e99b4199811bd8d3b7a093835a67519839c41e98e9b9a27d89803",
+        "historical_key": "d428f4ec61b0e452c2e76056995fa5c7397d6b3cd0c9ef92d3e1ddc0b3c70639",
+        "component": "c65a2d47ae3",
+        "source_id": "test/counting_and_probability/761.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "65a2d47ae33ab6c473ea49435f6d8f9500342ff7b0ddb867e1b2371eae02de64",
+          "statement_sha256": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+          "source_id": "test/counting_and_probability/761.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "e46fb42a6e438b013062ca0cb667d055cbb81b2d0118c0b6601a0a8824053d77",
+        "historical_key": "12603527b6e0236d8d991761bd90a5a9a3145846a63338b90f798c30fe262a58",
+        "component": "c82dd765a30",
+        "source_id": "test/precalculus/24313.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "82dd765a3068033b5b5c98c581f93071ccd3e17112cb2f93d52317da3a7e88f8",
+          "statement_sha256": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+          "source_id": "test/precalculus/24313.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "ca5fdfb81b2",
+        "mode": "base",
+        "events": [
+          "ca5fdfb81b2_e0",
+          "ca5fdfb81b2_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "ce8aecfd42d",
+        "mode": "base",
+        "events": [
+          "ce8aecfd42d_e0",
+          "ce8aecfd42d_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c65a2d47ae3",
+        "mode": "base",
+        "events": [
+          "c65a2d47ae3_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "c82dd765a30",
+        "mode": "base",
+        "events": [
+          "c82dd765a30_e0"
+        ],
+        "calls": 1
+      }
+    ],
+    "profile_consumers": {
+      "9d549aceeb3c56fd918163a7142d3e7374c1b49119e35f0d3a3ff972a05bd733": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ],
+      "526207fb4fc3dba51e5f4801e18dc45be5aa918bc5ce13809d121a166196f8f3": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ],
+      "1035ea4d494d5ffc62db32cbd937e38a487fc4cf66c738f7680f7228448b6cf7": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ],
+      "5a6324ef4e6bd3ffe80619b451b77a80c698b3843b6a2b383a8b829d3096656e": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ],
+      "cc91474b493e99b4199811bd8d3b7a093835a67519839c41e98e9b9a27d89803": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ],
+      "e46fb42a6e438b013062ca0cb667d055cbb81b2d0118c0b6601a0a8824053d77": [
+        "68c075c4e9e7cefc6907aef1cedfc198007ebab4ce97a1738c8e9aa16208812a"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 38,
+      "token_cap": 622592,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "test/algebra/2277.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/2277.json",
+          "statement_sha256": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "inverse_value",
+                "branch_conditions"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+          "review": {
+            "public_digest": "5a04bce811c1f91e901651310152e08e9a234d8a1502911ded00fd171dbec63a",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the inverse image of zero under the stated piecewise function, retaining branch restrictions and explaining admissibility and uniqueness.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "inverse_value",
+                  "branch_conditions"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Determine the inverse image of six with the stated branch restrictions, then use the supplied inverse image of zero to give the requested sum. Preserve admissibility and uniqueness in the justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.616355+00:00",
+            "plan_digest": "8a52902dd4c0f5819da588e86132246bd8ac040a7cb06756f482a03cc94d70d8",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Retain the two inverse-value subproblems; merge the arithmetic-only T3 into the second. This introduces a genuine final-use dependency, not a claim that solving the second inverse intrinsically needs the first."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "a5fdfb81b234683592da2508a00518a5cab782d02a0d51364eaec0e7e6cb8930",
+          "namespace": "ca5fdfb81b2"
+        }
+      },
+      "test/counting_and_probability/870.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/counting_and_probability/870.json",
+          "statement_sha256": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space",
+                "total_count",
+                "symmetry_convention"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+          "review": {
+            "public_digest": "ee85ccea8241a813b97d41b41a55b32c089bcb2fb7712a8ffbce9b4f3275a190",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Specify a consistent cyclic-order sample space for the four independently uniform labelled circle points, including symmetry conventions, total count and why the classes used are equiprobable. Address degenerate coincidences.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "sample_space",
+                  "total_count",
+                  "symmetry_convention"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied cyclic-order sample space and its conventions, characterize which orders make the two named segments intersect, count them and compute the requested probability.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.629091+00:00",
+            "plan_digest": "c6c3b568cdf45dc585ecb0a1b76065ae728de78d94906ea73ce304324a896602",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Keep sample-space modelling and crossing-event analysis; absorb the arithmetic-only ratio T3 into the event analysis. Bind the same symmetry convention to both tasks; do not independently count incompatible quotients."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "e8aecfd42d9a3b290dd25032739c1c4370247e8dbb06a30d4e41f498c8c3a15c",
+          "namespace": "ce8aecfd42d"
+        }
+      },
+      "test/counting_and_probability/761.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/counting_and_probability/761.json",
+          "statement_sha256": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+          "review": {
+            "public_digest": "a389d33b50c107292acbf2caf4b4952eb861f1f7a70c6c45db5f35c6d40d7433",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the number of boxes containing neither kind of item from the stated totals and overlap, with a concise justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.636497+00:00",
+            "plan_digest": "387e98dbfa9aefaefe3ad092f96160b1277bf0712662a6de61e3e298d93e1410",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge inclusion-exclusion and subtraction: the final subtraction is not a separate substantive task."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "65a2d47ae33ab6c473ea49435f6d8f9500342ff7b0ddb867e1b2371eae02de64",
+          "namespace": "c65a2d47ae3"
+        }
+      },
+      "test/precalculus/24313.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/precalculus/24313.json",
+          "statement_sha256": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+          "review": {
+            "public_digest": "a79f0968b9268849e375589c8e4d2591cb14186b3e0ab0ef03fa182fda701e6d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Simplify the stated trigonometric expression with a concise derivation, preserving the domain restrictions of the original expression.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.643066+00:00",
+            "plan_digest": "dd791b0d04878fc188ad11d96530fc1883c3d24426276238cbc5d39451c095f1",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge the four elementary symbolic transformations. Retaining domain restrictions clarifies the existing obligation; it is not a new checking task."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "82dd765a3068033b5b5c98c581f93071ccd3e17112cb2f93d52317da3a7e88f8",
+          "namespace": "c82dd765a30"
+        }
+      },
+      "test/prealgebra/1227.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/prealgebra/1227.json",
+          "statement_sha256": "fa8bb503d583264bd44c60232f2506d87fb7dc9b9a312dff0e6bcf5c828facf2",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Count the handshakes under all of the stated group interaction restrictions and justify the count.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "18dc009c9b70a7a22bfd8508cdccdd217df2d4c812e2cb40bcb090b477222591",
+          "review": {
+            "public_digest": "fa8bb503d583264bd44c60232f2506d87fb7dc9b9a312dff0e6bcf5c828facf2",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Count the handshakes under all of the stated group interaction restrictions and justify the count.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.648930+00:00",
+            "plan_digest": "18dc009c9b70a7a22bfd8508cdccdd217df2d4c812e2cb40bcb090b477222591",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Retain the planner single task unchanged in substance; no extra aggregation or verification task."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "1a189e65beee729d30a8b5385223418beb73263b154ab651d02e427911203d55",
+          "namespace": "c1a189e65be"
+        }
+      },
+      "test/algebra/1936.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/1936.json",
+          "statement_sha256": "be7b949ddfe5ab266d4c817076251b119ef7431be4ab9cf15ab70ad4226ca7da",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the two function definitions and the composition constraint to determine the requested parameter, with a concise derivation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "21c5e48527788b15ee4a3907f90f21905d15f21a5cc76193840ed5584f47e682",
+          "review": {
+            "public_digest": "be7b949ddfe5ab266d4c817076251b119ef7431be4ab9cf15ab70ad4226ca7da",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the two function definitions and the composition constraint to determine the requested parameter, with a concise derivation.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.653982+00:00",
+            "plan_digest": "21c5e48527788b15ee4a3907f90f21905d15f21a5cc76193840ed5584f47e682",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge elementary substitution, composition and solving one linear equation into one substantive responsibility."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "b37d6e55ab3e87d9afd13ff469ed04ad861e19b6ac10521ad905c96f105da4fe",
+          "namespace": "cb37d6e55ab"
+        }
+      },
+      "test/algebra/246.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/246.json",
+          "statement_sha256": "e86df7d9fe448d3ffeb58c9794162c5245976e427c019ce2053a8d89830e5876",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the polynomial definition and its given evaluation to determine the requested evaluation, with a concise derivation retaining the shared coefficient relation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "fd33f310084b05167e294123a93e9ee4b7b55248497cf1ab2a9f444b310ca856",
+          "review": {
+            "public_digest": "e86df7d9fe448d3ffeb58c9794162c5245976e427c019ce2053a8d89830e5876",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the polynomial definition and its given evaluation to determine the requested evaluation, with a concise derivation retaining the shared coefficient relation.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.659679+00:00",
+            "plan_digest": "fd33f310084b05167e294123a93e9ee4b7b55248497cf1ab2a9f444b310ca856",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge the paired evaluations and reuse of their shared coefficient relation; a small substitution is not a separate owner workload."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "01e1ced6025fbb0c2aa8d066a866cdf85d8203d1b118a6d217f4d7919f6e095c",
+          "namespace": "c01e1ced602"
+        }
+      },
+      "test/intermediate_algebra/428.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/intermediate_algebra/428.json",
+          "statement_sha256": "f88bff08b75b758898b2b1e306f22153128b17ef5b8add2bd8ec900dde5862fd",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the complete set of roots of the stated cubic equation using a valid algebraic reduction, retaining equivalence and all root cases in the justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "45ce73b06d21d0f64db1fb43bc44974655aa023fda8add453ea74b4487263205",
+          "review": {
+            "public_digest": "f88bff08b75b758898b2b1e306f22153128b17ef5b8add2bd8ec900dde5862fd",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the complete set of roots of the stated cubic equation using a valid algebraic reduction, retaining equivalence and all root cases in the justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-15T13:25:29.668625+00:00",
+            "plan_digest": "45ce73b06d21d0f64db1fb43bc44974655aa023fda8add453ea74b4487263205",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge identifying the affine relation, applying the cubic identity and extracting linear factors. The raw planner already supplied an algebraic lemma; preserve that raw evidence, but do not present it as a reviewer-derived answer or add artificial root-checking tasks."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "4f50133da314439ccfc15f3bc794c67d49b2e7eb965ac8d4c7aaa4babd53c133",
+          "contract_id": "43f86df87aa50106ccc143139c26de1a73a4afa7687e8da712a05af7ed90bfdc",
+          "namespace": "c43f86df87a"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "93bf006bec62b8eb166930c2214e602b95a0f5c8f532bbd0c7f7f374843a1601"
+  },
+  "execution_allowed": false,
+  "packet_digest": "d043a7ba0a859edc30aeac4641b0f06095a6a4eb2a549a3ada422a0ed9685d92"
+}
