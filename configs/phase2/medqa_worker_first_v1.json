@@ -1,0 +1,126 @@
+{
+  "components": [
+    {
+      "source_id": "dev/row/339",
+      "statement_sha256": "bd746823d5663ad4637cb5be5ba8833ea8cc0320ec878156fc895354dfc70112",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine which listed mechanism best explains the behavior described. Compare the relevant alternatives using the original question; return a concise justification and exactly one original option label.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "raw_plan_sha256": "8f8eedcee9b91fd0153f4ef1c9c5e478c027ea3892ad8974fb805f314129d86d",
+      "status": "proposed_pending_contract_review",
+      "contract_id": "4e8b97ae4d293c965dde3c3a537c62cbf34de1c93a6f08a44279730094a2e7af",
+      "namespace": "c4e8b97ae4d"
+    },
+    {
+      "source_id": "dev/row/970",
+      "statement_sha256": "9b05aada89e324cdbad83f665c786f2d35ba3cd3f5752858f57acb6bc742e098",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Infer the most plausible diagnostic hypothesis from the presentation. Provide supporting findings and relevant uncertainty or counterevidence in the artifact. Do not choose the confirmatory-test option; leave that decision to the consumer.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied diagnostic hypothesis and its evidence, together with the original question and all options, to determine the most appropriate confirmatory test in this context. Address any relevant uncertainty in the parent artifact; return justification and exactly one original option label.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "raw_plan_sha256": "438789b6b65c1be5ebbd59b650302d1e3de23452c62118a5448af59d20d4e180",
+      "status": "proposed_pending_contract_review",
+      "contract_id": "0a044b3c991cbefe23be11654cbd7dc20aa9e2d5842df0ba464bfe81e1a67421",
+      "namespace": "c0a044b3c99"
+    },
+    {
+      "source_id": "dev/row/479",
+      "statement_sha256": "2aec94b24b413358555009c762bc659462f25ab36bc5b48950b11484f56ff50e",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Identify the most plausible condition from the presentation and laboratory findings. Provide the hypothesis and supporting evidence in the artifact. Do not select the predisposing-factor option; leave that decision to the consumer.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied condition hypothesis and evidence, together with the original history and all options, to assess which listed factor most plausibly predisposes to the condition in this case. Return justification and exactly one original option label.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "C": "direct_parent_artifacts",
+      "reference_mode": "base",
+      "raw_plan_sha256": "4e5a02e21acd1424696b3ee8dbde406c24942ac36dffb81b9f78e993be88914b",
+      "status": "proposed_pending_contract_review",
+      "contract_id": "713d3699da43c55b1b2d311cd618f94e3d62613678d4d9fbd023cb3b10de4950",
+      "namespace": "c713d3699da"
+    }
+  ],
+  "limits": {
+    "maximum_calls": 33,
+    "profile_calls": 5,
+    "evaluation_calls": 28,
+    "evaluation_sessions": 10,
+    "context": 16384,
+    "input_cap": 13312,
+    "output_cap": 3072,
+    "token_cap": 540672,
+    "wall_seconds": 14400,
+    "physical_gpus": 1,
+    "cpus": 4,
+    "host_memory_gb": 128,
+    "minimum_vram_bytes": 80000000000,
+    "solver_seconds": 30,
+    "solver_threads": 1,
+    "solver_seed": 0
+  },
+  "cohort_digest": "1f471cbd92f4f957678bc26af84985ffb44699422122367c297f83983e6159a0"
+}

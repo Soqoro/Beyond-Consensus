@@ -165,7 +165,9 @@ def submit(root,value,*,dry_run=True,protocol=None):
     registry=cluster.registry_root();state_path=registry/'registry.json'
     def action():
         state=read_json(state_path) if state_path.exists() else {'jobs':[]}
-        cluster.guard(state)
+        overlap=scope.get("scheduler_policy")=={"allow_accounted_external_jobs":True,"maximum_user_gpus":4}
+        if overlap:cluster.guard(state,allow_accounted_overlap=True,requested_gpus=1)
+        else:cluster.guard(state)
         if hasattr(p,'submission_check'):p.submission_check(value,state)
         # A second bind/output directory must not allow repeating this cohort's attempt.
         require(p.KEY not in state.get('composite_math_attempts',{}),'cohort already submitted/uncertain; no retry')
@@ -185,9 +187,11 @@ def submit(root,value,*,dry_run=True,protocol=None):
         response=cluster.command(argv);job=response.split(';',1)[0]
         require(re.fullmatch('[0-9]+',job) is not None,'uncertain submission retained')
         reservation.update(job_id=job,state='submitted_no_retry');state['uncertain_submission']=None
-        state['completed_jobs']=(state.get('completed_jobs',[])+state.get('jobs',[]))[-100:]
-        state['jobs']=[{'job_id':job,'manifest_hash':digest(manifest),'snapshot':str(snapshot),'output':str(output),
-                       'concurrency':1,'physical_gpus_per_job':1,'reserved_physical_gpus':1,'mode':'composite-r0'}]
+        if not overlap:
+            state['completed_jobs']=(state.get('completed_jobs',[])+state.get('jobs',[]))[-100:]
+            state['jobs']=[]
+        state.setdefault('jobs',[]).append({'job_id':job,'manifest_hash':digest(manifest),'snapshot':str(snapshot),'output':str(output),
+                       'concurrency':1,'physical_gpus_per_job':1,'reserved_physical_gpus':1,'mode':'composite-r0'})
         atomic_json(state_path,state)
         return {'job_id':job,'snapshot':str(snapshot),'output':str(output),'scope_digest':key,'submitted':True}
     if dry_run:return action()
@@ -223,6 +227,8 @@ def run_allocated(root,output,*,protocol=None):
     if hasattr(p,'check_scoped_allocation'):p.check_scoped_allocation(allocation_record,scope)
     else:check_allocation(allocation_record)
     active=cluster.active_gpu_jobs()
-    require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
+    if scope.get('scheduler_policy')=={'allow_accounted_external_jobs':True,'maximum_user_gpus':4}:
+        require(active and sum(active.values())<=4 and any(j.split('_')[0]==job and count==1 for j,count in active.items()),'accounted four-GPU pool and own one-GPU job')
+    else:require(active and all(j.split('_')[0]==job and count==1 for j,count in active.items()),'exclusive one-GPU campaign')
     require(environment_inventory(config.python)==read_json(root/'resolved/environment.json'),'environment changed')
     return p.dispatch(value,output/'execution')
