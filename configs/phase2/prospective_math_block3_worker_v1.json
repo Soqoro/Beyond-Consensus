@@ -1,0 +1,3195 @@
+{
+  "schema": "prospective-math-block3-worker-contracts-v1",
+  "cohort_digest": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+  "planner_scope": "f85c5e2b667e77b5ed5e3520d0794cebe51876540f206effcf81139d2ae1a0e4",
+  "planner_result_sha256": "4f10c2d40cf01c2e1334fba624b703d8b63435512da5bb9019e40b3a4dbc7816",
+  "planner_attachment_sha256": "8ac2cb5ad663450373c3ad0632236447794341d299982daaa54421fa51629086",
+  "reviews": {
+    "test/intermediate_algebra/1232.json": {
+      "public_digest": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge complex substitution/simplification and the elementary modulus evaluation. The final formula application alone is not substantive complementary work."
+    },
+    "test/algebra/1837.json": {
+      "public_digest": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "scenario_ratios",
+            "domain_constraints"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Retain contextual modelling followed by constrained equation solution. The model artifact must preserve both scenarios and admissibility; no solved equation or numerical result is supplied by the reviewer."
+    },
+    "test/algebra/2064.json": {
+      "public_digest": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge expansion, vertex calculation and substitution into one quadratic-optimization responsibility; these are elementary steps of one calculation."
+    },
+    "test/intermediate_algebra/1791.json": {
+      "public_digest": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "best_response",
+            "value_function",
+            "domain_and_attainment"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Retain the genuine sequential best-response/value-function dependency. Do not reject sequential reasoning or assume boundedness without derivation."
+    },
+    "test/algebra/1282.json": {
+      "public_digest": "3c52ccde8b502e358ff9ff6fe3921413c68366e0f3357eec449e455d9814c18a",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Count the real inputs for which the stated nested radical is an integer, retaining all radical-domain restrictions and verifying which candidate outputs correspond to distinct admissible inputs.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "fcb9ddfc6d99745adaf796ea8ea053638ef9e70f1bd895450dedd5c3c5929ffe",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge candidate bounds, inverse mapping and counting into one short integer-parameter counting responsibility. Include counting in the paid terminal task rather than free final_assembly."
+    },
+    "test/number_theory/410.json": {
+      "public_digest": "daf70eddd095ece611f48d2365104a4c5ffdb17cc6e9cfabf4ce6ea173e9c5f6",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Convert the given fraction to its exact terminating decimal representation, with a concise justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "8167971eba50b4a1ed09d8ab30c7082ea4787f33c54b43794eb855574a2530dd",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Retain the model\u2019s single-task finding."
+    },
+    "test/intermediate_algebra/752.json": {
+      "public_digest": "76a9629528dee37d704e27907284b0a805afbf5b3d590fc74e7dcfc6c6a57ddc",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Evaluate the full stated logarithmic product with justified identities and cancellations.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "1a06b971905b342a9c473f0cfd36c300638146b84a3c34a1d547b3bdf3b08a2c",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge change-of-base rewriting, telescoping cancellation and final evaluation; separate formatting/algebraic steps do not establish complementary responsibilities."
+    },
+    "test/intermediate_algebra/834.json": {
+      "public_digest": "ec2d256b8a087ab965ee8aa730d32554464c1d7a30b539685dfe738c28dc41b6",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Translate both logarithmic equations into equivalent algebraic constraints, retaining all original argument and base restrictions.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "algebraic_constraints",
+            "domain_constraints"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied algebraic system and domain restrictions to determine the requested variable and verify admissibility in the original equations.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_answer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "7794cdbdd991d93c36b634ef581f373a7eb6cf0cfd7d3836ae4a7db8581fdd9f",
+      "substantive_no_answer_leakage": true,
+      "merge_reason": "Merge the two elementary equation translations into one domain-preserving model artifact; retain the dependent system solution and original-domain check."
+    }
+  },
+  "dispositions": {
+    "test/intermediate_algebra/1232.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/intermediate_algebra/1232.json",
+        "statement_sha256": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+        "review": {
+          "public_digest": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge complex substitution/simplification and the elementary modulus evaluation. The final formula application alone is not substantive complementary work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "3a601935afa322770c474313bbe7a8daecae8889e9b9b99f02b982348cb48977",
+        "namespace": "c3a601935af"
+      }
+    },
+    "test/algebra/1837.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/1837.json",
+        "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "scenario_ratios",
+              "domain_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+        "review": {
+          "public_digest": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "scenario_ratios",
+                "domain_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain contextual modelling followed by constrained equation solution. The model artifact must preserve both scenarios and admissibility; no solved equation or numerical result is supplied by the reviewer."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+        "namespace": "cd1268a45b4"
+      }
+    },
+    "test/algebra/2064.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/2064.json",
+        "statement_sha256": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+        "review": {
+          "public_digest": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge expansion, vertex calculation and substitution into one quadratic-optimization responsibility; these are elementary steps of one calculation."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "64295b5ca505978e8364687047568e6eb04a385f71a93e46cfee8af32673697d",
+        "namespace": "c64295b5ca5"
+      }
+    },
+    "test/intermediate_algebra/1791.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/intermediate_algebra/1791.json",
+        "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "best_response",
+              "value_function",
+              "domain_and_attainment"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+        "review": {
+          "public_digest": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "best_response",
+                "value_function",
+                "domain_and_attainment"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the genuine sequential best-response/value-function dependency. Do not reject sequential reasoning or assume boundedness without derivation."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+        "namespace": "c2d23ec6de6"
+      }
+    },
+    "test/algebra/1282.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/algebra/1282.json",
+        "statement_sha256": "3c52ccde8b502e358ff9ff6fe3921413c68366e0f3357eec449e455d9814c18a",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Count the real inputs for which the stated nested radical is an integer, retaining all radical-domain restrictions and verifying which candidate outputs correspond to distinct admissible inputs.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "fcb9ddfc6d99745adaf796ea8ea053638ef9e70f1bd895450dedd5c3c5929ffe",
+        "review": {
+          "public_digest": "3c52ccde8b502e358ff9ff6fe3921413c68366e0f3357eec449e455d9814c18a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Count the real inputs for which the stated nested radical is an integer, retaining all radical-domain restrictions and verifying which candidate outputs correspond to distinct admissible inputs.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "fcb9ddfc6d99745adaf796ea8ea053638ef9e70f1bd895450dedd5c3c5929ffe",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge candidate bounds, inverse mapping and counting into one short integer-parameter counting responsibility. Include counting in the paid terminal task rather than free final_assembly."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "bf09ad25f87ea7da6e9dd6c73bdbe6e311f97e77eab0371ab94544f77200b2b8",
+        "namespace": "cbf09ad25f8"
+      }
+    },
+    "test/number_theory/410.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/number_theory/410.json",
+        "statement_sha256": "daf70eddd095ece611f48d2365104a4c5ffdb17cc6e9cfabf4ce6ea173e9c5f6",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Convert the given fraction to its exact terminating decimal representation, with a concise justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "8167971eba50b4a1ed09d8ab30c7082ea4787f33c54b43794eb855574a2530dd",
+        "review": {
+          "public_digest": "daf70eddd095ece611f48d2365104a4c5ffdb17cc6e9cfabf4ce6ea173e9c5f6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Convert the given fraction to its exact terminating decimal representation, with a concise justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "8167971eba50b4a1ed09d8ab30c7082ea4787f33c54b43794eb855574a2530dd",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the model\u2019s single-task finding."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "fb9f7af65be7679d59496739cc32f255b1bc976e79ba161d0e1f4354c15f87f0",
+        "namespace": "cfb9f7af65b"
+      }
+    },
+    "test/intermediate_algebra/752.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/intermediate_algebra/752.json",
+        "statement_sha256": "76a9629528dee37d704e27907284b0a805afbf5b3d590fc74e7dcfc6c6a57ddc",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Evaluate the full stated logarithmic product with justified identities and cancellations.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "1a06b971905b342a9c473f0cfd36c300638146b84a3c34a1d547b3bdf3b08a2c",
+        "review": {
+          "public_digest": "76a9629528dee37d704e27907284b0a805afbf5b3d590fc74e7dcfc6c6a57ddc",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Evaluate the full stated logarithmic product with justified identities and cancellations.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "1a06b971905b342a9c473f0cfd36c300638146b84a3c34a1d547b3bdf3b08a2c",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge change-of-base rewriting, telescoping cancellation and final evaluation; separate formatting/algebraic steps do not establish complementary responsibilities."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "617cee92b8cd2c4357a8684da1a1f8c165282ebc66652c47a83fff9a3c5fa750",
+        "namespace": "c617cee92b8"
+      }
+    },
+    "test/intermediate_algebra/834.json": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/intermediate_algebra/834.json",
+        "statement_sha256": "ec2d256b8a087ab965ee8aa730d32554464c1d7a30b539685dfe738c28dc41b6",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Translate both logarithmic equations into equivalent algebraic constraints, retaining all original argument and base restrictions.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "algebraic_constraints",
+              "domain_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied algebraic system and domain restrictions to determine the requested variable and verify admissibility in the original equations.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "7794cdbdd991d93c36b634ef581f373a7eb6cf0cfd7d3836ae4a7db8581fdd9f",
+        "review": {
+          "public_digest": "ec2d256b8a087ab965ee8aa730d32554464c1d7a30b539685dfe738c28dc41b6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Translate both logarithmic equations into equivalent algebraic constraints, retaining all original argument and base restrictions.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "algebraic_constraints",
+                "domain_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied algebraic system and domain restrictions to determine the requested variable and verify admissibility in the original equations.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "7794cdbdd991d93c36b634ef581f373a7eb6cf0cfd7d3836ae4a7db8581fdd9f",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge the two elementary equation translations into one domain-preserving model artifact; retain the dependent system solution and original-domain check."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "250ca0bd7489aabc43fcd8050d695a74ba66737c8c3012778497c8ed3b1e6586",
+        "namespace": "c250ca0bd74"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+    "components": [
+      {
+        "source_id": "test/intermediate_algebra/1232.json",
+        "statement_sha256": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+        "review": {
+          "public_digest": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge complex substitution/simplification and the elementary modulus evaluation. The final formula application alone is not substantive complementary work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "3a601935afa322770c474313bbe7a8daecae8889e9b9b99f02b982348cb48977",
+        "namespace": "c3a601935af"
+      },
+      {
+        "source_id": "test/algebra/1837.json",
+        "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "scenario_ratios",
+              "domain_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+        "review": {
+          "public_digest": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "scenario_ratios",
+                "domain_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain contextual modelling followed by constrained equation solution. The model artifact must preserve both scenarios and admissibility; no solved equation or numerical result is supplied by the reviewer."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+        "namespace": "cd1268a45b4"
+      },
+      {
+        "source_id": "test/algebra/2064.json",
+        "statement_sha256": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+        "review": {
+          "public_digest": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Merge expansion, vertex calculation and substitution into one quadratic-optimization responsibility; these are elementary steps of one calculation."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "64295b5ca505978e8364687047568e6eb04a385f71a93e46cfee8af32673697d",
+        "namespace": "c64295b5ca5"
+      },
+      {
+        "source_id": "test/intermediate_algebra/1791.json",
+        "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "best_response",
+              "value_function",
+              "domain_and_attainment"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+        "review": {
+          "public_digest": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "best_response",
+                "value_function",
+                "domain_and_attainment"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+          "substantive_no_answer_leakage": true,
+          "merge_reason": "Retain the genuine sequential best-response/value-function dependency. Do not reject sequential reasoning or assume boundedness without derivation."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "math500",
+        "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+        "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+        "namespace": "c2d23ec6de6"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "1a8dff4ec02e062f497e0a400728afb781a6da1d83ee240ccab018261cd3de54",
+        "domain_structure_id": "728ae837014cb553c202a17672ea1f92ff655fff791cff13cdcc2f72c625058d",
+        "preprice_specification": {
+          "work_id": "1a8dff4ec02e062f497e0a400728afb781a6da1d83ee240ccab018261cd3de54",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "9de08ec37ca071612ccd69aac20ef409b2f205955b65fbe6601e342d162b2a6d",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c2d23ec6de6_t0",
+                "instruction": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c2d23ec6de6_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c2d23ec6de6_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c2d23ec6de6_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c2d23ec6de6_t1",
+                "instruction": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c2d23ec6de6_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c2d23ec6de6_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c2d23ec6de6_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c3a601935af_t0",
+                "instruction": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c3a601935af_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c3a601935af_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c3a601935af_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c64295b5ca5_t0",
+                "instruction": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c64295b5ca5_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c64295b5ca5_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c64295b5ca5_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cd1268a45b4_t0",
+                "instruction": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cd1268a45b4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cd1268a45b4_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cd1268a45b4_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cd1268a45b4_t1",
+                "instruction": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cd1268a45b4_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cd1268a45b4_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cd1268a45b4_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c2d23ec6de6_s0",
+                "artifact": {
+                  "artifact": "c2d23ec6de6_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c2d23ec6de6_s1",
+                "artifact": {
+                  "artifact": "c2d23ec6de6_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c3a601935af_s0",
+                "artifact": {
+                  "artifact": "c3a601935af_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c64295b5ca5_s0",
+                "artifact": {
+                  "artifact": "c64295b5ca5_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cd1268a45b4_s0",
+                "artifact": {
+                  "artifact": "cd1268a45b4_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cd1268a45b4_s1",
+                "artifact": {
+                  "artifact": "cd1268a45b4_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c2d23ec6de6_e0",
+                "host": "c2d23ec6de6_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c2d23ec6de6_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c2d23ec6de6_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c2d23ec6de6_s0",
+                  "c2d23ec6de6_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c2d23ec6de6_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c2d23ec6de6_e1",
+                "host": "c2d23ec6de6_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c2d23ec6de6_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c2d23ec6de6_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c2d23ec6de6_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c2d23ec6de6_s0",
+                  "c2d23ec6de6_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c2d23ec6de6_s1_read",
+                      "t0": "c2d23ec6de6_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c3a601935af_e0",
+                "host": "c3a601935af_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c3a601935af_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c3a601935af_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c3a601935af_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c3a601935af_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c64295b5ca5_e0",
+                "host": "c64295b5ca5_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c64295b5ca5_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c64295b5ca5_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c64295b5ca5_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c64295b5ca5_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cd1268a45b4_e0",
+                "host": "cd1268a45b4_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cd1268a45b4_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cd1268a45b4_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cd1268a45b4_s0",
+                  "cd1268a45b4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cd1268a45b4_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cd1268a45b4_e1",
+                "host": "cd1268a45b4_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cd1268a45b4_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cd1268a45b4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cd1268a45b4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cd1268a45b4_s0",
+                  "cd1268a45b4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cd1268a45b4_s1_read",
+                      "t0": "cd1268a45b4_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c2d23ec6de6_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c2d23ec6de6_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2d23ec6de6_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c2d23ec6de6_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2d23ec6de6_s0_read",
+                "producer": {
+                  "source": "c2d23ec6de6_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2d23ec6de6_s1_read",
+                "producer": {
+                  "source": "c2d23ec6de6_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c3a601935af_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c3a601935af_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c3a601935af_s0_read",
+                "producer": {
+                  "source": "c3a601935af_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c64295b5ca5_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c64295b5ca5_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c64295b5ca5_s0_read",
+                "producer": {
+                  "source": "c64295b5ca5_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cd1268a45b4_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cd1268a45b4_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cd1268a45b4_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cd1268a45b4_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cd1268a45b4_s0_read",
+                "producer": {
+                  "source": "cd1268a45b4_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cd1268a45b4_s1_read",
+                "producer": {
+                  "source": "cd1268a45b4_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "c3a601935af_e0",
+                "cd1268a45b4_e0",
+                "cd1268a45b4_e1",
+                "c64295b5ca5_e0",
+                "c2d23ec6de6_e0",
+                "c2d23ec6de6_e1"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c2d23ec6de6_t1_answer",
+                "artifact": {
+                  "artifact": "c2d23ec6de6_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c2d23ec6de6_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c3a601935af_t0_answer",
+                "artifact": {
+                  "artifact": "c3a601935af_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c3a601935af_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c64295b5ca5_t0_answer",
+                "artifact": {
+                  "artifact": "c64295b5ca5_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c64295b5ca5_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cd1268a45b4_t1_answer",
+                "artifact": {
+                  "artifact": "cd1268a45b4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cd1268a45b4_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819",
+        "neutral_seed": "86642892252597961088612727702827021828394699202553427292772304332621367276187",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c2d23ec6de6_t0": "o0",
+            "c3a601935af_t0": "o0",
+            "c2d23ec6de6_t1": "o1",
+            "c64295b5ca5_t0": "o1",
+            "cd1268a45b4_t0": "o2",
+            "cd1268a45b4_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 4,
+        "slot": 3,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "test/intermediate_algebra/1232.json",
+            "statement_sha256": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+            "review": {
+              "public_digest": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Merge complex substitution/simplification and the elementary modulus evaluation. The final formula application alone is not substantive complementary work."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+            "contract_id": "3a601935afa322770c474313bbe7a8daecae8889e9b9b99f02b982348cb48977",
+            "namespace": "c3a601935af"
+          },
+          {
+            "source_id": "test/algebra/1837.json",
+            "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "scenario_ratios",
+                  "domain_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+            "review": {
+              "public_digest": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "scenario_ratios",
+                    "domain_constraints"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Retain contextual modelling followed by constrained equation solution. The model artifact must preserve both scenarios and admissibility; no solved equation or numerical result is supplied by the reviewer."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+            "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+            "namespace": "cd1268a45b4"
+          },
+          {
+            "source_id": "test/algebra/2064.json",
+            "statement_sha256": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+            "review": {
+              "public_digest": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Merge expansion, vertex calculation and substitution into one quadratic-optimization responsibility; these are elementary steps of one calculation."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+            "contract_id": "64295b5ca505978e8364687047568e6eb04a385f71a93e46cfee8af32673697d",
+            "namespace": "c64295b5ca5"
+          },
+          {
+            "source_id": "test/intermediate_algebra/1791.json",
+            "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "best_response",
+                  "value_function",
+                  "domain_and_attainment"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+            "review": {
+              "public_digest": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "best_response",
+                    "value_function",
+                    "domain_and_attainment"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_answer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+              "substantive_no_answer_leakage": true,
+              "merge_reason": "Retain the genuine sequential best-response/value-function dependency. Do not reject sequential reasoning or assume boundedness without derivation."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "math500",
+            "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+            "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+            "namespace": "c2d23ec6de6"
+          }
+        ],
+        "sources": [
+          "test/intermediate_algebra/1232.json",
+          "test/algebra/1837.json",
+          "test/algebra/2064.json",
+          "test/intermediate_algebra/1791.json"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 32,
+          "isolation_verified": true,
+          "evaluation_calls": 32
+        }
+      }
+    ],
+    "planned_slots": 3,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 3,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "22b699c73e54c35590bce0c708912bb775a39938b076c9a57c31635a14ea25a8",
+        "historical_key": "a5111923447c069f7c2e1f4bed41afbbf47034cb3032866007c770d071b5d9d7",
+        "component": "c3a601935af",
+        "source_id": "test/intermediate_algebra/1232.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "3a601935afa322770c474313bbe7a8daecae8889e9b9b99f02b982348cb48977",
+          "statement_sha256": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+          "source_id": "test/intermediate_algebra/1232.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "6f7ed472614b7f41e1d860ad474f801bb7c8330783ed23a70794629f948d0c8c",
+        "historical_key": "69923b89d21e54921697ba92782fb32497ac345ae4e9a54f443932e48c078de6",
+        "component": "cd1268a45b4",
+        "source_id": "test/algebra/1837.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+          "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+          "source_id": "test/algebra/1837.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "scenario_ratios",
+              "domain_constraints"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "0abd736b21a2e4b3d6595ebe9c14cd7c550322aba8992ce2b6e0a10c07915a61",
+        "historical_key": "9fcde1634a123320984291d9c706a29d2188ab07d08dcb2bf367400f0e8a1278",
+        "component": "cd1268a45b4",
+        "source_id": "test/algebra/1837.json",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+          "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+          "source_id": "test/algebra/1837.json",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "4a2f6144ffca37938c006156f3b2bfe13ebf001419bda1957ad41b2b2f8a95f3",
+        "historical_key": "2d62580d19f948f772475c2a4b33e7636a228b73b9aadc5390ba5c13ca5670e5",
+        "component": "c64295b5ca5",
+        "source_id": "test/algebra/2064.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "64295b5ca505978e8364687047568e6eb04a385f71a93e46cfee8af32673697d",
+          "statement_sha256": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+          "source_id": "test/algebra/2064.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "b7f7d065dfd3bbafce17141fcad584ba31c4584b561342596003b47ca9f644a3",
+        "historical_key": "072a2d9d3e753095eaffb30978aff8c4ca94c50e779632747df510d409f2c639",
+        "component": "c2d23ec6de6",
+        "source_id": "test/intermediate_algebra/1791.json",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+          "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+          "source_id": "test/intermediate_algebra/1791.json",
+          "task": {
+            "id": "t0",
+            "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "best_response",
+              "value_function",
+              "domain_and_attainment"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      },
+      {
+        "key": "258ef1aaa06c372eae14d5ea2916186c29dc5541ede9b1dd2646b02bb2b68f97",
+        "historical_key": "9c5bc0ea46f6d09cb3f44f1a498669e2d75d7cde14c903c574a560dd0ee1e679",
+        "component": "c2d23ec6de6",
+        "source_id": "test/intermediate_algebra/1791.json",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+          "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+          "source_id": "test/intermediate_algebra/1791.json",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_answer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "math500"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "c3a601935af",
+        "mode": "base",
+        "events": [
+          "c3a601935af_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "cd1268a45b4",
+        "mode": "base",
+        "events": [
+          "cd1268a45b4_e0",
+          "cd1268a45b4_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c64295b5ca5",
+        "mode": "base",
+        "events": [
+          "c64295b5ca5_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "c2d23ec6de6",
+        "mode": "base",
+        "events": [
+          "c2d23ec6de6_e0",
+          "c2d23ec6de6_e1"
+        ],
+        "calls": 2
+      }
+    ],
+    "profile_consumers": {
+      "22b699c73e54c35590bce0c708912bb775a39938b076c9a57c31635a14ea25a8": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ],
+      "6f7ed472614b7f41e1d860ad474f801bb7c8330783ed23a70794629f948d0c8c": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ],
+      "0abd736b21a2e4b3d6595ebe9c14cd7c550322aba8992ce2b6e0a10c07915a61": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ],
+      "4a2f6144ffca37938c006156f3b2bfe13ebf001419bda1957ad41b2b2f8a95f3": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ],
+      "b7f7d065dfd3bbafce17141fcad584ba31c4584b561342596003b47ca9f644a3": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ],
+      "258ef1aaa06c372eae14d5ea2916186c29dc5541ede9b1dd2646b02bb2b68f97": [
+        "815a21a64bd58a2502a9b2f7e7537787437f8e6a59eacb69fad5b5f4426d9819"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 38,
+      "token_cap": 622592,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "test/intermediate_algebra/1232.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/intermediate_algebra/1232.json",
+          "statement_sha256": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+          "review": {
+            "public_digest": "40048990ab3eb47b5609a75b9f75ce2c726e0a3a72b14c3d24c52fa1ddd5421f",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Evaluate the modulus of the stated complex expression at the given complex input, with a concise justified calculation.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "d87b693c51101a02706ddec46c55f6802fb3da1135671d2b2ed7d4a962ea000a",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge complex substitution/simplification and the elementary modulus evaluation. The final formula application alone is not substantive complementary work."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "3a601935afa322770c474313bbe7a8daecae8889e9b9b99f02b982348cb48977",
+          "namespace": "c3a601935af"
+        }
+      },
+      "test/algebra/1837.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/1837.json",
+          "statement_sha256": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "scenario_ratios",
+                "domain_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+          "review": {
+            "public_digest": "eb2104a589828b1022c6cc810890c5e51306198d2816169c9a548ef484f08ef1",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Translate both alternative dog-assignment scenarios into pay-ratio expressions in the stated variable, recording the admissibility restrictions from the original situation.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "scenario_ratios",
+                  "domain_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied scenario ratios and restrictions to solve the equality condition, reject inadmissible or excluded values and return the requested nonzero value.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "3d4a007fbbab9d9256d14adb7dcc5f843e0a56e8533af2b6f62fcd7500654d03",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Retain contextual modelling followed by constrained equation solution. The model artifact must preserve both scenarios and admissibility; no solved equation or numerical result is supplied by the reviewer."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "d1268a45b4a6d4ae3dc2b052bd036aff718da5fb96ffcce908c1137697e3b536",
+          "namespace": "cd1268a45b4"
+        }
+      },
+      "test/algebra/2064.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/2064.json",
+          "statement_sha256": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+          "review": {
+            "public_digest": "56bc0c55cf1c808e02a67f1a67b61e9a7d08665c7f9cdd6d18b50b4565f2c095",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the global maximum of the stated quadratic over the real numbers and justify that it is attained.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "52897d419ab964702bcb2b8d89390f115f8d60267e3357e92debd490d0dc8452",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge expansion, vertex calculation and substitution into one quadratic-optimization responsibility; these are elementary steps of one calculation."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "64295b5ca505978e8364687047568e6eb04a385f71a93e46cfee8af32673697d",
+          "namespace": "c64295b5ca5"
+        }
+      },
+      "test/intermediate_algebra/1791.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/intermediate_algebra/1791.json",
+          "statement_sha256": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "best_response",
+                "value_function",
+                "domain_and_attainment"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+          "review": {
+            "public_digest": "57be859235c92104c8722fe7218d1c99c0fb263dea322ca7b85ce278a223944d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "For each fixed first-player choice, characterize the second player\u2019s optimal response and resulting objective value, stating attainment, domain and any unbounded cases.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "best_response",
+                  "value_function",
+                  "domain_and_attainment"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied second-player value function and validity conditions to determine and justify the first player\u2019s minimizing choice under the stated sequential game.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "d51825bb1155094d6e3771b47fb896f6e1d19bf1d0c71551278ad0b6c55a3a78",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Retain the genuine sequential best-response/value-function dependency. Do not reject sequential reasoning or assume boundedness without derivation."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "2d23ec6de6443f1c9e124cde1c2ecd70cc486d3dc691d101df00a4c6576de3da",
+          "namespace": "c2d23ec6de6"
+        }
+      },
+      "test/algebra/1282.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/algebra/1282.json",
+          "statement_sha256": "3c52ccde8b502e358ff9ff6fe3921413c68366e0f3357eec449e455d9814c18a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Count the real inputs for which the stated nested radical is an integer, retaining all radical-domain restrictions and verifying which candidate outputs correspond to distinct admissible inputs.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "fcb9ddfc6d99745adaf796ea8ea053638ef9e70f1bd895450dedd5c3c5929ffe",
+          "review": {
+            "public_digest": "3c52ccde8b502e358ff9ff6fe3921413c68366e0f3357eec449e455d9814c18a",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Count the real inputs for which the stated nested radical is an integer, retaining all radical-domain restrictions and verifying which candidate outputs correspond to distinct admissible inputs.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "fcb9ddfc6d99745adaf796ea8ea053638ef9e70f1bd895450dedd5c3c5929ffe",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge candidate bounds, inverse mapping and counting into one short integer-parameter counting responsibility. Include counting in the paid terminal task rather than free final_assembly."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "bf09ad25f87ea7da6e9dd6c73bdbe6e311f97e77eab0371ab94544f77200b2b8",
+          "namespace": "cbf09ad25f8"
+        }
+      },
+      "test/number_theory/410.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/number_theory/410.json",
+          "statement_sha256": "daf70eddd095ece611f48d2365104a4c5ffdb17cc6e9cfabf4ce6ea173e9c5f6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Convert the given fraction to its exact terminating decimal representation, with a concise justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "8167971eba50b4a1ed09d8ab30c7082ea4787f33c54b43794eb855574a2530dd",
+          "review": {
+            "public_digest": "daf70eddd095ece611f48d2365104a4c5ffdb17cc6e9cfabf4ce6ea173e9c5f6",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Convert the given fraction to its exact terminating decimal representation, with a concise justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "8167971eba50b4a1ed09d8ab30c7082ea4787f33c54b43794eb855574a2530dd",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Retain the model\u2019s single-task finding."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "fb9f7af65be7679d59496739cc32f255b1bc976e79ba161d0e1f4354c15f87f0",
+          "namespace": "cfb9f7af65b"
+        }
+      },
+      "test/intermediate_algebra/752.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/intermediate_algebra/752.json",
+          "statement_sha256": "76a9629528dee37d704e27907284b0a805afbf5b3d590fc74e7dcfc6c6a57ddc",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Evaluate the full stated logarithmic product with justified identities and cancellations.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "1a06b971905b342a9c473f0cfd36c300638146b84a3c34a1d547b3bdf3b08a2c",
+          "review": {
+            "public_digest": "76a9629528dee37d704e27907284b0a805afbf5b3d590fc74e7dcfc6c6a57ddc",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Evaluate the full stated logarithmic product with justified identities and cancellations.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "1a06b971905b342a9c473f0cfd36c300638146b84a3c34a1d547b3bdf3b08a2c",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge change-of-base rewriting, telescoping cancellation and final evaluation; separate formatting/algebraic steps do not establish complementary responsibilities."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "617cee92b8cd2c4357a8684da1a1f8c165282ebc66652c47a83fff9a3c5fa750",
+          "namespace": "c617cee92b8"
+        }
+      },
+      "test/intermediate_algebra/834.json": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/intermediate_algebra/834.json",
+          "statement_sha256": "ec2d256b8a087ab965ee8aa730d32554464c1d7a30b539685dfe738c28dc41b6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Translate both logarithmic equations into equivalent algebraic constraints, retaining all original argument and base restrictions.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "algebraic_constraints",
+                "domain_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied algebraic system and domain restrictions to determine the requested variable and verify admissibility in the original equations.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_answer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "7794cdbdd991d93c36b634ef581f373a7eb6cf0cfd7d3836ae4a7db8581fdd9f",
+          "review": {
+            "public_digest": "ec2d256b8a087ab965ee8aa730d32554464c1d7a30b539685dfe738c28dc41b6",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Translate both logarithmic equations into equivalent algebraic constraints, retaining all original argument and base restrictions.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "algebraic_constraints",
+                  "domain_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied algebraic system and domain restrictions to determine the requested variable and verify admissibility in the original equations.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_answer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "7794cdbdd991d93c36b634ef581f373a7eb6cf0cfd7d3836ae4a7db8581fdd9f",
+            "substantive_no_answer_leakage": true,
+            "merge_reason": "Merge the two elementary equation translations into one domain-preserving model artifact; retain the dependent system solution and original-domain check."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "math500",
+          "prospective_cohort": "0436a79e60ab4c9408692d5c1eca399a947014bb1309b1e2cf71e789d32be71f",
+          "contract_id": "250ca0bd7489aabc43fcd8050d695a74ba66737c8c3012778497c8ed3b1e6586",
+          "namespace": "c250ca0bd74"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "36c3eef92e4c7384b01c2b225565ba216dd84357cb6b692a70f41e5139a1f166"
+  },
+  "execution_allowed": false,
+  "packet_digest": "f82cdf364b731d87c38d4a929976fb871e35caa0acfb244cd1e48580f48446b0"
+}
