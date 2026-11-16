@@ -1,0 +1,2996 @@
+{
+  "schema": "prospective-medqa-block1-worker-contracts-v1",
+  "cohort_digest": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+  "planner_scope": "50e515dfb4d9b43822e39fe8acf1558b0b7e72fc3448ba2c29e431f31ec862de",
+  "planner_result_sha256": "df157a09c9627ba74cba38316845b96dbae2dcd7854aefbe0aa587e8e25d431b",
+  "planner_attachment_sha256": "e26389affd9702b845407402b984162f9eec46b0103e9675c7ef2d1088a769cc",
+  "reviews": {
+    "test/row/780": {
+      "public_digest": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain state inference followed by mechanism comparison. These require distinct clinical interpretation and physiological mapping; do not present stress response and stability as mutually exclusive."
+    },
+    "test/row/384": {
+      "public_digest": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain diagnostic synthesis followed by treatment comparison. No diagnosis or correct option is supplied by the reviewer; intermediate correctness remains unverified."
+    },
+    "test/row/1138": {
+      "public_digest": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain diagnostic synthesis followed by management selection. Original question and all options remain available to the terminal worker under the common source-access contract, despite omission of problem_statement in the raw T2 list."
+    },
+    "test/row/530": {
+      "public_digest": "6d439174f800e2a84171c36d24e5a718da3db36a6637324b3143318ae52da3f1",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Use the history and described examination findings to compare all original diagnostic options and select the most likely diagnosis with a finished justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "9b431b6bd448f36e4d92bb05b325b9f6660d3817d04992e4dd7b888fcbeafe39",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain the single-task finding. No extra diagnostic identification or answer-formatting task is added."
+    },
+    "test/row/229": {
+      "public_digest": "10d0336fc23f2c456aa2e31d7b841d48cd40882d24a2dec1007b9af9f8943f07",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Use the epidemiological history, symptoms and examination findings to formulate and justify a differential diagnosis without selecting the final option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied differential, laboratory results and examination signs to distinguish the candidates and select the most consistent original diagnostic option.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "3ec78856d4a0d5d09b7a552a93d36d3c2199cf358ca764e1e79e7a28ec3a73f4",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain differential construction followed by evidence-based discrimination. Clarify diagnostic option rather than requiring a pathogen name; all original evidence remains available, with no invented input isolation."
+    },
+    "test/row/675": {
+      "public_digest": "d4ef7bbe3f967acfa02f50ceffb24ca579a5b8001841cf346f553b352ddffc8d",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Compare the described drug mechanism with all original options and select the option with the most similar mechanism, with a finished justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "f1e47e7a63b3ab059b79fc445de4a730cf443907e68468bb1132d57ac90df4d6",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain the single-task mechanism-matching finding."
+    },
+    "test/row/948": {
+      "public_digest": "1187cf154499545b6d65d6bf879ecca6cdd6102fc3d432bda3a8028325dd2073",
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Interpret the developmental presentation and determine its untreated long-term consequence, then select the corresponding original option with a finished justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reviewer_kind": "AI-assisted",
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-16",
+      "plan_digest": "08b413babbed085a0831f9b11d86dcdc35e1891459df1f7bceeeac4cd29f2fe1",
+      "substantive_no_answer_leakage": true,
+      "reviewer_clarification": "Retain the single-task finding without artificially separating recognition and the short prognosis mapping."
+    }
+  },
+  "dispositions": {
+    "test/row/780": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/780",
+        "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+        "review": {
+          "public_digest": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain state inference followed by mechanism comparison. These require distinct clinical interpretation and physiological mapping; do not present stress response and stability as mutually exclusive."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+        "namespace": "cc0bef56eb1"
+      }
+    },
+    "test/row/495": {
+      "status": "unsupported",
+      "reason": "Reject this plan for admission: its produces field supplies a named diagnosis (TTTS) as the predetermined intermediate result. This violates the frozen solution-free planner contract. Preserve the raw response; no retry or solution-removing rewrite.",
+      "raw_plan_digest": "51a5c3f881632778274b81327677d6c840ccd2d8d83a0913d713c32dc0e8a0e8"
+    },
+    "test/row/384": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/384",
+        "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+        "review": {
+          "public_digest": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain diagnostic synthesis followed by treatment comparison. No diagnosis or correct option is supplied by the reviewer; intermediate correctness remains unverified."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+        "namespace": "c6f8169f531"
+      }
+    },
+    "test/row/1138": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/1138",
+        "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+        "review": {
+          "public_digest": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain diagnostic synthesis followed by management selection. Original question and all options remain available to the terminal worker under the common source-access contract, despite omission of problem_statement in the raw T2 list."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+        "namespace": "cc23a54fd19"
+      }
+    },
+    "test/row/530": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/530",
+        "statement_sha256": "6d439174f800e2a84171c36d24e5a718da3db36a6637324b3143318ae52da3f1",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the history and described examination findings to compare all original diagnostic options and select the most likely diagnosis with a finished justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "9b431b6bd448f36e4d92bb05b325b9f6660d3817d04992e4dd7b888fcbeafe39",
+        "review": {
+          "public_digest": "6d439174f800e2a84171c36d24e5a718da3db36a6637324b3143318ae52da3f1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the history and described examination findings to compare all original diagnostic options and select the most likely diagnosis with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "9b431b6bd448f36e4d92bb05b325b9f6660d3817d04992e4dd7b888fcbeafe39",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain the single-task finding. No extra diagnostic identification or answer-formatting task is added."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "ab31405664a2ffacd96ff8db4d202fa87a5355ef75ea77f94140a4a4796f3a62",
+        "namespace": "cab31405664"
+      }
+    },
+    "test/row/229": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/229",
+        "statement_sha256": "10d0336fc23f2c456aa2e31d7b841d48cd40882d24a2dec1007b9af9f8943f07",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the epidemiological history, symptoms and examination findings to formulate and justify a differential diagnosis without selecting the final option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied differential, laboratory results and examination signs to distinguish the candidates and select the most consistent original diagnostic option.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "3ec78856d4a0d5d09b7a552a93d36d3c2199cf358ca764e1e79e7a28ec3a73f4",
+        "review": {
+          "public_digest": "10d0336fc23f2c456aa2e31d7b841d48cd40882d24a2dec1007b9af9f8943f07",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the epidemiological history, symptoms and examination findings to formulate and justify a differential diagnosis without selecting the final option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied differential, laboratory results and examination signs to distinguish the candidates and select the most consistent original diagnostic option.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "3ec78856d4a0d5d09b7a552a93d36d3c2199cf358ca764e1e79e7a28ec3a73f4",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain differential construction followed by evidence-based discrimination. Clarify diagnostic option rather than requiring a pathogen name; all original evidence remains available, with no invented input isolation."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "7ef3194e04daa8eba858de299cf01fd62d833567761b7ab19a456504954e87d9",
+        "namespace": "c7ef3194e04"
+      }
+    },
+    "test/row/675": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/675",
+        "statement_sha256": "d4ef7bbe3f967acfa02f50ceffb24ca579a5b8001841cf346f553b352ddffc8d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Compare the described drug mechanism with all original options and select the option with the most similar mechanism, with a finished justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f1e47e7a63b3ab059b79fc445de4a730cf443907e68468bb1132d57ac90df4d6",
+        "review": {
+          "public_digest": "d4ef7bbe3f967acfa02f50ceffb24ca579a5b8001841cf346f553b352ddffc8d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Compare the described drug mechanism with all original options and select the option with the most similar mechanism, with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "f1e47e7a63b3ab059b79fc445de4a730cf443907e68468bb1132d57ac90df4d6",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain the single-task mechanism-matching finding."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "7872d2cda03c2ee60460d5b10236f9920569f5f354adc876bdae4e87c2d81267",
+        "namespace": "c7872d2cda0"
+      }
+    },
+    "test/row/948": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/948",
+        "statement_sha256": "1187cf154499545b6d65d6bf879ecca6cdd6102fc3d432bda3a8028325dd2073",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the developmental presentation and determine its untreated long-term consequence, then select the corresponding original option with a finished justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "08b413babbed085a0831f9b11d86dcdc35e1891459df1f7bceeeac4cd29f2fe1",
+        "review": {
+          "public_digest": "1187cf154499545b6d65d6bf879ecca6cdd6102fc3d432bda3a8028325dd2073",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the developmental presentation and determine its untreated long-term consequence, then select the corresponding original option with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "08b413babbed085a0831f9b11d86dcdc35e1891459df1f7bceeeac4cd29f2fe1",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain the single-task finding without artificially separating recognition and the short prognosis mapping."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "5f2a50fbab45f1cb58b87e083a134439d407c5a85adfc928e4c618bc6dbd7e42",
+        "namespace": "c5f2a50fbab"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+    "components": [
+      {
+        "source_id": "test/row/780",
+        "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+        "review": {
+          "public_digest": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain state inference followed by mechanism comparison. These require distinct clinical interpretation and physiological mapping; do not present stress response and stability as mutually exclusive."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+        "namespace": "cc0bef56eb1"
+      },
+      {
+        "source_id": "test/row/384",
+        "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+        "review": {
+          "public_digest": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain diagnostic synthesis followed by treatment comparison. No diagnosis or correct option is supplied by the reviewer; intermediate correctness remains unverified."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+        "namespace": "c6f8169f531"
+      },
+      {
+        "source_id": "test/row/1138",
+        "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+        "review": {
+          "public_digest": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reviewer_kind": "AI-assisted",
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-16",
+          "plan_digest": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+          "substantive_no_answer_leakage": true,
+          "reviewer_clarification": "Retain diagnostic synthesis followed by management selection. Original question and all options remain available to the terminal worker under the common source-access contract, despite omission of problem_statement in the raw T2 list."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+        "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+        "namespace": "cc23a54fd19"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "c9653ddc79f69b119335646159de572d9ed390851c24972f0a9ca9b65ed49588",
+        "domain_structure_id": "d2301a6df3ec2a4a62ca0c267f559db70c2e936231c75b530269289144f6576a",
+        "preprice_specification": {
+          "work_id": "c9653ddc79f69b119335646159de572d9ed390851c24972f0a9ca9b65ed49588",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "e771556a418a4aedf7d92f748302908f65cf902a4408d2ef8ea291af6296baf0",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c6f8169f531_t0",
+                "instruction": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c6f8169f531_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c6f8169f531_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c6f8169f531_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c6f8169f531_t1",
+                "instruction": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c6f8169f531_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c6f8169f531_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c6f8169f531_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc0bef56eb1_t0",
+                "instruction": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc0bef56eb1_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc0bef56eb1_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc0bef56eb1_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc0bef56eb1_t1",
+                "instruction": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc0bef56eb1_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc0bef56eb1_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc0bef56eb1_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc23a54fd19_t0",
+                "instruction": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc23a54fd19_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc23a54fd19_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc23a54fd19_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc23a54fd19_t1",
+                "instruction": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc23a54fd19_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc23a54fd19_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc23a54fd19_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c6f8169f531_s0",
+                "artifact": {
+                  "artifact": "c6f8169f531_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c6f8169f531_s1",
+                "artifact": {
+                  "artifact": "c6f8169f531_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc0bef56eb1_s0",
+                "artifact": {
+                  "artifact": "cc0bef56eb1_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc0bef56eb1_s1",
+                "artifact": {
+                  "artifact": "cc0bef56eb1_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc23a54fd19_s0",
+                "artifact": {
+                  "artifact": "cc23a54fd19_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc23a54fd19_s1",
+                "artifact": {
+                  "artifact": "cc23a54fd19_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c6f8169f531_e0",
+                "host": "c6f8169f531_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c6f8169f531_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c6f8169f531_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c6f8169f531_s0",
+                  "c6f8169f531_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c6f8169f531_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c6f8169f531_e1",
+                "host": "c6f8169f531_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c6f8169f531_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c6f8169f531_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c6f8169f531_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c6f8169f531_s0",
+                  "c6f8169f531_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c6f8169f531_s1_read",
+                      "t0": "c6f8169f531_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc0bef56eb1_e0",
+                "host": "cc0bef56eb1_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc0bef56eb1_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc0bef56eb1_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc0bef56eb1_s0",
+                  "cc0bef56eb1_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc0bef56eb1_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc0bef56eb1_e1",
+                "host": "cc0bef56eb1_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc0bef56eb1_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc0bef56eb1_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc0bef56eb1_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc0bef56eb1_s0",
+                  "cc0bef56eb1_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc0bef56eb1_s1_read",
+                      "t0": "cc0bef56eb1_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc23a54fd19_e0",
+                "host": "cc23a54fd19_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc23a54fd19_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc23a54fd19_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc23a54fd19_s0",
+                  "cc23a54fd19_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc23a54fd19_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc23a54fd19_e1",
+                "host": "cc23a54fd19_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc23a54fd19_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc23a54fd19_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc23a54fd19_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc23a54fd19_s0",
+                  "cc23a54fd19_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc23a54fd19_s1_read",
+                      "t0": "cc23a54fd19_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c6f8169f531_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c6f8169f531_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c6f8169f531_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c6f8169f531_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c6f8169f531_s0_read",
+                "producer": {
+                  "source": "c6f8169f531_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c6f8169f531_s1_read",
+                "producer": {
+                  "source": "c6f8169f531_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc0bef56eb1_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc0bef56eb1_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc0bef56eb1_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc0bef56eb1_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc0bef56eb1_s0_read",
+                "producer": {
+                  "source": "cc0bef56eb1_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc0bef56eb1_s1_read",
+                "producer": {
+                  "source": "cc0bef56eb1_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc23a54fd19_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc23a54fd19_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc23a54fd19_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc23a54fd19_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc23a54fd19_s0_read",
+                "producer": {
+                  "source": "cc23a54fd19_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc23a54fd19_s1_read",
+                "producer": {
+                  "source": "cc23a54fd19_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "cc0bef56eb1_e0",
+                "cc0bef56eb1_e1",
+                "c6f8169f531_e0",
+                "c6f8169f531_e1",
+                "cc23a54fd19_e0",
+                "cc23a54fd19_e1"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c6f8169f531_t1_answer",
+                "artifact": {
+                  "artifact": "c6f8169f531_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c6f8169f531_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc0bef56eb1_t1_answer",
+                "artifact": {
+                  "artifact": "cc0bef56eb1_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc0bef56eb1_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc23a54fd19_t1_answer",
+                "artifact": {
+                  "artifact": "cc23a54fd19_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc23a54fd19_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e",
+        "neutral_seed": "38919351001577021840491094124866336921174360719860776694791258069355626012696",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c6f8169f531_t0": "o0",
+            "c6f8169f531_t1": "o1",
+            "cc0bef56eb1_t0": "o2",
+            "cc0bef56eb1_t1": "o2",
+            "cc23a54fd19_t0": "o3",
+            "cc23a54fd19_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 3,
+        "slot": 1,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "test/row/780",
+            "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+            "review": {
+              "public_digest": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+              "substantive_no_answer_leakage": true,
+              "reviewer_clarification": "Retain state inference followed by mechanism comparison. These require distinct clinical interpretation and physiological mapping; do not present stress response and stability as mutually exclusive."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+            "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+            "namespace": "cc0bef56eb1"
+          },
+          {
+            "source_id": "test/row/384",
+            "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+            "review": {
+              "public_digest": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+              "substantive_no_answer_leakage": true,
+              "reviewer_clarification": "Retain diagnostic synthesis followed by treatment comparison. No diagnosis or correct option is supplied by the reviewer; intermediate correctness remains unverified."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+            "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+            "namespace": "c6f8169f531"
+          },
+          {
+            "source_id": "test/row/1138",
+            "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+            "review": {
+              "public_digest": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reviewer_kind": "AI-assisted",
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-16",
+              "plan_digest": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+              "substantive_no_answer_leakage": true,
+              "reviewer_clarification": "Retain diagnostic synthesis followed by management selection. Original question and all options remain available to the terminal worker under the common source-access contract, despite omission of problem_statement in the raw T2 list."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+            "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+            "namespace": "cc23a54fd19"
+          }
+        ],
+        "sources": [
+          "test/row/780",
+          "test/row/384",
+          "test/row/1138"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 36,
+          "isolation_verified": true,
+          "evaluation_calls": 36
+        }
+      }
+    ],
+    "planned_slots": 3,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 1,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "0320d7437568d3ca244de71ebaaf9680f96a3e14f7b9b2a282abc8da2ea871cd",
+        "historical_key": "fe7f96f59c36a0a39d11b52046329f9b04f042eb9791512a18f07a04054559d8",
+        "component": "cc0bef56eb1",
+        "source_id": "test/row/780",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+          "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+          "source_id": "test/row/780",
+          "task": {
+            "id": "t0",
+            "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "ccb33b55d1477ab06248930a155c7717141970df43690b687ba3944105797148",
+        "historical_key": "22b205ba1e5a034c60537cbb1913c135c32aa97c864b13e7bb9d07498f91d676",
+        "component": "cc0bef56eb1",
+        "source_id": "test/row/780",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+          "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+          "source_id": "test/row/780",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "d2d76b97269655391a3a92dabbf789084d4dbd00a178f5367b95fda7c20f2ef7",
+        "historical_key": "d67e882c9cd72b79d8140d7fede0482e490e2b4b0caa53f84c4b3f53c8a8549a",
+        "component": "c6f8169f531",
+        "source_id": "test/row/384",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+          "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+          "source_id": "test/row/384",
+          "task": {
+            "id": "t0",
+            "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "99fc656387a2abc5c7f6cf3b57840c91d1db5991f0c4d7e18b0af0a02d84e4b9",
+        "historical_key": "151aadb0f7fcb262ef7249b5fb2d3ccda4e1fd5d448b5f024788ce3519d3871c",
+        "component": "c6f8169f531",
+        "source_id": "test/row/384",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+          "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+          "source_id": "test/row/384",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "9abe396437b48b0a298485e6284ae765f9c16b90b81553ae0a48fdbd76dd9eaf",
+        "historical_key": "0a33629272e9b958b4f7fb7c784f7e8b17973cded2ed150a0203ef5d6d31c7bd",
+        "component": "cc23a54fd19",
+        "source_id": "test/row/1138",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+          "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+          "source_id": "test/row/1138",
+          "task": {
+            "id": "t0",
+            "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "709b4373393511dde5d66f386ee5373c9237c2ded9e77843adb03b5344328bdd",
+        "historical_key": "40d270c09a4306968dd0fdfb2cbafe76318e4df37e764a961dbc392d6d6541b5",
+        "component": "cc23a54fd19",
+        "source_id": "test/row/1138",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+          "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+          "source_id": "test/row/1138",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "cc0bef56eb1",
+        "mode": "base",
+        "events": [
+          "cc0bef56eb1_e0",
+          "cc0bef56eb1_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c6f8169f531",
+        "mode": "base",
+        "events": [
+          "c6f8169f531_e0",
+          "c6f8169f531_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "cc23a54fd19",
+        "mode": "base",
+        "events": [
+          "cc23a54fd19_e0",
+          "cc23a54fd19_e1"
+        ],
+        "calls": 2
+      }
+    ],
+    "profile_consumers": {
+      "0320d7437568d3ca244de71ebaaf9680f96a3e14f7b9b2a282abc8da2ea871cd": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ],
+      "ccb33b55d1477ab06248930a155c7717141970df43690b687ba3944105797148": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ],
+      "d2d76b97269655391a3a92dabbf789084d4dbd00a178f5367b95fda7c20f2ef7": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ],
+      "99fc656387a2abc5c7f6cf3b57840c91d1db5991f0c4d7e18b0af0a02d84e4b9": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ],
+      "9abe396437b48b0a298485e6284ae765f9c16b90b81553ae0a48fdbd76dd9eaf": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ],
+      "709b4373393511dde5d66f386ee5373c9237c2ded9e77843adb03b5344328bdd": [
+        "08069e61afb613f81a43c4ea87f42b818f631c9d86cf500f65c206a3cd16311e"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 42,
+      "token_cap": 688128,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "test/row/780": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/780",
+          "statement_sha256": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+          "review": {
+            "public_digest": "28e30051fa64b14bd8fd3cf3ae3c40b378e929f587a02a9b4042ac7a638eb5a6",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Assess the physiological and autonomic response supported by the injury context and observations. Provide a reasoned physiological interpretation without selecting an answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied physiological interpretation to evaluate the neurochemical and hemodynamic processes in all original options and select the most consistent option.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "c2166d6e6755e571541acb61904c9660583434c1f71c62c69d3adc148692ff57",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain state inference followed by mechanism comparison. These require distinct clinical interpretation and physiological mapping; do not present stress response and stability as mutually exclusive."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "c0bef56eb14553367a7bdf6e62d252e63ac2d838b28925800a7f7cc49477c138",
+          "namespace": "cc0bef56eb1"
+        }
+      },
+      "test/row/495": {
+        "status": "unsupported",
+        "reason": "Reject this plan for admission: its produces field supplies a named diagnosis (TTTS) as the predetermined intermediate result. This violates the frozen solution-free planner contract. Preserve the raw response; no retry or solution-removing rewrite.",
+        "raw_plan_digest": "51a5c3f881632778274b81327677d6c840ccd2d8d83a0913d713c32dc0e8a0e8"
+      },
+      "test/row/384": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/384",
+          "statement_sha256": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+          "review": {
+            "public_digest": "653c98df4e6a3dcef4b7d10c0dc4cf3130fa95a53a69dc0374c26a8194f221e8",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the clinical history and described findings into a supported diagnostic hypothesis and explain the evidence, without selecting a treatment option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied diagnostic hypothesis and original case to compare all treatment options and select the most appropriate definitive intervention.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "92f07ab49d4072eb8f3571644aa8cdc496f4df7a0a0ec398d0aeb5382e573ca3",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain diagnostic synthesis followed by treatment comparison. No diagnosis or correct option is supplied by the reviewer; intermediate correctness remains unverified."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "6f8169f5317d324057168ff4a607c4925950dcfb2ef32e4afeda323c7e373fe9",
+          "namespace": "c6f8169f531"
+        }
+      },
+      "test/row/1138": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/1138",
+          "statement_sha256": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+          "review": {
+            "public_digest": "43ce4313b2f83b76a4a7afe4b7ef92b5f8bb3a41819736b1063b56d87758e88d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the symptoms and described findings into a supported diagnostic hypothesis and underlying pathophysiological interpretation, without selecting a management option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied diagnostic hypothesis and original question to compare all management options and select the most appropriate intervention.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "efad9a9294487ebcc21ff7c11a2d9d2a692bafe24fa485fc65ecd0cdc912d83e",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain diagnostic synthesis followed by management selection. Original question and all options remain available to the terminal worker under the common source-access contract, despite omission of problem_statement in the raw T2 list."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "c23a54fd195c9b53c5522117f4577f66592d7dd6414e609ebbf3b1daea9c87bf",
+          "namespace": "cc23a54fd19"
+        }
+      },
+      "test/row/530": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/530",
+          "statement_sha256": "6d439174f800e2a84171c36d24e5a718da3db36a6637324b3143318ae52da3f1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the history and described examination findings to compare all original diagnostic options and select the most likely diagnosis with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "9b431b6bd448f36e4d92bb05b325b9f6660d3817d04992e4dd7b888fcbeafe39",
+          "review": {
+            "public_digest": "6d439174f800e2a84171c36d24e5a718da3db36a6637324b3143318ae52da3f1",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the history and described examination findings to compare all original diagnostic options and select the most likely diagnosis with a finished justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "9b431b6bd448f36e4d92bb05b325b9f6660d3817d04992e4dd7b888fcbeafe39",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain the single-task finding. No extra diagnostic identification or answer-formatting task is added."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "ab31405664a2ffacd96ff8db4d202fa87a5355ef75ea77f94140a4a4796f3a62",
+          "namespace": "cab31405664"
+        }
+      },
+      "test/row/229": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/229",
+          "statement_sha256": "10d0336fc23f2c456aa2e31d7b841d48cd40882d24a2dec1007b9af9f8943f07",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the epidemiological history, symptoms and examination findings to formulate and justify a differential diagnosis without selecting the final option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied differential, laboratory results and examination signs to distinguish the candidates and select the most consistent original diagnostic option.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "3ec78856d4a0d5d09b7a552a93d36d3c2199cf358ca764e1e79e7a28ec3a73f4",
+          "review": {
+            "public_digest": "10d0336fc23f2c456aa2e31d7b841d48cd40882d24a2dec1007b9af9f8943f07",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the epidemiological history, symptoms and examination findings to formulate and justify a differential diagnosis without selecting the final option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied differential, laboratory results and examination signs to distinguish the candidates and select the most consistent original diagnostic option.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "3ec78856d4a0d5d09b7a552a93d36d3c2199cf358ca764e1e79e7a28ec3a73f4",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain differential construction followed by evidence-based discrimination. Clarify diagnostic option rather than requiring a pathogen name; all original evidence remains available, with no invented input isolation."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "7ef3194e04daa8eba858de299cf01fd62d833567761b7ab19a456504954e87d9",
+          "namespace": "c7ef3194e04"
+        }
+      },
+      "test/row/675": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/675",
+          "statement_sha256": "d4ef7bbe3f967acfa02f50ceffb24ca579a5b8001841cf346f553b352ddffc8d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Compare the described drug mechanism with all original options and select the option with the most similar mechanism, with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "f1e47e7a63b3ab059b79fc445de4a730cf443907e68468bb1132d57ac90df4d6",
+          "review": {
+            "public_digest": "d4ef7bbe3f967acfa02f50ceffb24ca579a5b8001841cf346f553b352ddffc8d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Compare the described drug mechanism with all original options and select the option with the most similar mechanism, with a finished justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "f1e47e7a63b3ab059b79fc445de4a730cf443907e68468bb1132d57ac90df4d6",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain the single-task mechanism-matching finding."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "7872d2cda03c2ee60460d5b10236f9920569f5f354adc876bdae4e87c2d81267",
+          "namespace": "c7872d2cda0"
+        }
+      },
+      "test/row/948": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/948",
+          "statement_sha256": "1187cf154499545b6d65d6bf879ecca6cdd6102fc3d432bda3a8028325dd2073",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the developmental presentation and determine its untreated long-term consequence, then select the corresponding original option with a finished justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "08b413babbed085a0831f9b11d86dcdc35e1891459df1f7bceeeac4cd29f2fe1",
+          "review": {
+            "public_digest": "1187cf154499545b6d65d6bf879ecca6cdd6102fc3d432bda3a8028325dd2073",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the developmental presentation and determine its untreated long-term consequence, then select the corresponding original option with a finished justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reviewer_kind": "AI-assisted",
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-16",
+            "plan_digest": "08b413babbed085a0831f9b11d86dcdc35e1891459df1f7bceeeac4cd29f2fe1",
+            "substantive_no_answer_leakage": true,
+            "reviewer_clarification": "Retain the single-task finding without artificially separating recognition and the short prognosis mapping."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8732e9e8e667c4130fe403f4f4b9d602f9e4d80ec354a6014c53ffde2c94cafa",
+          "contract_id": "5f2a50fbab45f1cb58b87e083a134439d407c5a85adfc928e4c618bc6dbd7e42",
+          "namespace": "c5f2a50fbab"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "78d59c93765ab935b412dfd9d9ef1ce09528a29ab7a5c1fdf063ed30ee33c8ed"
+  },
+  "execution_allowed": false,
+  "packet_digest": "8cb285db65fe615dd830944d203a57dede320b31a17b3b600bc194a0e14dc5c5"
+}
