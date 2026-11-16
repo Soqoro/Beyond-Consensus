@@ -35,6 +35,22 @@ class ReviewExport(unittest.TestCase):
             self.assertEqual(out['packet_digest'],digest({k:v for k,v in out.items() if k!='packet_digest'}))
             self.assertFalse(out['execution_allowed']);self.assertEqual(out['decisions'],[])
             self.assertEqual(out,e.export(inv,raw,exp))
+    def test_later_block_is_fixed_without_resetting_first(self):
+        inv,raw,exp,bindings=self.data()
+        with patch.multiple(e,**bindings):
+            first=e.export(inv,raw,exp)
+            second=e.export(inv,raw,exp,2)
+            self.assertEqual(second['source_ids'],first['frozen_blocks'][1]['source_ids'])
+            self.assertEqual(second['frozen_blocks'],first['frozen_blocks'])
+            self.assertEqual(second['cohort_digest'],first['cohort_digest'])
+            self.assertFalse(set(first['source_ids']) & set(second['source_ids']))
+            self.assertEqual(second['unique_pairs_compared'],668)
+            self.assertEqual(second['decisions'],[])
+            self.assertFalse(second['execution_allowed'])
+            self.assertEqual(first,e.export(inv,raw,exp,1))
+            for value in (0,4,True,'2'):
+                with self.assertRaises(Invalid):e.export(inv,raw,exp,value)
+
     def test_changed_bytes_or_inventory_rejected(self):
         inv,raw,exp,bindings=self.data()
         with patch.multiple(e,**bindings):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only, statement-only family review export for frozen MATH block one.
+"""Read-only, statement-only family review export for a selected frozen MATH block.
 
 No model, network, reference answer, admission or cohort replacement.
 """
@@ -47,7 +47,8 @@ def comparisons(public, targets, historical, prospective):
         rows.append(dict(source_id=sid,nearest=groups))
     return rows,len(compared)
 
-def export(inv,public_raw,exposure):
+def export(inv,public_raw,exposure,block=1):
+    require(type(block) is int and 1<=block<=3,'frozen block 1..3')
     require(inv['dataset']=='math500' and inv['revision']==REVISION,'pinned dataset')
     require(digest(inv['records'])==INVENTORY and len(inv['records'])==500,'received inventory')
     proc=inv['procedure']
@@ -74,18 +75,18 @@ def export(inv,public_raw,exposure):
     cohort=freeze(inv['records'],'math500',REVISION,exp,proc,review)
     require(cohort['cohort_digest']==COHORT,'candidate blocks unchanged')
     ids=[r['source_id'] for b in cohort['blocks'] for r in b['records']]
-    first=[r['source_id'] for r in cohort['blocks'][0]['records']]
+    first=[r['source_id'] for r in cohort['blocks'][block-1]['records']]
     pairs,count=comparisons(public,first,historical,ids)
     exported=set(first)
     for row in pairs:
         for group in row['nearest'].values():exported.update(r['source_id'] for r in group)
     value=dict(purpose='Reviewer-only source family and text-sufficiency review; no solutions',
         inventory_digest=INVENTORY,procedure_digest=PROCEDURE,cohort_digest=COHORT,
-        public_file_sha256=PUBLIC,block=1,source_ids=first,
+        public_file_sha256=PUBLIC,block=block,source_ids=first,
         frozen_blocks=[dict(slot=b['slot'],source_ids=[r['source_id'] for r in b['records']]) for b in cohort['blocks']],
         cards=[public[sid] for sid in first],comparison_cards=[dict(public[sid],role='historical' if sid in historical else 'other_frozen_prospective') for sid in sorted(exported-set(first))],
         comparisons=pairs,unique_pairs_compared=count,
-        similarity_policy='case-sensitive token-set Jaccard; retain numbers/operators; top 3 historical and top 2 prospective per block-one source; lexical tie by ID',
+        similarity_policy=('case-sensitive token-set Jaccard; retain numbers/operators; top 3 historical and top 2 prospective per block-one source; lexical tie by ID' if block==1 else f'case-sensitive token-set Jaccard; retain numbers/operators; top 3 historical and top 2 prospective per block-{block} source; lexical tie by ID'),
         source_review_exposure_ids=sorted(exported),
         limitations=['Similarity is retrieval support, not proof of semantic disjointness.',
                      'Only named historical exclusions and frozen prospective candidates compared; no global family clearance.',
@@ -99,10 +100,11 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--preparation',required=True,type=Path)
     ap.add_argument('--output',required=True,type=Path)
+    ap.add_argument('--block',type=int,choices=(1,2,3),default=1)
     args=ap.parse_args();start=time.process_time();wall=time.monotonic()
     inv=json.loads((args.preparation/'inventory.json').read_text())
     exposure=json.loads((ROOT/'configs/phase2/prospective_exposure_v1.json').read_text())
-    value=export(inv,(args.preparation/'math.public.json').read_bytes(),exposure)
+    value=export(inv,(args.preparation/'math.public.json').read_bytes(),exposure,args.block)
     value['export_resources']=dict(cpu_seconds=time.process_time()-start,wall_seconds=time.monotonic()-wall)
     with args.output.open('x') as f:json.dump(value,f,indent=2);f.write('\n')
     print(json.dumps(dict(report=str(args.output),sha256=hashlib.sha256(args.output.read_bytes()).hexdigest(),
