@@ -1,0 +1,2967 @@
+{
+  "schema": "prospective-medqa-block2-worker-contracts-v1",
+  "cohort_digest": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+  "planner_scope": "8ce77d60a8592e0a91171a5f4e2a13da3b16556946d66af383fcff7ff61385c3",
+  "planner_result_sha256": "03b9b04193e5d34b54b39b76eec81a84b44d69d289a5ac7681013b371b534597",
+  "planner_attachment_sha256": "fb72fc435b2b9f863d05d5ec33c540f519c07e0f12956885a710f03345b944aa",
+  "reviews": {
+    "test/row/988": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+      "plan_digest": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    },
+    "test/row/602": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+      "plan_digest": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    },
+    "test/row/1078": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+      "plan_digest": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    },
+    "test/row/754": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+      "plan_digest": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    },
+    "test/row/954": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "01b9de3bfcd5c4b823e94a7f446e3b5792d60320a2e4fd93c78272e9f0dd1261",
+      "plan_digest": "4ab21a0ce653e2ef567353f3d8574d6c01bdac8b3b6796031926a5876266109c",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Analyze the original clinical course and medication chronology to identify constraints affecting interpretation of renal diagnostic tests. Produce a constraints artifact without ranking the options or selecting a test.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the constraints artifact and original question to compare all supplied tests for the requested distinction. Select one original option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    },
+    "test/row/401": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "24b5a1973f92a22172aa6d836e8d5c25cbafdda63b577f9baca0c8f4917e7e3e",
+      "plan_digest": "2bc1ea8b309001bc34419d453ddec2e0b45d0ac40d13eecc97a7c4a1b2980f81",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Interpret the original clinical observations and laboratory findings to identify the implicated deficiency and impaired biochemical reaction. Produce a reaction-identification artifact without naming its cellular location or selecting an option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the reaction-identification artifact to determine its cellular location and compare all original options. Select one original option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+    }
+  },
+  "dispositions": {
+    "test/row/988": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/988",
+        "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+          "plan_digest": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+        "namespace": "c08de525377"
+      }
+    },
+    "test/row/602": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/602",
+        "statement_sha256": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+          "plan_digest": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "02aa4aa6bc69b0ead9237e4190e90066424763c7f71bfa4a1ed1ea6b00f3d520",
+        "namespace": "c02aa4aa6bc"
+      }
+    },
+    "test/row/1078": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/1078",
+        "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+          "plan_digest": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+        "namespace": "c33b1fca590"
+      }
+    },
+    "test/row/754": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/754",
+        "statement_sha256": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+          "plan_digest": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "39a94b34b3aa5f973844dac7bfe0a6af03f07207f55f8afa3934784fcd826ba7",
+        "namespace": "c39a94b34b3"
+      }
+    },
+    "test/row/954": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/954",
+        "statement_sha256": "01b9de3bfcd5c4b823e94a7f446e3b5792d60320a2e4fd93c78272e9f0dd1261",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the original clinical course and medication chronology to identify constraints affecting interpretation of renal diagnostic tests. Produce a constraints artifact without ranking the options or selecting a test.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the constraints artifact and original question to compare all supplied tests for the requested distinction. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "4ab21a0ce653e2ef567353f3d8574d6c01bdac8b3b6796031926a5876266109c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "01b9de3bfcd5c4b823e94a7f446e3b5792d60320a2e4fd93c78272e9f0dd1261",
+          "plan_digest": "4ab21a0ce653e2ef567353f3d8574d6c01bdac8b3b6796031926a5876266109c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the original clinical course and medication chronology to identify constraints affecting interpretation of renal diagnostic tests. Produce a constraints artifact without ranking the options or selecting a test.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the constraints artifact and original question to compare all supplied tests for the requested distinction. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "668a3293981553b586e81885771f610ec64881a6f12caf96b2e51e44934702c9",
+        "namespace": "c668a329398"
+      }
+    },
+    "test/row/233": {
+      "status": "blocked",
+      "reason": "Preserved source-review block; no planner attempt."
+    },
+    "test/row/874": {
+      "status": "blocked",
+      "reason": "Preserved source-review block; no planner attempt."
+    },
+    "test/row/401": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/401",
+        "statement_sha256": "24b5a1973f92a22172aa6d836e8d5c25cbafdda63b577f9baca0c8f4917e7e3e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the original clinical observations and laboratory findings to identify the implicated deficiency and impaired biochemical reaction. Produce a reaction-identification artifact without naming its cellular location or selecting an option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the reaction-identification artifact to determine its cellular location and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "2bc1ea8b309001bc34419d453ddec2e0b45d0ac40d13eecc97a7c4a1b2980f81",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "24b5a1973f92a22172aa6d836e8d5c25cbafdda63b577f9baca0c8f4917e7e3e",
+          "plan_digest": "2bc1ea8b309001bc34419d453ddec2e0b45d0ac40d13eecc97a7c4a1b2980f81",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the original clinical observations and laboratory findings to identify the implicated deficiency and impaired biochemical reaction. Produce a reaction-identification artifact without naming its cellular location or selecting an option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the reaction-identification artifact to determine its cellular location and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "17a3f03d27cb457eac89d40535612c43d4ec23f2bc8818ec446f553691bb6bb1",
+        "namespace": "c17a3f03d27"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+    "components": [
+      {
+        "source_id": "test/row/988",
+        "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+          "plan_digest": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+        "namespace": "c08de525377"
+      },
+      {
+        "source_id": "test/row/602",
+        "statement_sha256": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+          "plan_digest": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "02aa4aa6bc69b0ead9237e4190e90066424763c7f71bfa4a1ed1ea6b00f3d520",
+        "namespace": "c02aa4aa6bc"
+      },
+      {
+        "source_id": "test/row/1078",
+        "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+          "plan_digest": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+        "namespace": "c33b1fca590"
+      },
+      {
+        "source_id": "test/row/754",
+        "statement_sha256": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+          "plan_digest": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+        "contract_id": "39a94b34b3aa5f973844dac7bfe0a6af03f07207f55f8afa3934784fcd826ba7",
+        "namespace": "c39a94b34b3"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "aba3645bfe78369b474ac0327655eed376e95b44be248d3773612e66e83b42c4",
+        "domain_structure_id": "7794ddb490b701b2dabbe95d78057e303740ee56ff07e8a2cf13754360a2d714",
+        "preprice_specification": {
+          "work_id": "aba3645bfe78369b474ac0327655eed376e95b44be248d3773612e66e83b42c4",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "e69c7cbd2084244e6f475fa946c604c2f524d23efe547e2ed6cda7a41526ee5d",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c02aa4aa6bc_t0",
+                "instruction": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c02aa4aa6bc_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c02aa4aa6bc_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c02aa4aa6bc_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c08de525377_t0",
+                "instruction": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c08de525377_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c08de525377_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c08de525377_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c08de525377_t1",
+                "instruction": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c08de525377_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c08de525377_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c08de525377_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c33b1fca590_t0",
+                "instruction": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c33b1fca590_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c33b1fca590_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c33b1fca590_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c33b1fca590_t1",
+                "instruction": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c33b1fca590_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c33b1fca590_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c33b1fca590_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c39a94b34b3_t0",
+                "instruction": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c39a94b34b3_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c39a94b34b3_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c39a94b34b3_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c02aa4aa6bc_s0",
+                "artifact": {
+                  "artifact": "c02aa4aa6bc_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c08de525377_s0",
+                "artifact": {
+                  "artifact": "c08de525377_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c08de525377_s1",
+                "artifact": {
+                  "artifact": "c08de525377_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c33b1fca590_s0",
+                "artifact": {
+                  "artifact": "c33b1fca590_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c33b1fca590_s1",
+                "artifact": {
+                  "artifact": "c33b1fca590_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c39a94b34b3_s0",
+                "artifact": {
+                  "artifact": "c39a94b34b3_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c02aa4aa6bc_e0",
+                "host": "c02aa4aa6bc_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c02aa4aa6bc_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c02aa4aa6bc_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c02aa4aa6bc_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c02aa4aa6bc_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c08de525377_e0",
+                "host": "c08de525377_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c08de525377_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c08de525377_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c08de525377_s0",
+                  "c08de525377_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c08de525377_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c08de525377_e1",
+                "host": "c08de525377_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c08de525377_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c08de525377_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c08de525377_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c08de525377_s0",
+                  "c08de525377_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c08de525377_s1_read",
+                      "t0": "c08de525377_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c33b1fca590_e0",
+                "host": "c33b1fca590_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c33b1fca590_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c33b1fca590_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c33b1fca590_s0",
+                  "c33b1fca590_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c33b1fca590_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c33b1fca590_e1",
+                "host": "c33b1fca590_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c33b1fca590_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c33b1fca590_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c33b1fca590_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c33b1fca590_s0",
+                  "c33b1fca590_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c33b1fca590_s1_read",
+                      "t0": "c33b1fca590_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c39a94b34b3_e0",
+                "host": "c39a94b34b3_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c39a94b34b3_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c39a94b34b3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c39a94b34b3_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c39a94b34b3_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c02aa4aa6bc_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c02aa4aa6bc_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c02aa4aa6bc_s0_read",
+                "producer": {
+                  "source": "c02aa4aa6bc_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c08de525377_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c08de525377_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c08de525377_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c08de525377_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c08de525377_s0_read",
+                "producer": {
+                  "source": "c08de525377_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c08de525377_s1_read",
+                "producer": {
+                  "source": "c08de525377_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c33b1fca590_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c33b1fca590_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c33b1fca590_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c33b1fca590_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c33b1fca590_s0_read",
+                "producer": {
+                  "source": "c33b1fca590_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c33b1fca590_s1_read",
+                "producer": {
+                  "source": "c33b1fca590_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c39a94b34b3_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c39a94b34b3_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c39a94b34b3_s0_read",
+                "producer": {
+                  "source": "c39a94b34b3_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "c08de525377_e0",
+                "c08de525377_e1",
+                "c02aa4aa6bc_e0",
+                "c33b1fca590_e0",
+                "c33b1fca590_e1",
+                "c39a94b34b3_e0"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c02aa4aa6bc_t0_answer",
+                "artifact": {
+                  "artifact": "c02aa4aa6bc_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c02aa4aa6bc_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c08de525377_t1_answer",
+                "artifact": {
+                  "artifact": "c08de525377_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c08de525377_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c33b1fca590_t1_answer",
+                "artifact": {
+                  "artifact": "c33b1fca590_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c33b1fca590_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c39a94b34b3_t0_answer",
+                "artifact": {
+                  "artifact": "c39a94b34b3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c39a94b34b3_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54",
+        "neutral_seed": "41868456019465660730584629978988872867109945575086860747143710894289292491146",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c02aa4aa6bc_t0": "o0",
+            "c33b1fca590_t1": "o0",
+            "c08de525377_t0": "o1",
+            "c08de525377_t1": "o2",
+            "c33b1fca590_t0": "o2",
+            "c39a94b34b3_t0": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 4,
+        "slot": 2,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "test/row/988",
+            "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+              "plan_digest": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+            "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+            "namespace": "c08de525377"
+          },
+          {
+            "source_id": "test/row/602",
+            "statement_sha256": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+              "plan_digest": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+            "contract_id": "02aa4aa6bc69b0ead9237e4190e90066424763c7f71bfa4a1ed1ea6b00f3d520",
+            "namespace": "c02aa4aa6bc"
+          },
+          {
+            "source_id": "test/row/1078",
+            "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+              "plan_digest": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+            "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+            "namespace": "c33b1fca590"
+          },
+          {
+            "source_id": "test/row/754",
+            "statement_sha256": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+              "plan_digest": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+            "contract_id": "39a94b34b3aa5f973844dac7bfe0a6af03f07207f55f8afa3934784fcd826ba7",
+            "namespace": "c39a94b34b3"
+          }
+        ],
+        "sources": [
+          "test/row/988",
+          "test/row/602",
+          "test/row/1078",
+          "test/row/754"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 32,
+          "isolation_verified": true,
+          "evaluation_calls": 32
+        }
+      }
+    ],
+    "planned_slots": 3,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 2,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "964979a3575856821d7315361a95ace444c1d9a99a2464b2935556bc74a9f2fd",
+        "historical_key": "1ba8ebc8e9013e4534783c69ea3e237d642ef6aec5418d96906a11ed0240ef14",
+        "component": "c08de525377",
+        "source_id": "test/row/988",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+          "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+          "source_id": "test/row/988",
+          "task": {
+            "id": "t0",
+            "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "c695cdb6b2448f114aacd9e1bbaf226c65da8c942fe6c27ccce36962137ce12d",
+        "historical_key": "da2e437a2bb857daae919b95c7c0521affabb1c0ef223b140e7e61cebfddfd0d",
+        "component": "c08de525377",
+        "source_id": "test/row/988",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+          "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+          "source_id": "test/row/988",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "22e4e5def36f12e619a1b0e989b4c28d5f58f32aa09e079f7f19ebf1c0ac5922",
+        "historical_key": "428b3b6ea16360a6b3869017634ee3357ec358fc8abcd43686f21102f4651a00",
+        "component": "c02aa4aa6bc",
+        "source_id": "test/row/602",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "02aa4aa6bc69b0ead9237e4190e90066424763c7f71bfa4a1ed1ea6b00f3d520",
+          "statement_sha256": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+          "source_id": "test/row/602",
+          "task": {
+            "id": "t0",
+            "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "ee8e211dde26e64eb23d02282c7edff65db840d7bdaf1216791c183d2769cd98",
+        "historical_key": "14b6280dd846f9ff2a41fa8834a00f38b2f9618aeeeef2b89229ffa42af9c2f0",
+        "component": "c33b1fca590",
+        "source_id": "test/row/1078",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+          "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+          "source_id": "test/row/1078",
+          "task": {
+            "id": "t0",
+            "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "19011d22bc469cc1b0744f38d52dd332967554e8a4110e0755a2bf0a1238ac83",
+        "historical_key": "1e9ea79a7a75c91f0f21f258134ee9ccb5ba5346d66e71bff37b3900684a74da",
+        "component": "c33b1fca590",
+        "source_id": "test/row/1078",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+          "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+          "source_id": "test/row/1078",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "cc797b328a668dd43f1fca8cd56fc666ef338cc85a4a4953f550ed3229240946",
+        "historical_key": "86629fd90f96e21d14532a88dec1f8fa036fb428e4c724961d5cd112f1e133dd",
+        "component": "c39a94b34b3",
+        "source_id": "test/row/754",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "39a94b34b3aa5f973844dac7bfe0a6af03f07207f55f8afa3934784fcd826ba7",
+          "statement_sha256": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+          "source_id": "test/row/754",
+          "task": {
+            "id": "t0",
+            "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "c08de525377",
+        "mode": "base",
+        "events": [
+          "c08de525377_e0",
+          "c08de525377_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c02aa4aa6bc",
+        "mode": "base",
+        "events": [
+          "c02aa4aa6bc_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "c33b1fca590",
+        "mode": "base",
+        "events": [
+          "c33b1fca590_e0",
+          "c33b1fca590_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c39a94b34b3",
+        "mode": "base",
+        "events": [
+          "c39a94b34b3_e0"
+        ],
+        "calls": 1
+      }
+    ],
+    "profile_consumers": {
+      "964979a3575856821d7315361a95ace444c1d9a99a2464b2935556bc74a9f2fd": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ],
+      "c695cdb6b2448f114aacd9e1bbaf226c65da8c942fe6c27ccce36962137ce12d": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ],
+      "22e4e5def36f12e619a1b0e989b4c28d5f58f32aa09e079f7f19ebf1c0ac5922": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ],
+      "ee8e211dde26e64eb23d02282c7edff65db840d7bdaf1216791c183d2769cd98": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ],
+      "19011d22bc469cc1b0744f38d52dd332967554e8a4110e0755a2bf0a1238ac83": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ],
+      "cc797b328a668dd43f1fca8cd56fc666ef338cc85a4a4953f550ed3229240946": [
+        "ac88697bc91ecec20a4f5a3b0c23ef69cbf43ece4dd48e95d26decc4629d7f54"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 38,
+      "token_cap": 622592,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "test/row/988": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/988",
+          "statement_sha256": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "ffa80be84b60423a9bc472c2643723eb48e258b9379ca35d19e03877c7663651",
+            "plan_digest": "cb8ca4f3206c76fb599de09cbb776a816da2532e00465a07f593a99ac856efd6",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the clinical history and observations to identify the underlying disorder and supporting evidence. Produce a diagnostic artifact without selecting an intervention or answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the diagnostic artifact and original question to determine the preventive intervention and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "08de5253771ca3e40d0b6c09f68184fd9f447e3b5e35506a7b077aefcc08c3f6",
+          "namespace": "c08de525377"
+        }
+      },
+      "test/row/602": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/602",
+          "statement_sha256": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "57eccc3d0814988a571ce8cbe33f0e108559e9d634db8464baa0c18cf54972b9",
+            "plan_digest": "504cd66896eedafd5f136a59c1e8f77e9f91de12246c1fb51e465b54585f14d9",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the sequence of presynaptic neurotransmitter release in the stated experiment and identify the immediately preceding event. Compare all original options and select one with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "02aa4aa6bc69b0ead9237e4190e90066424763c7f71bfa4a1ed1ea6b00f3d520",
+          "namespace": "c02aa4aa6bc"
+        }
+      },
+      "test/row/1078": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/1078",
+          "statement_sha256": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "2d5efd5c78f40c143bcce6d676cb0647fb14eff3c420b808397a8c77b66fa9ac",
+            "plan_digest": "ee31ec3e7711ba8525939307c5eeaf15cb72eeba9c040feb9d8b47129f7a8288",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the original clinical observations and laboratory values to identify the anemia type and underlying mechanism. Preserve the supplied units and values. Provide a diagnostic/mechanistic artifact without choosing a microscopic finding or answer option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the diagnostic/mechanistic artifact to determine the expected morphological finding and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "33b1fca59097894081641da5232f017b2979f1fd3a2ddeb9ca6656d2cf1f6458",
+          "namespace": "c33b1fca590"
+        }
+      },
+      "test/row/754": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/754",
+          "statement_sha256": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "52fa4d410ee8028614c71f427c57f3ca29a97e3dcd817a3af458f28358f82bd0",
+            "plan_digest": "72b8b6c15c9786d75d237041230271981a7fd78f94c5f581ba1bb1ca4447261c",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the original neonatal presentation and described radiograph findings, infer the underlying condition and expected findings, and compare all original options. Select one original option with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "39a94b34b3aa5f973844dac7bfe0a6af03f07207f55f8afa3934784fcd826ba7",
+          "namespace": "c39a94b34b3"
+        }
+      },
+      "test/row/954": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/954",
+          "statement_sha256": "01b9de3bfcd5c4b823e94a7f446e3b5792d60320a2e4fd93c78272e9f0dd1261",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the original clinical course and medication chronology to identify constraints affecting interpretation of renal diagnostic tests. Produce a constraints artifact without ranking the options or selecting a test.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the constraints artifact and original question to compare all supplied tests for the requested distinction. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "4ab21a0ce653e2ef567353f3d8574d6c01bdac8b3b6796031926a5876266109c",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "01b9de3bfcd5c4b823e94a7f446e3b5792d60320a2e4fd93c78272e9f0dd1261",
+            "plan_digest": "4ab21a0ce653e2ef567353f3d8574d6c01bdac8b3b6796031926a5876266109c",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the original clinical course and medication chronology to identify constraints affecting interpretation of renal diagnostic tests. Produce a constraints artifact without ranking the options or selecting a test.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the constraints artifact and original question to compare all supplied tests for the requested distinction. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "668a3293981553b586e81885771f610ec64881a6f12caf96b2e51e44934702c9",
+          "namespace": "c668a329398"
+        }
+      },
+      "test/row/233": {
+        "status": "blocked",
+        "reason": "Preserved source-review block; no planner attempt."
+      },
+      "test/row/874": {
+        "status": "blocked",
+        "reason": "Preserved source-review block; no planner attempt."
+      },
+      "test/row/401": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/401",
+          "statement_sha256": "24b5a1973f92a22172aa6d836e8d5c25cbafdda63b577f9baca0c8f4917e7e3e",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the original clinical observations and laboratory findings to identify the implicated deficiency and impaired biochemical reaction. Produce a reaction-identification artifact without naming its cellular location or selecting an option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the reaction-identification artifact to determine its cellular location and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "2bc1ea8b309001bc34419d453ddec2e0b45d0ac40d13eecc97a7c4a1b2980f81",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "24b5a1973f92a22172aa6d836e8d5c25cbafdda63b577f9baca0c8f4917e7e3e",
+            "plan_digest": "2bc1ea8b309001bc34419d453ddec2e0b45d0ac40d13eecc97a7c4a1b2980f81",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the original clinical observations and laboratory findings to identify the implicated deficiency and impaired biochemical reaction. Produce a reaction-identification artifact without naming its cellular location or selecting an option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the reaction-identification artifact to determine its cellular location and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Operationalized role boundaries and final field; merged redundant option mapping for rows 988 and 754 as documented in planner review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "8fa87e161102ea1db2560567e243a23d18fcf680f880cc92892cee3b67b7c6ff",
+          "contract_id": "17a3f03d27cb457eac89d40535612c43d4ec23f2bc8818ec446f553691bb6bb1",
+          "namespace": "c17a3f03d27"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "5f4dd9f75241aa33f55d7e2b89b47b7ca27b3596414ddf70dc5710a18300eb67"
+  },
+  "execution_allowed": false,
+  "packet_digest": "d3aa602f5148e579dbcd434cb56a7bc61b94ba5eba9fb5f0520da8025b52bc71"
+}
