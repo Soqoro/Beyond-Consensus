@@ -95,6 +95,37 @@ class WorkerLaunch(unittest.TestCase):
             with patch.object(p.planner,'validate_release',return_value={}):
                 with self.assertRaisesRegex(Invalid,'original planner result bytes'):p.parent_evidence(td)
 
+    def test_parent_full_result_survives_interleaved_blocked_rows(self):
+        # Exercise the full reader; preparation tests previously mocked this boundary.
+        v=deepcopy(p.packet())
+        records={sid:dict(id=sid,question='Synthetic question',options=dict(A='one',B='two',C='three',D='four')) for sid in v['reviews']}
+        rows=[];attempts=[]
+        for source in p.planner.cohort()['blocks'][1]['records']:
+            sid=source['source_id']
+            if sid in p.planner.BLOCKED_IDS:
+                rows.append(dict(source_id=sid,status='blocked',review=None));continue
+            invocation=f'call-{len(attempts)}'
+            rows.append(dict(source_id=sid,status='completed',invocation=invocation,raw_response='synthetic plan'))
+            attempts.append(dict(id=invocation,request=pipeline.adapters.planner_request('medqa',records[sid]),observation=dict(final_text='synthetic plan')))
+        binding=dict(scope=v['planner_scope'])
+        result=dict(rows=rows,totals=dict(actual_tokens=10104,calls=6,reserved_tokens=0),ledger=dict(binding=binding,binding_digest=digest(binding),attempts=attempts))
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);(root/'execution').mkdir()
+            release={'manifest':{'scope_digest':v['planner_scope']}}
+            (root/'manifest.json').write_text(json.dumps({'release':release}))
+            path=root/'execution/result.json';path.write_text(json.dumps(result))
+            v['planner_result_sha256']=p.local.file_hash(path)
+            def admit(dataset,cohort,public,raw,review):return v['dispositions'][public['id']]
+            with patch.object(p,'packet',return_value=v),patch.object(p.planner,'validate_release',return_value={}),patch.object(p.planner,'source_records',return_value=records),patch.object(p.worker,'reliable_terminal',return_value=True),patch.object(pipeline,'admit',side_effect=admit) as admission:
+                evidence=p.parent_evidence(root)
+                self.assertEqual(evidence['planning_calls'],6)
+                self.assertEqual(evidence['planning_tokens'],10104)
+                self.assertEqual(admission.call_count,6)
+                # A genuine binding discrepancy still fails closed.
+                result['ledger']['binding_digest']='0'*64
+                path.write_text(json.dumps(result));v['planner_result_sha256']=p.local.file_hash(path)
+                with self.assertRaisesRegex(Invalid,'planner ledger binding'):p.parent_evidence(root)
+
     def test_offline_grading_wrong_label_not_rescued_by_prose(self):
         pubs,cohort,dis=fixtures.Prospective().contracts('medqa');w=pipeline.wave(cohort,1,dis)
         keys={sid:dict(id=sid,public_digest=digest(pub),correct_option='A',status='known') for sid,pub in pubs.items()}

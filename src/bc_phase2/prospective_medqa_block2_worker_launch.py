@@ -44,8 +44,8 @@ def parent_evidence(run):
     records=planner.source_records(old);rows=r['rows'];attempts=r['ledger']['attempts']
     require([x['source_id'] for x in rows]==[r['source_id'] for r in planner.cohort()['blocks'][1]['records']] and len(attempts)==6,'complete planning block')
     require([r['source_id'] for r in rows if r['status']=='blocked']==planner.BLOCKED_IDS,'preserved blocked rows')
-    for r in rows:
-        if r['status']=='blocked':require(v['dispositions'][r['source_id']]['status']=='blocked','blocked disposition')
+    for row in rows:
+        if row['status']=='blocked':require(v['dispositions'][row['source_id']]['status']=='blocked','blocked disposition')
     completed=[r for r in rows if r['status']!='blocked']
     require([r['source_id'] for r in completed]==list(records),'eligible response order')
     require(r['ledger']['binding_digest']==digest(r['ledger']['binding']) and r['ledger']['binding']['scope']==v['planner_scope'],'planner ledger binding')
