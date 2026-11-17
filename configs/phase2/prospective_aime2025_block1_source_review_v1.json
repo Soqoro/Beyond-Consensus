@@ -1,0 +1,2309 @@
+{
+  "schema": "prospective-aime-source-review-v1",
+  "original_cohort_digest": "f694e7676b808418156d909de2ad9a7ec1262793b658954c91ad2c0f84526894",
+  "cohort": {
+    "schema": "bc-prospective-source-disjoint-v1",
+    "dataset": "aime2025",
+    "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+    "exposure_digest": "2d1260b5d75739620049b94456bd41d0aca9c52239496b747435f2452b56b68b",
+    "procedure_digest": "2dab4e8b3f0928b780257ec6651ae22e1a4205b3a4af004392fc70ffa2e2b2cf",
+    "inventory_digest": "876833f5154150c81ff5eaeb3e7577ed46ec9d22bc27d43e071abca3469c6036",
+    "family_review_digest": "718b0a2162b3d9f0f92fd855331e3dd0845389c39d17d4a72548f929e3764e70",
+    "blocks": [
+      {
+        "slot": 1,
+        "records": [
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+            "exact_hash": "65a2a3a9f25b8fb94e2bc383e8290282ae59567ec7b9241f52fd034fcddba0cc",
+            "normalized_hash": "37b9b3b678dc2253466a1addbd00c540ed61b816cc78c4ee80fc5f1ece998970",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+            "exact_hash": "8e15c9e4e04a1ba4be4ee9e1ab7cf47767a2ec81b3dd989cc95788265f2c8444",
+            "normalized_hash": "a7566129d30969e38ce446a43ffafa41d403179d720332826811039a3582078a",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+            "exact_hash": "1058c98a40ea6e327b6ab613764c64ea0d13eeb9b50e95170262326b5cffc315",
+            "normalized_hash": "1058c98a40ea6e327b6ab613764c64ea0d13eeb9b50e95170262326b5cffc315",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+            "exact_hash": "8168dfa12b21aabf77a5a2c840924e366e0429f3f8a459f046abc4c9f89ddfbe",
+            "normalized_hash": "8168dfa12b21aabf77a5a2c840924e366e0429f3f8a459f046abc4c9f89ddfbe",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+            "exact_hash": "89e30021388562aac53cccc15361ebc03beb4ce8c1cdea73ed26ea365a2a5668",
+            "normalized_hash": "89e30021388562aac53cccc15361ebc03beb4ce8c1cdea73ed26ea365a2a5668",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+            "exact_hash": "1d917f42745c6b85192705bf985b1a79e71d6d90288b01065bf387c1139f3483",
+            "normalized_hash": "807b442904fbc5151f0f66cedfa494a4023ca7e7cd2a45ae287e936c30f0535c",
+            "family_id": "",
+            "status": "eligible",
+            "family_review": "clear"
+          }
+        ],
+        "status": "frozen_pending_planning",
+        "composite": null
+      },
+      {
+        "slot": 2,
+        "records": [
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+            "exact_hash": "e70ae31344c11e6c5634fd050b71cd712b20e716a6e88911a814744cbb3ef3d4",
+            "normalized_hash": "8816d2b088c28319e166059c55a1a9ef9666626b8aa12a077f0328ef7b47c74c",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+            "exact_hash": "300e7447cc71372dbdae3f92da4ccb722d688e20dfaa98cde501798344116c5d",
+            "normalized_hash": "300e7447cc71372dbdae3f92da4ccb722d688e20dfaa98cde501798344116c5d",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+            "exact_hash": "1e3128dd58ec2b93cb65f61fc4f975eaf53da9bccc9af9964377908e272a4965",
+            "normalized_hash": "1e3128dd58ec2b93cb65f61fc4f975eaf53da9bccc9af9964377908e272a4965",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+            "exact_hash": "a8598f429a76b378dae105270084cf0d9f73abdf8066a0819b9e6697f4375c83",
+            "normalized_hash": "e8e8a5a24b9d68c7771ff5e3f381cea43863f3cf67fbbe436012b0a52faaa62a",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5",
+            "exact_hash": "a7069d1c3d51d86bfdf80eac97ec5c6dd7b44652286898db003714d9bf7cdd8d",
+            "normalized_hash": "a7069d1c3d51d86bfdf80eac97ec5c6dd7b44652286898db003714d9bf7cdd8d",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+            "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+            "exact_hash": "e820052ea79e65c837a5b089bb346e9690baaaca91922849cbe88a70eae8d256",
+            "normalized_hash": "e820052ea79e65c837a5b089bb346e9690baaaca91922849cbe88a70eae8d256",
+            "family_id": "",
+            "status": "blocked",
+            "family_review": "pending"
+          }
+        ],
+        "status": "frozen_pending_planning",
+        "composite": null
+      }
+    ],
+    "excluded": [],
+    "reserved_ids": [
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/23",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/22",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/7",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/11",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/20",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/13",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/30",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/1",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/21",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/26",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/16",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/24",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/27",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/2",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/6",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/29",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/9",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/28"
+    ],
+    "execution_allowed": false,
+    "limitations": [
+      "project source separation only; no pretraining or independence claim"
+    ],
+    "cohort_digest": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a"
+  },
+  "procedure": {
+    "version": "source-disjoint-block-v1",
+    "implementation": {
+      "prospective_sources": "28792f056d6c0bda4ffa00c0fdc30e00689cb64bbbb4a317b9fd536c2900f8ea",
+      "prospective_adapters": "62fc4976da297f649f9255abf15a9b97aa72556cb467721f8b9445b8f0feb06d",
+      "prospective_pipeline": "669ca930dcd70f8f499cd9487de96125f7a3ee40197e9cd10d41c7151552e582",
+      "d1_natural_screen": "973e3e5716eca7ee7d9413b99da777d1a95349b10b6ef35f04fe716049a36572",
+      "composite_scaling": "13a8c00a0ce74cf769fd5b30f18f59e8dfa43401d8280e4001c3219c6f28e42f",
+      "composite_scaling_runtime": "f6f718802570039b7999d995f9c486fb76b8dc771311e6c788169c3fa30cd487",
+      "composite_math": "93b730ad668d03d10fe68ba7a0d987c1c54cbace2d6cde01c4970a704cb45f1c",
+      "composite_joint": "4a8b9f4b2c28ac1a80135ef0dd818e860660a4f0ec15ed853e4d082fbff52ee1",
+      "medqa_development": "bcb0d84bf240105da3337ef1e49fe5c35d52cff229a0b15ce30b3f5284b6acb6",
+      "medqa_worker_launch": "70b1a92a457f8658d4c6e2eb3e9412ecc69eb11d0e1311c86a90d5599da2c46f",
+      "joint_pipeline_runtime": "f758ebc1f29b1da4d8bdbb2c63e836c84722721f918d65fdcf9fa7538db4f210",
+      "joint_core": "6924f669af73257f656de25881794852b395181b4ac62df9c53f544dfa3a82a3"
+    },
+    "model_policy": {
+      "checkpoint": "Qwen/Qwen3.5-27B",
+      "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "dtype": "bfloat16",
+      "attention": "sdpa",
+      "thinking": false,
+      "do_sample": false,
+      "context": 16384,
+      "output": 3072,
+      "decoder": "task-fields-xgrammar-v1",
+      "xgrammar": "0.1.32",
+      "fresh_context": true,
+      "retry": false
+    },
+    "dataset": "aime2025",
+    "methods": [
+      "NEUTRAL",
+      "JOINT"
+    ],
+    "n": 4,
+    "K": 2,
+    "objective": "mean_first",
+    "recovery": "all_owner_R0_original_snapshot",
+    "planner_prompt": "Describe the natural complementary mathematical work needed to solve this question.\nDo not solve it or supply the final answer. Describe responsibilities and expected\nartifacts, not their values. One, two, three, or more substantive tasks are valid\nfindings. Sequential work is valid; parallelism is not required. Do not pad with\nformatting, cosmetic checks, or duplicate whole-question solutions. Each task\nneeds a distinct substantive responsibility, a specific mathematical output,\nimplementable inputs, and a genuine contribution to answering the question.\nReturn one concise JSON object, without Markdown, matching the response schema.\nUse task IDs T1, T2, ... (unique). required_inputs contains problem_statement or\nIDs of earlier tasks whose artifacts are genuinely needed; no invented dependencies.\nIn final_assembly cite terminal artifacts as [T1], [T2], etc. Every task must\ncontribute directly or through genuine dependencies to those cited artifacts.\nThe citations permit a structural check; they do not prove meaningfulness.\nUse single_task for exactly one substantive task, decomposed for two or more,\nor unsupported with no tasks and a short reason. No ownership, costs,\ncommunication choices, solved examples, checking quota or target task count.\nOne response only: no correction, retry or second sample.",
+    "response_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "d1-natural-decomposition-v1",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "single_task"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "final_assembly"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "decomposed"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 2
+            },
+            "final_assembly": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "source_id",
+            "status",
+            "tasks",
+            "reason"
+          ],
+          "properties": {
+            "schema": {
+              "const": "d1-natural-decomposition-v1"
+            },
+            "source_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "const": "unsupported"
+            },
+            "tasks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "responsibility",
+                  "required_inputs",
+                  "produces"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^T[1-9][0-9]*$"
+                  },
+                  "responsibility": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "produces": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(problem_statement|T[1-9][0-9]*)$"
+                    }
+                  }
+                }
+              },
+              "minItems": 0,
+              "maxItems": 0
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "planner_calls_per_source": 1,
+    "corrections": 0,
+    "admission": "source/plan bound solution-free substantive whole components; human or explicitly labelled AI-assisted review",
+    "subset_order": [
+      "abs(m-6)",
+      "m",
+      "source_rank_tuple"
+    ],
+    "m_range": [
+      5,
+      8
+    ],
+    "max_operations_per_task": 1,
+    "max_component_tasks": 64,
+    "max_plan_bytes": 65536,
+    "private_keys_in_workers": false,
+    "new_profiles_required": true,
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0
+    },
+    "source_order": "bc-prospective-source-disjoint-v1",
+    "outcome_adaptation": false,
+    "worker_prompts": {
+      "intermediate": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+      "terminal": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+      "math": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur."
+    },
+    "AIME_terminal": "justification then final_integer: trimmed ASCII [0-9]{1,3}",
+    "larger_plans": "valid_but_outside_capacity_never_truncated",
+    "procedure_digest": "2dab4e8b3f0928b780257ec6651ae22e1a4205b3a4af004392fc70ffa2e2b2cf"
+  },
+  "family_review": {
+    "dataset": "aime2025",
+    "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+    "inventory_digest": "876833f5154150c81ff5eaeb3e7577ed46ec9d22bc27d43e071abca3469c6036",
+    "reviewer": "Codex",
+    "reviewer_kind": "AI-assisted",
+    "reviewed_at": "2026-11-17",
+    "decisions": {
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12": "clear",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10": "clear",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15": "clear",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14": "clear",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25": "clear",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18": "clear"
+    },
+    "prior_selected": [
+      {
+        "source_id": "test/algebra/2277.json",
+        "canonical_id": "math500:test/algebra/2277.json",
+        "exact_hash": "b5e90256f53c16058ad755e690365dd8f9afda3ec8ffd39f6cdbb6fbc8eb70fe",
+        "normalized_hash": "1932e5b84b4bf3f51084cec168ac1359cad6bbdc1d4be7549521d01eac4785bc",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/counting_and_probability/870.json",
+        "canonical_id": "math500:test/counting_and_probability/870.json",
+        "exact_hash": "38574ca076472bf0700f6950f0db85aa5c3ba0d4756a02cfe8e8bd050cdb1a6e",
+        "normalized_hash": "38574ca076472bf0700f6950f0db85aa5c3ba0d4756a02cfe8e8bd050cdb1a6e",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/counting_and_probability/761.json",
+        "canonical_id": "math500:test/counting_and_probability/761.json",
+        "exact_hash": "5cf988b66193c44602b7e50c246a7285fe3ff94e77f9293ac75f4d120bf4d324",
+        "normalized_hash": "5cf988b66193c44602b7e50c246a7285fe3ff94e77f9293ac75f4d120bf4d324",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/precalculus/24313.json",
+        "canonical_id": "math500:test/precalculus/24313.json",
+        "exact_hash": "c60e99066af0db66bbb8b2c358efa9798dfefebb2faa05a20460b77914fd2be6",
+        "normalized_hash": "d6247de9e0f09b7860debb176cc2df0a53833696705dbc921d7366cbd07454d2",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/prealgebra/1227.json",
+        "canonical_id": "math500:test/prealgebra/1227.json",
+        "exact_hash": "8fe430185aad9b07271a1176f7bbcd3b9ad368b8582b5f37200b30b03fa1c176",
+        "normalized_hash": "8fe430185aad9b07271a1176f7bbcd3b9ad368b8582b5f37200b30b03fa1c176",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/1936.json",
+        "canonical_id": "math500:test/algebra/1936.json",
+        "exact_hash": "eb9f4f78c2ce150fddab75ee9636dd2fe6c49868bfbae9001f3d11f2ec8c6f48",
+        "normalized_hash": "d57e1d7d64c3e71e95163832658ee6a74b92c0677fe298316e05c0d8bca6ad9f",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/246.json",
+        "canonical_id": "math500:test/algebra/246.json",
+        "exact_hash": "d7e44ae75b1e2f7df8d26a91525d0ccdbab12107f1ae42fcf090ed78c795f70d",
+        "normalized_hash": "d7e44ae75b1e2f7df8d26a91525d0ccdbab12107f1ae42fcf090ed78c795f70d",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/428.json",
+        "canonical_id": "math500:test/intermediate_algebra/428.json",
+        "exact_hash": "135228bc6c41cb566cea5ca0fcdb4dc1fbb01f70ca0152eae2a3771f55fdebd8",
+        "normalized_hash": "135228bc6c41cb566cea5ca0fcdb4dc1fbb01f70ca0152eae2a3771f55fdebd8",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/counting_and_probability/23957.json",
+        "canonical_id": "math500:test/counting_and_probability/23957.json",
+        "exact_hash": "40b3e38ff9ffb5bda6a3dd2ee18297a7501563573c63c9963830d91e999ca1c0",
+        "normalized_hash": "40b3e38ff9ffb5bda6a3dd2ee18297a7501563573c63c9963830d91e999ca1c0",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/precalculus/625.json",
+        "canonical_id": "math500:test/precalculus/625.json",
+        "exact_hash": "ec8fc77b600fe0912ab51d2e48f18d69e2fd4930b0541f55da3f373fe466bf7b",
+        "normalized_hash": "ec8fc77b600fe0912ab51d2e48f18d69e2fd4930b0541f55da3f373fe466bf7b",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/1098.json",
+        "canonical_id": "math500:test/algebra/1098.json",
+        "exact_hash": "a345ed9254bea077a47470cbee975297dd7ddf4d4a1f15474a743b864998e47f",
+        "normalized_hash": "a345ed9254bea077a47470cbee975297dd7ddf4d4a1f15474a743b864998e47f",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/prealgebra/996.json",
+        "canonical_id": "math500:test/prealgebra/996.json",
+        "exact_hash": "307f54153fb55f62639d45b541dab4778e5189b7fde070dc2d4f37802402a195",
+        "normalized_hash": "307f54153fb55f62639d45b541dab4778e5189b7fde070dc2d4f37802402a195",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/geometry/686.json",
+        "canonical_id": "math500:test/geometry/686.json",
+        "exact_hash": "c9fc45158adf80e9d1156c5254454e722107973dc5c8c7c806f5e013f93b5c16",
+        "normalized_hash": "129d8c52bebc4c80fffb876be90402960c9c984d84195bfa3963c96bff0a3895",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/precalculus/398.json",
+        "canonical_id": "math500:test/precalculus/398.json",
+        "exact_hash": "6f4898e8f134fddfc3d70db643d87975fb49c5a2b2b35cb48cd3a55cddd9f02f",
+        "normalized_hash": "146deaa52e680ddc16ebf4745e4dbaf1166ece892bc98c054c668434cdcca222",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/1467.json",
+        "canonical_id": "math500:test/intermediate_algebra/1467.json",
+        "exact_hash": "b59c5ee6416f92efec7d731f8c50c60db946afa6a1c1fbfd44c7e25aef1252da",
+        "normalized_hash": "90d170b9a02fc5e4b12bdc3ab3c5e3fd1b9db426ff81e691c99dadd0546fc340",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/1544.json",
+        "canonical_id": "math500:test/intermediate_algebra/1544.json",
+        "exact_hash": "3d88d8a8e4db4e00c4c0654f17c76409196884b96d86b16cde5d1fcdf61131ce",
+        "normalized_hash": "3d88d8a8e4db4e00c4c0654f17c76409196884b96d86b16cde5d1fcdf61131ce",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/1232.json",
+        "canonical_id": "math500:test/intermediate_algebra/1232.json",
+        "exact_hash": "dbc3a678f9e8544295202eee737308a779927e1281ff9b3043b6da3e85256714",
+        "normalized_hash": "dbc3a678f9e8544295202eee737308a779927e1281ff9b3043b6da3e85256714",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/1837.json",
+        "canonical_id": "math500:test/algebra/1837.json",
+        "exact_hash": "3703e5827fe558187c29d47b06442854f066e68236b5daa3ab5ce9f509ce3529",
+        "normalized_hash": "3703e5827fe558187c29d47b06442854f066e68236b5daa3ab5ce9f509ce3529",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/2064.json",
+        "canonical_id": "math500:test/algebra/2064.json",
+        "exact_hash": "3714a820794d0546777fca940a55b97ced5814f0fe4e1906eaf2a1d8ee02ad5e",
+        "normalized_hash": "3714a820794d0546777fca940a55b97ced5814f0fe4e1906eaf2a1d8ee02ad5e",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/1791.json",
+        "canonical_id": "math500:test/intermediate_algebra/1791.json",
+        "exact_hash": "4326033fe5c082bc850e2397609e7a4d913c5da58ebdbaf010f7d96f90a432ae",
+        "normalized_hash": "a5fc6e57b303d0933bdf0ffdb4ffe9dfbc522fb69a320c1855e58a0b3fdcd954",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/algebra/1282.json",
+        "canonical_id": "math500:test/algebra/1282.json",
+        "exact_hash": "5d1958219aae1e124d01002c93d131ed4484d2b1991cb1ea1ed3324483e9eeb5",
+        "normalized_hash": "5d1958219aae1e124d01002c93d131ed4484d2b1991cb1ea1ed3324483e9eeb5",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/number_theory/410.json",
+        "canonical_id": "math500:test/number_theory/410.json",
+        "exact_hash": "b1a2d2162b35c3d0f67dd307cc25732be4e559fa5a214f98c2961f8cf31fd2cf",
+        "normalized_hash": "b1a2d2162b35c3d0f67dd307cc25732be4e559fa5a214f98c2961f8cf31fd2cf",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/752.json",
+        "canonical_id": "math500:test/intermediate_algebra/752.json",
+        "exact_hash": "3d5227c348d77c728dace4b3ea553ce1951b2b43491bd21bb597d91d4f855eb3",
+        "normalized_hash": "3d5227c348d77c728dace4b3ea553ce1951b2b43491bd21bb597d91d4f855eb3",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/intermediate_algebra/834.json",
+        "canonical_id": "math500:test/intermediate_algebra/834.json",
+        "exact_hash": "2e3125ef83b900e97218efdd011c39c0bf2700e06c6f1edd6d64b13435de3afb",
+        "normalized_hash": "2e3125ef83b900e97218efdd011c39c0bf2700e06c6f1edd6d64b13435de3afb",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "math500"
+      },
+      {
+        "source_id": "test/row/780",
+        "canonical_id": "medqa:test/row/780",
+        "exact_hash": "965572ef0510863dd8f573e6545a1a0ab306fa14338b853138ef7d8cc3d1070d",
+        "normalized_hash": "965572ef0510863dd8f573e6545a1a0ab306fa14338b853138ef7d8cc3d1070d",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/495",
+        "canonical_id": "medqa:test/row/495",
+        "exact_hash": "0be34a39cad99433f6667ab5fc03fd12dde6b3d2eb920690f4d366b0390a3df0",
+        "normalized_hash": "0be34a39cad99433f6667ab5fc03fd12dde6b3d2eb920690f4d366b0390a3df0",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/384",
+        "canonical_id": "medqa:test/row/384",
+        "exact_hash": "41e49c4fc6344d947bc936f4ee5610c006a0bd748d8d396b4ff2ed27ddd5fea9",
+        "normalized_hash": "41e49c4fc6344d947bc936f4ee5610c006a0bd748d8d396b4ff2ed27ddd5fea9",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/1138",
+        "canonical_id": "medqa:test/row/1138",
+        "exact_hash": "ba7673d62f55c673acf0319060cb7c4d4b5a6e5b8b7425c41169d0ef48df03c5",
+        "normalized_hash": "ba7673d62f55c673acf0319060cb7c4d4b5a6e5b8b7425c41169d0ef48df03c5",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/530",
+        "canonical_id": "medqa:test/row/530",
+        "exact_hash": "9165083536032dd0f0971b0bd2f367240deb0025770d3e6f4070ae66b727b60e",
+        "normalized_hash": "9165083536032dd0f0971b0bd2f367240deb0025770d3e6f4070ae66b727b60e",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/229",
+        "canonical_id": "medqa:test/row/229",
+        "exact_hash": "1e97947516d174850e7c560b7b938f65b4c5918df0501920c3375f9395cbcb33",
+        "normalized_hash": "81c1f4993b94db94d8f2166469b62482292b2ab65a336ce06945f9aa76fe5f7b",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/675",
+        "canonical_id": "medqa:test/row/675",
+        "exact_hash": "125c6eba21b71334f00d3a76029a5cd5aac703de45c397453d34114d556a89fb",
+        "normalized_hash": "125c6eba21b71334f00d3a76029a5cd5aac703de45c397453d34114d556a89fb",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/948",
+        "canonical_id": "medqa:test/row/948",
+        "exact_hash": "04e32bfee3b7b9d3f32268c25287b386a1b84ae4765bd7d839031839ab607c5f",
+        "normalized_hash": "04e32bfee3b7b9d3f32268c25287b386a1b84ae4765bd7d839031839ab607c5f",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/988",
+        "canonical_id": "medqa:test/row/988",
+        "exact_hash": "6f10c78d98873019dc39d1a225692a37ca53fac451631e10e1c9e0763a2c2d25",
+        "normalized_hash": "6f10c78d98873019dc39d1a225692a37ca53fac451631e10e1c9e0763a2c2d25",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/602",
+        "canonical_id": "medqa:test/row/602",
+        "exact_hash": "ffd7f4e220aad1c2dd3db4f2f0fec9b5720d2f2ce22ff5a9ceafd7b7cc6455c6",
+        "normalized_hash": "ffd7f4e220aad1c2dd3db4f2f0fec9b5720d2f2ce22ff5a9ceafd7b7cc6455c6",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/1078",
+        "canonical_id": "medqa:test/row/1078",
+        "exact_hash": "bbfc9a1c5cffd2351ca65387295513bd846c1284a75044d55e81488bde5de730",
+        "normalized_hash": "89cdad24c485b3207aa50010f4eb09d87d34fd8e074809c25aaee5d5484391ea",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/754",
+        "canonical_id": "medqa:test/row/754",
+        "exact_hash": "cfae93603e542bfc140999b503b7c6fb95e0e5052008b3e88f42882f669d971f",
+        "normalized_hash": "cfae93603e542bfc140999b503b7c6fb95e0e5052008b3e88f42882f669d971f",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/954",
+        "canonical_id": "medqa:test/row/954",
+        "exact_hash": "c807aee95a71709d1725acd81601339fc6554dfd0a287827dd9e40716f0e5705",
+        "normalized_hash": "9422ecca5d1f14ac0b1c4d6e476d4b2ca1574c7a4f350441616a18a25a72b6f6",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/233",
+        "canonical_id": "medqa:test/row/233",
+        "exact_hash": "8622ebd98fa58eee6cbd44eddcba6f9721ad92519fa23517f3214333ff51e05a",
+        "normalized_hash": "8622ebd98fa58eee6cbd44eddcba6f9721ad92519fa23517f3214333ff51e05a",
+        "family_id": "",
+        "status": "blocked",
+        "family_review": "pending",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/874",
+        "canonical_id": "medqa:test/row/874",
+        "exact_hash": "5b7079422e963cebaea968bc152d73e18073b28d2412763e1951233e3fdd670c",
+        "normalized_hash": "8c3b0854c66f0e8cb994a68648f8632e3f3d789119d07e8cfe2339097e7aaf63",
+        "family_id": "",
+        "status": "blocked",
+        "family_review": "pending",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/401",
+        "canonical_id": "medqa:test/row/401",
+        "exact_hash": "a77323b7a350848434c770bdbfd2b3553f21f5bac5268cd9fbddad4b1b2bb0c5",
+        "normalized_hash": "a77323b7a350848434c770bdbfd2b3553f21f5bac5268cd9fbddad4b1b2bb0c5",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/1267",
+        "canonical_id": "medqa:test/row/1267",
+        "exact_hash": "5b2982ff0b9678151a132a19c6bd27f9a305fba78f0af4f83a22ab61bf1cd443",
+        "normalized_hash": "5b2982ff0b9678151a132a19c6bd27f9a305fba78f0af4f83a22ab61bf1cd443",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/890",
+        "canonical_id": "medqa:test/row/890",
+        "exact_hash": "cc2e8daffb2cae79d0b14024e051c6b4ba1102bcdec5beadb628800136e0ed43",
+        "normalized_hash": "fdf5d32dbd2501f25d32ecc8aae25e27c8946106b919d4064cb2c8199c8a8f1a",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/260",
+        "canonical_id": "medqa:test/row/260",
+        "exact_hash": "0a87a8442015dda89760766ae802ac532f0ba0ec8137e5407c2642306924c012",
+        "normalized_hash": "0a87a8442015dda89760766ae802ac532f0ba0ec8137e5407c2642306924c012",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/663",
+        "canonical_id": "medqa:test/row/663",
+        "exact_hash": "64ce2b06b24a00433d53efce95ca0dcdc65a10a14b8675ffd4039ab4f1217257",
+        "normalized_hash": "64ce2b06b24a00433d53efce95ca0dcdc65a10a14b8675ffd4039ab4f1217257",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/1059",
+        "canonical_id": "medqa:test/row/1059",
+        "exact_hash": "9618e6a8733ecb86d407b0b5a512651f89aad0efaa44ca11e5583c9ab88ebcdd",
+        "normalized_hash": "9618e6a8733ecb86d407b0b5a512651f89aad0efaa44ca11e5583c9ab88ebcdd",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/99",
+        "canonical_id": "medqa:test/row/99",
+        "exact_hash": "d8a63826c8fef6eb4b53ed980cfe1d6a793da504c18fb510c5e7c60b7d4c1570",
+        "normalized_hash": "d8a63826c8fef6eb4b53ed980cfe1d6a793da504c18fb510c5e7c60b7d4c1570",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/674",
+        "canonical_id": "medqa:test/row/674",
+        "exact_hash": "9a654dd6fe8c646729b45245b3eea3683a72a61b269ddbb77bcd492b37415092",
+        "normalized_hash": "9a654dd6fe8c646729b45245b3eea3683a72a61b269ddbb77bcd492b37415092",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      },
+      {
+        "source_id": "test/row/789",
+        "canonical_id": "medqa:test/row/789",
+        "exact_hash": "2c6f8bc4df85272e0ba3640855a2d3bec2fa26fee8343080dd0696388605260e",
+        "normalized_hash": "2c6f8bc4df85272e0ba3640855a2d3bec2fa26fee8343080dd0696388605260e",
+        "family_id": "",
+        "status": "eligible",
+        "family_review": "clear",
+        "dataset": "medqa"
+      }
+    ],
+    "limitations": [
+      "All selected family decisions pending; no semantic clearance implied.",
+      "Exact and whitespace-normalized comparisons only. Historical evidence coverage is limited to recorded inventories."
+    ]
+  },
+  "exposure": {
+    "schema": "prospective-exposure-v1",
+    "cutoff": "2026-11-15-before-prospective-selection",
+    "coverage": "named local historical receipts and supplied frozen-screen/family-review attachments; not an exhaustive remote storage inventory",
+    "records": [
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/101.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/101.json",
+        "exact_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9",
+        "normalized_hash": "d0ec762f07e521bc76ad86cca8e521ebcd4570e1c9a98c384db5cd89943eafb9"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2743.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2743.json",
+        "exact_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44",
+        "normalized_hash": "4c9987a090fccd48a4b84986ef94473588edaeb60380ecf1a11c94519dd32b44"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/508.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/508.json",
+        "exact_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828",
+        "normalized_hash": "da5b056d505be0f95e18ba66470f672fd5122c52be50a730b1db944ba5270828"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/666.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/666.json",
+        "exact_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709",
+        "normalized_hash": "3f1b6a59322ef087ac33c86e263a45630a10b4dabf96ac8de859af92622ff709"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/1097.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/1097.json",
+        "exact_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809",
+        "normalized_hash": "eb1d5fc3ab24b881a5f891afb9075b84996c7c5feadac5d64c6ebbcc6859f809"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/880.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/880.json",
+        "exact_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975",
+        "normalized_hash": "233dfedbd3626a3a004fa910d15d876e3d6349409e71f5fe4341d307382f0975"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1210.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1210.json",
+        "exact_hash": "33cbe3f3518da918e16e682faaf706f86127863917da96c585f002cdf6689d7f",
+        "normalized_hash": "22827648350aea1f45562b7fb08e7c82b545402d1e3d5e2de6c45c7967b08cae"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1555.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1555.json",
+        "exact_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96",
+        "normalized_hash": "b357b5cebd7bec85d3585324c6cd1062ef8fc7ea90788ed26602b9b543d13c96"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/45.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/45.json",
+        "exact_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644",
+        "normalized_hash": "e15f7db02fd9efaf8ae78c7c04c2aa6910fbb5a1b52d66413bdb1c534e714644"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/914.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/914.json",
+        "exact_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41",
+        "normalized_hash": "ad0aed3a638655cee8368e4dd4da0545c0d8b0dcf70faf0a4929592943412f41"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1646.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1646.json",
+        "exact_hash": "906fd16a1a41b1bc53d4f23650f0933a8b3f4a9506b63cceaf6d148a35ca26d8",
+        "normalized_hash": "908c449cc12eee2869d739323b2101db467287909ed214781a4297316a2a1008"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1930.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1930.json",
+        "exact_hash": "b30994b6be8f54c2342b0e3c60bd7659ef438e831b85fa68708e2e04ebabd930",
+        "normalized_hash": "c498455724cf30d22984f80c7524991cb76d03a3774f783b6950e0248e58dd9a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/675.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/675.json",
+        "exact_hash": "4bc2416506f30285fad41b8e880925a039d369a4720dab29e570980171735d13",
+        "normalized_hash": "235aefbe4d51d90944c4a2187aaaf6f9b3c05b0e17d196112a605bcce2d17db0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/697.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/697.json",
+        "exact_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d",
+        "normalized_hash": "560f59aa553be90c76413119bd00ddc051e6f759bebe597491b9587341d5b77d"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/25149.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/25149.json",
+        "exact_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0",
+        "normalized_hash": "e99c74a5f749181c7b870cb4e433ebada0ee8280d011b375f0a112adc0c416c0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1217.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1217.json",
+        "exact_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a",
+        "normalized_hash": "cd4f47c82be5501dd34c10b6682e7e86bfc58d3ac77e13463386b2fc2d84fd4a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/199.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/199.json",
+        "exact_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7",
+        "normalized_hash": "0b3108bebd58e08ba90e9bf0d19073473acc8b9e87e9de2046f4d97e64b68db7"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/190.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "configs/phase2/composite_scaling_bank_v2.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/190.json",
+        "exact_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0",
+        "normalized_hash": "149b4d8056b42ab9f60a3fc07a4622a454e0a8a9dbb6f41f7d5a040aa1ed30a0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/681.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/phase2-math500-content-review-2026-10-27/review.json",
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/681.json",
+        "exact_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1",
+        "normalized_hash": "92edb3be1b1674e3b733b216f236b3db4d6ead5dae56dbcabc6f9c7a286ab5f1"
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/164",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/241",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/25",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/339",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/358",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/479",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/645",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/714",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/80",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/82",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/87",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json"
+        ]
+      },
+      {
+        "dataset": "medqa",
+        "source_id": "dev/row/970",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "outputs/medqa-planner-review/review.json",
+          "configs/phase2/medqa_worker_first_v1.json"
+        ]
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/524.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/algebra/524.json",
+        "exact_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0",
+        "normalized_hash": "8c5f462040e4cc9dab5c55834d5caff81d25d13f819f7b5b54d341116d3263d0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/634.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/algebra/634.json",
+        "exact_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052",
+        "normalized_hash": "165c86ea77c5bb3b7d57af83cc66800d59d4269046a3ebd11a25a774555e0052"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/1003.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/1003.json",
+        "exact_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0",
+        "normalized_hash": "1e2327d9b9024fe83636bef952302b35d4ab6789a60154431fa9dbde57ad76b0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/190.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/190.json",
+        "exact_hash": "3aefdbdc9f7fda4ebef05b4d4d01e3b41fc1473aaf6e0ac5431d6d4d5c3aecd5",
+        "normalized_hash": "7bb7800821b1d0fb78029d836aeb0f37053fcb28a61c6c0951e24fb1afc6c1d5"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/965.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/geometry/965.json",
+        "exact_hash": "506f868535cd4efebdf9e417f2e385ef66d73b7a185bba6da23cadb38ed5b6a0",
+        "normalized_hash": "377f8b6f61a25088b2adebf9b217bcd6eebaa3901967504700f1c7d227c25954"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1166.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1166.json",
+        "exact_hash": "9fbb2cbb2a135b624237dc2ac85629a7d6b11208761466b712ed3020f31f39e0",
+        "normalized_hash": "67bea13277d311ada9e933d81e7621602619ab07a6c395aaccfc0ff9e6acae67"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1300.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1300.json",
+        "exact_hash": "1609d2d9867f8b3cf73acf2f9f2abc1b732a86e9e8b30ae2b803e2838dfa0314",
+        "normalized_hash": "f65bcb8049433b38ee1f5b64679f561a9c127d7c57acfced7dcf7fa64bce2b81"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/533.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/number_theory/533.json",
+        "exact_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034",
+        "normalized_hash": "5e48988f397262298c4a7358e45e5e5172bd8dca0391674af52ac42cebc7e034"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/572.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/number_theory/572.json",
+        "exact_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299",
+        "normalized_hash": "c2e5605713c08c34e5993c693cf99b0f66bf16861458cfd0f18b74f3af3e1299"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/105.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/prealgebra/105.json",
+        "exact_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b",
+        "normalized_hash": "432779ede19e343bfef550569d103a11e28779a0823eb5cb7b591f8e29b2e30b"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/1303.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "configs/phase2/composite_scaling_bank_v2.json"
+        ],
+        "canonical_id": "math500:test/precalculus/1303.json",
+        "exact_hash": "22dbb96a5f5771a6870b11920533d4e0e021baa3bc501e50c4f22fe5998910fe",
+        "normalized_hash": "0876dec75aab58ba49c25230a1baa44ff97afa603f65ab141922c4a0deabb6f1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1078.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1078.json",
+        "exact_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3",
+        "normalized_hash": "b86dbf8cf215f8c9d4e7d2c59935383ec0fd3a52cc0d96b63701d7d8367e20c3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1339.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1339.json",
+        "exact_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c",
+        "normalized_hash": "ad447ebfd84636307a3806f59a89a64b42483b8c12907b3894d7ea8f947da57c"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/170.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/170.json",
+        "exact_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc",
+        "normalized_hash": "1f339fada32802ee37d2d712ec8da70ccfa932714b0406b44e5e7640fc1ec7fc"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/1796.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/1796.json",
+        "exact_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3",
+        "normalized_hash": "07c9a00c02572ddbfa81a054b8eb31a084ba5e3c5afba52dcca8baca9b8e08d3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2036.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2036.json",
+        "exact_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859",
+        "normalized_hash": "734703e113ef10caed463adf841a8e6271b42d88030f73c2770f51f4cb0d5859"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/224.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/224.json",
+        "exact_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2",
+        "normalized_hash": "db1e8b5a9a3af86762aa5811444cdba7a4c91859c7197324b06d5f5e90446af2"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2476.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2476.json",
+        "exact_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0",
+        "normalized_hash": "ba287bca097fab8ff87489bc39c35c3dd93d6d3c9b8e73ea7b416bba9ccbdcc0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/2570.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/2570.json",
+        "exact_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52",
+        "normalized_hash": "4a60e6f70ba3288c2dd5b6828a166fe81ed6d6381f2407df07e11e706b89be52"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/algebra/694.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/algebra/694.json",
+        "exact_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09",
+        "normalized_hash": "6836d806c82fc8e5c509bf4d272a130d21d1ab695be7668d819420b311465e09"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/1014.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/1014.json",
+        "exact_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03",
+        "normalized_hash": "63f60f02553a37db6948cb9eb66159a93e49b5f303dea6e9e35cd2a999c61a03"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/159.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/159.json",
+        "exact_hash": "64fd8da65d154bca46e73cb3e54106212175bdf0734d120317a5efac40898c66",
+        "normalized_hash": "ada5398c30c00525b6001899ab6fb3f1440ab50729be256282fdb39032c07927"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/230.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/230.json",
+        "exact_hash": "f538634a8192c24a2fde1c17e8dbbedcbc7db94943b2a9d5e14a2b17dac761a9",
+        "normalized_hash": "79e71ed079d46b239ba1daf1eca3ef1da531065c4d09934e26cf3dba711a5f86"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/counting_and_probability/525.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/counting_and_probability/525.json",
+        "exact_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7",
+        "normalized_hash": "2e3fe041e6eb20db33fdc701fbae9219aa786ec3696f91207b93d84aaebda9e7"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/283.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/283.json",
+        "exact_hash": "eaaf4a9c61771031c744e2f952b631d066132154edeac9262ae320214cb54499",
+        "normalized_hash": "a119fe2fb6680dbffd4e8c6b7489728ea7d96c3905b12dbfee06bcde75d3711b"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/627.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/627.json",
+        "exact_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3",
+        "normalized_hash": "9b52efb68a5a91825b9ca7d84d6ff008c2f6f7e2180d358e93fd280d20c888a3"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/geometry/846.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/geometry/846.json",
+        "exact_hash": "19c7ba3c3882d9f2160c3ad3c1f6e46178fc51199dd1f6fc5c50708a7a0fca29",
+        "normalized_hash": "2f68649da67237a3f033c39e06726f7ff820e2917218cb25f9414c21eb7b9189"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/1981.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/1981.json",
+        "exact_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16",
+        "normalized_hash": "8fad37b8e503807a7de29f9c32aa28e022ad5872e1808578011768a4d558fa16"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/intermediate_algebra/662.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/intermediate_algebra/662.json",
+        "exact_hash": "bac631fc4856bee71a4ea5645c6c32dc184ff35f5b1976f55108a6a7e39f9611",
+        "normalized_hash": "297d7c794f8968e1514a2cda8d4cc30986a4ea0b2c58af9217cb66a0d009a7b1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/1002.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/1002.json",
+        "exact_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06",
+        "normalized_hash": "fae6ba4a388e5143bd067d2d21710e013623cdef913a14fe6790c63f617cba06"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/1201.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/1201.json",
+        "exact_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953",
+        "normalized_hash": "bcaf1671f583e9f45b839ca4184eeaa9ecd8f91b64dd1eee9fe1930adfc69953"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/132.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/132.json",
+        "exact_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c",
+        "normalized_hash": "52cc08da603201f4f81fc370ec069e04a55180196a30ff47c731c4800252369c"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/156.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/156.json",
+        "exact_hash": "bb50a48bf9dc9d56e99d8aaa2e65374f71970fe0b86acc1403676257330d1415",
+        "normalized_hash": "2c4af654386b609813a66995277fd6d226f84778a88d2390d92d8102a5977cd1"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/number_theory/627.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/number_theory/627.json",
+        "exact_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf",
+        "normalized_hash": "144dee12b77d912d06f0ef996ef574810b1902d94df85d9bfd43e05ad2157cbf"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1003.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1003.json",
+        "exact_hash": "75fccd59f6a9ffcd2d879b136cf49250b039e1b7ec4c695735c3c80aa3677d77",
+        "normalized_hash": "a437f8b77d3b6c911f61dba2f01585de4f3dd6648a02933192339f0155eb7fac"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1247.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1247.json",
+        "exact_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6",
+        "normalized_hash": "63584947deaaedc516728e90766f4ab77a42c9d1a05e3a5abb956080c2f1edf6"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1640.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1640.json",
+        "exact_hash": "2ec5a789310410bf90359d110e41d32c3038744474e33906046b1b43ecc6ad02",
+        "normalized_hash": "b9729e0db8b4efad55f5c3357df77e06b1928ca407d91aea23934082e3d6e964"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1655.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1655.json",
+        "exact_hash": "edcea0eb60a9c2e7a602d27b5e0bb3cc04afdc3de18f9c2d0d90fb24bfd7660e",
+        "normalized_hash": "dabdf1e3d98113b7cf5a15704a7c1544627d519863d70522cd9802cfc8fe3e2e"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/1907.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/1907.json",
+        "exact_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39",
+        "normalized_hash": "b8a72a77f5523e34e0e0464dcf288c3013fc95ab128d3937e40193e72bdecc39"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/192.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/192.json",
+        "exact_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047",
+        "normalized_hash": "d22e73e9856455f1ad51c9ff9934cdefca83923760ce3dbb655e4844f93d0047"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/prealgebra/378.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/prealgebra/378.json",
+        "exact_hash": "502b6dd44da8ece7df3aaf5a15d3053a3cb55e7902ed6cf433206b0180fc854c",
+        "normalized_hash": "8848045f65a7a28f8e24fe9bfb662601518f98fa17877874763c07217c453939"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/1300.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/1300.json",
+        "exact_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0",
+        "normalized_hash": "b5a12526c474e1d2aa3895336fcc08f3a535de44eb515e61c9fd413e7239f2b0"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/145.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/145.json",
+        "exact_hash": "639c76616cd066e2be7a9ecdb87c9689e8ada4bf9883b0a65bcec051cc4ce060",
+        "normalized_hash": "9ad469d505cd4bcc11f8e6f36a87a0e90a99d804ab757fd1a4cd3067c55e4ed9"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/441.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/441.json",
+        "exact_hash": "08947c4d7acc7f25a982074e61ca94093492477665e9b63f982d0cf27141037b",
+        "normalized_hash": "24de5d4f2a07b57feb5a8521132b35cd3f5adf645ba7f3f2f4020ad9c306828a"
+      },
+      {
+        "dataset": "math500",
+        "source_id": "test/precalculus/989.json",
+        "phase": "historical",
+        "reason": "earlier selection, review or component record; conservative exclusion",
+        "evidence": [
+          "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt"
+        ],
+        "canonical_id": "math500:test/precalculus/989.json",
+        "exact_hash": "d6f8e5c66f4315d5a3abee90106127104289022d69be95224d6f3fe6108d9140",
+        "normalized_hash": "4a169fb73e63f4ab3f386312b60f8e5811578a18b1a1764176ed7e878098674f"
+      }
+    ],
+    "receipts": [
+      {
+        "path": "outputs/math500-complementary-screening-2026-11-04/MATH500_SCREENING_COHORT.json",
+        "sha256": "b187531a06a57bdea43255f7a1bac2b1c7c39ce7bf054dc77ba0266bb5f6a3d3"
+      },
+      {
+        "path": "outputs/phase2-math500-content-review-2026-10-27/review.json",
+        "sha256": "a6f64760cfc8827db9ec64cc71fbf1326db4f925261c2918c272944632177dcc"
+      },
+      {
+        "path": "outputs/medqa-planner-review/review.json",
+        "sha256": "5ee21072dcf9162bb14a9c186e80c7b40887b248aee368fc5f5bcaf72cfed340"
+      },
+      {
+        "path": "configs/phase2/composite_scaling_bank_v2.json",
+        "sha256": "8b4c15ae2813443c17a119b2b61b43a5d4c3987b604ccf306362d5395a984eb2"
+      },
+      {
+        "path": "configs/phase2/medqa_worker_first_v1.json",
+        "sha256": "b325408a2183cc9e1de4c24e3615e500b5363557f7d7f5a523e1a06b89c634e8"
+      },
+      {
+        "path": "/home/gnoriq/.codex/attachments/4e1cd247-7bf7-4d45-bda8-60f80b02b8af/Pasted text.txt",
+        "sha256": "1744c731739e63383b4cdde165e020bc84da2090a597b42970afbc1405edcce2"
+      },
+      {
+        "path": "/home/gnoriq/.codex/attachments/087e6b76-5716-428a-ae1d-89047c94e8dd/Pasted text.txt",
+        "sha256": "d288aedcdd29d0f9962a9fd1c66320473513926d1a856f847e8ceb57982fd608"
+      }
+    ],
+    "aliases": [],
+    "family_decisions": [],
+    "qualification": [],
+    "prospective": [],
+    "catalogued_or_reserved_is_not_exposure": true,
+    "limitations": [
+      "No exact unused count certified.",
+      "Family-review counterpart IDs conservatively excluded; automatic all-record text processing is not model exposure.",
+      "Cross-release statement duplicate and family review required at source binding.",
+      "No pretraining decontamination claim."
+    ],
+    "access": {
+      "math500": "previous pinned local extraction; new pool binding must use authorised local file",
+      "medqa": "only pinned dev mirror available; official test access or explicit pool amendment required",
+      "aime2025": "no authorised package available",
+      "aime2026": "no authorised package available",
+      "gpqa": "no gated Diamond package/access approval available"
+    }
+  },
+  "review": {
+    "schema": "aime-source-review-v1",
+    "reviewer": "Codex",
+    "reviewer_kind": "AI_statement_only_review",
+    "status": "six_sources_eligible_for_planner_preparation",
+    "attachment_sha256": "a3c0974347ef471efdff444302f0d92433f8f4165df85759c4355dfde8f4e9d2",
+    "packet_digest": "6044f804d1fc50da55e254544a46bb9194d3fdd66d45318dd23b0039173694ee",
+    "cohort_digest": "f694e7676b808418156d909de2ad9a7ec1262793b658954c91ad2c0f84526894",
+    "block": 1,
+    "decisions": [
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+        "topic": "Plane-section inequalities and finite-region area",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "All constraints and requested output are stated. Coordinate/optimization vocabulary in retrieved cards does not identify the same instance or a known near-duplicate.",
+        "workflow_admitted": false
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+        "topic": "Three-row Sudoku-band counting",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "The 3-by-9 grid, row constraint and three contiguous 3-by-3 blocks are given in prose and the embedded array. The filled grid is an example, not fixed clues. No external image is needed; do not add a full-Sudoku or extra column constraint.",
+        "workflow_admitted": false
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+        "topic": "Bounded ordered triples with a cube-sum divisibility condition",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "Bounds, positivity, ordering, modulus and requested remainder are explicit. Retrieved cube-equation and modular-counting statements have different constraints and counted objects.",
+        "workflow_admitted": false
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+        "topic": "Convex-pentagon sum-of-distances minimization",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "Side lengths, vertex order, two angles, convexity and objective are stated. No external diagram is referenced. The retrieved equiangular-pentagon perimeter problem uses different premises and objective; shared polygon vocabulary is not a demonstrated family conflict.",
+        "workflow_admitted": false
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+        "topic": "Chair-subset counting under a local occupancy restriction",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "The row size, occupancy count, forbidden arrangement and subset convention are explicit. Retrieved labelled circular seating and book adjacency tasks have different objects and restrictions; no near-duplicate established.",
+        "workflow_admitted": false
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+        "topic": "Two-color edge assignments on a 2-by-2 square grid",
+        "statement_identity_verified": true,
+        "text_sufficiency": "sufficient",
+        "required_external_attachment": false,
+        "family_review": "no_conflict_identified_in_reviewed_packet",
+        "decision": "eligible_for_planner_preparation",
+        "rationale": "The grid and per-square color requirement fully specify the task. The embedded TikZ is an illustrative example, not fixed colors. No renderer or execution of the drawing code is required. Retrieved grid-path, area and magic-square tasks have different objects and constraints.",
+        "workflow_admitted": false
+      }
+    ],
+    "reviewer_exposure_ids": [
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5",
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/4",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7",
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8",
+      "test/algebra/1837.json",
+      "test/algebra/1936.json",
+      "test/algebra/2277.json",
+      "test/algebra/246.json",
+      "test/counting_and_probability/1003.json",
+      "test/counting_and_probability/1014.json",
+      "test/counting_and_probability/230.json",
+      "test/counting_and_probability/525.json",
+      "test/geometry/627.json",
+      "test/geometry/686.json",
+      "test/intermediate_algebra/1166.json",
+      "test/intermediate_algebra/1300.json",
+      "test/intermediate_algebra/1467.json",
+      "test/intermediate_algebra/1544.json",
+      "test/intermediate_algebra/1791.json",
+      "test/intermediate_algebra/428.json",
+      "test/intermediate_algebra/752.json",
+      "test/number_theory/1002.json",
+      "test/number_theory/156.json",
+      "test/number_theory/627.json",
+      "test/prealgebra/1655.json",
+      "test/prealgebra/1930.json",
+      "test/prealgebra/378.json",
+      "test/precalculus/145.json",
+      "test/precalculus/441.json",
+      "test/precalculus/625.json"
+    ],
+    "comparison_cards": 40,
+    "reported_unique_pairs_compared": 651,
+    "limitations": [
+      "Lexical retrieval is not exhaustive semantic-family verification.",
+      "No original contest sitting or number verification; release-row identities retained.",
+      "Comparison cards are reviewer exposure, not planner evidence or admission of other blocks.",
+      "No answers, solutions, workflow task suggestions or task counts used to decide source eligibility.",
+      "Planner/GPU scope remains unapproved."
+    ],
+    "private_keys_read": false,
+    "model_executed": false,
+    "execution_allowed": false,
+    "review_digest": "4c7776ff93dcb0ef9df7b33337605b73eb81c3c75fe54e36820d9ed999d2381d"
+  },
+  "inventory": [
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/1",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/1",
+      "exact_hash": "56ee2f07af916ce6bdb892935978c799fe5e3c01289bdd66d8e634471961eeb9",
+      "normalized_hash": "56ee2f07af916ce6bdb892935978c799fe5e3c01289bdd66d8e634471961eeb9",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/2",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/2",
+      "exact_hash": "be7e34453117b3e3256e186154bc35d7c2c06545105bc65c9214b26aa81836c3",
+      "normalized_hash": "e8d54a7b5927344a0aeae134482601f249613f4c233d8b8cb3c27746c101fbac",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+      "exact_hash": "e820052ea79e65c837a5b089bb346e9690baaaca91922849cbe88a70eae8d256",
+      "normalized_hash": "e820052ea79e65c837a5b089bb346e9690baaaca91922849cbe88a70eae8d256",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+      "exact_hash": "300e7447cc71372dbdae3f92da4ccb722d688e20dfaa98cde501798344116c5d",
+      "normalized_hash": "300e7447cc71372dbdae3f92da4ccb722d688e20dfaa98cde501798344116c5d",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5",
+      "exact_hash": "a7069d1c3d51d86bfdf80eac97ec5c6dd7b44652286898db003714d9bf7cdd8d",
+      "normalized_hash": "a7069d1c3d51d86bfdf80eac97ec5c6dd7b44652286898db003714d9bf7cdd8d",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/6",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/6",
+      "exact_hash": "7732b7f9b082d7adac80c475a50d1633b6bb53c265cc09ed1d8a43f9dfbd1c74",
+      "normalized_hash": "7732b7f9b082d7adac80c475a50d1633b6bb53c265cc09ed1d8a43f9dfbd1c74",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/7",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/7",
+      "exact_hash": "8a1e6197ede64817930a0b829c29eab9a18fe720ab918a25c0bfd7e6d7805449",
+      "normalized_hash": "8a1e6197ede64817930a0b829c29eab9a18fe720ab918a25c0bfd7e6d7805449",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+      "exact_hash": "a8598f429a76b378dae105270084cf0d9f73abdf8066a0819b9e6697f4375c83",
+      "normalized_hash": "e8e8a5a24b9d68c7771ff5e3f381cea43863f3cf67fbbe436012b0a52faaa62a",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/9",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/9",
+      "exact_hash": "386008043e5fe2ed0c4a66cd6f94790932fa9f731c99586e665c5b7fc97d124a",
+      "normalized_hash": "386008043e5fe2ed0c4a66cd6f94790932fa9f731c99586e665c5b7fc97d124a",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10",
+      "exact_hash": "8e15c9e4e04a1ba4be4ee9e1ab7cf47767a2ec81b3dd989cc95788265f2c8444",
+      "normalized_hash": "a7566129d30969e38ce446a43ffafa41d403179d720332826811039a3582078a",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/11",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/11",
+      "exact_hash": "b95e0e96663f3b03f035951fb1ea620de7a994e9f1cdc0f3c880c67f79545f70",
+      "normalized_hash": "a6bfea389059d8a0904e6047ca522d95e671508596fc11965e1358be2172281b",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12",
+      "exact_hash": "65a2a3a9f25b8fb94e2bc383e8290282ae59567ec7b9241f52fd034fcddba0cc",
+      "normalized_hash": "37b9b3b678dc2253466a1addbd00c540ed61b816cc78c4ee80fc5f1ece998970",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/13",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/13",
+      "exact_hash": "875d751be7434e7fb825c9cd44818a8c0a0083ee21c7861fc6f7c5fcb9c7d02c",
+      "normalized_hash": "875d751be7434e7fb825c9cd44818a8c0a0083ee21c7861fc6f7c5fcb9c7d02c",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+      "exact_hash": "8168dfa12b21aabf77a5a2c840924e366e0429f3f8a459f046abc4c9f89ddfbe",
+      "normalized_hash": "8168dfa12b21aabf77a5a2c840924e366e0429f3f8a459f046abc4c9f89ddfbe",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+      "exact_hash": "1058c98a40ea6e327b6ab613764c64ea0d13eeb9b50e95170262326b5cffc315",
+      "normalized_hash": "1058c98a40ea6e327b6ab613764c64ea0d13eeb9b50e95170262326b5cffc315",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/16",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/16",
+      "exact_hash": "9b89876aa0ac05291b92d8dce0a7133e306e7ff24ab100c53cc351245dcf76e8",
+      "normalized_hash": "9b89876aa0ac05291b92d8dce0a7133e306e7ff24ab100c53cc351245dcf76e8",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+      "exact_hash": "1e3128dd58ec2b93cb65f61fc4f975eaf53da9bccc9af9964377908e272a4965",
+      "normalized_hash": "1e3128dd58ec2b93cb65f61fc4f975eaf53da9bccc9af9964377908e272a4965",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+      "exact_hash": "1d917f42745c6b85192705bf985b1a79e71d6d90288b01065bf387c1139f3483",
+      "normalized_hash": "807b442904fbc5151f0f66cedfa494a4023ca7e7cd2a45ae287e936c30f0535c",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+      "exact_hash": "e70ae31344c11e6c5634fd050b71cd712b20e716a6e88911a814744cbb3ef3d4",
+      "normalized_hash": "8816d2b088c28319e166059c55a1a9ef9666626b8aa12a077f0328ef7b47c74c",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/20",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/20",
+      "exact_hash": "22a07ceae1177ada3e5d4db6f961eaeac51d7ba552cbb48d65f6ebbc3619adf8",
+      "normalized_hash": "e8d82914af8a2ef2f2c582c587786d3aa1233db5cd3b14a64d22a3879929fd15",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/21",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/21",
+      "exact_hash": "9d53a625f459f4c398ab4b159cb1885e31bca5d0205ea59debeb46f3e7fd6461",
+      "normalized_hash": "cabcef6197313f0192b33f75549847c69906fdbae2db038ce2c38c7c7201deca",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/22",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/22",
+      "exact_hash": "32a4817e06e57357a45db3120ec7c8f946b2467aa21c11d9b77d92d2889390bd",
+      "normalized_hash": "32a4817e06e57357a45db3120ec7c8f946b2467aa21c11d9b77d92d2889390bd",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/23",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/23",
+      "exact_hash": "066e040de37489e47e963148cbd8b21db99096ed4c704efb854ac4fcb6eef48e",
+      "normalized_hash": "e1ec420da7086355014f777e9f14eebfc8470c665f119c7dd50304379975ed55",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/24",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/24",
+      "exact_hash": "58489d7ecca332406a4fc0b0214c724c53cf8f6a2bcb47c9f8080135aec04c56",
+      "normalized_hash": "58489d7ecca332406a4fc0b0214c724c53cf8f6a2bcb47c9f8080135aec04c56",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+      "exact_hash": "89e30021388562aac53cccc15361ebc03beb4ce8c1cdea73ed26ea365a2a5668",
+      "normalized_hash": "89e30021388562aac53cccc15361ebc03beb4ce8c1cdea73ed26ea365a2a5668",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/26",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/26",
+      "exact_hash": "1210d7e7c98c2de83ff0f3809204933ddc392bb264b4405800084feeb1521290",
+      "normalized_hash": "1210d7e7c98c2de83ff0f3809204933ddc392bb264b4405800084feeb1521290",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/27",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/27",
+      "exact_hash": "6d3b7590385502762826804bff33c4e38457ee183bd12ff7b59e43aa906d97ed",
+      "normalized_hash": "e1a667dcab97c1de1161c0d41f3d97eaf6c9a8c13bf9a5ed129b0c415c965e1a",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/28",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/28",
+      "exact_hash": "bf3cdcf9074e2b78017b8420f992ed4525a5c9d91ef468b5a80048d452dfbc48",
+      "normalized_hash": "5a9e2a99b84b60f0715f3e0bd65091caecea7be35aed28ffc6ec7504d14a1206",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/29",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/29",
+      "exact_hash": "c5b02d4238d2a10506aec2fbc72586e772f835935975880dee09a5a779ec8b07",
+      "normalized_hash": "dcac0b1b12f3b67dd290dda48389348afd47a219e92448f20183fd25fd608c41",
+      "family_id": "",
+      "status": "eligible"
+    },
+    {
+      "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/30",
+      "canonical_id": "aime2025:aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/30",
+      "exact_hash": "c22ab9a27e3e8fce14ef44a6452102799095cbbd225e6f005830ed3539dbe3d9",
+      "normalized_hash": "65c3240970be080e7c4aa370ce761d12f72e2f1a9a5030dfc60ad79ca9074d93",
+      "family_id": "",
+      "status": "eligible"
+    }
+  ],
+  "review_bundle_digest": "c98593a93319a7528bf9e9862043c67113a1a2c020a173849ddd6bebd4d69f7a"
+}
