@@ -1,5 +1,5 @@
 """Proposed external conversion utility. Requires approved isolated pyarrow environment."""
-import argparse,hashlib,importlib.metadata,json,os,signal,sys,time
+import argparse,hashlib,importlib.metadata,importlib.util,json,os,signal,sys,time
 from pathlib import Path
 
 def write(path,value):
@@ -17,7 +17,6 @@ def main():
     signal.signal(signal.SIGALRM,lambda *a:(_ for _ in ()).throw(TimeoutError('conversion wall ceiling')));signal.alarm(300)
     if importlib.metadata.version('pyarrow')!='22.0.0':raise RuntimeError('pinned parser version')
     import pyarrow.parquet as pq
-    import importlib.util
     spec=importlib.util.spec_from_file_location('aime_intake',args.repo/'scripts/prepare_prospective_aime.py')
     intake=importlib.util.module_from_spec(spec);spec.loader.exec_module(intake)
     sources=[(2025,'c94da77eb22bbd6439e62a323bec18493a421302',14313,'9f9066ff48ad2e31f9bf1b1ac6d5e80693195f987985f2859f89dd25ffa51c2d','2025-c94da77eb22b.e116gx4a'),(2026,'d61f486805306e6e6b5913504c07763a99e1b112',10062,'ae72853349a46c5f08666feb42db2d09fb4ac4fd4768c726b29702df21c7768e','2026-d61f48680530.4wn6b9z6')]
