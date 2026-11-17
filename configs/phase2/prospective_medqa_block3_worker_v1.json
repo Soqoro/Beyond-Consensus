@@ -1,0 +1,2723 @@
+{
+  "schema": "prospective-medqa-block3-worker-contracts-v1",
+  "cohort_digest": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+  "planner_scope": "7b8436e84548d2f862a97f5f07dd555399a61447444290f13d58ea75e275ac66",
+  "planner_result_sha256": "10966f14092bd6236e62bbf87c207f50e4a97da7ddb7bf78151e8b3f35019f06",
+  "planner_attachment_sha256": "79b006064b3211bf042c48a7e5b231b924cfc70036f12a545ba21eef330a1075",
+  "reviews": {
+    "test/row/1267": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+      "plan_digest": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+    },
+    "test/row/260": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+      "plan_digest": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+    },
+    "test/row/663": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+      "plan_digest": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "artifact"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+    },
+    "test/row/99": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+      "plan_digest": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already determines immediate priority/stabilization needs; separate option matching is redundant. Closed-book knowledge only, no new retrieval."
+    },
+    "test/row/674": {
+      "decision": "admitted",
+      "reviewer": "Codex AI-assisted contract review",
+      "reviewed_at": "2026-11-17",
+      "reviewer_kind": "AI-assisted",
+      "public_digest": "d1b75b33b0a47f0097f6b1089bf83e2b3ebf02827047075882a794116dd96f58",
+      "plan_digest": "d4105f73d782a3b229c1c601ef3e2937d47b118ac6984eb50065cda4b5af0b9d",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Synthesize the history, described prior smear, examination and current laboratory findings to interpret the underlying disorder and current symptoms. Compare all original preventive interventions and select one original option with justification.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "option_label"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "A_modes": [
+        "base"
+      ],
+      "reference_mode": "base",
+      "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already identifies the specific nutrient deficiency, leaving a near-direct treatment-option mapping; retain all responsibilities as one task."
+    }
+  },
+  "dispositions": {
+    "test/row/1267": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/1267",
+        "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+          "plan_digest": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+        "namespace": "cc3b30f9a50"
+      }
+    },
+    "test/row/890": {
+      "status": "unsupported",
+      "reason": "T2 supplies a specific von Willebrand-factor mechanism absent from the source and options, before the diagnostic task executes. Preserve this solution-bearing plan; do not remove the hint and pretend the repaired plan was neutral.",
+      "raw_plan_digest": "0cd732f82e748c0b6d433df48296cd7eff56cfe5367463d5d649fe9da247dd12"
+    },
+    "test/row/260": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/260",
+        "statement_sha256": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+          "plan_digest": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "eea7336ea1df1b7c6c67164c36cc220ef4c031aba097cf468106d0a5624b0f51",
+        "namespace": "ceea7336ea1"
+      }
+    },
+    "test/row/663": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/663",
+        "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+          "plan_digest": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+        "namespace": "c7b130175fa"
+      }
+    },
+    "test/row/1059": {
+      "status": "unsupported",
+      "reason": "T2 privileges primary adrenal insufficiency over other shock causes before T1 executes, introducing a narrowed answer hypothesis. Preserve as unsupported under the solution-free planning rubric; no correctness judgment or retry.",
+      "raw_plan_digest": "ca95f624e42ca68e752e59f2da1473ac492c0fbb44b89fb6a249a47697795bc5"
+    },
+    "test/row/99": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/99",
+        "statement_sha256": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+          "plan_digest": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already determines immediate priority/stabilization needs; separate option matching is redundant. Closed-book knowledge only, no new retrieval."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "6ff2d1e7aca6c3222825302bffef2f1bdc4de338b5f56360f0c88521b065b713",
+        "namespace": "c6ff2d1e7ac"
+      }
+    },
+    "test/row/674": {
+      "status": "admitted",
+      "component": {
+        "source_id": "test/row/674",
+        "statement_sha256": "d1b75b33b0a47f0097f6b1089bf83e2b3ebf02827047075882a794116dd96f58",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Synthesize the history, described prior smear, examination and current laboratory findings to interpret the underlying disorder and current symptoms. Compare all original preventive interventions and select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "d4105f73d782a3b229c1c601ef3e2937d47b118ac6984eb50065cda4b5af0b9d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "d1b75b33b0a47f0097f6b1089bf83e2b3ebf02827047075882a794116dd96f58",
+          "plan_digest": "d4105f73d782a3b229c1c601ef3e2937d47b118ac6984eb50065cda4b5af0b9d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the history, described prior smear, examination and current laboratory findings to interpret the underlying disorder and current symptoms. Compare all original preventive interventions and select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already identifies the specific nutrient deficiency, leaving a near-direct treatment-option mapping; retain all responsibilities as one task."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "4e8b3332b74b20294914d767edf8841b02840dc56e31d0c3686d3acc5c6dc850",
+        "namespace": "c4e8b3332b7"
+      }
+    },
+    "test/row/789": {
+      "status": "unsupported",
+      "reason": "The single task supplies surfactant production and accelerated lung maturity as the mechanism linking treatment to its target, although that mechanism is not stated in the source. Preserve the solution-bearing mechanistic shortcut rather than silently deleting it.",
+      "raw_plan_digest": "0a632e71ca49b9f915e5e71dd792db9fe81c1941fec55a37852649f09435aa67"
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+    "components": [
+      {
+        "source_id": "test/row/1267",
+        "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+          "plan_digest": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+        "namespace": "cc3b30f9a50"
+      },
+      {
+        "source_id": "test/row/260",
+        "statement_sha256": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+          "plan_digest": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "eea7336ea1df1b7c6c67164c36cc220ef4c031aba097cf468106d0a5624b0f51",
+        "namespace": "ceea7336ea1"
+      },
+      {
+        "source_id": "test/row/663",
+        "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+          "plan_digest": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+        "namespace": "c7b130175fa"
+      },
+      {
+        "source_id": "test/row/99",
+        "statement_sha256": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex AI-assisted contract review",
+          "reviewed_at": "2026-11-17",
+          "reviewer_kind": "AI-assisted",
+          "public_digest": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+          "plan_digest": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "reference_mode": "base",
+          "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already determines immediate priority/stabilization needs; separate option matching is redundant. Closed-book knowledge only, no new retrieval."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "medqa",
+        "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+        "contract_id": "6ff2d1e7aca6c3222825302bffef2f1bdc4de338b5f56360f0c88521b065b713",
+        "namespace": "c6ff2d1e7ac"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "10d485eaf74f8abc9ea597ddf52fe8707ce71ca6b69a1c76114af484466e0329",
+        "domain_structure_id": "bcdbfec027b1f812ce538483d42826a7821936c07d1552e1ded083f0f22e5780",
+        "preprice_specification": {
+          "work_id": "10d485eaf74f8abc9ea597ddf52fe8707ce71ca6b69a1c76114af484466e0329",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "ef682e857f59894c79768ae41ba21c10e7801bb66ca962493bc654e40e32e7e2",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c6ff2d1e7ac_t0",
+                "instruction": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c6ff2d1e7ac_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c6ff2d1e7ac_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c6ff2d1e7ac_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c7b130175fa_t0",
+                "instruction": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c7b130175fa_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c7b130175fa_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c7b130175fa_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c7b130175fa_t1",
+                "instruction": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c7b130175fa_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c7b130175fa_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c7b130175fa_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc3b30f9a50_t0",
+                "instruction": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc3b30f9a50_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc3b30f9a50_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc3b30f9a50_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc3b30f9a50_t1",
+                "instruction": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc3b30f9a50_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc3b30f9a50_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc3b30f9a50_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ceea7336ea1_t0",
+                "instruction": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ceea7336ea1_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ceea7336ea1_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ceea7336ea1_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c6ff2d1e7ac_s0",
+                "artifact": {
+                  "artifact": "c6ff2d1e7ac_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c7b130175fa_s0",
+                "artifact": {
+                  "artifact": "c7b130175fa_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c7b130175fa_s1",
+                "artifact": {
+                  "artifact": "c7b130175fa_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc3b30f9a50_s0",
+                "artifact": {
+                  "artifact": "cc3b30f9a50_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc3b30f9a50_s1",
+                "artifact": {
+                  "artifact": "cc3b30f9a50_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ceea7336ea1_s0",
+                "artifact": {
+                  "artifact": "ceea7336ea1_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c6ff2d1e7ac_e0",
+                "host": "c6ff2d1e7ac_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c6ff2d1e7ac_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c6ff2d1e7ac_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c6ff2d1e7ac_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c6ff2d1e7ac_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c7b130175fa_e0",
+                "host": "c7b130175fa_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c7b130175fa_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c7b130175fa_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c7b130175fa_s0",
+                  "c7b130175fa_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c7b130175fa_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c7b130175fa_e1",
+                "host": "c7b130175fa_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c7b130175fa_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c7b130175fa_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c7b130175fa_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c7b130175fa_s0",
+                  "c7b130175fa_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c7b130175fa_s1_read",
+                      "t0": "c7b130175fa_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc3b30f9a50_e0",
+                "host": "cc3b30f9a50_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc3b30f9a50_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc3b30f9a50_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc3b30f9a50_s0",
+                  "cc3b30f9a50_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc3b30f9a50_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc3b30f9a50_e1",
+                "host": "cc3b30f9a50_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc3b30f9a50_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc3b30f9a50_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc3b30f9a50_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc3b30f9a50_s0",
+                  "cc3b30f9a50_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc3b30f9a50_s1_read",
+                      "t0": "cc3b30f9a50_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ceea7336ea1_e0",
+                "host": "ceea7336ea1_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ceea7336ea1_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ceea7336ea1_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ceea7336ea1_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ceea7336ea1_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c6ff2d1e7ac_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c6ff2d1e7ac_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c6ff2d1e7ac_s0_read",
+                "producer": {
+                  "source": "c6ff2d1e7ac_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c7b130175fa_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c7b130175fa_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c7b130175fa_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c7b130175fa_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c7b130175fa_s0_read",
+                "producer": {
+                  "source": "c7b130175fa_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c7b130175fa_s1_read",
+                "producer": {
+                  "source": "c7b130175fa_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc3b30f9a50_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc3b30f9a50_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc3b30f9a50_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc3b30f9a50_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc3b30f9a50_s0_read",
+                "producer": {
+                  "source": "cc3b30f9a50_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc3b30f9a50_s1_read",
+                "producer": {
+                  "source": "cc3b30f9a50_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ceea7336ea1_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "ceea7336ea1_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ceea7336ea1_s0_read",
+                "producer": {
+                  "source": "ceea7336ea1_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "cc3b30f9a50_e0",
+                "cc3b30f9a50_e1",
+                "ceea7336ea1_e0",
+                "c7b130175fa_e0",
+                "c7b130175fa_e1",
+                "c6ff2d1e7ac_e0"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c6ff2d1e7ac_t0_answer",
+                "artifact": {
+                  "artifact": "c6ff2d1e7ac_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c6ff2d1e7ac_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c7b130175fa_t1_answer",
+                "artifact": {
+                  "artifact": "c7b130175fa_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c7b130175fa_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc3b30f9a50_t1_answer",
+                "artifact": {
+                  "artifact": "cc3b30f9a50_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc3b30f9a50_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ceea7336ea1_t0_answer",
+                "artifact": {
+                  "artifact": "ceea7336ea1_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "ceea7336ea1_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467",
+        "neutral_seed": "75443760594003678610107606229803394362769158241026613899677981018158449461700",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c6ff2d1e7ac_t0": "o0",
+            "cc3b30f9a50_t0": "o0",
+            "c7b130175fa_t0": "o1",
+            "c7b130175fa_t1": "o2",
+            "ceea7336ea1_t0": "o2",
+            "cc3b30f9a50_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 4,
+        "slot": 3,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "test/row/1267",
+            "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+              "plan_digest": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+            "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+            "namespace": "cc3b30f9a50"
+          },
+          {
+            "source_id": "test/row/260",
+            "statement_sha256": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+              "plan_digest": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+            "contract_id": "eea7336ea1df1b7c6c67164c36cc220ef4c031aba097cf468106d0a5624b0f51",
+            "namespace": "ceea7336ea1"
+          },
+          {
+            "source_id": "test/row/663",
+            "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+              "plan_digest": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "artifact"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+            "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+            "namespace": "c7b130175fa"
+          },
+          {
+            "source_id": "test/row/99",
+            "statement_sha256": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex AI-assisted contract review",
+              "reviewed_at": "2026-11-17",
+              "reviewer_kind": "AI-assisted",
+              "public_digest": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+              "plan_digest": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "option_label"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "A_modes": [
+                "base"
+              ],
+              "reference_mode": "base",
+              "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already determines immediate priority/stabilization needs; separate option matching is redundant. Closed-book knowledge only, no new retrieval."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "medqa",
+            "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+            "contract_id": "6ff2d1e7aca6c3222825302bffef2f1bdc4de338b5f56360f0c88521b065b713",
+            "namespace": "c6ff2d1e7ac"
+          }
+        ],
+        "sources": [
+          "test/row/1267",
+          "test/row/260",
+          "test/row/663",
+          "test/row/99"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 32,
+          "isolation_verified": true,
+          "evaluation_calls": 32
+        }
+      }
+    ],
+    "planned_slots": 3,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 3,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "7a16bb4ba81ed9b73d2f0834a1936b57ff1c4825f3b9131095b5b640c7c27800",
+        "historical_key": "c78af0d1421a5034384c7f359af02abef70000b978de560a7dafb6aead92cc25",
+        "component": "cc3b30f9a50",
+        "source_id": "test/row/1267",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+          "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+          "source_id": "test/row/1267",
+          "task": {
+            "id": "t0",
+            "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "5f013cd78d896fbaa15115cd3aef540cb417cdd85f5a8171411af3c018d17d52",
+        "historical_key": "6a2959e14e8aee682cdba67f6ebdb829a14d60136c5d5e24c074f7bca84726a1",
+        "component": "cc3b30f9a50",
+        "source_id": "test/row/1267",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+          "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+          "source_id": "test/row/1267",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "0a8d038801ab66d2397171c17a837842213b262bafe3b9929549f90ba35979c6",
+        "historical_key": "0a5f9e0e861278f4edd0abfb586523a33370aed273532fbe0e714df474057cff",
+        "component": "ceea7336ea1",
+        "source_id": "test/row/260",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "eea7336ea1df1b7c6c67164c36cc220ef4c031aba097cf468106d0a5624b0f51",
+          "statement_sha256": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+          "source_id": "test/row/260",
+          "task": {
+            "id": "t0",
+            "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "caa6a45ee1ec485478b41a1f81775e18cbfb4b494025194419f2afe3bfb5bb32",
+        "historical_key": "649e064984ce5b0fc78e0644831c5065384624bdb73a7da458e95c80436be333",
+        "component": "c7b130175fa",
+        "source_id": "test/row/663",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+          "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+          "source_id": "test/row/663",
+          "task": {
+            "id": "t0",
+            "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "artifact"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is an intermediate task, not the final answer task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\nderivation, artifact. Give concise finished reasoning in derivation and the\nrequested intermediate result in artifact. Your consumer will make the final\nchoice; do not answer the original multiple-choice question or debate that choice.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing intermediate facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "6ad5fc552211ac282a53fabd375c5fb1cf2e76638aa633a7134cd0388c66f274",
+        "historical_key": "72a2fa28bdc0e36bcbede895a34683372ef9a7685cb9fa39d6d5be5c3d5fbc23",
+        "component": "c7b130175fa",
+        "source_id": "test/row/663",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+          "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+          "source_id": "test/row/663",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      },
+      {
+        "key": "9723160ed0aedbadb66ccbe4caf7fc4a8a67041422d4e470a16b8bc097db6f54",
+        "historical_key": "416ad56be9c2e4b579ffc91842821cb1768a29d07f4c2cd076aaf4b8bbbb3129",
+        "component": "c6ff2d1e7ac",
+        "source_id": "test/row/99",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "6ff2d1e7aca6c3222825302bffef2f1bdc4de338b5f56360f0c88521b065b713",
+          "statement_sha256": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+          "source_id": "test/row/99",
+          "task": {
+            "id": "t0",
+            "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "option_label"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "This is a terminal task.\nPerform only the declared responsibility using the original exam question,\nall four unmarked options and the supplied parent artifacts. No external tools.\nReturn one completed JSON object with exactly two string fields in this order:\njustification, option_label. Give concise finished reasoning in justification;\noption_label must be exactly A, B, C or D. Do not add an answer-text field.\nStop after completing the two fields. If unable to complete the responsibility,\nstate the limitation rather than inventing facts.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "medqa"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "cc3b30f9a50",
+        "mode": "base",
+        "events": [
+          "cc3b30f9a50_e0",
+          "cc3b30f9a50_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "ceea7336ea1",
+        "mode": "base",
+        "events": [
+          "ceea7336ea1_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "c7b130175fa",
+        "mode": "base",
+        "events": [
+          "c7b130175fa_e0",
+          "c7b130175fa_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c6ff2d1e7ac",
+        "mode": "base",
+        "events": [
+          "c6ff2d1e7ac_e0"
+        ],
+        "calls": 1
+      }
+    ],
+    "profile_consumers": {
+      "7a16bb4ba81ed9b73d2f0834a1936b57ff1c4825f3b9131095b5b640c7c27800": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ],
+      "5f013cd78d896fbaa15115cd3aef540cb417cdd85f5a8171411af3c018d17d52": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ],
+      "0a8d038801ab66d2397171c17a837842213b262bafe3b9929549f90ba35979c6": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ],
+      "caa6a45ee1ec485478b41a1f81775e18cbfb4b494025194419f2afe3bfb5bb32": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ],
+      "6ad5fc552211ac282a53fabd375c5fb1cf2e76638aa633a7134cd0388c66f274": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ],
+      "9723160ed0aedbadb66ccbe4caf7fc4a8a67041422d4e470a16b8bc097db6f54": [
+        "1a889c658e9de240610d6f13cb481fb42b9553e8837bbd8dbf39ff397c2dc467"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 38,
+      "token_cap": 622592,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "test/row/1267": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/1267",
+          "statement_sha256": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "2d0df644bd248bc6de8e9d58c7c2cf6dfb5ab31ad7afad6cc84742a741137af9",
+            "plan_digest": "5b6f2e7fe3ae378a64a81c666af03333d6b2d6a6cbb4c42bfceab581ac22a525",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the medication chronology, existing regimen, comorbidities and new clinical observation to characterize the suspected adverse-effect pattern and relevant clinical constraints. Do not identify the added medication or rank answer options.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the clinical adverse-effect artifact to compare the side-effect profiles of all original medication options and select the most consistent option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+          "contract_id": "c3b30f9a50a87851289aa1c4755423d0f7607d8ed0e2cd61bc6b90276f3e946f",
+          "namespace": "cc3b30f9a50"
+        }
+      },
+      "test/row/890": {
+        "status": "unsupported",
+        "reason": "T2 supplies a specific von Willebrand-factor mechanism absent from the source and options, before the diagnostic task executes. Preserve this solution-bearing plan; do not remove the hint and pretend the repaired plan was neutral.",
+        "raw_plan_digest": "0cd732f82e748c0b6d433df48296cd7eff56cfe5367463d5d649fe9da247dd12"
+      },
+      "test/row/260": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/260",
+          "statement_sha256": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "e321201021b3c1ec1eea58927e6a0988e763840063958c77f974738f446d635a",
+            "plan_digest": "f8efe04f791cbadfaf3f4b107f77c716737397a92e74da412e09a1c37c500d8b",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Use the stated familial disease and screening context to identify the implicated gene and compare all original options. Select one original option with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+          "contract_id": "eea7336ea1df1b7c6c67164c36cc220ef4c031aba097cf468106d0a5624b0f51",
+          "namespace": "ceea7336ea1"
+        }
+      },
+      "test/row/663": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/663",
+          "statement_sha256": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "artifact"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "a605b3f4a7487edb0b57e1d392857ef8845c1ac597c5a83b18681efb7134b69e",
+            "plan_digest": "bbdcf2957ba4b18154927b9528a75d981e3423c6eb24c39be472c48d172e648c",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Interpret the clinical presentation and physical chest examination to identify the underlying pulmonary process with supporting evidence. Do not specify a radiographic finding or select an option.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "artifact"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the pulmonary-process artifact to infer the expected chest radiographic appearance and compare all original options. Select one original option with justification.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+          "contract_id": "7b130175facd1c6c5ddafc6a60ff5af70801f77d41a17ba8eac297ed53d5391f",
+          "namespace": "c7b130175fa"
+        }
+      },
+      "test/row/1059": {
+        "status": "unsupported",
+        "reason": "T2 privileges primary adrenal insufficiency over other shock causes before T1 executes, introducing a narrowed answer hypothesis. Preserve as unsupported under the solution-free planning rubric; no correctness judgment or retry.",
+        "raw_plan_digest": "ca95f624e42ca68e752e59f2da1473ac492c0fbb44b89fb6a249a47697795bc5"
+      },
+      "test/row/99": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/99",
+          "statement_sha256": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "ff55fa09f5ee9bd2f018f000db7316d2cd1d964cae5865513e2fc2068272618e",
+            "plan_digest": "27056f6960b9f5082d1ade3aaf258128a43c48995125250b24d2291b02e1285a",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Analyze the injury mechanism and clinical observations, assess immediate stabilization priorities using closed-book knowledge, and compare all original management options. Select the most appropriate next step with justification; do not retrieve external guidelines.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already determines immediate priority/stabilization needs; separate option matching is redundant. Closed-book knowledge only, no new retrieval."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+          "contract_id": "6ff2d1e7aca6c3222825302bffef2f1bdc4de338b5f56360f0c88521b065b713",
+          "namespace": "c6ff2d1e7ac"
+        }
+      },
+      "test/row/674": {
+        "status": "admitted",
+        "component": {
+          "source_id": "test/row/674",
+          "statement_sha256": "d1b75b33b0a47f0097f6b1089bf83e2b3ebf02827047075882a794116dd96f58",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Synthesize the history, described prior smear, examination and current laboratory findings to interpret the underlying disorder and current symptoms. Compare all original preventive interventions and select one original option with justification.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "option_label"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "d4105f73d782a3b229c1c601ef3e2937d47b118ac6984eb50065cda4b5af0b9d",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex AI-assisted contract review",
+            "reviewed_at": "2026-11-17",
+            "reviewer_kind": "AI-assisted",
+            "public_digest": "d1b75b33b0a47f0097f6b1089bf83e2b3ebf02827047075882a794116dd96f58",
+            "plan_digest": "d4105f73d782a3b229c1c601ef3e2937d47b118ac6984eb50065cda4b5af0b9d",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Synthesize the history, described prior smear, examination and current laboratory findings to interpret the underlying disorder and current symptoms. Compare all original preventive interventions and select one original option with justification.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "option_label"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "reference_mode": "base",
+            "reviewer_edits": "Role-bounded operationalization; final selection included as paid terminal work. Merge: T1 already identifies the specific nutrient deficiency, leaving a near-direct treatment-option mapping; retain all responsibilities as one task."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "medqa",
+          "prospective_cohort": "deced1e798b676996e0021bb072a8d6a211e1cc93a0b4394dcd6e826fcaf47ef",
+          "contract_id": "4e8b3332b74b20294914d767edf8841b02840dc56e31d0c3686d3acc5c6dc850",
+          "namespace": "c4e8b3332b7"
+        }
+      },
+      "test/row/789": {
+        "status": "unsupported",
+        "reason": "The single task supplies surfactant production and accelerated lung maturity as the mechanism linking treatment to its target, although that mechanism is not stated in the source. Preserve the solution-bearing mechanistic shortcut rather than silently deleting it.",
+        "raw_plan_digest": "0a632e71ca49b9f915e5e71dd792db9fe81c1941fec55a37852649f09435aa67"
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "4a3c2e8d15352d23f3ba12b03fdd04d56c2499114b6f93e082929b73c20f8d10"
+  },
+  "execution_allowed": false,
+  "packet_digest": "4590ddcc0aa090abdb245b0f6846627ef78e0e3d3c812999785e382d6d9285d0"
+}
