@@ -1,0 +1,2697 @@
+{
+  "schema": "prospective-aime2026-block2-worker-v1",
+  "cohort_digest": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+  "planner_scope": "39af450abd344fb983a504d5540e70f33da73a20dc21dccefd04f2dbfd2e6755",
+  "planner_result_sha256": "bdfc1d679a6a49bdf6e49e80f57e0dcf1fb7f10011cba942c364b86a230d1f49",
+  "reviews": {
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+      "plan_digest": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "length_and_digit_constraints"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+      "plan_digest": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "sample_space_and_events"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+      "plan_digest": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "rotated_coordinates"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "23e066ef5f777d17140daaaf89d48bd1e889d86c63b0bf00cc76c5868d7590e1",
+      "plan_digest": "12a764f67ee8231f937f3b8957740fa4ccb2db4b6472bb9f4aadba13691fe58b",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Factor the stated base, specify all divisor exponent ranges, and derive necessary-and-sufficient residue constraints on exponent tuples for the required remainder modulo twelve. Justify the mapping and constraints.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "exponent_constraints"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied factorization and exponent constraints, count all admissible bounded exponent tuples without duplication, justify completeness, and return the count modulo the requested modulus.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "4cacb9ac565152bc8e683a1c3960881ec81af56cc3d145761d974310c7f7f137",
+      "plan_digest": "4ea26c3e08d57eb683a9e27e46bec0b5c1f6555e3c5badc9d70c54712f189aef",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Justify the permutation interpretation and translate the sixfold-composition condition into allowable cycle lengths. Enumerate all permitted cycle types with multiplicities and prove the enumeration exhaustive.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "cycle_types"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the supplied cycle types, count permutations of the labelled set for each type with justified symmetry factors, sum the counts and return the number of functions.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+    }
+  },
+  "dispositions": {
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+        "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "length_and_digit_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+          "plan_digest": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "length_and_digit_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+        "namespace": "c2dd95e2b30"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+        "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space_and_events"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+          "plan_digest": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space_and_events"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+        "namespace": "cc84e38b634"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/4": {
+      "status": "invalid",
+      "raw_plan_digest": "05a9c36ebf6c440dd4945ec375018d30749c10935762e958b5283cc019aaffe2",
+      "reason": "Invalid JSON escape; no repair or retry"
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+        "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "rotated_coordinates"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+          "plan_digest": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "rotated_coordinates"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+        "namespace": "c605e4ce2b8"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8",
+        "statement_sha256": "23e066ef5f777d17140daaaf89d48bd1e889d86c63b0bf00cc76c5868d7590e1",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Factor the stated base, specify all divisor exponent ranges, and derive necessary-and-sufficient residue constraints on exponent tuples for the required remainder modulo twelve. Justify the mapping and constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "exponent_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied factorization and exponent constraints, count all admissible bounded exponent tuples without duplication, justify completeness, and return the count modulo the requested modulus.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "12a764f67ee8231f937f3b8957740fa4ccb2db4b6472bb9f4aadba13691fe58b",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "23e066ef5f777d17140daaaf89d48bd1e889d86c63b0bf00cc76c5868d7590e1",
+          "plan_digest": "12a764f67ee8231f937f3b8957740fa4ccb2db4b6472bb9f4aadba13691fe58b",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Factor the stated base, specify all divisor exponent ranges, and derive necessary-and-sufficient residue constraints on exponent tuples for the required remainder modulo twelve. Justify the mapping and constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "exponent_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied factorization and exponent constraints, count all admissible bounded exponent tuples without duplication, justify completeness, and return the count modulo the requested modulus.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "d931172fa4499808bfcc4c8e7972f43582e05392bdc4ea41544d315190ec4af8",
+        "namespace": "cd931172fa4"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7",
+        "statement_sha256": "4cacb9ac565152bc8e683a1c3960881ec81af56cc3d145761d974310c7f7f137",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Justify the permutation interpretation and translate the sixfold-composition condition into allowable cycle lengths. Enumerate all permitted cycle types with multiplicities and prove the enumeration exhaustive.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "cycle_types"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied cycle types, count permutations of the labelled set for each type with justified symmetry factors, sum the counts and return the number of functions.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "4ea26c3e08d57eb683a9e27e46bec0b5c1f6555e3c5badc9d70c54712f189aef",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "4cacb9ac565152bc8e683a1c3960881ec81af56cc3d145761d974310c7f7f137",
+          "plan_digest": "4ea26c3e08d57eb683a9e27e46bec0b5c1f6555e3c5badc9d70c54712f189aef",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Justify the permutation interpretation and translate the sixfold-composition condition into allowable cycle lengths. Enumerate all permitted cycle types with multiplicities and prove the enumeration exhaustive.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "cycle_types"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied cycle types, count permutations of the labelled set for each type with justified symmetry factors, sum the counts and return the number of functions.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "e171b1c5999814e4d25833da6886f17c7392ac2601269464fa8f0202e608f930",
+        "namespace": "ce171b1c599"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+    "components": [
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+        "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "length_and_digit_constraints"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+          "plan_digest": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "length_and_digit_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+        "namespace": "c2dd95e2b30"
+      },
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+        "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space_and_events"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+          "plan_digest": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space_and_events"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+        "namespace": "cc84e38b634"
+      },
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+        "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "rotated_coordinates"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+          "plan_digest": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "rotated_coordinates"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+        "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+        "namespace": "c605e4ce2b8"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "635e3f20f7cb764b6ff06b327d10fdd348d673055522a2e481eb8cae4cd6429a",
+        "domain_structure_id": "79e7222ec09163014b400a5dc17e5fe1d43a40e47dfedff86dc307aaf8ed3293",
+        "preprice_specification": {
+          "work_id": "635e3f20f7cb764b6ff06b327d10fdd348d673055522a2e481eb8cae4cd6429a",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "f256ea4f5bc2cbfa052ff87b23d6871c0a060b3ad9511be402292bb7b8f219a3",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c2dd95e2b30_t0",
+                "instruction": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c2dd95e2b30_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c2dd95e2b30_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c2dd95e2b30_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c2dd95e2b30_t1",
+                "instruction": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c2dd95e2b30_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c2dd95e2b30_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c2dd95e2b30_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c605e4ce2b8_t0",
+                "instruction": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c605e4ce2b8_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c605e4ce2b8_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c605e4ce2b8_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c605e4ce2b8_t1",
+                "instruction": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c605e4ce2b8_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c605e4ce2b8_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c605e4ce2b8_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc84e38b634_t0",
+                "instruction": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc84e38b634_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc84e38b634_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc84e38b634_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc84e38b634_t1",
+                "instruction": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc84e38b634_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc84e38b634_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc84e38b634_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c2dd95e2b30_s0",
+                "artifact": {
+                  "artifact": "c2dd95e2b30_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c2dd95e2b30_s1",
+                "artifact": {
+                  "artifact": "c2dd95e2b30_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c605e4ce2b8_s0",
+                "artifact": {
+                  "artifact": "c605e4ce2b8_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c605e4ce2b8_s1",
+                "artifact": {
+                  "artifact": "c605e4ce2b8_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc84e38b634_s0",
+                "artifact": {
+                  "artifact": "cc84e38b634_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc84e38b634_s1",
+                "artifact": {
+                  "artifact": "cc84e38b634_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c2dd95e2b30_e0",
+                "host": "c2dd95e2b30_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c2dd95e2b30_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c2dd95e2b30_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c2dd95e2b30_s0",
+                  "c2dd95e2b30_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c2dd95e2b30_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c2dd95e2b30_e1",
+                "host": "c2dd95e2b30_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c2dd95e2b30_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c2dd95e2b30_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c2dd95e2b30_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c2dd95e2b30_s0",
+                  "c2dd95e2b30_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c2dd95e2b30_s1_read",
+                      "t0": "c2dd95e2b30_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c605e4ce2b8_e0",
+                "host": "c605e4ce2b8_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c605e4ce2b8_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c605e4ce2b8_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c605e4ce2b8_s0",
+                  "c605e4ce2b8_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c605e4ce2b8_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c605e4ce2b8_e1",
+                "host": "c605e4ce2b8_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c605e4ce2b8_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c605e4ce2b8_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c605e4ce2b8_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c605e4ce2b8_s0",
+                  "c605e4ce2b8_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c605e4ce2b8_s1_read",
+                      "t0": "c605e4ce2b8_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc84e38b634_e0",
+                "host": "cc84e38b634_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc84e38b634_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc84e38b634_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc84e38b634_s0",
+                  "cc84e38b634_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc84e38b634_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc84e38b634_e1",
+                "host": "cc84e38b634_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc84e38b634_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc84e38b634_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc84e38b634_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc84e38b634_s0",
+                  "cc84e38b634_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc84e38b634_s1_read",
+                      "t0": "cc84e38b634_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c2dd95e2b30_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c2dd95e2b30_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2dd95e2b30_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c2dd95e2b30_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2dd95e2b30_s0_read",
+                "producer": {
+                  "source": "c2dd95e2b30_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c2dd95e2b30_s1_read",
+                "producer": {
+                  "source": "c2dd95e2b30_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c605e4ce2b8_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c605e4ce2b8_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c605e4ce2b8_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c605e4ce2b8_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c605e4ce2b8_s0_read",
+                "producer": {
+                  "source": "c605e4ce2b8_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c605e4ce2b8_s1_read",
+                "producer": {
+                  "source": "c605e4ce2b8_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc84e38b634_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc84e38b634_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc84e38b634_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc84e38b634_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc84e38b634_s0_read",
+                "producer": {
+                  "source": "cc84e38b634_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc84e38b634_s1_read",
+                "producer": {
+                  "source": "cc84e38b634_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "c2dd95e2b30_e0",
+                "c2dd95e2b30_e1",
+                "cc84e38b634_e0",
+                "cc84e38b634_e1",
+                "c605e4ce2b8_e0",
+                "c605e4ce2b8_e1"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c2dd95e2b30_t1_answer",
+                "artifact": {
+                  "artifact": "c2dd95e2b30_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c2dd95e2b30_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c605e4ce2b8_t1_answer",
+                "artifact": {
+                  "artifact": "c605e4ce2b8_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c605e4ce2b8_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc84e38b634_t1_answer",
+                "artifact": {
+                  "artifact": "cc84e38b634_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc84e38b634_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57",
+        "neutral_seed": "102608858471097433285154285940944900721393687964662585124810173781555544177867",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c2dd95e2b30_t0": "o0",
+            "c2dd95e2b30_t1": "o1",
+            "cc84e38b634_t0": "o1",
+            "c605e4ce2b8_t0": "o2",
+            "c605e4ce2b8_t1": "o2",
+            "cc84e38b634_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 3,
+        "slot": 2,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+            "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "length_and_digit_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+              "plan_digest": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "length_and_digit_constraints"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+            "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+            "namespace": "c2dd95e2b30"
+          },
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+            "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "sample_space_and_events"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+              "plan_digest": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "sample_space_and_events"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+            "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+            "namespace": "cc84e38b634"
+          },
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+            "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "rotated_coordinates"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+              "plan_digest": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "rotated_coordinates"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+            "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+            "namespace": "c605e4ce2b8"
+          }
+        ],
+        "sources": [
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 36,
+          "isolation_verified": true,
+          "evaluation_calls": 36
+        }
+      }
+    ],
+    "planned_slots": 2,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 2,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "0d5f5d5cd82b50db1d085188167dbfa9e8bc74c24a78b25b7dc9761e59985fcc",
+        "historical_key": "bcf5c3ccab817b024b29c62180c3f6eed1993f3dc684a9c605794636ac83ff84",
+        "component": "c2dd95e2b30",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+          "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "length_and_digit_constraints"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "c062f81a48b764f00473f64f62b2755b0c7b5a16e2521a8c08cef36cc5f0b571",
+        "historical_key": "ee76461106693c6fa2b16c38ff8f5ca878f564aeaea550d2f5457e2eb9b3914c",
+        "component": "c2dd95e2b30",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+          "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+          "task": {
+            "id": "t1",
+            "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "136b954a8eeac3c3c41314dc2c2325c572a961919206bcf5506883e81b54f43a",
+        "historical_key": "5a594f69abaf28568846c9091a2531bcf0a5311616d2f707b35781911558df8c",
+        "component": "cc84e38b634",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+          "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+          "task": {
+            "id": "t0",
+            "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "sample_space_and_events"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "1849728e52dfce55ef1a1810787c445954d39cde3d05669f3e7410da22ffdfd7",
+        "historical_key": "aa75a1725322ce0814d1443420336b9b99ecf8ba485220e70f8e5dca8497c813",
+        "component": "cc84e38b634",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+          "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+          "task": {
+            "id": "t1",
+            "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "2a91566b04120ca04e0a6ea663c4b51c1a485806904026fab156514bdab80857",
+        "historical_key": "0ab159bd7344143d2088e11054f1e0cbd95fba57435e5078f42d43e75f86ab28",
+        "component": "c605e4ce2b8",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+          "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+          "task": {
+            "id": "t0",
+            "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "rotated_coordinates"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "f0e83b4208f4c475596023cc74fa2c143047066aa2f91ee0457fd8d897327553",
+        "historical_key": "af1f2380f94cdf8a75503c82b636f0ad3d59c30386cd2d7b5f17a933f8db68b2",
+        "component": "c605e4ce2b8",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+          "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "c2dd95e2b30",
+        "mode": "base",
+        "events": [
+          "c2dd95e2b30_e0",
+          "c2dd95e2b30_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "cc84e38b634",
+        "mode": "base",
+        "events": [
+          "cc84e38b634_e0",
+          "cc84e38b634_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c605e4ce2b8",
+        "mode": "base",
+        "events": [
+          "c605e4ce2b8_e0",
+          "c605e4ce2b8_e1"
+        ],
+        "calls": 2
+      }
+    ],
+    "profile_consumers": {
+      "0d5f5d5cd82b50db1d085188167dbfa9e8bc74c24a78b25b7dc9761e59985fcc": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ],
+      "c062f81a48b764f00473f64f62b2755b0c7b5a16e2521a8c08cef36cc5f0b571": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ],
+      "136b954a8eeac3c3c41314dc2c2325c572a961919206bcf5506883e81b54f43a": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ],
+      "1849728e52dfce55ef1a1810787c445954d39cde3d05669f3e7410da22ffdfd7": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ],
+      "2a91566b04120ca04e0a6ea663c4b51c1a485806904026fab156514bdab80857": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ],
+      "f0e83b4208f4c475596023cc74fa2c143047066aa2f91ee0457fd8d897327553": [
+        "f09d3f338c1aaaa0a99e0690cc138b58ee214cd5172bd0cadc97132d73f73e57"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 42,
+      "token_cap": 688128,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/2",
+          "statement_sha256": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "length_and_digit_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "1385c80b8b8a9de278fbd6a781322de9cf1d3c3c0ea107f453378752c70e2746",
+            "plan_digest": "3e97a4e2b1c62d8aff8ac0301c43b13197aa472079a07a361b469e57fb26d84c",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive exhaustive allowable palindrome lengths and central-digit cases from the nonzero digit and total-sum constraints. State the corresponding number of independent half-digits, their bounds and required sums, including empty-half cases, with justification.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "length_and_digit_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied constraints, count all bounded half-digit sequences for each central-digit and length case, justify that these give distinct palindromes without omissions, and sum the counts.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+          "contract_id": "2dd95e2b30e73b85581de08d5db9050756048df8fdb46a526a610238b17b0c6e",
+          "namespace": "c2dd95e2b30"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/9",
+          "statement_sha256": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "sample_space_and_events"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "f830ea0a22d726125d63d1d306f24a034c3b8b4f0985f56ff2bd564a10472eb4",
+            "plan_digest": "077bbd29de66d52bc6bf7ad2a10d596f8df1a7c28c20358b5370bc3381d07993",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Model the ordered fair die rolls and sticker overwriting. Characterize the conditioning event and its intersection with exactly one blank final face, with justified sequence weights or multiplicities; do not assume final configurations equally likely.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "sample_space_and_events"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied model, count roll sequences or weighted configurations for the conditioning event and its intersection with exactly one blank face. Justify both counts, form and reduce the conditional probability and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+          "contract_id": "c84e38b63432eafa843aba132ddae75cc50ad39c27983cf7189ebc3493922577",
+          "namespace": "cc84e38b634"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/4": {
+        "status": "invalid",
+        "raw_plan_digest": "05a9c36ebf6c440dd4945ec375018d30749c10935762e958b5283cc019aaffe2",
+        "reason": "Invalid JSON escape; no repair or retry"
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/5",
+          "statement_sha256": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "rotated_coordinates"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "97595eae9e4d545f1a1e8a849bff2791ca52c71aed1a3c307448e155e826fad8",
+            "plan_digest": "324e41b0c8092f5b250307d5d1ed18692480e8b4a963fc073aee16ba265706b5",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Choose and define coordinates or vectors for the given points. Derive the positions after both specified rotations, respecting each center and direction, as expressions in the acute angle.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "rotated_coordinates"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the supplied rotated coordinates to derive the original-to-final distance equation. Solve for the cosine under the acute-angle constraint, justify admissibility and return the requested reduced numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+          "contract_id": "605e4ce2b8534b7143249ff0e9e02faae1335b332eabd5a5922a850066299909",
+          "namespace": "c605e4ce2b8"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/8",
+          "statement_sha256": "23e066ef5f777d17140daaaf89d48bd1e889d86c63b0bf00cc76c5868d7590e1",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Factor the stated base, specify all divisor exponent ranges, and derive necessary-and-sufficient residue constraints on exponent tuples for the required remainder modulo twelve. Justify the mapping and constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "exponent_constraints"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied factorization and exponent constraints, count all admissible bounded exponent tuples without duplication, justify completeness, and return the count modulo the requested modulus.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "12a764f67ee8231f937f3b8957740fa4ccb2db4b6472bb9f4aadba13691fe58b",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "23e066ef5f777d17140daaaf89d48bd1e889d86c63b0bf00cc76c5868d7590e1",
+            "plan_digest": "12a764f67ee8231f937f3b8957740fa4ccb2db4b6472bb9f4aadba13691fe58b",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Factor the stated base, specify all divisor exponent ranges, and derive necessary-and-sufficient residue constraints on exponent tuples for the required remainder modulo twelve. Justify the mapping and constraints.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "exponent_constraints"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied factorization and exponent constraints, count all admissible bounded exponent tuples without duplication, justify completeness, and return the count modulo the requested modulus.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+          "contract_id": "d931172fa4499808bfcc4c8e7972f43582e05392bdc4ea41544d315190ec4af8",
+          "namespace": "cd931172fa4"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/7",
+          "statement_sha256": "4cacb9ac565152bc8e683a1c3960881ec81af56cc3d145761d974310c7f7f137",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Justify the permutation interpretation and translate the sixfold-composition condition into allowable cycle lengths. Enumerate all permitted cycle types with multiplicities and prove the enumeration exhaustive.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "cycle_types"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the supplied cycle types, count permutations of the labelled set for each type with justified symmetry factors, sum the counts and return the number of functions.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "4ea26c3e08d57eb683a9e27e46bec0b5c1f6555e3c5badc9d70c54712f189aef",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "4cacb9ac565152bc8e683a1c3960881ec81af56cc3d145761d974310c7f7f137",
+            "plan_digest": "4ea26c3e08d57eb683a9e27e46bec0b5c1f6555e3c5badc9d70c54712f189aef",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Justify the permutation interpretation and translate the sixfold-composition condition into allowable cycle lengths. Enumerate all permitted cycle types with multiplicities and prove the enumeration exhaustive.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "cycle_types"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the supplied cycle types, count permutations of the labelled set for each type with justified symmetry factors, sum the counts and return the number of functions.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge routine finishing operations; clarify necessary input/output semantics without supplying solved values. See recorded semantic review."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "46f01cd732e57f36c46095f02bb9726cc3c39df88cfbfcad607de14a4529245f",
+          "contract_id": "e171b1c5999814e4d25833da6886f17c7392ac2601269464fa8f0202e608f930",
+          "namespace": "ce171b1c599"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "77d69d1d56f6553cfc0035960a74e762854d8eaa45c078910bb3da8e37b49889"
+  },
+  "execution_allowed": false,
+  "packet_digest": "e6dd21a33f9d8b3230ee6ada1f913e0d530c4b06199586abdf0eb1747c94b295"
+}
