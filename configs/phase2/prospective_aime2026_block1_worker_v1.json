@@ -1,0 +1,2846 @@
+{
+  "schema": "prospective-aime2026-block1-worker-v1",
+  "cohort_digest": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+  "planner_scope": "dcd00565375dfd97c9d234ae221ebf005f7e3992e953ec00da395c7dc4b9b3ef",
+  "planner_result_sha256": "4525951f4d203bb8c98f570ff825e877b544a465bfd569d0bbcd64f96976291e",
+  "reviews": {
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+      "plan_digest": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "reviewer_edits": "Merge all three tasks: tenth-term evaluation and sum are routine finishing operations."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+      "plan_digest": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "travel_equations"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1; merge solving and final arithmetic T2/T3."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+      "plan_digest": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "recurrence_and_base_cases"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep recurrence derivation T1 with sufficient state; merge T2/T3."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/25": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "0bf8adf22294f290367e24e124099313111a86a0579d6e4f6d9e4a350debfe5d",
+      "plan_digest": "0654aa0cd8695da876d811bf7823ebb3c904b6252508cb1e524fa132e7d00ab3",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive justified algebraic relations for the stated angle-bisector and tangent-circle configuration, retaining segment-location and geometric-realizability constraints as well as length relations.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "geometric_relations"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the geometric relations to determine all admissible positive-integer segment configurations, justify completeness and geometric realizability, compute the distinct possible base lengths and return their sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep geometric relations T1; merge parameter enumeration and final arithmetic T2/T3, retaining realizability constraints."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "c31555632c5bbdba921bd79951ffdb36b3c8d9bb4896fd7ef31ef6c429497b09",
+      "plan_digest": "148920b0dee42cc3b51fcc3213bd3a2268646b8ad52c6fba8d7e18b5b8fb6d47",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive necessary and sufficient digit conditions for the stated numeral reinterpretation to equal its base-ten value, preserving the exact base-selection rule and the positive-integer range.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "digit_conditions"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Count all positive integers below the stated bound satisfying the derived digit conditions. Use exhaustive, disjoint digit-length cases and return the total count.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep the two substantive stages."
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+      "plan_digest": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "reviewer_edits": "Merge T1/T2/T3: substitution and radical finishing do not create substantive tasks."
+    }
+  },
+  "dispositions": {
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+        "statement_sha256": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+          "plan_digest": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "reviewer_edits": "Merge all three tasks: tenth-term evaluation and sum are routine finishing operations."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "dc2dd03bd3dd85e719dbc2d5c8203498514d5a2edc7d763ca38a847113d3fa5a",
+        "namespace": "cdc2dd03bd3"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+        "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "travel_equations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+          "plan_digest": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "travel_equations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge solving and final arithmetic T2/T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+        "namespace": "cff5cc5c4b4"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+        "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence_and_base_cases"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+          "plan_digest": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence_and_base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep recurrence derivation T1 with sufficient state; merge T2/T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+        "namespace": "c9776d126df"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/25": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/25",
+        "statement_sha256": "0bf8adf22294f290367e24e124099313111a86a0579d6e4f6d9e4a350debfe5d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive justified algebraic relations for the stated angle-bisector and tangent-circle configuration, retaining segment-location and geometric-realizability constraints as well as length relations.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "geometric_relations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the geometric relations to determine all admissible positive-integer segment configurations, justify completeness and geometric realizability, compute the distinct possible base lengths and return their sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "0654aa0cd8695da876d811bf7823ebb3c904b6252508cb1e524fa132e7d00ab3",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "0bf8adf22294f290367e24e124099313111a86a0579d6e4f6d9e4a350debfe5d",
+          "plan_digest": "0654aa0cd8695da876d811bf7823ebb3c904b6252508cb1e524fa132e7d00ab3",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive justified algebraic relations for the stated angle-bisector and tangent-circle configuration, retaining segment-location and geometric-realizability constraints as well as length relations.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "geometric_relations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the geometric relations to determine all admissible positive-integer segment configurations, justify completeness and geometric realizability, compute the distinct possible base lengths and return their sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep geometric relations T1; merge parameter enumeration and final arithmetic T2/T3, retaining realizability constraints."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "05cf832efecc29a461ae4cc3e5c403cc7fc2800205bd2abe81cd5bd6b875bef9",
+        "namespace": "c05cf832efe"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19",
+        "statement_sha256": "c31555632c5bbdba921bd79951ffdb36b3c8d9bb4896fd7ef31ef6c429497b09",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive necessary and sufficient digit conditions for the stated numeral reinterpretation to equal its base-ten value, preserving the exact base-selection rule and the positive-integer range.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "digit_conditions"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Count all positive integers below the stated bound satisfying the derived digit conditions. Use exhaustive, disjoint digit-length cases and return the total count.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "148920b0dee42cc3b51fcc3213bd3a2268646b8ad52c6fba8d7e18b5b8fb6d47",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "c31555632c5bbdba921bd79951ffdb36b3c8d9bb4896fd7ef31ef6c429497b09",
+          "plan_digest": "148920b0dee42cc3b51fcc3213bd3a2268646b8ad52c6fba8d7e18b5b8fb6d47",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive necessary and sufficient digit conditions for the stated numeral reinterpretation to equal its base-ten value, preserving the exact base-selection rule and the positive-integer range.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "digit_conditions"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Count all positive integers below the stated bound satisfying the derived digit conditions. Use exhaustive, disjoint digit-length cases and return the total count.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep the two substantive stages."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "dd21426eeefabdf8eb228c5791a34979a193ef8f9dc544290299b7b88d7bf1b5",
+        "namespace": "cdd21426eee"
+      }
+    },
+    "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+        "statement_sha256": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+          "plan_digest": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "reviewer_edits": "Merge T1/T2/T3: substitution and radical finishing do not create substantive tasks."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "eb86254189457ccb9a22a93b9559785442777570f820ea8edc94e7bd097ac768",
+        "namespace": "ceb86254189"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+    "components": [
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+        "statement_sha256": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+          "plan_digest": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "reviewer_edits": "Merge all three tasks: tenth-term evaluation and sum are routine finishing operations."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "dc2dd03bd3dd85e719dbc2d5c8203498514d5a2edc7d763ca38a847113d3fa5a",
+        "namespace": "cdc2dd03bd3"
+      },
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+        "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "travel_equations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+          "plan_digest": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "travel_equations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge solving and final arithmetic T2/T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+        "namespace": "cff5cc5c4b4"
+      },
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+        "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence_and_base_cases"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+          "plan_digest": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence_and_base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep recurrence derivation T1 with sufficient state; merge T2/T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+        "namespace": "c9776d126df"
+      },
+      {
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+        "statement_sha256": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+          "plan_digest": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "reviewer_edits": "Merge T1/T2/T3: substitution and radical finishing do not create substantive tasks."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2026",
+        "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+        "contract_id": "eb86254189457ccb9a22a93b9559785442777570f820ea8edc94e7bd097ac768",
+        "namespace": "ceb86254189"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "969f938d071f85871f43a663621d6df8df898ba85e1db1544c92838c6bf75cd1",
+        "domain_structure_id": "dd5939aea64399501860fee9523b893ba7b5f78b34561c824803dee6b026a264",
+        "preprice_specification": {
+          "work_id": "969f938d071f85871f43a663621d6df8df898ba85e1db1544c92838c6bf75cd1",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "ad300dea5902377277c749ed858b725e2ad17d14248cb5d46cd35b5a3d08e4e6",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c9776d126df_t0",
+                "instruction": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c9776d126df_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c9776d126df_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c9776d126df_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c9776d126df_t1",
+                "instruction": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c9776d126df_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c9776d126df_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c9776d126df_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cdc2dd03bd3_t0",
+                "instruction": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cdc2dd03bd3_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cdc2dd03bd3_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cdc2dd03bd3_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ceb86254189_t0",
+                "instruction": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ceb86254189_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ceb86254189_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ceb86254189_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cff5cc5c4b4_t0",
+                "instruction": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cff5cc5c4b4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cff5cc5c4b4_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cff5cc5c4b4_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cff5cc5c4b4_t1",
+                "instruction": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cff5cc5c4b4_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cff5cc5c4b4_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cff5cc5c4b4_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c9776d126df_s0",
+                "artifact": {
+                  "artifact": "c9776d126df_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c9776d126df_s1",
+                "artifact": {
+                  "artifact": "c9776d126df_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cdc2dd03bd3_s0",
+                "artifact": {
+                  "artifact": "cdc2dd03bd3_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ceb86254189_s0",
+                "artifact": {
+                  "artifact": "ceb86254189_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cff5cc5c4b4_s0",
+                "artifact": {
+                  "artifact": "cff5cc5c4b4_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cff5cc5c4b4_s1",
+                "artifact": {
+                  "artifact": "cff5cc5c4b4_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c9776d126df_e0",
+                "host": "c9776d126df_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c9776d126df_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c9776d126df_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c9776d126df_s0",
+                  "c9776d126df_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c9776d126df_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c9776d126df_e1",
+                "host": "c9776d126df_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c9776d126df_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c9776d126df_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c9776d126df_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c9776d126df_s0",
+                  "c9776d126df_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c9776d126df_s1_read",
+                      "t0": "c9776d126df_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cdc2dd03bd3_e0",
+                "host": "cdc2dd03bd3_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cdc2dd03bd3_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cdc2dd03bd3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cdc2dd03bd3_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cdc2dd03bd3_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ceb86254189_e0",
+                "host": "ceb86254189_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ceb86254189_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ceb86254189_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ceb86254189_s0"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ceb86254189_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cff5cc5c4b4_e0",
+                "host": "cff5cc5c4b4_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cff5cc5c4b4_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cff5cc5c4b4_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cff5cc5c4b4_s0",
+                  "cff5cc5c4b4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cff5cc5c4b4_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cff5cc5c4b4_e1",
+                "host": "cff5cc5c4b4_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cff5cc5c4b4_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cff5cc5c4b4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cff5cc5c4b4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cff5cc5c4b4_s0",
+                  "cff5cc5c4b4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cff5cc5c4b4_s1_read",
+                      "t0": "cff5cc5c4b4_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c9776d126df_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c9776d126df_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c9776d126df_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c9776d126df_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c9776d126df_s0_read",
+                "producer": {
+                  "source": "c9776d126df_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c9776d126df_s1_read",
+                "producer": {
+                  "source": "c9776d126df_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cdc2dd03bd3_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cdc2dd03bd3_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cdc2dd03bd3_s0_read",
+                "producer": {
+                  "source": "cdc2dd03bd3_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ceb86254189_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "ceb86254189_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ceb86254189_s0_read",
+                "producer": {
+                  "source": "ceb86254189_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cff5cc5c4b4_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cff5cc5c4b4_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cff5cc5c4b4_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cff5cc5c4b4_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cff5cc5c4b4_s0_read",
+                "producer": {
+                  "source": "cff5cc5c4b4_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cff5cc5c4b4_s1_read",
+                "producer": {
+                  "source": "cff5cc5c4b4_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "cdc2dd03bd3_e0",
+                "cff5cc5c4b4_e0",
+                "cff5cc5c4b4_e1",
+                "c9776d126df_e0",
+                "c9776d126df_e1",
+                "ceb86254189_e0"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c9776d126df_t1_answer",
+                "artifact": {
+                  "artifact": "c9776d126df_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c9776d126df_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cdc2dd03bd3_t0_answer",
+                "artifact": {
+                  "artifact": "cdc2dd03bd3_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cdc2dd03bd3_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ceb86254189_t0_answer",
+                "artifact": {
+                  "artifact": "ceb86254189_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "ceb86254189_e0",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cff5cc5c4b4_t1_answer",
+                "artifact": {
+                  "artifact": "cff5cc5c4b4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cff5cc5c4b4_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113",
+        "neutral_seed": "112364454287949714113940378564387821272137228859036303386651324615774266215658",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c9776d126df_t0": "o0",
+            "ceb86254189_t0": "o0",
+            "c9776d126df_t1": "o1",
+            "cff5cc5c4b4_t1": "o1",
+            "cdc2dd03bd3_t0": "o2",
+            "cff5cc5c4b4_t0": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 4,
+        "slot": 1,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+            "statement_sha256": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+              "plan_digest": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "reviewer_edits": "Merge all three tasks: tenth-term evaluation and sum are routine finishing operations."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+            "contract_id": "dc2dd03bd3dd85e719dbc2d5c8203498514d5a2edc7d763ca38a847113d3fa5a",
+            "namespace": "cdc2dd03bd3"
+          },
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+            "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "travel_equations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+              "plan_digest": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "travel_equations"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep T1; merge solving and final arithmetic T2/T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+            "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+            "namespace": "cff5cc5c4b4"
+          },
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+            "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "recurrence_and_base_cases"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+              "plan_digest": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "recurrence_and_base_cases"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep recurrence derivation T1 with sufficient state; merge T2/T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+            "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+            "namespace": "c9776d126df"
+          },
+          {
+            "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+            "statement_sha256": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+              "plan_digest": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+                  "parents": [],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t0"
+              ],
+              "reviewer_edits": "Merge T1/T2/T3: substitution and radical finishing do not create substantive tasks."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2026",
+            "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+            "contract_id": "eb86254189457ccb9a22a93b9559785442777570f820ea8edc94e7bd097ac768",
+            "namespace": "ceb86254189"
+          }
+        ],
+        "sources": [
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+          "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 32,
+          "isolation_verified": true,
+          "evaluation_calls": 32
+        }
+      }
+    ],
+    "planned_slots": 2,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 1,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "ee0ddbc34197fcdd5f19a8e77bf984bb6305f3b32c523aff5c0c78a181ec75c2",
+        "historical_key": "2291fc3a9ed156b75ae686ca1cfc8cb77f30040f698a59a1b7543db650e9fc3d",
+        "component": "cdc2dd03bd3",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "dc2dd03bd3dd85e719dbc2d5c8203498514d5a2edc7d763ca38a847113d3fa5a",
+          "statement_sha256": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+          "task": {
+            "id": "t0",
+            "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "d4648f2dd335077e60ca274ba8bb7c7fcc09c80723598b60f5591a73989fb91a",
+        "historical_key": "7cd87782d4ee375946447aea76bad37e1372b011fe90c583e5ee876c377b8737",
+        "component": "cff5cc5c4b4",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+          "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+          "task": {
+            "id": "t0",
+            "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "travel_equations"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "87acb01bb7b3aa2e8e1087eb9e9811d16b8b22d7800bc14d5099872ec56daccf",
+        "historical_key": "73221a71657b1f9e95ae124731ec6801b41a0531b13b377183984a02dc4b365d",
+        "component": "cff5cc5c4b4",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+          "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+          "task": {
+            "id": "t1",
+            "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "fa5a322af3b5e6d5ba180dce77b2167605113405c9e34092fbe7bacde3c57e1c",
+        "historical_key": "4a618064393880ed010253d8feaec5a440c969c8bc99a003f7b78adb39923f32",
+        "component": "c9776d126df",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+          "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence_and_base_cases"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "489cb8e03ee84cb4ec572dd14a4b148f6177c66fc36c32227c6a4ab2dacd496b",
+        "historical_key": "786d22eb4d0cd2a309b289a342e4b4e4a899e1d5c6a9fb76b2351416fc01eb17",
+        "component": "c9776d126df",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+          "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+          "task": {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      },
+      {
+        "key": "38358c5c18541b27545013423a5b7b54d1bbdae1ffd4105988a563ed47b747d9",
+        "historical_key": "1c5748383c31bd6b03fc5e6c69988b013adabffc21fbeda70eceffd30127d61f",
+        "component": "ceb86254189",
+        "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "eb86254189457ccb9a22a93b9559785442777570f820ea8edc94e7bd097ac768",
+          "statement_sha256": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2026"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "cdc2dd03bd3",
+        "mode": "base",
+        "events": [
+          "cdc2dd03bd3_e0"
+        ],
+        "calls": 1
+      },
+      {
+        "component": "cff5cc5c4b4",
+        "mode": "base",
+        "events": [
+          "cff5cc5c4b4_e0",
+          "cff5cc5c4b4_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c9776d126df",
+        "mode": "base",
+        "events": [
+          "c9776d126df_e0",
+          "c9776d126df_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "ceb86254189",
+        "mode": "base",
+        "events": [
+          "ceb86254189_e0"
+        ],
+        "calls": 1
+      }
+    ],
+    "profile_consumers": {
+      "ee0ddbc34197fcdd5f19a8e77bf984bb6305f3b32c523aff5c0c78a181ec75c2": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ],
+      "d4648f2dd335077e60ca274ba8bb7c7fcc09c80723598b60f5591a73989fb91a": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ],
+      "87acb01bb7b3aa2e8e1087eb9e9811d16b8b22d7800bc14d5099872ec56daccf": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ],
+      "fa5a322af3b5e6d5ba180dce77b2167605113405c9e34092fbe7bacde3c57e1c": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ],
+      "489cb8e03ee84cb4ec572dd14a4b148f6177c66fc36c32227c6a4ab2dacd496b": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ],
+      "38358c5c18541b27545013423a5b7b54d1bbdae1ffd4105988a563ed47b747d9": [
+        "87b0076f7a24fa2a1038b4902a74f271222ada5143bf6b886a4aedbc35b98113"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 38,
+      "token_cap": 622592,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/16",
+          "statement_sha256": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "52a0493e1beb32ce19725675993ce9aebf0a74fb5bda00cbf3fa93cea5fad3b0",
+            "plan_digest": "c3491dfe47bd28568474fd5825b1defcfc1192f3e3212166a4cdcb16e4770c04",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine all arithmetic sequences of integers satisfying the stated first-term and included-term conditions, justify completeness, evaluate their tenth terms and return the sum.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "reviewer_edits": "Merge all three tasks: tenth-term evaluation and sum are routine finishing operations."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "dc2dd03bd3dd85e719dbc2d5c8203498514d5a2edc7d763ca38a847113d3fa5a",
+          "namespace": "cdc2dd03bd3"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/1",
+          "statement_sha256": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "travel_equations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "010b9a2fb929c4726c3403aed402af6ff6635d1ee23dd906732652889866316d",
+            "plan_digest": "f680e26148bdc434b9d8b775576a1ad659d580c09f069a861f9e13b2473e444a",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Define variables and derive a complete system of travel-time equations from the stated start delays, speed differences and simultaneous arrival. Include variable meanings and physical-domain constraints.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "travel_equations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Solve the supplied travel-time system within its physical domain, establish the school-to-park distance, reduce its fraction and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1; merge solving and final arithmetic T2/T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "ff5cc5c4b410d7769f3b7387ddf9d9f097a37cc9459e539f488c537388c919ac",
+          "namespace": "cff5cc5c4b4"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/17",
+          "statement_sha256": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence_and_base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "92b8b819beca5f270350c0a15bbc582a9d237e8c8006fe37de8d9876e612eb10",
+            "plan_digest": "31ebd1cd773e0fde2436b3215707b6c9e3fab5dea1aad625c5e3807368448613",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for paths on the stated strip graph. Account for both segment non-repetition and forbidden right-to-left horizontal or diagonal moves; do not assume vertex-only state suffices.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "recurrence_and_base_cases"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Apply the supplied recurrence and base cases to the stated ten-square graph, justify the finite path count and return its requested square root.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep recurrence derivation T1 with sufficient state; merge T2/T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "9776d126df17ba5678bf5b4746fde7cc5c2e6447f1fea466d105204d9d2e82f5",
+          "namespace": "c9776d126df"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/25": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/25",
+          "statement_sha256": "0bf8adf22294f290367e24e124099313111a86a0579d6e4f6d9e4a350debfe5d",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive justified algebraic relations for the stated angle-bisector and tangent-circle configuration, retaining segment-location and geometric-realizability constraints as well as length relations.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "geometric_relations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the geometric relations to determine all admissible positive-integer segment configurations, justify completeness and geometric realizability, compute the distinct possible base lengths and return their sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "0654aa0cd8695da876d811bf7823ebb3c904b6252508cb1e524fa132e7d00ab3",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "0bf8adf22294f290367e24e124099313111a86a0579d6e4f6d9e4a350debfe5d",
+            "plan_digest": "0654aa0cd8695da876d811bf7823ebb3c904b6252508cb1e524fa132e7d00ab3",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive justified algebraic relations for the stated angle-bisector and tangent-circle configuration, retaining segment-location and geometric-realizability constraints as well as length relations.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "geometric_relations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the geometric relations to determine all admissible positive-integer segment configurations, justify completeness and geometric realizability, compute the distinct possible base lengths and return their sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep geometric relations T1; merge parameter enumeration and final arithmetic T2/T3, retaining realizability constraints."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "05cf832efecc29a461ae4cc3e5c403cc7fc2800205bd2abe81cd5bd6b875bef9",
+          "namespace": "c05cf832efe"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/19",
+          "statement_sha256": "c31555632c5bbdba921bd79951ffdb36b3c8d9bb4896fd7ef31ef6c429497b09",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive necessary and sufficient digit conditions for the stated numeral reinterpretation to equal its base-ten value, preserving the exact base-selection rule and the positive-integer range.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "digit_conditions"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Count all positive integers below the stated bound satisfying the derived digit conditions. Use exhaustive, disjoint digit-length cases and return the total count.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "148920b0dee42cc3b51fcc3213bd3a2268646b8ad52c6fba8d7e18b5b8fb6d47",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "c31555632c5bbdba921bd79951ffdb36b3c8d9bb4896fd7ef31ef6c429497b09",
+            "plan_digest": "148920b0dee42cc3b51fcc3213bd3a2268646b8ad52c6fba8d7e18b5b8fb6d47",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive necessary and sufficient digit conditions for the stated numeral reinterpretation to equal its base-ten value, preserving the exact base-selection rule and the positive-integer range.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "digit_conditions"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Count all positive integers below the stated bound satisfying the derived digit conditions. Use exhaustive, disjoint digit-length cases and return the total count.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep the two substantive stages."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "dd21426eeefabdf8eb228c5791a34979a193ef8f9dc544290299b7b88d7bf1b5",
+          "namespace": "cdd21426eee"
+        }
+      },
+      "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2026/d61f486805306e6e6b5913504c07763a99e1b112/row/14",
+          "statement_sha256": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "ea7267d9b51082534fa5c92436b99de5f1e5e7b648563f76cf20f22ecd64cbb8",
+            "plan_digest": "874b207a95e85fa2460038e299bc1c05880e374a60ae25390cef4842d9526cf5",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive a geometric relation sufficient to determine the squared perimeter from the given squared-side and squared-diagonal sums of the equiangular pentagon. Justify the relation, evaluate the specified radical form and return the requested sum; do not assume a ratio between the two sums alone determines perimeter.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "reviewer_edits": "Merge T1/T2/T3: substitution and radical finishing do not create substantive tasks."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2026",
+          "prospective_cohort": "3a21d01a93675a54b989fb543439b73974f5bdffb82ebdff012caccf6d97ada5",
+          "contract_id": "eb86254189457ccb9a22a93b9559785442777570f820ea8edc94e7bd097ac768",
+          "namespace": "ceb86254189"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "88ba1d9fc76bb4b378fbd86f8d87cb9fd4a2b0165cdc6b902e2730ed30e854ce"
+  },
+  "execution_allowed": false,
+  "packet_digest": "3f6c518d3f3cd3083b5a97bca9e98d5acc4c708ac0f25ec568349d7a90eda659"
+}
