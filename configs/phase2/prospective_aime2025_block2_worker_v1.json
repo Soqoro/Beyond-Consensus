@@ -1,0 +1,2697 @@
+{
+  "schema": "prospective-aime2025-block2-worker-v1",
+  "cohort_digest": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+  "planner_scope": "29d13c153effad06f29fe4131bb4951106bf6da80106e0e7fffd3f7dd1b60b11",
+  "planner_result_sha256": "9f0434a47b689ae182b2e23135b4cc28279293c72eab238ab5d85b08175c84f8",
+  "reviews": {
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+      "plan_digest": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "general_term"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1 with explicit exact-factor clarification; merge T2 and T3."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+      "plan_digest": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "integer_families"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge T1 and T2; keep bounded counting T3."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+      "plan_digest": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "divisibility_condition"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1; merge enumeration T2 and final arithmetic T3."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "d4b0a0256f00c117e790ca019e37ec5098a0cc48a083659da08f8b235eb4e19c",
+      "plan_digest": "99b30e8173b0bfeb45b53b80519399a503ed5bcb21c01137de17092a93f80bef",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive Cartesian equations for the two complex-plane loci in the question as functions of the real parameter. State the center, radius and line coefficients with their derivation.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "locus_equations"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the locus equations to establish the necessary and sufficient condition for exactly one intersection, solve for all valid real parameters, and return the requested reduced-fraction numerator-plus-denominator sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1; merge tangency T2 and solving/final arithmetic T3."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "9e524c58fb4ade7687b9b954aad282c612a3df070cee0157d66d206d3a5649ec",
+      "plan_digest": "41eab93d858aca72c273c3b933e1d62d9f86312c29773ce391784e0e6dc1985d",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Enumerate all positive integer flavor-count tuples meeting the stated total and strict flavor inequalities. Justify completeness and preserve the flavor labels.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "count_tuples"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Use the complete flavor-count tuples to count assignments to distinct players, justify multiplicities and disjoint cases, and return the requested remainder.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1; merge assignment counting T2 and final arithmetic T3."
+    }
+  },
+  "dispositions": {
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+        "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "general_term"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+          "plan_digest": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "general_term"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1 with explicit exact-factor clarification; merge T2 and T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+        "namespace": "c587def0c49"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+        "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "integer_families"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+          "plan_digest": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "integer_families"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge T1 and T2; keep bounded counting T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+        "namespace": "cc66c31318e"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+        "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "divisibility_condition"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+          "plan_digest": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "divisibility_condition"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge enumeration T2 and final arithmetic T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+        "namespace": "c949a59abce"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+        "statement_sha256": "d4b0a0256f00c117e790ca019e37ec5098a0cc48a083659da08f8b235eb4e19c",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive Cartesian equations for the two complex-plane loci in the question as functions of the real parameter. State the center, radius and line coefficients with their derivation.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "locus_equations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the locus equations to establish the necessary and sufficient condition for exactly one intersection, solve for all valid real parameters, and return the requested reduced-fraction numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "99b30e8173b0bfeb45b53b80519399a503ed5bcb21c01137de17092a93f80bef",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "d4b0a0256f00c117e790ca019e37ec5098a0cc48a083659da08f8b235eb4e19c",
+          "plan_digest": "99b30e8173b0bfeb45b53b80519399a503ed5bcb21c01137de17092a93f80bef",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive Cartesian equations for the two complex-plane loci in the question as functions of the real parameter. State the center, radius and line coefficients with their derivation.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "locus_equations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the locus equations to establish the necessary and sufficient condition for exactly one intersection, solve for all valid real parameters, and return the requested reduced-fraction numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge tangency T2 and solving/final arithmetic T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "2b4abcb09a48ce8328949cde9d3fea5784f08a95781d4104701e429c7e01f420",
+        "namespace": "c2b4abcb09a"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5": {
+      "status": "unsupported",
+      "raw_plan_digest": "3693cbd534bdaee05fad738d6bcc39a3d23c038e8702352724b3303698f82096",
+      "reason": "Aggregate count does not supply parity-resolved configurations for the next task; no substantive interface repair."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+        "statement_sha256": "9e524c58fb4ade7687b9b954aad282c612a3df070cee0157d66d206d3a5649ec",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Enumerate all positive integer flavor-count tuples meeting the stated total and strict flavor inequalities. Justify completeness and preserve the flavor labels.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "count_tuples"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the complete flavor-count tuples to count assignments to distinct players, justify multiplicities and disjoint cases, and return the requested remainder.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "41eab93d858aca72c273c3b933e1d62d9f86312c29773ce391784e0e6dc1985d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "9e524c58fb4ade7687b9b954aad282c612a3df070cee0157d66d206d3a5649ec",
+          "plan_digest": "41eab93d858aca72c273c3b933e1d62d9f86312c29773ce391784e0e6dc1985d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Enumerate all positive integer flavor-count tuples meeting the stated total and strict flavor inequalities. Justify completeness and preserve the flavor labels.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "count_tuples"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the complete flavor-count tuples to count assignments to distinct players, justify multiplicities and disjoint cases, and return the requested remainder.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge assignment counting T2 and final arithmetic T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "4f5b8a7abecff54853fb2996568643107c94fee13ad99f7359066924df256450",
+        "namespace": "c4f5b8a7abe"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+    "components": [
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+        "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "general_term"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+          "plan_digest": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "general_term"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1 with explicit exact-factor clarification; merge T2 and T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+        "namespace": "c587def0c49"
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+        "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "integer_families"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+          "plan_digest": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "integer_families"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge T1 and T2; keep bounded counting T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+        "namespace": "cc66c31318e"
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+        "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "divisibility_condition"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+          "plan_digest": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "divisibility_condition"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1; merge enumeration T2 and final arithmetic T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+        "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+        "namespace": "c949a59abce"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "b50f2fc1cb3274e11f31b1aa8df25085483c28ab81704fb2477d31793a327d90",
+        "domain_structure_id": "d30393c66771c2a2f38ef04d6c14690971af83bf024333e9a95f3ddfa6d1f8cf",
+        "preprice_specification": {
+          "work_id": "b50f2fc1cb3274e11f31b1aa8df25085483c28ab81704fb2477d31793a327d90",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "d998a74a75cffd19adfba5ad1c09d1604bcd54ca4c01d9e0733ddd0989cbc22d",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "c587def0c49_t0",
+                "instruction": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c587def0c49_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c587def0c49_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c587def0c49_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c587def0c49_t1",
+                "instruction": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c587def0c49_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c587def0c49_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c587def0c49_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c949a59abce_t0",
+                "instruction": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c949a59abce_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c949a59abce_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c949a59abce_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c949a59abce_t1",
+                "instruction": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "c949a59abce_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "c949a59abce_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "c949a59abce_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc66c31318e_t0",
+                "instruction": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc66c31318e_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc66c31318e_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc66c31318e_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc66c31318e_t1",
+                "instruction": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc66c31318e_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc66c31318e_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc66c31318e_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "c587def0c49_s0",
+                "artifact": {
+                  "artifact": "c587def0c49_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c587def0c49_s1",
+                "artifact": {
+                  "artifact": "c587def0c49_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c949a59abce_s0",
+                "artifact": {
+                  "artifact": "c949a59abce_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "c949a59abce_s1",
+                "artifact": {
+                  "artifact": "c949a59abce_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc66c31318e_s0",
+                "artifact": {
+                  "artifact": "cc66c31318e_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc66c31318e_s1",
+                "artifact": {
+                  "artifact": "cc66c31318e_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "c587def0c49_e0",
+                "host": "c587def0c49_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c587def0c49_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c587def0c49_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c587def0c49_s0",
+                  "c587def0c49_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c587def0c49_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c587def0c49_e1",
+                "host": "c587def0c49_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c587def0c49_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c587def0c49_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c587def0c49_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c587def0c49_s0",
+                  "c587def0c49_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c587def0c49_s1_read",
+                      "t0": "c587def0c49_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c949a59abce_e0",
+                "host": "c949a59abce_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c949a59abce_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c949a59abce_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c949a59abce_s0",
+                  "c949a59abce_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c949a59abce_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "c949a59abce_e1",
+                "host": "c949a59abce_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "c949a59abce_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "c949a59abce_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "c949a59abce_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "c949a59abce_s0",
+                  "c949a59abce_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "c949a59abce_s1_read",
+                      "t0": "c949a59abce_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc66c31318e_e0",
+                "host": "cc66c31318e_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc66c31318e_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc66c31318e_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc66c31318e_s0",
+                  "cc66c31318e_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc66c31318e_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc66c31318e_e1",
+                "host": "cc66c31318e_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc66c31318e_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc66c31318e_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc66c31318e_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc66c31318e_s0",
+                  "cc66c31318e_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc66c31318e_s1_read",
+                      "t0": "cc66c31318e_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "c587def0c49_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c587def0c49_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c587def0c49_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c587def0c49_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c587def0c49_s0_read",
+                "producer": {
+                  "source": "c587def0c49_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c587def0c49_s1_read",
+                "producer": {
+                  "source": "c587def0c49_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c949a59abce_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "c949a59abce_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c949a59abce_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "c949a59abce_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c949a59abce_s0_read",
+                "producer": {
+                  "source": "c949a59abce_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "c949a59abce_s1_read",
+                "producer": {
+                  "source": "c949a59abce_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc66c31318e_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc66c31318e_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc66c31318e_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc66c31318e_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc66c31318e_s0_read",
+                "producer": {
+                  "source": "cc66c31318e_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc66c31318e_s1_read",
+                "producer": {
+                  "source": "cc66c31318e_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "c587def0c49_e0",
+                "c587def0c49_e1",
+                "cc66c31318e_e0",
+                "cc66c31318e_e1",
+                "c949a59abce_e0",
+                "c949a59abce_e1"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "c587def0c49_t1_answer",
+                "artifact": {
+                  "artifact": "c587def0c49_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c587def0c49_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c949a59abce_t1_answer",
+                "artifact": {
+                  "artifact": "c949a59abce_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "c949a59abce_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc66c31318e_t1_answer",
+                "artifact": {
+                  "artifact": "cc66c31318e_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc66c31318e_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c",
+        "neutral_seed": "107454769882745608936238299385593299890314840600840251829650815047635202376645",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "c587def0c49_t0": "o0",
+            "c949a59abce_t1": "o0",
+            "c587def0c49_t1": "o1",
+            "cc66c31318e_t1": "o1",
+            "c949a59abce_t0": "o2",
+            "cc66c31318e_t0": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 3,
+        "slot": 2,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+            "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "general_term"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+              "plan_digest": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "general_term"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep T1 with explicit exact-factor clarification; merge T2 and T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+            "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+            "namespace": "c587def0c49"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+            "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "integer_families"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+              "plan_digest": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "integer_families"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Merge T1 and T2; keep bounded counting T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+            "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+            "namespace": "cc66c31318e"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+            "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "divisibility_condition"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+              "plan_digest": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "divisibility_condition"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep T1; merge enumeration T2 and final arithmetic T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+            "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+            "namespace": "c949a59abce"
+          }
+        ],
+        "sources": [
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 36,
+          "isolation_verified": true,
+          "evaluation_calls": 36
+        }
+      }
+    ],
+    "planned_slots": 2,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 2,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "483e6a9912f23c0661212d2a92323b6cac58c70eb4c906dfc1e173a6214f12bd",
+        "historical_key": "8ca585db8bcd07ff2a02acc9811b8868af6f3398244055a472977c7f9d4bde48",
+        "component": "c587def0c49",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+          "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "general_term"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "a36f9a312ff1ae0ed94e851df21c7924205a7dc06fea1c195de7ef927a78eb00",
+        "historical_key": "299e0204a16c57b31e712199cb3076bfb66e2f0ee16fe81b1443abc630e820eb",
+        "component": "c587def0c49",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+          "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "8bfc33c4a18c5162963d3e0d4d24d22fd225de8ef9d2beb7eb6d679fba5a8a37",
+        "historical_key": "18fb62eaf07dce23a7003d6fa485819f60e3b8cea28f018625b77fd0a1bef857",
+        "component": "cc66c31318e",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+          "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+          "task": {
+            "id": "t0",
+            "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "integer_families"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "8d88a9ef53767d5198473b12fb08d118e8a5fee8304360ae49fc3711c3480303",
+        "historical_key": "45086f0ecaadb0578b49ca6b39977253bc1af3832905a60f9f0c5ef8dac238ab",
+        "component": "cc66c31318e",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+          "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "785e7353092588d3b47f898ead0d3ac6b9e7660273815263dbe364552afe912f",
+        "historical_key": "b61504e8ba73372ba0e1ef6a4e71b4ec8bf84393b08374e71f932aa045e71e88",
+        "component": "c949a59abce",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+          "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+          "task": {
+            "id": "t0",
+            "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "divisibility_condition"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "f7c865477381ab8d0188402e6da552dde80bf5cc66935f3721bd4062cdb2be1d",
+        "historical_key": "5ded2aa4b0a670ea79e8d00a8c74a61334d64f4bb8078b1c134ee7d9e722cce6",
+        "component": "c949a59abce",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+          "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+          "task": {
+            "id": "t1",
+            "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "c587def0c49",
+        "mode": "base",
+        "events": [
+          "c587def0c49_e0",
+          "c587def0c49_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "cc66c31318e",
+        "mode": "base",
+        "events": [
+          "cc66c31318e_e0",
+          "cc66c31318e_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "c949a59abce",
+        "mode": "base",
+        "events": [
+          "c949a59abce_e0",
+          "c949a59abce_e1"
+        ],
+        "calls": 2
+      }
+    ],
+    "profile_consumers": {
+      "483e6a9912f23c0661212d2a92323b6cac58c70eb4c906dfc1e173a6214f12bd": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ],
+      "a36f9a312ff1ae0ed94e851df21c7924205a7dc06fea1c195de7ef927a78eb00": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ],
+      "8bfc33c4a18c5162963d3e0d4d24d22fd225de8ef9d2beb7eb6d679fba5a8a37": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ],
+      "8d88a9ef53767d5198473b12fb08d118e8a5fee8304360ae49fc3711c3480303": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ],
+      "785e7353092588d3b47f898ead0d3ac6b9e7660273815263dbe364552afe912f": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ],
+      "f7c865477381ab8d0188402e6da552dde80bf5cc66935f3721bd4062cdb2be1d": [
+        "a8383fe6a76a705b72df9c67bccd4e822aa33a37ed5271f1aabbf449ff4b936c"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 42,
+      "token_cap": 688128,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/19",
+          "statement_sha256": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "general_term"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "0ccf874a0f20f98493396db8a686426a0c5ccda2d766dd606835cdf1c3cc9358",
+            "plan_digest": "6b940e4701f2cca2e71f5f57aa1c6c06a2b55011a2e10bd850238b19b9217f4d",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive an exact simplified general-term expression for the stated logarithmic product using base change and exponent rules. Retain all factors needed for the product; do not assume the result is only a ratio of linear functions.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "general_term"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the derived general term to evaluate the finite product, justify cancellations, reduce the resulting fraction and return the requested numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1 with explicit exact-factor clarification; merge T2 and T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+          "contract_id": "587def0c4984f715a1efc269cbfc7c681982335fd54dd676e16344ab033521be",
+          "namespace": "c587def0c49"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/4",
+          "statement_sha256": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "integer_families"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "ff2d59d6688fd8545abaeca1debc6a76f6aa7513571e3c76800e858dc734259b",
+            "plan_digest": "49aa8b3e04179e662cb12bccf455a5d8bf619619ab6e1c4005e37e5805fca5a2",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Factor the given quadratic form and derive complete integer parametrizations of its solution families, including all divisibility constraints.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "integer_families"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the integer solution families to count ordered pairs in the stated inclusive bounds, accounting for intersections without double counting. Return the requested count.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge T1 and T2; keep bounded counting T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+          "contract_id": "c66c31318e55c9d7046ba7b09bdd7ca8d87102d6c7128d99e5b3f1fcd1b337de",
+          "namespace": "cc66c31318e"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/17",
+          "statement_sha256": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "divisibility_condition"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "ab96632580172f5dac499ad38712f8ccfb0674b7cb2387384b94e291191c3886",
+            "plan_digest": "4f7a32942d7641bb02054340bca258e1ddb405535f49cca246c869660124f9b5",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Reduce the stated polynomial divisibility condition to an equivalent divisibility condition, justifying equivalence and retaining the positive-integer domain.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "divisibility_condition"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the reduced divisibility condition to enumerate all admissible positive integers, justify completeness and return their sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1; merge enumeration T2 and final arithmetic T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+          "contract_id": "949a59abce11f36ce9c6a2d1428234bfd2a56a5f4e81a5e2c3666c7664dfd6a1",
+          "namespace": "c949a59abce"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/8",
+          "statement_sha256": "d4b0a0256f00c117e790ca019e37ec5098a0cc48a083659da08f8b235eb4e19c",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive Cartesian equations for the two complex-plane loci in the question as functions of the real parameter. State the center, radius and line coefficients with their derivation.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "locus_equations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the locus equations to establish the necessary and sufficient condition for exactly one intersection, solve for all valid real parameters, and return the requested reduced-fraction numerator-plus-denominator sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "99b30e8173b0bfeb45b53b80519399a503ed5bcb21c01137de17092a93f80bef",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "d4b0a0256f00c117e790ca019e37ec5098a0cc48a083659da08f8b235eb4e19c",
+            "plan_digest": "99b30e8173b0bfeb45b53b80519399a503ed5bcb21c01137de17092a93f80bef",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive Cartesian equations for the two complex-plane loci in the question as functions of the real parameter. State the center, radius and line coefficients with their derivation.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "locus_equations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the locus equations to establish the necessary and sufficient condition for exactly one intersection, solve for all valid real parameters, and return the requested reduced-fraction numerator-plus-denominator sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1; merge tangency T2 and solving/final arithmetic T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+          "contract_id": "2b4abcb09a48ce8328949cde9d3fea5784f08a95781d4104701e429c7e01f420",
+          "namespace": "c2b4abcb09a"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/5": {
+        "status": "unsupported",
+        "raw_plan_digest": "3693cbd534bdaee05fad738d6bcc39a3d23c038e8702352724b3303698f82096",
+        "reason": "Aggregate count does not supply parity-resolved configurations for the next task; no substantive interface repair."
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/3",
+          "statement_sha256": "9e524c58fb4ade7687b9b954aad282c612a3df070cee0157d66d206d3a5649ec",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Enumerate all positive integer flavor-count tuples meeting the stated total and strict flavor inequalities. Justify completeness and preserve the flavor labels.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "count_tuples"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Use the complete flavor-count tuples to count assignments to distinct players, justify multiplicities and disjoint cases, and return the requested remainder.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "41eab93d858aca72c273c3b933e1d62d9f86312c29773ce391784e0e6dc1985d",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "9e524c58fb4ade7687b9b954aad282c612a3df070cee0157d66d206d3a5649ec",
+            "plan_digest": "41eab93d858aca72c273c3b933e1d62d9f86312c29773ce391784e0e6dc1985d",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Enumerate all positive integer flavor-count tuples meeting the stated total and strict flavor inequalities. Justify completeness and preserve the flavor labels.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "count_tuples"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Use the complete flavor-count tuples to count assignments to distinct players, justify multiplicities and disjoint cases, and return the requested remainder.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1; merge assignment counting T2 and final arithmetic T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "b81b801df7412e12fdc59e9035e3fc4fb09f698a0825687ca3972ab88d16f6e2",
+          "contract_id": "4f5b8a7abecff54853fb2996568643107c94fee13ad99f7359066924df256450",
+          "namespace": "c4f5b8a7abe"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "23bac7e0538779454a76697cc6797ceb1d9e3d2f61e7cd02bd93008a7605312d"
+  },
+  "execution_allowed": false,
+  "packet_digest": "edfcab7fcfcec1f2d49f965549c71c9fd5a510bdd653e6dc470e15719561c138"
+}
