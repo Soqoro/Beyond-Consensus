@@ -1,0 +1,2481 @@
+{
+  "schema": "prospective-aime2025-block1-worker-contract-v1",
+  "cohort_digest": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+  "planner_scope": "cb36edaaca51114574911c2ab00a72fb938ef7e958ee4105726639cf6f196b4b",
+  "planner_result_sha256": "d673b448c226692dc9271c0cfb3a0b956d7a94c6d61c198a7e54118ba1f91af6",
+  "reviews": {
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "dfd69e02ed11c47ccd4a7968c62180f93111834de83e95ecfdab525265ac4bb6",
+      "plan_digest": "28a5b7ae1134e7c3f02640cfd3e4956534c41542808a99cdba8198476bee7845",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Determine the count of ordered positive-integer triples satisfying the stated bounds and cube-sum divisibility condition, justify the count, and return its requested remainder.",
+          "parents": [],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t0"
+      ],
+      "reviewer_edits": "Merge T1+T2 final arithmetic."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+      "plan_digest": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "geometric_relations"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1, merge T2+T3; preserve arbitrary-X objective without presumed special minimizer."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+      "plan_digest": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "recurrence",
+            "base_cases"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Keep T1, merge T2+T3."
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18": {
+      "decision": "admitted",
+      "reviewer": "Codex",
+      "reviewer_kind": "AI-assisted",
+      "reviewed_at": "2026-11-18",
+      "public_digest": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+      "plan_digest": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+      "substantive_no_answer_leakage": true,
+      "tasks": [
+        {
+          "id": "t0",
+          "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+          "parents": [],
+          "fields": [
+            "derivation",
+            "local_states",
+            "compatibility"
+          ]
+        },
+        {
+          "id": "t1",
+          "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+          "parents": [
+            "t0"
+          ],
+          "fields": [
+            "justification",
+            "final_integer"
+          ]
+        }
+      ],
+      "outputs": [
+        "t1"
+      ],
+      "reviewer_edits": "Merge T1+T2 retaining orientations and multiplicities; keep T3."
+    }
+  },
+  "dispositions": {
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12": {
+      "status": "invalid",
+      "reason": "Invalid JSON escape; no repair.",
+      "raw_plan_digest": "f24d1b804f19fc4c51243458e8c681b5aa18640823cf7dd3dabd6273da68e79a"
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10": {
+      "status": "unsupported",
+      "reason": "Conditional counts omit required configuration/state information; no uniformity argument. No semantic regeneration.",
+      "raw_plan_digest": "df5c0d196666fa5c5d7e79c9df9943337e74484ad50f2f3e4f893f817122f60f"
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+        "statement_sha256": "dfd69e02ed11c47ccd4a7968c62180f93111834de83e95ecfdab525265ac4bb6",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Determine the count of ordered positive-integer triples satisfying the stated bounds and cube-sum divisibility condition, justify the count, and return its requested remainder.",
+            "parents": [],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t0"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "28a5b7ae1134e7c3f02640cfd3e4956534c41542808a99cdba8198476bee7845",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "dfd69e02ed11c47ccd4a7968c62180f93111834de83e95ecfdab525265ac4bb6",
+          "plan_digest": "28a5b7ae1134e7c3f02640cfd3e4956534c41542808a99cdba8198476bee7845",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the count of ordered positive-integer triples satisfying the stated bounds and cube-sum divisibility condition, justify the count, and return its requested remainder.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "reviewer_edits": "Merge T1+T2 final arithmetic."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "ce076e12c3021a5057085216539ec75398c96dbd16876f3fd4631c525ecbb484",
+        "namespace": "cce076e12c3"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+        "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "geometric_relations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+          "plan_digest": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "geometric_relations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1, merge T2+T3; preserve arbitrary-X objective without presumed special minimizer."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+        "namespace": "ca1c27953e4"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+        "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence",
+              "base_cases"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+          "plan_digest": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence",
+                "base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1, merge T2+T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+        "namespace": "cc93c398ee6"
+      }
+    },
+    "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18": {
+      "status": "admitted",
+      "component": {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+        "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "local_states",
+              "compatibility"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+          "plan_digest": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "local_states",
+                "compatibility"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge T1+T2 retaining orientations and multiplicities; keep T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+        "namespace": "cf485a04697"
+      }
+    }
+  },
+  "wave": {
+    "condition": "source-disjoint-block-v1",
+    "cohort_digest": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+    "components": [
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+        "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "geometric_relations"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+          "plan_digest": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "geometric_relations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1, merge T2+T3; preserve arbitrary-X objective without presumed special minimizer."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+        "namespace": "ca1c27953e4"
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+        "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence",
+              "base_cases"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+          "plan_digest": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence",
+                "base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Keep T1, merge T2+T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+        "namespace": "cc93c398ee6"
+      },
+      {
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+        "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+        "tasks": [
+          {
+            "id": "t0",
+            "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "local_states",
+              "compatibility"
+            ]
+          },
+          {
+            "id": "t1",
+            "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          }
+        ],
+        "outputs": [
+          "t1"
+        ],
+        "A_modes": [
+          "base"
+        ],
+        "C": "direct_parent_artifacts",
+        "reference_mode": "base",
+        "raw_plan_sha256": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+        "review": {
+          "decision": "admitted",
+          "reviewer": "Codex",
+          "reviewer_kind": "AI-assisted",
+          "reviewed_at": "2026-11-18",
+          "public_digest": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+          "plan_digest": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+          "substantive_no_answer_leakage": true,
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "local_states",
+                "compatibility"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "reviewer_edits": "Merge T1+T2 retaining orientations and multiplicities; keep T3."
+        },
+        "status": "reviewed_prospective",
+        "dataset": "aime2025",
+        "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+        "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+        "namespace": "cf485a04697"
+      }
+    ],
+    "bundles": [
+      {
+        "work_id": "b558e657993e14586ac12d53619e5615b68740ecdb2fa583518155fa656fe7c1",
+        "domain_structure_id": "b53e7803041a70ed844d41ec6f44f6d75af3d7f0f45bf4892ed8fb1ab1abeb22",
+        "preprice_specification": {
+          "work_id": "b558e657993e14586ac12d53619e5615b68740ecdb2fa583518155fa656fe7c1",
+          "structure": {
+            "schema": "joint-domain-v1",
+            "source": {
+              "id": "7c9a62c82b96b698ddb666aaff94764b304ad9e0e3b8e5781c93815f009572d2",
+              "kind": "bound_external",
+              "provenance": "reviewed component union; no cross-source processing"
+            },
+            "n": 4,
+            "m": 6,
+            "K": 2,
+            "objective": "mean_first",
+            "unit": "price_free_structure",
+            "tasks": [
+              {
+                "id": "ca1c27953e4_t0",
+                "instruction": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ca1c27953e4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ca1c27953e4_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ca1c27953e4_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "ca1c27953e4_t1",
+                "instruction": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "ca1c27953e4_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "ca1c27953e4_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "ca1c27953e4_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc93c398ee6_t0",
+                "instruction": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc93c398ee6_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc93c398ee6_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc93c398ee6_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc93c398ee6_t1",
+                "instruction": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cc93c398ee6_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cc93c398ee6_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cc93c398ee6_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cf485a04697_t0",
+                "instruction": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cf485a04697_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cf485a04697_e0"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cf485a04697_e0",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cf485a04697_t1",
+                "instruction": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+                "deliverables": {
+                  "result": {
+                    "artifact": "cf485a04697_a1",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "eligible_owners": [
+                  "o0",
+                  "o1",
+                  "o2",
+                  "o3"
+                ],
+                "variants": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "required_events": [
+                      "cf485a04697_e1"
+                    ],
+                    "deliverables": {
+                      "result": {
+                        "source": null,
+                        "event": "cf485a04697_e1",
+                        "port": "out"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "owners": [
+              {
+                "id": "o0",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o1",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o2",
+                "max_operations": null,
+                "max_initial": null
+              },
+              {
+                "id": "o3",
+                "max_operations": null,
+                "max_initial": null
+              }
+            ],
+            "sources": [
+              {
+                "id": "ca1c27953e4_s0",
+                "artifact": {
+                  "artifact": "ca1c27953e4_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "ca1c27953e4_s1",
+                "artifact": {
+                  "artifact": "ca1c27953e4_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc93c398ee6_s0",
+                "artifact": {
+                  "artifact": "cc93c398ee6_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cc93c398ee6_s1",
+                "artifact": {
+                  "artifact": "cc93c398ee6_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cf485a04697_s0",
+                "artifact": {
+                  "artifact": "cf485a04697_s0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              },
+              {
+                "id": "cf485a04697_s1",
+                "artifact": {
+                  "artifact": "cf485a04697_s1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "origin": "immutable_external",
+                "value": null
+              }
+            ],
+            "choices": [],
+            "events": [
+              {
+                "id": "ca1c27953e4_e0",
+                "host": "ca1c27953e4_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ca1c27953e4_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ca1c27953e4_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ca1c27953e4_s0",
+                  "ca1c27953e4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ca1c27953e4_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "ca1c27953e4_e1",
+                "host": "ca1c27953e4_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "ca1c27953e4_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "ca1c27953e4_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "ca1c27953e4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "ca1c27953e4_s0",
+                  "ca1c27953e4_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "ca1c27953e4_s1_read",
+                      "t0": "ca1c27953e4_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc93c398ee6_e0",
+                "host": "cc93c398ee6_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc93c398ee6_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc93c398ee6_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc93c398ee6_s0",
+                  "cc93c398ee6_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc93c398ee6_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cc93c398ee6_e1",
+                "host": "cc93c398ee6_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cc93c398ee6_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cc93c398ee6_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cc93c398ee6_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cc93c398ee6_s0",
+                  "cc93c398ee6_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cc93c398ee6_s1_read",
+                      "t0": "cc93c398ee6_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cf485a04697_e0",
+                "host": "cf485a04697_t0",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cf485a04697_s0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cf485a04697_a0",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cf485a04697_s0",
+                  "cf485a04697_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cf485a04697_s0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              },
+              {
+                "id": "cf485a04697_e1",
+                "host": "cf485a04697_t1",
+                "kind": "compute",
+                "when": {},
+                "inputs": {
+                  "own": {
+                    "artifact": "cf485a04697_s1",
+                    "version": "v1",
+                    "type": "math-json"
+                  },
+                  "t0": {
+                    "artifact": "cf485a04697_a0",
+                    "version": "v1",
+                    "type": "math-json"
+                  }
+                },
+                "output": {
+                  "artifact": "cf485a04697_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "allowed_sources": [
+                  "cf485a04697_s0",
+                  "cf485a04697_s1"
+                ],
+                "modes": [
+                  {
+                    "id": "base",
+                    "when": {},
+                    "reads": {
+                      "own": "cf485a04697_s1_read",
+                      "t0": "cf485a04697_e0_read"
+                    },
+                    "initial": null,
+                    "replay": null,
+                    "operator": "opaque"
+                  }
+                ]
+              }
+            ],
+            "routes": [
+              {
+                "id": "ca1c27953e4_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "ca1c27953e4_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca1c27953e4_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "ca1c27953e4_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca1c27953e4_s0_read",
+                "producer": {
+                  "source": "ca1c27953e4_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "ca1c27953e4_s1_read",
+                "producer": {
+                  "source": "ca1c27953e4_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc93c398ee6_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc93c398ee6_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc93c398ee6_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cc93c398ee6_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc93c398ee6_s0_read",
+                "producer": {
+                  "source": "cc93c398ee6_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cc93c398ee6_s1_read",
+                "producer": {
+                  "source": "cc93c398ee6_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cf485a04697_e0_read",
+                "producer": {
+                  "source": null,
+                  "event": "cf485a04697_e0",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cf485a04697_e1_read",
+                "producer": {
+                  "source": null,
+                  "event": "cf485a04697_e1",
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cf485a04697_s0_read",
+                "producer": {
+                  "source": "cf485a04697_s0",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              },
+              {
+                "id": "cf485a04697_s1_read",
+                "producer": {
+                  "source": "cf485a04697_s1",
+                  "event": null,
+                  "port": "out"
+                },
+                "transform": "identity",
+                "cost_accounting": "included_in_consumer_mode",
+                "path": [
+                  "origin",
+                  "endpoint"
+                ],
+                "when": {},
+                "owner_pairs": null
+              }
+            ],
+            "schedule": {
+              "template": "serial-event-order-v1",
+              "order": [
+                "ca1c27953e4_e0",
+                "ca1c27953e4_e1",
+                "cc93c398ee6_e0",
+                "cc93c398ee6_e1",
+                "cf485a04697_e0",
+                "cf485a04697_e1"
+              ]
+            },
+            "network": {
+              "nodes": [
+                "endpoint",
+                "middle",
+                "origin"
+              ],
+              "edges": [
+                [
+                  "middle",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "endpoint"
+                ],
+                [
+                  "origin",
+                  "middle"
+                ]
+              ]
+            },
+            "exclusive": [],
+            "forbidden": [],
+            "obligations": [
+              {
+                "id": "ca1c27953e4_t1_answer",
+                "artifact": {
+                  "artifact": "ca1c27953e4_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "ca1c27953e4_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cc93c398ee6_t1_answer",
+                "artifact": {
+                  "artifact": "cc93c398ee6_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cc93c398ee6_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cf485a04697_t1_answer",
+                "artifact": {
+                  "artifact": "cf485a04697_a1",
+                  "version": "v1",
+                  "type": "math-json"
+                },
+                "producers": [
+                  {
+                    "when": {},
+                    "ref": {
+                      "source": null,
+                      "event": "cf485a04697_e1",
+                      "port": "out"
+                    }
+                  }
+                ]
+              }
+            ],
+            "budgets": {
+              "initial": null,
+              "incident": null
+            }
+          },
+          "n": 4,
+          "K": 2,
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false,
+            "tokenizer_metadata": {
+              "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+              "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+              "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+              "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+              "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+            }
+          },
+          "objective": "mean_first",
+          "neutral_rule": "one seeded permutation; first 2(m-n) tasks paired; canonical unlabelled groups"
+        },
+        "preprice_id": "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce",
+        "neutral_seed": "55137592887805691696142613214585174550344902179425258044474397274081149200351",
+        "neutral": {
+          "A": {},
+          "C": {},
+          "ownership": {
+            "ca1c27953e4_t0": "o0",
+            "ca1c27953e4_t1": "o1",
+            "cc93c398ee6_t0": "o2",
+            "cf485a04697_t0": "o2",
+            "cc93c398ee6_t1": "o3",
+            "cf485a04697_t1": "o3"
+          }
+        },
+        "n": 4,
+        "K": 2,
+        "m": 6,
+        "q": 3,
+        "slot": 1,
+        "status": "supported_frozen",
+        "components": [
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+            "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "geometric_relations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+              "plan_digest": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "geometric_relations"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep T1, merge T2+T3; preserve arbitrary-X objective without presumed special minimizer."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+            "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+            "namespace": "ca1c27953e4"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+            "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "recurrence",
+                  "base_cases"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+              "plan_digest": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "recurrence",
+                    "base_cases"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Keep T1, merge T2+T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+            "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+            "namespace": "cc93c398ee6"
+          },
+          {
+            "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+            "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "local_states",
+                  "compatibility"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "A_modes": [
+              "base"
+            ],
+            "C": "direct_parent_artifacts",
+            "reference_mode": "base",
+            "raw_plan_sha256": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+            "review": {
+              "decision": "admitted",
+              "reviewer": "Codex",
+              "reviewer_kind": "AI-assisted",
+              "reviewed_at": "2026-11-18",
+              "public_digest": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+              "plan_digest": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+              "substantive_no_answer_leakage": true,
+              "tasks": [
+                {
+                  "id": "t0",
+                  "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+                  "parents": [],
+                  "fields": [
+                    "derivation",
+                    "local_states",
+                    "compatibility"
+                  ]
+                },
+                {
+                  "id": "t1",
+                  "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+                  "parents": [
+                    "t0"
+                  ],
+                  "fields": [
+                    "justification",
+                    "final_integer"
+                  ]
+                }
+              ],
+              "outputs": [
+                "t1"
+              ],
+              "reviewer_edits": "Merge T1+T2 retaining orientations and multiplicities; keep T3."
+            },
+            "status": "reviewed_prospective",
+            "dataset": "aime2025",
+            "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+            "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+            "namespace": "cf485a04697"
+          }
+        ],
+        "sources": [
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+          "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18"
+        ],
+        "call_bounds": {
+          "Lmax": 6,
+          "generic": 60,
+          "component": 36,
+          "isolation_verified": true,
+          "evaluation_calls": 36
+        }
+      }
+    ],
+    "planned_slots": 2,
+    "matrix": [
+      {
+        "n": 4,
+        "slot": 1,
+        "status": "supported_frozen"
+      }
+    ],
+    "profile_coverage": [
+      {
+        "key": "598b569d5201efded1ab56ac45d25d4790000c548a006c48cd35aa3609e359c3",
+        "historical_key": "44ac33b5cf5d9e049c4002238f01b548729ce0d031c41cad99d72754bbc3fbcd",
+        "component": "ca1c27953e4",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+          "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "geometric_relations"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "dab03aae0a700f222567d5062d87eb073fa2dc51555819c174daa3a6f1e5f3df",
+        "historical_key": "eb6e5cbd81322088666cc24aff82dd102ad8345d6cf072b17aa0d368d2674dcf",
+        "component": "ca1c27953e4",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+          "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+          "task": {
+            "id": "t1",
+            "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "7f829139d9d1b29aa6bc781d1f2fbfb9a00b0b007aebb6a29182c46b2065eace",
+        "historical_key": "cbb5d541047e851122fc714e865f4785c3613704381245e0205e4939cb0fd11e",
+        "component": "cc93c398ee6",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+          "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+          "task": {
+            "id": "t0",
+            "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "recurrence",
+              "base_cases"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "ae7a8ef7693ef7e476fd26d71e59d07e1126d8b3c6b3ef186bd8ee10d7ef6886",
+        "historical_key": "52012308ac7e7ccc9718d4a836289d90f7d18e18460835b2cacd4e28bb12f87c",
+        "component": "cc93c398ee6",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+          "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+          "task": {
+            "id": "t1",
+            "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "f229112c2cb0ae3cc21242c8f648dc9edb0126353917d3ff8a4ab44cd2a3e22a",
+        "historical_key": "d2cf08750f4af6a5db34b5d511745960423823c8822f27587d9d87859d83eb45",
+        "component": "cf485a04697",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+        "task": "t0",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+          "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+          "task": {
+            "id": "t0",
+            "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+            "parents": [],
+            "fields": [
+              "derivation",
+              "local_states",
+              "compatibility"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      },
+      {
+        "key": "6174d8c87fff73095f884c2fe5eae96e73486778b5b99422c3d8ede4fe1883d3",
+        "historical_key": "55979d8ee9237701b05c0f292292e8b4543eda1fcbc83a505c77dcbb6af45899",
+        "component": "cf485a04697",
+        "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+        "task": "t1",
+        "mode": "base",
+        "descriptor": {
+          "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+          "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+          "task": {
+            "id": "t1",
+            "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+            "parents": [
+              "t0"
+            ],
+            "fields": [
+              "justification",
+              "final_integer"
+            ]
+          },
+          "ancestor_mode": "base",
+          "prompt": "Execute only the declared mathematical task. Use the original statement and supplied parent artifacts. Return one complete JSON object with exactly the named string fields, without markdown fences. Present a concise finished mathematical argument: retain the essential equations, logical justifications, domain restrictions and equality conditions needed by consumers. Omit exploratory narration, repeated calculations and repeated candidate values. Keep all fields mutually consistent and finish every required field within the output allowance. Concision must not replace a proof with an unsupported claim. If you cannot establish a required result, explicitly state what remains unproved in the relevant fields and complete the JSON object; do not invent a result. Do not solve another task, call tools, or invent missing parent results. No retry will occur.\nReturn finished justification first, then final_integer as exactly one ASCII integer string from 0 to 999. No prose or multiple candidates in final_integer.",
+          "worker": {
+            "checkpoint": "Qwen/Qwen3.5-27B",
+            "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+            "dtype": "bfloat16",
+            "attention": "sdpa",
+            "thinking": false,
+            "do_sample": false,
+            "context": 16384,
+            "output": 3072,
+            "decoder": "task-fields-xgrammar-v1",
+            "xgrammar": "0.1.32",
+            "fresh_context": true,
+            "retry": false
+          },
+          "tokenizer_metadata": {
+            "config.json": "f8d190c5b89c1521220f935d2567a587d6e291ed69066a45a106560b05a2174c",
+            "generation_config.json": "303aba891d66ab63908a7b3cc9163bcb835fdf8b9f6301c73216f3f1eb3992dd",
+            "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+            "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+            "model.safetensors.index.json": "b3737e9d00bda0e37f0b873629d98bf9b407bef35735b9193c23d9844bcc96a6",
+            "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+          },
+          "input_policy": "own statement + complete immediate parent artifacts; fresh context; no bundle/n/owner/method",
+          "C": "direct_parent_artifacts",
+          "adapter": "source-disjoint-block-v1",
+          "dataset": "aime2025"
+        }
+      }
+    ],
+    "profile_schedule": [
+      {
+        "component": "ca1c27953e4",
+        "mode": "base",
+        "events": [
+          "ca1c27953e4_e0",
+          "ca1c27953e4_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "cc93c398ee6",
+        "mode": "base",
+        "events": [
+          "cc93c398ee6_e0",
+          "cc93c398ee6_e1"
+        ],
+        "calls": 2
+      },
+      {
+        "component": "cf485a04697",
+        "mode": "base",
+        "events": [
+          "cf485a04697_e0",
+          "cf485a04697_e1"
+        ],
+        "calls": 2
+      }
+    ],
+    "profile_consumers": {
+      "598b569d5201efded1ab56ac45d25d4790000c548a006c48cd35aa3609e359c3": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ],
+      "dab03aae0a700f222567d5062d87eb073fa2dc51555819c174daa3a6f1e5f3df": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ],
+      "7f829139d9d1b29aa6bc781d1f2fbfb9a00b0b007aebb6a29182c46b2065eace": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ],
+      "ae7a8ef7693ef7e476fd26d71e59d07e1126d8b3c6b3ef186bd8ee10d7ef6886": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ],
+      "f229112c2cb0ae3cc21242c8f648dc9edb0126353917d3ff8a4ab44cd2a3e22a": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ],
+      "6174d8c87fff73095f884c2fe5eae96e73486778b5b99422c3d8ede4fe1883d3": [
+        "aa39b565e1d67be0aa0a888b0f9f115cf1aae7eec836a8676e14705ac5d7a0ce"
+      ]
+    },
+    "reused_profiles": {},
+    "limits": {
+      "context": 16384,
+      "input_cap": 13312,
+      "output_cap": 3072,
+      "physical_gpus": 1,
+      "cpus": 4,
+      "host_memory_gb": 128,
+      "minimum_vram_bytes": 80000000000,
+      "solver_seconds": 30,
+      "solver_threads": 1,
+      "solver_seed": 0,
+      "maximum_calls": 42,
+      "token_cap": 688128,
+      "wall_seconds": 14400
+    },
+    "dispositions": {
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/12": {
+        "status": "invalid",
+        "reason": "Invalid JSON escape; no repair.",
+        "raw_plan_digest": "f24d1b804f19fc4c51243458e8c681b5aa18640823cf7dd3dabd6273da68e79a"
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/10": {
+        "status": "unsupported",
+        "reason": "Conditional counts omit required configuration/state information; no uniformity argument. No semantic regeneration.",
+        "raw_plan_digest": "df5c0d196666fa5c5d7e79c9df9943337e74484ad50f2f3e4f893f817122f60f"
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/15",
+          "statement_sha256": "dfd69e02ed11c47ccd4a7968c62180f93111834de83e95ecfdab525265ac4bb6",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Determine the count of ordered positive-integer triples satisfying the stated bounds and cube-sum divisibility condition, justify the count, and return its requested remainder.",
+              "parents": [],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t0"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "28a5b7ae1134e7c3f02640cfd3e4956534c41542808a99cdba8198476bee7845",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "dfd69e02ed11c47ccd4a7968c62180f93111834de83e95ecfdab525265ac4bb6",
+            "plan_digest": "28a5b7ae1134e7c3f02640cfd3e4956534c41542808a99cdba8198476bee7845",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Determine the count of ordered positive-integer triples satisfying the stated bounds and cube-sum divisibility condition, justify the count, and return its requested remainder.",
+                "parents": [],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t0"
+            ],
+            "reviewer_edits": "Merge T1+T2 final arithmetic."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+          "contract_id": "ce076e12c3021a5057085216539ec75398c96dbd16876f3fd4631c525ecbb484",
+          "namespace": "cce076e12c3"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/14",
+          "statement_sha256": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "geometric_relations"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "1257b2efb83a9916985a3f7885a1e6e866449a384d9ef4ff54e0932b35c07daf",
+            "plan_digest": "5587f6701f02e42e424ac66919eab304d0720d61f714fc1adbc95ecf87248eb4",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive the diagonal lengths and geometric relations needed to describe the given convex pentagon from its side lengths and angles. State and justify any geometric relationships used; do not assume collinearity.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "geometric_relations"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Using the geometric relations, establish the global minimum of the sum of distances over all planar points X. Justify attainment without assuming that vertices or diagonal intersections exhaust candidate minimizers. Evaluate the minimum in the required radical form and return the requested integer sum.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1, merge T2+T3; preserve arbitrary-X objective without presumed special minimizer."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+          "contract_id": "a1c27953e4da696b4cf4cb958d1ade703e3cf43baa5f68cf421d6da935e0ce27",
+          "namespace": "ca1c27953e4"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/25",
+          "statement_sha256": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "recurrence",
+                "base_cases"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "c9a6822d17bdf4933f650d40772c2630317b155a44fb11f2578cfa5d2d66b59e",
+            "plan_digest": "f24bbb9c0aa343d2c0d62e561f3e136a753c5bbe5630d7879862beb520bf484d",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Derive and justify a recurrence with sufficient state definitions and base cases for counting chair subsets of a specified size in a row with the stated adjacency restriction.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "recurrence",
+                  "base_cases"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Apply the supplied recurrence and base cases to the stated row length and subset size, justify the finite evaluation and return the requested remainder.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Keep T1, merge T2+T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+          "contract_id": "c93c398ee673991ee7b843fb701a8ceae9b9dd56d3acc3797c3f52fa36748660",
+          "namespace": "cc93c398ee6"
+        }
+      },
+      "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18": {
+        "status": "admitted",
+        "component": {
+          "source_id": "aime/2025/c94da77eb22bbd6439e62a323bec18493a421302/row/18",
+          "statement_sha256": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+          "tasks": [
+            {
+              "id": "t0",
+              "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+              "parents": [],
+              "fields": [
+                "derivation",
+                "local_states",
+                "compatibility"
+              ]
+            },
+            {
+              "id": "t1",
+              "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+              "parents": [
+                "t0"
+              ],
+              "fields": [
+                "justification",
+                "final_integer"
+              ]
+            }
+          ],
+          "outputs": [
+            "t1"
+          ],
+          "A_modes": [
+            "base"
+          ],
+          "C": "direct_parent_artifacts",
+          "reference_mode": "base",
+          "raw_plan_sha256": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+          "review": {
+            "decision": "admitted",
+            "reviewer": "Codex",
+            "reviewer_kind": "AI-assisted",
+            "reviewed_at": "2026-11-18",
+            "public_digest": "27a88b7bd219b8889584b6f5fcaf142604eb140c03742666bdbf06f0e4f68c1b",
+            "plan_digest": "a20976b85156defd31d169a357e83a20257db5a5c240cd7efa308cdca6414c6b",
+            "substantive_no_answer_leakage": true,
+            "tasks": [
+              {
+                "id": "t0",
+                "responsibility": "Enumerate the allowable oriented local square edge-color states and construct a complete shared-edge compatibility representation for the given grid. Preserve labelled edge positions and multiplicities; symmetry classification must not identify distinct colorings.",
+                "parents": [],
+                "fields": [
+                  "derivation",
+                  "local_states",
+                  "compatibility"
+                ]
+              },
+              {
+                "id": "t1",
+                "responsibility": "Count the global colorings from the supplied local states and compatibility representation, with complete coverage and no duplicate counting, and return the requested integer.",
+                "parents": [
+                  "t0"
+                ],
+                "fields": [
+                  "justification",
+                  "final_integer"
+                ]
+              }
+            ],
+            "outputs": [
+              "t1"
+            ],
+            "reviewer_edits": "Merge T1+T2 retaining orientations and multiplicities; keep T3."
+          },
+          "status": "reviewed_prospective",
+          "dataset": "aime2025",
+          "prospective_cohort": "cb2d5295e4919e8c28ff7155982ed55f3aad75926058bfe27c441668e1cee35a",
+          "contract_id": "f485a046970185e78e0a30e868016b4e6e234e0d23bc82db14941a81a470cc54",
+          "namespace": "cf485a04697"
+        }
+      }
+    },
+    "execution_allowed": false,
+    "wave_id": "556c87c851a1cac74e39d20dd4b450654792631d3e4cd536343997bc4a7aa5e5"
+  },
+  "execution_allowed": false,
+  "packet_digest": "b83e12968d09fe42f990e78b49c943447ee4ed3bf4532d70febbb822c2a2ac0b"
+}
