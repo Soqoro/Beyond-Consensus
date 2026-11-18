@@ -17,6 +17,11 @@ class AimeReviewExportTests(unittest.TestCase):
                 else:
                     with self.assertRaises(ValueError):m.public_rows(p,h)
             with self.assertRaises(ValueError):m.public_rows(p,'0'*64)
+    def test_invalid_block_rejected_before_source_read(self):
+        for block in (0,3,True,'2'):
+            with self.assertRaisesRegex(ValueError,'frozen AIME block'):
+                m.build({},Path('/absent'),Path('/absent'),block)
+
     def test_no_dispatch_evidence(self):
         with self.assertRaises(ValueError):m.build({'status':'approved'},Path('/absent'),Path('/absent'))
     def test_retrieval_is_deterministic_and_excludes_self(self):

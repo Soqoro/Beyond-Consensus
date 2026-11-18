@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export public statements for frozen AIME 2025 block-one review; no keys or models."""
+"""Export public statements for either frozen AIME 2025 block review; no keys or models."""
 import argparse
 import hashlib
 import json
@@ -22,7 +22,8 @@ def public_rows(path,expected):
     public={r['id']:r for r in rows};require(len(public)==len(rows),'unique public IDs')
     return public
 
-def build(packet,converted,math_public):
+def build(packet,converted,math_public,block=1):
+    require(type(block) is int and block in (1,2),'frozen AIME block 1 or 2')
     require(packet['status']=='candidate_ids_frozen_family_review_pending','pending inventory')
     require(all(packet[k] is False for k in ('private_keys_read','model_executed','execution_allowed')),'disabled evidence')
     require([d['dataset'] for d in packet['datasets']]==list(COHORTS),'separate frozen years')
@@ -57,7 +58,7 @@ def build(packet,converted,math_public):
         selected=[r for b in c['blocks'] for r in b['records']]
         aime_groups[d['dataset']]=[r['source_id'] for r in selected]
         prior.extend(dict(r,dataset=d['dataset']) for r in selected)
-    targets=[r['source_id'] for r in packet['datasets'][0]['cohort']['blocks'][0]['records']]
+    targets=[r['source_id'] for r in packet['datasets'][0]['cohort']['blocks'][block-1]['records']]
     groups={};exported=set(targets);compared=set()
     # Reuse accepted lexical retrieval, independently for each frozen comparison pool.
     for name,ids in [('historical_math',historical),('prospective_math',prospective_math),*aime_groups.items()]:
@@ -66,7 +67,7 @@ def build(packet,converted,math_public):
         for sid in targets:
             compared.update(tuple(sorted((sid,other))) for other in ids if sid!=other)
         for row in rows:exported.update(r['source_id'] for r in row['nearest']['historical'])
-    result=dict(purpose='Reviewer-only AIME 2025 block 1 family and text-sufficiency review; no solutions',
+    result=dict(purpose=f'Reviewer-only AIME 2025 block {block} family and text-sufficiency review; no solutions',
         cohort_digests=COHORTS,source_ids=targets,cards=[public[s] for s in targets],
         comparison_cards=[public[s] for s in sorted(exported-set(targets))],comparisons_by_pool=groups,
         unique_pairs_compared=len(compared),source_review_exposure_ids=sorted(exported),
@@ -81,12 +82,13 @@ def build(packet,converted,math_public):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--block',type=int,choices=(1,2),default=1)
     p.add_argument('--inventory',type=Path,required=True)
     p.add_argument('--converted',type=Path,required=True)
     p.add_argument('--math-public',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();cpu=time.process_time();wall=time.monotonic();packet,h=read(a.inventory)
-    result=build(packet,a.converted,a.math_public)
+    result=build(packet,a.converted,a.math_public,a.block)
     result['export_resources']=dict(cpu_seconds=time.process_time()-cpu,wall_seconds=time.monotonic()-wall)
     result['inventory_file_sha256']=h
     with a.output.open('x') as f:json.dump(result,f,indent=2);f.write('\n')
