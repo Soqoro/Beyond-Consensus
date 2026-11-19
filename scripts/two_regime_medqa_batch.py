@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Resume the consented medqa-n4-extra planner prefix from a Jupyter terminal."""
+"""Resume a bounded MedQA or MATH planner prefix from a Jupyter terminal."""
 import argparse
 from datetime import datetime, timezone
 import fcntl
@@ -21,6 +21,15 @@ from beyond_consensus.util import atomic_json
 CELL = "medqa-n4-extra"
 FIRST = "4600e227c2b8325ee5a4fbe74357ba9f99f65ee8176dc09b5639a39bdc228470"
 IDS = [f"test/row/{i}" for i in (846, 882, 165, 1237, 1080, 997, 1094, 1082)]
+
+MATH_CELL = "math500-n4-equal"
+MATH_FIRST = "c2a7c3616b520f6ea725cbb7fb81fffe5a2c2c76bf91183a9422b458d225c86e"
+MATH_IDS = [
+    "test/prealgebra/505.json", "test/intermediate_algebra/986.json",
+    "test/algebra/2102.json", "test/number_theory/1032.json",
+    "test/algebra/2043.json", "test/algebra/1184.json",
+    "test/algebra/2058.json", "test/prealgebra/1922.json",
+]
 
 
 def read(path):
@@ -50,7 +59,7 @@ def family_review(card):
                 reviewer=getpass.getuser())
 
 
-def contract_review(packet):
+def contract_review(packet, final_field="option_label"):
     entry = dict(packet["entry_for_review"])
     template = entry.pop("contract")
     row = packet["row"]
@@ -76,10 +85,10 @@ def contract_review(packet):
     consumed = {parent for t in draft for parent in t["parents"]}
     terminals = [t for t in draft if t["id"] not in consumed]
     if len(terminals) == 1:
-        terminals[0]["fields"] = ["justification", "option_label"]
+        terminals[0]["fields"] = ["justification", final_field]
     print("Proposed task mapping:", json.dumps(draft, indent=2))
     print("Admit only if the displayed responsibilities and dependencies are substantive, "
-          "answer-free and sufficient for the sole final option field.")
+          "answer-free and sufficient for the sole final answer field.")
     decision, _, rationale = input(
         "Enter admitted, unsupported or review_unresolved, followed by a space and your rationale: "
     ).strip().partition(" ")
@@ -114,9 +123,9 @@ def wait_for_result(receipt, scope):
         time.sleep(20)
 
 
-def check_stage(scope, index, entries, family):
+def check_stage(scope, index, entries, family, cell=CELL, ids=IDS):
     limits = scope["limits"]
-    require(scope["cell"] == CELL and scope["source_ids"] == [IDS[index]]
+    require(scope["cell"] == cell and scope["source_ids"] == [ids[index]]
             and scope["history"] == entries and "wave" not in scope
             and limits["maximum_calls"] == limits["calls_per_source"] == 1
             and limits["token_cap"] <= 16384 and limits["output_cap"] <= 3072
@@ -124,21 +133,27 @@ def check_stage(scope, index, entries, family):
             and (not index or scope["family_review"] == family), "outside approved planner prefix")
 
 
-def drive(campaign):
+def drive(campaign, math_equal=False):
     require(not os.environ.get("SLURM_JOB_ID"), "start from a login terminal")
-    slot = launch.cell(CELL)
-    require(slot["candidates"] == IDS, "frozen candidate order changed")
+    cell, ids, first_scope = (MATH_CELL, MATH_IDS, MATH_FIRST) if math_equal else (CELL, IDS, FIRST)
+    dataset = "math500" if math_equal else "medqa"
+    slot = launch.cell(cell)
+    require(slot["candidates"] == ids, "frozen candidate order changed")
     first = read(campaign / "plan-1/manifest.disabled.json")
-    require(first["scope_digest"] == digest(first["scope"]) == FIRST, "different first-stage anchor")
+    require(first["scope_digest"] == digest(first["scope"]) == first_scope, "different first-stage anchor")
     parent = Path(first["scope"]["parent"])
-    public = launch.public_rows(launch.anchor(parent, "medqa"), "medqa")
+    public = launch.public_rows(launch.anchor(parent, dataset), dataset)
     consent = dict(decision="approved", source_transmission_authorized=True, gpu_spending_authorized=True,
-                   cell=CELL, first_scope=FIRST, additional_ids=IDS[1:], maximum_additional_calls=7,
-                   maximum_additional_tokens=114688, maximum_additional_wall_seconds=25200,
-                   concurrent_jobs=1, worker_authorized=False, reviewer=getpass.getuser())
+                   cell=cell, first_scope=first_scope, concurrent_jobs=1,
+                   worker_authorized=False, reviewer=getpass.getuser())
+    if math_equal:
+        consent.update(source_ids=ids, maximum_calls=8, token_cap=131072, maximum_allocated_wall_seconds=28800)
+    else:
+        consent.update(additional_ids=ids[1:], maximum_additional_calls=7,
+                       maximum_additional_tokens=114688, maximum_additional_wall_seconds=25200)
     save(campaign / "planner-batch-consent.json", consent)
     entries = []
-    for index in range(len(IDS) + 1):
+    for index in range(len(ids) + 1):
         selected, usage = launch.history(slot, public, entries)
         history = campaign / f"batch-history-{index}.json"
         save(history, entries)
@@ -147,7 +162,7 @@ def drive(campaign):
             print(selected["status"], usage, "Saved", campaign / "planner-batch-result.json")
             return
         sid = selected["source_id"]
-        require(index < len(IDS) and sid == IDS[index], "unexpected candidate")
+        require(index < len(ids) and sid == ids[index], "unexpected candidate")
         step = campaign / f"plan-{index + 1}"
         entry_path = campaign / f"batch-entry-{index + 1}.json"
         if entry_path.exists():
@@ -169,19 +184,30 @@ def drive(campaign):
                 entries.append(entry)
                 continue
             if not step.exists():
-                cli("prepare", "--cell", CELL, "--parent", parent, "--history", history,
+                cli("prepare", "--cell", cell, "--parent", parent, "--history", history,
                     "--review", family_path, "--output", step)
         manifest = read(step / "manifest.disabled.json")
         scope = manifest["scope"]
-        check_stage(scope, index, entries, family if index else None)
+        check_stage(scope, index, entries, family if index else None, cell, ids)
         receipt_path = step / "submission.json"
         if not receipt_path.exists():
             approval = read(step / "approval.pending.json")
             approval.update(decision="approved", reviewer=getpass.getuser(), reviewed_at=now(),
                             statement_transmission_authorized=True, GPU_spending_authorized=True)
             if index == 0:
+                if math_equal:
+                    require(approval["family_review"]["card_digest"] ==
+                            "850705ab536c25ea741635d8201495be998a7291a5e7c32136b6449988ec9a31",
+                            "different MATH source review")
+                    rationale = (
+                        "The full linear equation is in the text. The supplied historical neighbors "
+                        "use a complex modulus, a variable denominator, or a logarithmic product.")
+                else:
+                    rationale = ("The public record supplies the cartilage-healing question and all four options. "
+                                 "The identity check found no duplicate. The supplied knee-related neighbor "
+                                 "asks about a cellular defect associated with bleeding.")
                 approval["family_review"].update(decision="clear", reviewer="Codex (AI-assisted source review)",
-                    rationale="The public record supplies the cartilage-healing question and all four options. The identity check found no duplicate. The supplied knee-related neighbor asks about a cellular defect associated with bleeding.")
+                                                 rationale=rationale)
             approval_file = step / "batch-approval.json"
             if approval_file.exists():
                 approval["reviewed_at"] = read(approval_file)["reviewed_at"]
@@ -199,7 +225,7 @@ def drive(campaign):
         value = read(packet)
         require(value["scope_digest"] == manifest["scope_digest"] and value["previous_prefix"] == entries
                 and value["entry_for_review"]["run"] == str(run.resolve()), "unexpected review packet")
-        entry = contract_review(value)
+        entry = contract_review(value, "final_answer" if math_equal else "option_label")
         launch.history(slot, public, entries + [entry])
         save(entry_path, entry)
         entries.append(entry)
@@ -208,7 +234,9 @@ def drive(campaign):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("campaign", type=Path)
+    parser.add_argument("--approve-math-equal", action="store_true",
+                        help="authorize the frozen eight-candidate MATH equal-task planner prefix")
     args = parser.parse_args()
     with (args.campaign / ".planner-batch.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        drive(args.campaign.resolve())
+        drive(args.campaign.resolve(), args.approve_math_equal)

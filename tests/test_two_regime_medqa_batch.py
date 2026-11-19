@@ -91,3 +91,14 @@ class BatchReviews(unittest.TestCase):
             submit.assert_not_called()
             self.assertFalse((campaign / "plan-2").exists())
             self.assertEqual(batch.read(campaign / "planner-batch-result.json")["selection"]["status"], "bundle_frozen")
+
+    def test_math_equal_prefix_and_terminal_field(self):
+        slot = batch.launch.cell(batch.MATH_CELL)
+        self.assertEqual(slot["candidates"], batch.MATH_IDS)
+        self.assertEqual((slot["target_m"], len(batch.MATH_IDS)), (4, 8))
+        plan = {"tasks": [dict(id="T1", responsibility="Evaluate", required_inputs=["problem_statement"])]}
+        packet = dict(entry_for_review=dict(contract={}), source={},
+                      row=dict(status="completed", review=dict(status="wire_valid"), raw_response=json.dumps(plan)))
+        with patch("builtins.input", return_value="admitted reviewed"):
+            entry = batch.contract_review(packet, "final_answer")
+        self.assertEqual(entry["contract"]["tasks"][0]["fields"], ["justification", "final_answer"])
