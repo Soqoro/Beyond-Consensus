@@ -133,9 +133,14 @@ def check_stage(scope, index, entries, family, cell=CELL, ids=IDS):
             and (not index or scope["family_review"] == family), "outside approved planner prefix")
 
 
-def drive(campaign, math_equal=False):
+def drive(campaign, math_equal=False, medqa_equal=False):
     require(not os.environ.get("SLURM_JOB_ID"), "start from a login terminal")
     cell, ids, first_scope = (MATH_CELL, MATH_IDS, MATH_FIRST) if math_equal else (CELL, IDS, FIRST)
+    if medqa_equal:
+        require(not math_equal, "select one planner cell")
+        cell = "medqa-n4-equal"
+        ids = [f"test/row/{i}" for i in (851, 243, 652, 562, 228, 1189, 1093, 393)]
+        first_scope = "eddf17f04cba00bdc7a9f72b827e95d18a2570af98a0fde15d0f78c1045ab651"
     dataset = "math500" if math_equal else "medqa"
     slot = launch.cell(cell)
     require(slot["candidates"] == ids, "frozen candidate order changed")
@@ -146,7 +151,7 @@ def drive(campaign, math_equal=False):
     consent = dict(decision="approved", source_transmission_authorized=True, gpu_spending_authorized=True,
                    cell=cell, first_scope=first_scope, concurrent_jobs=1,
                    worker_authorized=False, reviewer=getpass.getuser())
-    if math_equal:
+    if math_equal or medqa_equal:
         consent.update(source_ids=ids, maximum_calls=8, token_cap=131072, maximum_allocated_wall_seconds=28800)
     else:
         consent.update(additional_ids=ids[1:], maximum_additional_calls=7,
@@ -202,6 +207,12 @@ def drive(campaign, math_equal=False):
                     rationale = (
                         "The full linear equation is in the text. The supplied historical neighbors "
                         "use a complex modulus, a variable denominator, or a logarithmic product.")
+                elif medqa_equal:
+                    require(approval["family_review"]["card_digest"] ==
+                            "15ea2641a951930735335ddbb7e0f918eca373e3135bbfa7dbe97670a014465d",
+                            "different MedQA source review")
+                    rationale = ("The electrical injury, examination and four options are supplied in text. "
+                                 "The three historical neighbors concern other presentations and obligations.")
                 else:
                     rationale = ("The public record supplies the cartilage-healing question and all four options. "
                                  "The identity check found no duplicate. The supplied knee-related neighbor "
@@ -234,9 +245,12 @@ def drive(campaign, math_equal=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("campaign", type=Path)
-    parser.add_argument("--approve-math-equal", action="store_true",
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--approve-medqa-equal", action="store_true",
+                       help="authorize the frozen eight-candidate MedQA equal-task planner prefix")
+    group.add_argument("--approve-math-equal", action="store_true",
                         help="authorize the frozen eight-candidate MATH equal-task planner prefix")
     args = parser.parse_args()
     with (args.campaign / ".planner-batch.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        drive(args.campaign.resolve(), args.approve_math_equal)
+        drive(args.campaign.resolve(), args.approve_math_equal, args.approve_medqa_equal)
