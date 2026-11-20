@@ -133,7 +133,7 @@ def check_stage(scope, index, entries, family, cell=CELL, ids=IDS):
             and (not index or scope["family_review"] == family), "outside approved planner prefix")
 
 
-def drive(campaign, math_equal=False, medqa_equal=False):
+def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False):
     require(not os.environ.get("SLURM_JOB_ID"), "start from a login terminal")
     cell, ids, first_scope = (MATH_CELL, MATH_IDS, MATH_FIRST) if math_equal else (CELL, IDS, FIRST)
     if medqa_equal:
@@ -141,7 +141,14 @@ def drive(campaign, math_equal=False, medqa_equal=False):
         cell = "medqa-n4-equal"
         ids = [f"test/row/{i}" for i in (851, 243, 652, 562, 228, 1189, 1093, 393)]
         first_scope = "eddf17f04cba00bdc7a9f72b827e95d18a2570af98a0fde15d0f78c1045ab651"
-    dataset = "math500" if math_equal else "medqa"
+    if math_extra_six:
+        require(not (math_equal or medqa_equal), "select one planner cell")
+        cell = "math500-n6-extra"
+        ids = ["test/" + suffix + ".json" for suffix in (
+            "algebra/1265", "number_theory/357", "algebra/1553", "prealgebra/1114",
+            "algebra/2735", "prealgebra/1622", "algebra/1814", "geometry/65", "precalculus/1201")]
+        first_scope = "ee8e5b16876f56219822a23b662a63b40b49f11e26cc1ca14de67720b0b3b2ca"
+    dataset = "math500" if math_equal or math_extra_six else "medqa"
     slot = launch.cell(cell)
     require(slot["candidates"] == ids, "frozen candidate order changed")
     first = read(campaign / "plan-1/manifest.disabled.json")
@@ -151,8 +158,9 @@ def drive(campaign, math_equal=False, medqa_equal=False):
     consent = dict(decision="approved", source_transmission_authorized=True, gpu_spending_authorized=True,
                    cell=cell, first_scope=first_scope, concurrent_jobs=1,
                    worker_authorized=False, reviewer=getpass.getuser())
-    if math_equal or medqa_equal:
-        consent.update(source_ids=ids, maximum_calls=8, token_cap=131072, maximum_allocated_wall_seconds=28800)
+    if math_equal or medqa_equal or math_extra_six:
+        consent.update(source_ids=ids, maximum_calls=len(ids), token_cap=16384 * len(ids),
+                       maximum_allocated_wall_seconds=3600 * len(ids))
     else:
         consent.update(additional_ids=ids[1:], maximum_additional_calls=7,
                        maximum_additional_tokens=114688, maximum_additional_wall_seconds=25200)
@@ -207,6 +215,12 @@ def drive(campaign, math_equal=False, medqa_equal=False):
                     rationale = (
                         "The full linear equation is in the text. The supplied historical neighbors "
                         "use a complex modulus, a variable denominator, or a logarithmic product.")
+                elif math_extra_six:
+                    require(approval["family_review"]["card_digest"] ==
+                            "1758cc89392f81f7d228c755660fca78449b062266ada47b61d5f138da729683",
+                            "different MATH source review")
+                    rationale = ("The exponent question is complete in text. The supplied neighbors concern "
+                                 "probability and inequalities, and the identity check found no duplicate.")
                 elif medqa_equal:
                     require(approval["family_review"]["card_digest"] ==
                             "15ea2641a951930735335ddbb7e0f918eca373e3135bbfa7dbe97670a014465d",
@@ -236,7 +250,7 @@ def drive(campaign, math_equal=False, medqa_equal=False):
         value = read(packet)
         require(value["scope_digest"] == manifest["scope_digest"] and value["previous_prefix"] == entries
                 and value["entry_for_review"]["run"] == str(run.resolve()), "unexpected review packet")
-        entry = contract_review(value, "final_answer" if math_equal else "option_label")
+        entry = contract_review(value, "final_answer" if dataset == "math500" else "option_label")
         launch.history(slot, public, entries + [entry])
         save(entry_path, entry)
         entries.append(entry)
@@ -250,7 +264,9 @@ if __name__ == "__main__":
                        help="authorize the frozen eight-candidate MedQA equal-task planner prefix")
     group.add_argument("--approve-math-equal", action="store_true",
                         help="authorize the frozen eight-candidate MATH equal-task planner prefix")
+    group.add_argument("--approve-math-n6-extra", action="store_true",
+                       help="authorize the frozen nine-candidate MATH extra-task planner prefix")
     args = parser.parse_args()
     with (args.campaign / ".planner-batch.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        drive(args.campaign.resolve(), args.approve_math_equal, args.approve_medqa_equal)
+        drive(args.campaign.resolve(), args.approve_math_equal, args.approve_medqa_equal, args.approve_math_n6_extra)
