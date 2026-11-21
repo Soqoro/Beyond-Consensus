@@ -133,7 +133,7 @@ def check_stage(scope, index, entries, family, cell=CELL, ids=IDS):
             and (not index or scope["family_review"] == family), "outside approved planner prefix")
 
 
-def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False):
+def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False, medqa_extra_six=False):
     require(not os.environ.get("SLURM_JOB_ID"), "start from a login terminal")
     cell, ids, first_scope = (MATH_CELL, MATH_IDS, MATH_FIRST) if math_equal else (CELL, IDS, FIRST)
     if medqa_equal:
@@ -148,6 +148,11 @@ def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False):
             "algebra/1265", "number_theory/357", "algebra/1553", "prealgebra/1114",
             "algebra/2735", "prealgebra/1622", "algebra/1814", "geometry/65", "precalculus/1201")]
         first_scope = "ee8e5b16876f56219822a23b662a63b40b49f11e26cc1ca14de67720b0b3b2ca"
+    if medqa_extra_six:
+        require(not (math_equal or medqa_equal or math_extra_six), "select one planner cell")
+        cell = "medqa-n6-extra"
+        ids = [f"test/row/{i}" for i in (477, 658, 443, 798, 442, 221, 338, 355, 500)]
+        first_scope = "3be494c12608e82903f76556300395bb8050a4d6472e55c348d1e884f4d306d3"
     dataset = "math500" if math_equal or math_extra_six else "medqa"
     slot = launch.cell(cell)
     require(slot["candidates"] == ids, "frozen candidate order changed")
@@ -158,7 +163,7 @@ def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False):
     consent = dict(decision="approved", source_transmission_authorized=True, gpu_spending_authorized=True,
                    cell=cell, first_scope=first_scope, concurrent_jobs=1,
                    worker_authorized=False, reviewer=getpass.getuser())
-    if math_equal or medqa_equal or math_extra_six:
+    if math_equal or medqa_equal or math_extra_six or medqa_extra_six:
         consent.update(source_ids=ids, maximum_calls=len(ids), token_cap=16384 * len(ids),
                        maximum_allocated_wall_seconds=3600 * len(ids))
     else:
@@ -221,6 +226,14 @@ def drive(campaign, math_equal=False, medqa_equal=False, math_extra_six=False):
                             "different MATH source review")
                     rationale = ("The exponent question is complete in text. The supplied neighbors concern "
                                  "probability and inequalities, and the identity check found no duplicate.")
+                elif medqa_extra_six:
+                    require(approval["family_review"]["card_digest"] ==
+                            "7ca154c9d2154483ed682b06b1b05ce1d21c10721b88098360d8fa7e0c43a463",
+                            "different MedQA source review")
+                    rationale = ("The vignette gives the ultrasound and laboratory findings in text and includes "
+                                 "all four choices. The supplied neighbors have different clinical obligations. "
+                                 "Previously reviewed row 674 asks about prevention of oral symptoms, "
+                                 "whereas this question asks for an anticipated smear finding.")
                 elif medqa_equal:
                     require(approval["family_review"]["card_digest"] ==
                             "15ea2641a951930735335ddbb7e0f918eca373e3135bbfa7dbe97670a014465d",
@@ -266,7 +279,10 @@ if __name__ == "__main__":
                         help="authorize the frozen eight-candidate MATH equal-task planner prefix")
     group.add_argument("--approve-math-n6-extra", action="store_true",
                        help="authorize the frozen nine-candidate MATH extra-task planner prefix")
+    group.add_argument("--approve-medqa-n6-extra", action="store_true",
+                       help="authorize the frozen nine-candidate MedQA extra-task planner prefix")
     args = parser.parse_args()
     with (args.campaign / ".planner-batch.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        drive(args.campaign.resolve(), args.approve_math_equal, args.approve_medqa_equal, args.approve_math_n6_extra)
+        drive(args.campaign.resolve(), args.approve_math_equal, args.approve_medqa_equal,
+              args.approve_math_n6_extra, args.approve_medqa_n6_extra)
